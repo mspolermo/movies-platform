@@ -78,8 +78,8 @@ describe('PersonsService', () => {
 
   describe('findPersonsByNameAndProfession', () => {
     it('should return array of persons', async () => {
-      let personName = 'Джон';
-      let professionId = 1;
+      const personName = 'Джон';
+      const professionId = 1;
       expect(
         await service.findPersonsByNameAndProfession(personName, professionId),
       ).toEqual(mockPersonsArray);
@@ -107,7 +107,7 @@ describe('PersonsService', () => {
 
   describe('searchPersonsByName', () => {
     it('should return array of persons', async () => {
-      let personName = 'Джон';
+      const personName = 'Джон';
       expect(await service.searchPersonsByName(personName)).toEqual(
         mockPersonsArray,
       );

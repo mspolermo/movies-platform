@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GenresController } from './genres.controller';
-import {GenresService} from "./genres.service";
-import {HttpStatus} from "@nestjs/common";
+import { GenresService } from './genres.service';
+import { HttpStatus } from '@nestjs/common';
 
 describe('GenresController', () => {
   let controller: GenresController;
@@ -39,9 +39,8 @@ describe('GenresController', () => {
     expect(controller).toBeDefined();
   });
 
-    describe('getAll', () => {
+  describe('getAll', () => {
     it('should return an array of users', async () => {
-
       mockGenresService.getAllGenres.mockResolvedValue(mockGenre);
 
       expect(await controller.getAllGenres()).toEqual(mockGenre);
@@ -74,5 +73,3 @@ describe('GenresController', () => {
     });
   });
 });
-
-

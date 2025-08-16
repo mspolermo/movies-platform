@@ -1,4 +1,3 @@
-
 export class ProfessionDTO {
-  name:string;
+  name: string;
 }

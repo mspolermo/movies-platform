@@ -1,7 +1,4 @@
-
 export class CountryDTO {
-
-  countryName:string
-  countryNameEn:string
-
+  countryName: string;
+  countryNameEn: string;
 }

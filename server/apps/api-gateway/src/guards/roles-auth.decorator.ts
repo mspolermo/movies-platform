@@ -1,4 +1,4 @@
-import {SetMetadata} from "@nestjs/common";
+import { SetMetadata } from '@nestjs/common';
 // строка, содержащая имя ключа, который будет использоваться в Reflect Metadata,
 //  чтобы определить роли доступа к методам и контроллерам.
 export const ROLES_KEY = 'roles';

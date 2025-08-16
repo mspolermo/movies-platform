@@ -6,7 +6,10 @@ import { Profession } from './professions.model';
 describe('ProfessionsService', () => {
   let service: ProfessionsService;
 
-  const mockProfessionArray = [{ id: 1, name: 'Актёры' },{ id: 2, name: 'Режисёры' }];
+  const mockProfessionArray = [
+    { id: 1, name: 'Актёры' },
+    { id: 2, name: 'Режисёры' },
+  ];
 
   const mockProfessionsRepository = {
     findAll: jest.fn().mockResolvedValue(mockProfessionArray),
@@ -51,7 +54,7 @@ describe('ProfessionsService', () => {
 
       expect(mockProfessionsRepository.findAll).toHaveBeenCalledWith({
         where: {
-          name:professionName,
+          name: professionName,
         },
       });
       expect(result).toEqual(mockProfessionArray);

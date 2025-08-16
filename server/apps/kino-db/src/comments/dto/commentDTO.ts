@@ -1,8 +1,6 @@
 export class CommentDTO {
-    parentId:number;
-    header:string;
-    value:string;
-    nickName:string
-
-
+  parentId: number;
+  header: string;
+  value: string;
+  nickName: string;
 }

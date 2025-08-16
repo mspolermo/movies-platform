@@ -1,14 +1,11 @@
-
-import { ProfessionDTO } from "../../professions/dto/professionDTO";
+import { ProfessionDTO } from '../../professions/dto/professionDTO';
 
 export class PersonDTO {
+  photoUrl: string;
 
+  nameRu: string;
 
-  photoUrl:string
+  nameEn: string;
 
-  nameRu:string
-
-  nameEn:string
-
-  professions:ProfessionDTO[]
+  professions: ProfessionDTO[];
 }

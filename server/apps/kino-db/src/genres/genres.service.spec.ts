@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GenresService } from './genres.service';
-import {Op} from "sequelize";
-import {getModelToken} from "@nestjs/sequelize";
-import {Genre} from "./genres.model";
-
+import { Op } from 'sequelize';
+import { getModelToken } from '@nestjs/sequelize';
+import { Genre } from './genres.model';
 
 describe('GenresService', () => {
   let service: GenresService;
@@ -51,9 +50,14 @@ describe('GenresService', () => {
 
   describe('updateGenre', () => {
     it('should update the genre', async () => {
-      const updatedGenre = await service.updateGenre(mockGenre.id, mockGenreDto);
+      const updatedGenre = await service.updateGenre(
+        mockGenre.id,
+        mockGenreDto,
+      );
 
-      expect(mockGenresRepository.update).toHaveBeenCalledWith(mockGenreDto, { where: { id: mockGenre.id } });
+      expect(mockGenresRepository.update).toHaveBeenCalledWith(mockGenreDto, {
+        where: { id: mockGenre.id },
+      });
       expect(updatedGenre).toEqual({ ...mockGenreDto, id: mockGenre.id });
     });
   });
@@ -77,4 +81,3 @@ describe('GenresService', () => {
     });
   });
 });
-

@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FilmsService } from './films.service';
-import {getModelToken} from "@nestjs/sequelize";
-import {Film} from "./films.model";
-import {Fact} from "../facts/facts.model";
-import {Op, Sequelize} from "sequelize";
-import {Genre} from "../genres/genres.model";
-import {Country} from "../countries/countries.model";
-import {Person} from "../persons/persons.model";
-import {Profession} from "../professions/professions.model";
+import { getModelToken } from '@nestjs/sequelize';
+import { Film } from './films.model';
+import { Fact } from '../facts/facts.model';
+import { Op, Sequelize } from 'sequelize';
+import { Genre } from '../genres/genres.model';
+import { Country } from '../countries/countries.model';
+import { Person } from '../persons/persons.model';
+import { Profession } from '../professions/professions.model';
 
 describe('FilmsService', () => {
   let service: FilmsService;
 
   const mockFilm = {
     id: 1,
-    trailerName: "string",
-    trailerUrl: "string",
+    trailerName: 'string',
+    trailerUrl: 'string',
     ratingKp: 1,
     votesKp: 1,
     ratingImdb: 1,
@@ -25,14 +25,14 @@ describe('FilmsService', () => {
     ratingRussianFilmCritics: 1,
     votesRussianFilmCritics: 1,
     movieLength: 1,
-    originalFilmLanguage: "string",
-    filmNameRu: "string",
-    filmNameEn: "string",
-    description: "string",
-    premiereCountry: "string",
-    slogan: "string",
-    bigPictureUrl: "string",
-    smallPictureUrl: "string",
+    originalFilmLanguage: 'string',
+    filmNameRu: 'string',
+    filmNameEn: 'string',
+    description: 'string',
+    premiereCountry: 'string',
+    slogan: 'string',
+    bigPictureUrl: 'string',
+    smallPictureUrl: 'string',
     year: 1,
     top10: 1,
     top250: 1,
@@ -42,18 +42,21 @@ describe('FilmsService', () => {
     countries: [],
     genres: [],
     fact: Fact,
-    comments: []
+    comments: [],
   };
 
   const mockUpdateDto = {
     filmNameEn: 'Updated Film Name En',
-    filmNameRu: 'Updated Film Name Ru'
+    filmNameRu: 'Updated Film Name Ru',
   };
 
   const mockFilmsRepository = {
     findAll: jest.fn().mockResolvedValue(mockFilm),
     findByPk: jest.fn().mockResolvedValue(mockFilm.id),
-    update: jest.fn().mockResolvedValue(mockFilm.id).mockResolvedValue(mockUpdateDto),
+    update: jest
+      .fn()
+      .mockResolvedValue(mockFilm.id)
+      .mockResolvedValue(mockUpdateDto),
     destroy: jest.fn().mockResolvedValue(mockFilm.id),
     findOne: jest.fn().mockResolvedValue(mockFilm),
   };
@@ -61,10 +64,11 @@ describe('FilmsService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        FilmsService, {
+        FilmsService,
+        {
           provide: getModelToken(Film),
-          useValue: mockFilmsRepository
-        }
+          useValue: mockFilmsRepository,
+        },
       ],
     }).compile();
 
@@ -81,7 +85,6 @@ describe('FilmsService', () => {
 
   describe('getAllFilms', () => {
     it('should return all films from the repository', async () => {
-
       mockFilmsRepository.findAll.mockResolvedValue(mockFilm);
 
       const result = await service.getAllFilms();
@@ -93,7 +96,6 @@ describe('FilmsService', () => {
 
   describe('updateFilm', () => {
     it('should update the film with the provided id and DTO', async () => {
-
       mockFilmsRepository.findByPk.mockResolvedValue(mockFilm);
 
       await service.updateFilm(mockFilm.id, mockUpdateDto);
@@ -102,19 +104,25 @@ describe('FilmsService', () => {
       expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(mockFilm.id);
       expect(mockFilmsRepository.update).toHaveBeenCalledTimes(1);
       expect(mockFilmsRepository.update).toHaveBeenCalledWith(
-          { filmNameEn: mockUpdateDto.filmNameEn, filmNameRu: mockUpdateDto.filmNameRu },
-          { where: { id: mockFilm.id } }
+        {
+          filmNameEn: mockUpdateDto.filmNameEn,
+          filmNameRu: mockUpdateDto.filmNameRu,
+        },
+        { where: { id: mockFilm.id } },
       );
     });
 
     it('should throw an error if the film with the provided id is not found', async () => {
       const filmId = 1;
-      const updateDto = { filmNameEn: 'Updated Film Name En', filmNameRu: 'Updated Film Name Ru' };
+      const updateDto = {
+        filmNameEn: 'Updated Film Name En',
+        filmNameRu: 'Updated Film Name Ru',
+      };
 
       mockFilmsRepository.findByPk.mockResolvedValue(null);
 
       await expect(service.updateFilm(filmId, updateDto)).rejects.toThrowError(
-          `Film with id ${filmId} not found`
+        `Film with id ${filmId} not found`,
       );
 
       expect(mockFilmsRepository.findByPk).toHaveBeenCalledTimes(1);
@@ -125,21 +133,23 @@ describe('FilmsService', () => {
 
   describe('deleteFilm', () => {
     it('should delete the film with the provided id', async () => {
-
       jest.spyOn(mockFilmsRepository, 'findByPk').mockResolvedValue(mockFilm);
       jest.spyOn(mockFilmsRepository, 'destroy').mockResolvedValue(null);
 
       await service.deleteFilm(mockFilm.id);
 
       expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(mockFilm.id);
-      expect(mockFilmsRepository.destroy).toHaveBeenCalledWith({ where: { id: mockFilm.id } });
+      expect(mockFilmsRepository.destroy).toHaveBeenCalledWith({
+        where: { id: mockFilm.id },
+      });
     });
 
     it('should throw an error if the film with the provided id is not found', async () => {
-
       jest.spyOn(mockFilmsRepository, 'findByPk').mockResolvedValue(null);
 
-      await expect(service.deleteFilm(mockFilm.id)).rejects.toThrow(`Film with id ${mockFilm.id} not found`);
+      await expect(service.deleteFilm(mockFilm.id)).rejects.toThrow(
+        `Film with id ${mockFilm.id} not found`,
+      );
     });
   });
 
@@ -153,10 +163,7 @@ describe('FilmsService', () => {
 
       expect(mockFilmsRepository.findOne).toHaveBeenCalledWith({
         where: {
-          [Op.or]: [
-            { filmNameRu: name },
-            { filmNameEn: name },
-          ],
+          [Op.or]: [{ filmNameRu: name }, { filmNameEn: name }],
         },
       });
       expect(result).toEqual(mockFilm);
@@ -167,7 +174,9 @@ describe('FilmsService', () => {
 
       jest.spyOn(mockFilmsRepository, 'findOne').mockResolvedValue(null);
 
-      await expect(service.getFilmByName(name)).rejects.toThrow(`Film with name ${name} not found`);
+      await expect(service.getFilmByName(name)).rejects.toThrow(
+        `Film with name ${name} not found`,
+      );
     });
   });
 
@@ -194,11 +203,7 @@ describe('FilmsService', () => {
 
   describe('getAllFilmYears', () => {
     it('should return all distinct film years in ascending order', async () => {
-      const mockYears = [
-        { year: 2000 },
-        { year: 2001 },
-        { year: 2002 },
-      ];
+      const mockYears = [{ year: 2000 }, { year: 2001 }, { year: 2002 }];
 
       jest.spyOn(mockFilmsRepository, 'findAll').mockResolvedValue(mockYears);
 
@@ -224,19 +229,18 @@ describe('FilmsService', () => {
       const mockSortBy = 'rating';
       const mockYear = 2022;
 
-
       jest.spyOn(mockFilmsRepository, 'findAll').mockResolvedValue([mockFilm]);
 
       const result = await service.filmFilters(
-          mockPage,
-          mockPerPage,
-          mockGenres,
-          mockCountries,
-          mockPersons,
-          mockMinRatingKp,
-          mockMinVotesKp,
-          mockSortBy,
-          mockYear
+        mockPage,
+        mockPerPage,
+        mockGenres,
+        mockCountries,
+        mockPersons,
+        mockMinRatingKp,
+        mockMinVotesKp,
+        mockSortBy,
+        mockYear,
       );
 
       expect(mockFilmsRepository.findAll).toHaveBeenCalledWith({
@@ -244,10 +248,7 @@ describe('FilmsService', () => {
           {
             model: Genre,
             where: {
-              [Op.or]: [
-                { nameRu: mockGenres },
-                { nameEn: mockGenres },
-              ],
+              [Op.or]: [{ nameRu: mockGenres }, { nameEn: mockGenres }],
             },
           },
           {
@@ -257,10 +258,7 @@ describe('FilmsService', () => {
           {
             model: Person,
             where: {
-              [Op.or]: [
-                { nameRu: mockPersons },
-                { nameEn: mockPersons },
-              ],
+              [Op.or]: [{ nameRu: mockPersons }, { nameEn: mockPersons }],
             },
           },
         ],
@@ -279,9 +277,10 @@ describe('FilmsService', () => {
 
   describe('getFilmById', () => {
     it('should return the film with the specified ID and similar films', async () => {
-
       jest.spyOn(mockFilmsRepository, 'findByPk').mockResolvedValue(mockFilm);
-      jest.spyOn(service, 'findFilmsByGenre').mockResolvedValue([mockFilm as unknown as Film]);
+      jest
+        .spyOn(service, 'findFilmsByGenre')
+        .mockResolvedValue([mockFilm as unknown as Film]);
 
       const result = await service.getFilmById(mockFilm.id);
 
@@ -311,7 +310,9 @@ describe('FilmsService', () => {
           },
         ],
       });
-      expect(service.findFilmsByGenre).toHaveBeenCalledWith(mockFilm.genres.map(g => g.nameRu));
+      expect(service.findFilmsByGenre).toHaveBeenCalledWith(
+        mockFilm.genres.map((g) => g.nameRu),
+      );
       expect(result).toEqual({
         film: mockFilm,
         similarFilms: [mockFilm],

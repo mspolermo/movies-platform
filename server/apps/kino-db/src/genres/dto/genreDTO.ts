@@ -1,7 +1,4 @@
-
 export class GenreDTO {
-
-  nameRu:string;
-  nameEn:string;
-
+  nameRu: string;
+  nameEn: string;
 }

@@ -1,10 +1,9 @@
-import { PersonDTO } from "../../persons/dto/personDTO";
-import { CountryDTO } from "../../countries/dto/countryDTO";
-import { GenreDTO } from "../../genres/dto/genreDTO";
-import { FactDTO } from "../../facts/dto/factDTO";
+import { PersonDTO } from '../../persons/dto/personDTO';
+import { CountryDTO } from '../../countries/dto/countryDTO';
+import { GenreDTO } from '../../genres/dto/genreDTO';
+import { FactDTO } from '../../facts/dto/factDTO';
 
 export class FilmDTO {
-
   trailerName: string;
   trailerUrl: string;
   ratingKp: number;

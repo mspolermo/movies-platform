@@ -6,7 +6,10 @@ describe('ProfessionsController', () => {
   let controller: ProfessionsController;
   let service: ProfessionsService;
 
-  const mockProfessionArray = [{ id: 1, name: 'Актёры' },{ id: 2, name: 'Режисёры' }];
+  const mockProfessionArray = [
+    { id: 1, name: 'Актёры' },
+    { id: 2, name: 'Режисёры' },
+  ];
   const mockProfessionsService = {
     getAllProfessions: jest.fn(),
   };
@@ -36,7 +39,9 @@ describe('ProfessionsController', () => {
 
   describe('getAll.professions', () => {
     it('should return an array of professions', async () => {
-      mockProfessionsService.getAllProfessions.mockResolvedValue(mockProfessionArray);
+      mockProfessionsService.getAllProfessions.mockResolvedValue(
+        mockProfessionArray,
+      );
       expect(await controller.getAllProfessions()).toEqual(mockProfessionArray);
       expect(service.getAllProfessions).toHaveBeenCalledTimes(1);
     });

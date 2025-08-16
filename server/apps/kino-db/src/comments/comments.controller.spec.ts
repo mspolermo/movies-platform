@@ -14,7 +14,7 @@ describe('GenresController', () => {
       authorId: 2,
       parentId: null,
       filmId: 134,
-      nickName:"Admin"
+      nickName: 'Admin',
     },
     {
       id: 2,
@@ -23,7 +23,7 @@ describe('GenresController', () => {
       authorId: 3,
       parentId: 1,
       filmId: 134,
-      nickName:"Lover1703"
+      nickName: 'Lover1703',
     },
   ];
 
@@ -34,13 +34,13 @@ describe('GenresController', () => {
     authorId: 2,
     parentId: 3,
     filmId: 134,
-    nickName:"Admin"
+    nickName: 'Admin',
   };
   const mockCommentDTO = {
     header: 'This is header',
     value: 'This is value',
     parentId: 3,
-    nickName:"Admin"
+    nickName: 'Admin',
   };
 
   const mockCommentsService = {

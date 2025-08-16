@@ -3,9 +3,3 @@ export class ResultUsersDto {
   email: string;
   roles: { id: number; value: string }[];
 }
-
-
-
-
-
-

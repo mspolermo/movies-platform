@@ -1,10 +1,10 @@
-import {Test, TestingModule} from '@nestjs/testing';
-import {FilmsController} from './films.controller';
-import {FilmsService} from "./films.service";
-import {Film} from "./films.model";
-import {Fact} from "../facts/facts.model";
-import {UpdateFilmDTO} from "./dto/updateFilmDTO";
-import {HttpStatus} from "@nestjs/common";
+import { Test, TestingModule } from '@nestjs/testing';
+import { FilmsController } from './films.controller';
+import { FilmsService } from './films.service';
+import { Film } from './films.model';
+import { Fact } from '../facts/facts.model';
+import { UpdateFilmDTO } from './dto/updateFilmDTO';
+import { HttpStatus } from '@nestjs/common';
 
 describe('FilmsController', () => {
   let controller: FilmsController;
@@ -12,8 +12,8 @@ describe('FilmsController', () => {
 
   const mockFilm = {
     id: 1,
-    trailerName: "string",
-    trailerUrl: "string",
+    trailerName: 'string',
+    trailerUrl: 'string',
     ratingKp: 1,
     votesKp: 1,
     ratingImdb: 1,
@@ -23,14 +23,14 @@ describe('FilmsController', () => {
     ratingRussianFilmCritics: 1,
     votesRussianFilmCritics: 1,
     movieLength: 1,
-    originalFilmLanguage: "string",
-    filmNameRu: "string",
-    filmNameEn: "string",
-    description: "string",
-    premiereCountry: "string",
-    slogan: "string",
-    bigPictureUrl: "string",
-    smallPictureUrl: "string",
+    originalFilmLanguage: 'string',
+    filmNameRu: 'string',
+    filmNameEn: 'string',
+    description: 'string',
+    premiereCountry: 'string',
+    slogan: 'string',
+    bigPictureUrl: 'string',
+    smallPictureUrl: 'string',
     year: 1,
     top10: 1,
     top250: 1,
@@ -40,12 +40,12 @@ describe('FilmsController', () => {
     countries: [],
     genres: [],
     fact: Fact,
-    comments: []
+    comments: [],
   };
 
   const mockUpdateFilmDTO: UpdateFilmDTO = {
-    filmNameRu: "string",
-    filmNameEn: "string"
+    filmNameRu: 'string',
+    filmNameEn: 'string',
   };
 
   const mockFilmsService = {
@@ -53,7 +53,7 @@ describe('FilmsController', () => {
     updateFilm: jest.fn().mockResolvedValue(mockFilm.id),
     getAllFilms: jest.fn(),
     deleteFilm: jest.fn(),
-    getFilmByName:jest.fn().mockResolvedValue(mockFilm.filmNameRu),
+    getFilmByName: jest.fn().mockResolvedValue(mockFilm.filmNameRu),
     getAllFilmYears: jest.fn(),
     searchFilmsByName: jest.fn().mockResolvedValue(mockFilm.filmNameRu),
     filmFilters: jest.fn(),
@@ -63,8 +63,10 @@ describe('FilmsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [FilmsController],
       providers: [FilmsService],
-    }).overrideProvider(FilmsService).useValue(mockFilmsService).compile();
-
+    })
+      .overrideProvider(FilmsService)
+      .useValue(mockFilmsService)
+      .compile();
 
     controller = module.get<FilmsController>(FilmsController);
     service = module.get<FilmsService>(FilmsService);
@@ -101,19 +103,28 @@ describe('FilmsController', () => {
 
   describe('updateFilm', () => {
     it('should call filmService.updateFilm with the provided id and DTO', async () => {
+      const updateFilmSpy = jest
+        .spyOn(service, 'updateFilm')
+        .mockResolvedValue(mockFilm as unknown as Film);
 
-      const updateFilmSpy = jest.spyOn(service, 'updateFilm').mockResolvedValue(mockFilm as unknown as Film);
+      const result = await controller.updateFilm({
+        id: mockFilm.id,
+        dto: mockUpdateFilmDTO,
+      });
 
-      const result = await controller.updateFilm({id: mockFilm.id, dto: mockUpdateFilmDTO});
-
-      expect(updateFilmSpy).toHaveBeenCalledWith(mockFilm.id,mockUpdateFilmDTO);
+      expect(updateFilmSpy).toHaveBeenCalledWith(
+        mockFilm.id,
+        mockUpdateFilmDTO,
+      );
       expect(result).toBe(HttpStatus.OK);
     });
   });
 
   describe('getAllFilms', () => {
     it('should call filmService.getAllFilms', async () => {
-      const getAllFilmsSpy = jest.spyOn(service, 'getAllFilms').mockResolvedValue([]);
+      const getAllFilmsSpy = jest
+        .spyOn(service, 'getAllFilms')
+        .mockResolvedValue([]);
 
       const result = await controller.getAllFilms();
 
@@ -125,7 +136,9 @@ describe('FilmsController', () => {
   describe('deleteFilmById', () => {
     it('should call filmService.deleteFilm with the provided id', async () => {
       const id = 1;
-      const deleteFilmSpy = jest.spyOn(service, 'deleteFilm').mockResolvedValue();
+      const deleteFilmSpy = jest
+        .spyOn(service, 'deleteFilm')
+        .mockResolvedValue();
 
       const result = await controller.deleteFilmById(id);
 
@@ -138,7 +151,9 @@ describe('FilmsController', () => {
     it('should call filmService.getFilmByName with the provided name', async () => {
       const name = 'Film Name';
 
-      const getFilmByNameSpy = jest.spyOn(service, 'getFilmByName').mockResolvedValue(mockFilm as unknown as Film);
+      const getFilmByNameSpy = jest
+        .spyOn(service, 'getFilmByName')
+        .mockResolvedValue(mockFilm as unknown as Film);
 
       const result = await controller.getFilmByName(name);
 
@@ -150,7 +165,9 @@ describe('FilmsController', () => {
   describe('getAllFilmYears', () => {
     it('should call filmService.getAllFilmYears', async () => {
       const mockYears = [2020, 2021, 2022];
-      const getAllFilmYearsSpy = jest.spyOn(service, 'getAllFilmYears').mockResolvedValue(mockYears);
+      const getAllFilmYearsSpy = jest
+        .spyOn(service, 'getAllFilmYears')
+        .mockResolvedValue(mockYears);
 
       const result = await controller.getAllFilmYears();
 
@@ -163,7 +180,9 @@ describe('FilmsController', () => {
     it('should call filmService.searchFilmsByName with the provided name', async () => {
       const name = 'Film Name';
 
-      const getFilmByNameSpy = jest.spyOn(service, 'searchFilmsByName').mockResolvedValue([mockFilm as unknown as Film]);
+      const getFilmByNameSpy = jest
+        .spyOn(service, 'searchFilmsByName')
+        .mockResolvedValue([mockFilm as unknown as Film]);
 
       const result = await controller.searchFilmsByName(name);
 
@@ -187,21 +206,21 @@ describe('FilmsController', () => {
       };
 
       const filmFiltersSpy = jest
-          .spyOn(service, 'filmFilters')
-          .mockResolvedValue([mockFilm as unknown as Film]);
+        .spyOn(service, 'filmFilters')
+        .mockResolvedValue([mockFilm as unknown as Film]);
 
       const result = await controller.filters(mockData);
 
       expect(filmFiltersSpy).toHaveBeenCalledWith(
-          mockData.page,
-          mockData.perPage,
-          mockData.genres,
-          mockData.countries,
-          mockData.persons,
-          mockData.minRatingKp,
-          mockData.minVotesKp,
-          mockData.sortBy,
-          mockData.year,
+        mockData.page,
+        mockData.perPage,
+        mockData.genres,
+        mockData.countries,
+        mockData.persons,
+        mockData.minRatingKp,
+        mockData.minVotesKp,
+        mockData.sortBy,
+        mockData.year,
       );
       expect(result).toEqual([mockFilm]);
     });

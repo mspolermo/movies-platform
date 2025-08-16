@@ -6,7 +6,6 @@ describe('PersonsController', () => {
   let controller: PersonsController;
   let service: PersonsService;
 
-  
   const mockPerson = {
     id: 1,
     photoUrl: 'http://someUrl.com',
@@ -32,11 +31,13 @@ describe('PersonsController', () => {
     },
   ];
 
-    const mockPersonsService = {
+  const mockPersonsService = {
     getPersonById: jest.fn().mockResolvedValue(mockPerson),
     searchPersonsByName: jest.fn().mockResolvedValue(mockPersonsArray),
-    findPersonsByNameAndProfession: jest.fn().mockResolvedValue(mockPersonsArray)
-    }
+    findPersonsByNameAndProfession: jest
+      .fn()
+      .mockResolvedValue(mockPersonsArray),
+  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PersonsController],
@@ -62,7 +63,7 @@ describe('PersonsController', () => {
 
   describe('getPersonById', () => {
     it('should return person', async () => {
-      let id = 1
+      const id = 1;
       expect(await controller.getPersonById(id)).toEqual(mockPerson);
       expect(mockPersonsService.getPersonById).toHaveBeenCalledTimes(1);
     });
@@ -70,24 +71,26 @@ describe('PersonsController', () => {
 
   describe('searchPersonsByName', () => {
     it('should return persons', async () => {
-      let name = "Джон";
-      expect(await controller.searchPersonsByName(name)).toEqual(mockPersonsArray);
-      expect(mockPersonsService.searchPersonsByName).toHaveBeenCalledTimes(
-        1,
+      const name = 'Джон';
+      expect(await controller.searchPersonsByName(name)).toEqual(
+        mockPersonsArray,
       );
+      expect(mockPersonsService.searchPersonsByName).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('findPersonsByNameAndProfession', () => {
     it('should return persons', async () => {
-      let data = {
+      const data = {
         id: 1,
-        name: "Джон"
-      }
-      expect(await controller.findPersonsByNameAndProfession(data)).toEqual(mockPersonsArray);
-      expect(mockPersonsService.findPersonsByNameAndProfession).toHaveBeenCalledTimes(
-        1,
+        name: 'Джон',
+      };
+      expect(await controller.findPersonsByNameAndProfession(data)).toEqual(
+        mockPersonsArray,
       );
+      expect(
+        mockPersonsService.findPersonsByNameAndProfession,
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
