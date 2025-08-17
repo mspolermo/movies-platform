@@ -1,9 +1,10 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
+import { MUST_BE_STRING_ERROR } from '../app.constants';
 
 export class CommentDTO {
-  @IsString({ message: 'Должно быть строкой' })
+  @IsString({ message: MUST_BE_STRING_ERROR })
   header: string;
-  @IsString({ message: 'Должно быть строкой' })
+  @IsString({ message: MUST_BE_STRING_ERROR })
   value: string;
   parentId: number;
 }

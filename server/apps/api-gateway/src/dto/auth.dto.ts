@@ -1,11 +1,16 @@
 import { IsEmail, IsString, Length } from 'class-validator';
+import {
+  MUST_BE_STRING_ERROR,
+  STRING_LENGTH_ERROR,
+  WRONG_EMAIL_ERROR,
+} from '../app.constants';
 
 export class AuthDto {
-  @IsString({ message: 'Должно быть строкой' })
-  @IsEmail({}, { message: 'Некорректный email' })
+  @IsString({ message: MUST_BE_STRING_ERROR })
+  @IsEmail({}, { message: WRONG_EMAIL_ERROR })
   readonly email: string;
 
-  @IsString({ message: 'Должно быть строкой' })
-  @Length(4, 16, { message: 'Не меньше 4 и не больше 16' })
+  @IsString({ message: MUST_BE_STRING_ERROR })
+  @Length(4, 16, { message: STRING_LENGTH_ERROR })
   readonly password: string;
 }

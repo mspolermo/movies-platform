@@ -5,9 +5,9 @@ import {
   HttpStatus,
   Injectable,
   NestInterceptor,
-  NestMiddleware,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
+import { ACCESS_NO_ROGHTS_ERROR } from '../app.constants';
 
 @Injectable()
 //предназначенный для перехвата запросов и проверки,
@@ -32,10 +32,7 @@ export class SelfOrAdminInterceptor implements NestInterceptor {
       );
     } else {
       // Если пользователь не имеет прав, выбрасываем HttpException с кодом статуса 403.
-      throw new HttpException(
-        'У вас нет прав на выполнение данного действия',
-        HttpStatus.FORBIDDEN,
-      );
+      throw new HttpException(ACCESS_NO_ROGHTS_ERROR, HttpStatus.FORBIDDEN);
     }
   }
 }

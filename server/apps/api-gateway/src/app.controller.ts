@@ -11,7 +11,6 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -38,7 +37,7 @@ export class AppController {
   private clientUsers: ClientProxy;
   private clientData: ClientProxy;
 
-  constructor(private readonly appService: AppService) {
+  constructor() {
     this.clientUsers = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
@@ -71,8 +70,10 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Post('/registration')
   async registrationUser(@Body() dto: CreateUserDto) {
-    const data = await this.clientUsers.send('registration', dto).toPromise();
-    return { User: data.user, role: data.user.roles, token: data.token };
+    const { user, token } = await this.clientUsers
+      .send('registration', dto)
+      .toPromise();
+    return { User: user, role: user.roles, token: token };
   }
 
   @ApiOperation({ summary: 'Авторизация через сторонние сайты' })
@@ -80,10 +81,10 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Post('/outRegistration')
   async outRegistrationUser(@Body() dto: OauthCreateUserDTO) {
-    const data = await this.clientUsers
+    const { user, token } = await this.clientUsers
       .send('outRegistration', dto)
       .toPromise();
-    return { User: data.user, token: data.token };
+    return { User: user, token: token };
   }
 
   @ApiOperation({ summary: 'Логин' })
@@ -91,12 +92,14 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Post('/login')
   async loginUser(@Body() dto: AuthDto) {
-    const data = await this.clientUsers.send('login', dto).toPromise();
+    const { user, token } = await this.clientUsers
+      .send('login', dto)
+      .toPromise();
     return {
-      email: data.user.email,
-      userId: data.user.id,
-      role: data.user.roles,
-      token: data.token,
+      email: user.email,
+      userId: user.id,
+      role: user.roles,
+      token: token,
     };
   }
 

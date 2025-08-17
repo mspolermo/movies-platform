@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './roles-auth.decorator';
+import { ACCESS_ERROR, AUTH_ERROR } from '../app.constants';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -47,7 +48,7 @@ export class RolesGuard implements CanActivate {
       if (bearer !== 'Bearer' || !token) {
         //  выброс исключения UnauthorizedException, если заголовок авторизации некорректен.
         throw new UnauthorizedException({
-          message: 'Пользователь не авторизован',
+          message: AUTH_ERROR,
         });
       }
 
@@ -59,7 +60,7 @@ export class RolesGuard implements CanActivate {
       return user.roles.some((role) => requiredRoles.includes(role.value));
     } catch (e) {
       // выброс исключения UnauthorizedException, если пользователь не авторизован.
-      throw new HttpException('Нет доступа', HttpStatus.FORBIDDEN);
+      throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
     }
   }
 }

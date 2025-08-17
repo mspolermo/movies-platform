@@ -12,9 +12,9 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('ivi clone')
+    .setTitle('Movies-platform')
     .setDescription('Документащия REST API')
-    .setVersion('1.0.0')
+    .setVersion('1.0.1')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);

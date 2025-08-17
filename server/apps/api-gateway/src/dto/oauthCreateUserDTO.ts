@@ -1,7 +1,8 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
+import { MUST_BE_STRING_ERROR, WRONG_EMAIL_ERROR } from '../app.constants';
 
 export class OauthCreateUserDTO {
-  @IsString({ message: 'Должно быть строкой' })
-  @IsEmail({}, { message: 'Некорректный email' })
+  @IsString({ message: MUST_BE_STRING_ERROR })
+  @IsEmail({}, { message: WRONG_EMAIL_ERROR })
   readonly email: string;
 }

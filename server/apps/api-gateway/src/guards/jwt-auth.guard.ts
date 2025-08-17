@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
+import { AUTH_ERROR } from '../app.constants';
 
 //  создание класса, который реализует интерфейс CanActivate,
 //  используемый для реализации стратегии защиты маршрута.
@@ -36,7 +37,7 @@ export class JwtAuthGuard implements CanActivate {
       if (bearer !== 'Bearer' || !token) {
         //  выброс исключения UnauthorizedException, если заголовок авторизации некорректен.
         throw new UnauthorizedException({
-          message: 'Пользователь не авторизован',
+          message: AUTH_ERROR,
         });
       }
 
@@ -51,7 +52,7 @@ export class JwtAuthGuard implements CanActivate {
     } catch (e) {
       // выброс исключения UnauthorizedException, если пользователь не авторизован.
       throw new UnauthorizedException({
-        message: 'Пользователь не авторизован',
+        message: AUTH_ERROR,
       });
     }
   }
