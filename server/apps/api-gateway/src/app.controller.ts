@@ -11,11 +11,6 @@ import {
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
 import { AuthDto } from './dto/auth.dto';
 import { ValidationPipe } from './pipes/validation.pipe';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -31,49 +26,18 @@ import { User } from '../../auth-users/src/users/users.model';
 import { Person } from '../../kino-db/src/persons/persons.model';
 import { Comment } from '../../kino-db/src/comments/comments.model';
 import { Film } from '../../kino-db/src/films/films.model';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  private clientUsers: ClientProxy;
-  private clientData: ClientProxy;
-
-  constructor() {
-    this.clientUsers = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'users_queue',
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
-    this.clientData = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'films_queue',
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
-  }
-
-  async onModuleInit() {
-    await this.clientUsers.connect();
-    await this.clientData.connect();
-  }
+  constructor(private readonly appService: AppService) {}
 
   @ApiOperation({ summary: 'Регистрация' })
   @ApiResponse({ status: 200 })
   @UsePipes(ValidationPipe)
   @Post('/registration')
   async registrationUser(@Body() dto: CreateUserDto) {
-    const { user, token } = await this.clientUsers
-      .send('registration', dto)
-      .toPromise();
-    return { User: user, role: user.roles, token: token };
+    return await this.appService.registrationUser(dto);
   }
 
   @ApiOperation({ summary: 'Авторизация через сторонние сайты' })
@@ -81,10 +45,7 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Post('/outRegistration')
   async outRegistrationUser(@Body() dto: OauthCreateUserDTO) {
-    const { user, token } = await this.clientUsers
-      .send('outRegistration', dto)
-      .toPromise();
-    return { User: user, token: token };
+    return await this.appService.outRegistrationUser(dto);
   }
 
   @ApiOperation({ summary: 'Логин' })
@@ -92,69 +53,35 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Post('/login')
   async loginUser(@Body() dto: AuthDto) {
-    const { user, token } = await this.clientUsers
-      .send('login', dto)
-      .toPromise();
-    return {
-      email: user.email,
-      userId: user.id,
-      role: user.roles,
-      token: token,
-    };
+    return await this.appService.loginUser(dto);
   }
 
   @ApiOperation({ summary: 'Фильтры для поиска' })
   @ApiResponse({ status: 200 })
   @Get('/filters')
   async filters() {
-    const genres = await this.clientData.send('getAll.genres', '').toPromise();
-    const countries = await this.clientData
-      .send('getAll.countries', '')
-      .toPromise();
-    const years = await this.clientData.send('getAllFilmYears', '').toPromise();
-    const genreDto = genres.map((genre) => {
-      return { nameRu: genre.nameRu, nameEn: genre.nameEn };
-    });
-
-    const countryDto = countries.map((country) => {
-      return {
-        countryName: country.countryName,
-        countryNameEn: country.countryNameEn,
-      };
-    });
-
-    return {
-      genres: genreDto,
-      countries: countryDto,
-      years,
-    };
+    return await this.appService.getFilters();
   }
 
   @ApiOperation({ summary: 'Получение персона по id' })
   @ApiResponse({ status: 200, type: [Person] })
   @Get('/person/:id')
   async getPersonById(@Param('id') id: number) {
-    const person = await this.clientData.send('getPersonById', id).toPromise();
-
-    return person;
+    return await this.appService.getPersonById(id);
   }
 
   @ApiOperation({ summary: 'Получение фильма по id' })
   @ApiResponse({ status: 200, type: [Film] })
   @Get('/film/:id')
   async getFilmById(@Param('id') id: number) {
-    const film = await this.clientData.send('getFilmById', id).toPromise();
-    return film;
+    return await this.appService.getFilmById(id);
   }
 
   @ApiOperation({ summary: 'Получение комента по id' })
   @ApiResponse({ status: 200, type: [Comment] })
   @Get('/comments/:id')
   async getCommentsByFilmId(@Param('id') id: number) {
-    const comments = await this.clientData
-      .send('getCommentsByFilmId', id)
-      .toPromise();
-    return comments;
+    return await this.appService.getCommentsByFilmId(id);
   }
 
   @ApiOperation({ summary: 'Изменение фильма' })
@@ -163,11 +90,7 @@ export class AppController {
   @Roles('ADMIN')
   @Patch('/film/:id')
   async updateFilm(@Param('id') id: number, @Body() dto: UpdateFilmDTO) {
-    const film = await this.clientData
-      .send('updateFilm', { id, dto })
-      .toPromise();
-
-    return film;
+    return await this.appService.updateFilm(id, dto);
   }
 
   @ApiOperation({ summary: 'Удаление фильма' })
@@ -176,7 +99,7 @@ export class AppController {
   @Roles('ADMIN')
   @Delete('/film/:id')
   async deleteFilmById(@Param('id') id: number) {
-    return await this.clientData.send('deleteFilmById', id).toPromise();
+    return await this.appService.deleteFilmById(id);
   }
 
   @ApiOperation({ summary: 'Изменение жанра' })
@@ -186,17 +109,14 @@ export class AppController {
   @UsePipes(ValidationPipe)
   @Patch('/genre/:id')
   async updateGenre(@Param('id') id: number, @Body() dto: GenreDTO) {
-    return await this.clientData.send('updateGenre', { id, dto }).toPromise();
+    return await this.appService.updateGenre(id, dto);
   }
 
   @ApiOperation({ summary: 'Получение всех жанров' })
   @ApiResponse({ status: 200 })
   @Get('/genres')
   async getAllGenres() {
-    const genres = await this.clientData.send('getAll.genres', '').toPromise();
-    return genres.map((genre) => {
-      return { id: genre.id, nameRu: genre.nameRu, nameEn: genre.nameEn };
-    });
+    return await this.appService.getAllGenres();
   }
 
   @ApiOperation({ summary: 'Поиск фильмов' })
@@ -213,21 +133,17 @@ export class AppController {
     @Query('sortBy') sortBy?: string,
     @Query('year') year?: number,
   ) {
-    const films = await this.clientData
-      .send('filters', {
-        page,
-        perPage,
-        genres,
-        countries,
-        persons,
-        minRatingKp,
-        minVotesKp,
-        sortBy,
-        year,
-      })
-      .toPromise();
-
-    return films;
+    return await this.appService.searchFilms({
+      page,
+      perPage,
+      genres,
+      countries,
+      persons,
+      minRatingKp,
+      minVotesKp,
+      sortBy,
+      year,
+    });
   }
 
   @ApiOperation({ summary: 'Создание комментария' })
@@ -241,42 +157,25 @@ export class AppController {
     @Req() req,
   ) {
     const userId = req.user.id;
-    const comment = await this.clientData
-      .send('createComment', { filmId, dto, userId })
-      .toPromise();
-    return comment;
+    return await this.appService.createComment(filmId, dto, userId);
   }
 
   @ApiOperation({ summary: 'Поиск по части имени' })
   @Get('/search')
   async search(@Query('name') name?: string) {
-    const films = await this.clientData
-      .send('searchFilmsByName', name)
-      .toPromise();
-    const people = await this.clientData
-      .send('searchPersonsByName', name)
-      .toPromise();
-    const genres = await this.clientData
-      .send('searchGenresByName', name)
-      .toPromise();
-
-    const filmDto = films.map((film) => {
-      return { id: film.id, nameRu: film.filmNameRu, nameEn: film.filmNameEn };
+    console.log('🔍 Поисковый запрос:', {
+      name,
+      timestamp: new Date().toISOString(),
     });
 
-    const peopleDto = people.map((person) => {
-      return { id: person.id, nameRu: person.nameRu, nameEn: person.nameEn };
-    });
-
-    const genreDto = genres.map((genre) => {
-      return { id: genre.id, nameRu: genre.nameRu, nameEn: genre.nameEn };
-    });
-
-    return {
-      films: filmDto,
-      people: peopleDto,
-      genres: genreDto,
-    };
+    try {
+      const result = await this.appService.searchByName(name);
+      console.log('✅ Поиск завершен успешно');
+      return result;
+    } catch (error) {
+      console.error('❌ Ошибка в контроллере поиска:', error);
+      throw error;
+    }
   }
 
   @ApiOperation({ summary: 'Получение персона по имени и id профессии' })
@@ -286,10 +185,7 @@ export class AppController {
     @Query('name') name?: string,
     @Query('id') id?: number,
   ) {
-    const people = await this.clientData
-      .send('findPersonsByNameAndProfession', { name, id })
-      .toPromise();
-    return people;
+    return await this.appService.findPersonsByNameAndProfession(name, id);
   }
 
   @ApiOperation({ summary: 'Получение пользователя по токену' })
@@ -297,7 +193,20 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('/checkToken')
   async checkToken(@Req() req) {
-    const user = req.user;
-    return user;
+    return await this.appService.checkToken(req.user);
+  }
+
+  @Get('/health')
+  async health() {
+    console.log('🏥 Health check запрос');
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      service: 'api-gateway',
+      rabbitmq: {
+        users: 'connected', // TODO: проверить реальный статус
+        films: 'connected', // TODO: проверить реальный статус
+      },
+    };
   }
 }
