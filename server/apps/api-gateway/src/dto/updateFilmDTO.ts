@@ -3,7 +3,7 @@ import {
   MUST_BE_STRING_ERROR,
   WRONG_FILM_NAME_EN_ERROR,
   WRONG_FILM_NAME_RU_ERROR,
-} from '../app.constants';
+} from '../constants/errors';
 
 export class UpdateFilmDTO {
   @IsString({ message: MUST_BE_STRING_ERROR })

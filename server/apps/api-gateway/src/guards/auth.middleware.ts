@@ -7,7 +7,7 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
-import { ACCESS_NO_ROGHTS_ERROR } from '../app.constants';
+import { ACCESS_NO_ROGHTS_ERROR } from '../constants/errors';
 
 @Injectable()
 //предназначенный для перехвата запросов и проверки,

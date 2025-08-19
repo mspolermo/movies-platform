@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { MUST_BE_STRING_ERROR } from '../app.constants';
+import { MUST_BE_STRING_ERROR } from '../constants/errors';
 
 export class GenreDTO {
   @IsString({ message: MUST_BE_STRING_ERROR })

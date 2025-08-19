@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
-import { AUTH_ERROR } from '../app.constants';
+import { AUTH_ERROR } from '../constants/errors';
 
 //  создание класса, который реализует интерфейс CanActivate,
 //  используемый для реализации стратегии защиты маршрута.

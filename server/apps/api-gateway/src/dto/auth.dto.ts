@@ -3,7 +3,7 @@ import {
   MUST_BE_STRING_ERROR,
   STRING_LENGTH_ERROR,
   WRONG_EMAIL_ERROR,
-} from '../app.constants';
+} from '../constants/errors';
 
 export class AuthDto {
   @IsString({ message: MUST_BE_STRING_ERROR })
