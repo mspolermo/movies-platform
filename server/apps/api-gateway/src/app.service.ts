@@ -4,6 +4,7 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { firstValueFrom } from 'rxjs';
 import { CreateUserDto } from '../../auth-users/src/users/dto/createUserDto';
 import { AuthDto } from './dto/auth.dto';
 import { CommentDTO } from './dto/commentDTO';
@@ -69,25 +70,25 @@ export class AppService implements OnModuleInit {
 
   // Методы управления пользователями
   async registrationUser(dto: CreateUserDto): Promise<RegistrationResponse> {
-    const { user, token } = await this.clientUsers
-      .send('registration', dto)
-      .toPromise();
+    const { user, token } = await firstValueFrom(
+      this.clientUsers.send('registration', dto),
+    );
     return { User: user, role: user.roles, token: token };
   }
 
   async outRegistrationUser(
     dto: OauthCreateUserDTO,
   ): Promise<RegistrationResponse> {
-    const { user, token } = await this.clientUsers
-      .send('outRegistration', dto)
-      .toPromise();
+    const { user, token } = await firstValueFrom(
+      this.clientUsers.send('outRegistration', dto),
+    );
     return { User: user, role: user.roles, token: token };
   }
 
   async loginUser(dto: AuthDto): Promise<AuthResponse> {
-    const { user, token } = await this.clientUsers
-      .send('login', dto)
-      .toPromise();
+    const { user, token } = await firstValueFrom(
+      this.clientUsers.send('login', dto),
+    );
     return {
       email: user.email,
       userId: user.id,
@@ -123,9 +124,9 @@ export class AppService implements OnModuleInit {
   // Методы фильтров и поиска
   async getFilters(): Promise<FiltersResult> {
     const [genres, countries, years] = await Promise.all([
-      this.clientData.send('getAll.genres', '').toPromise(),
-      this.clientData.send('getAll.countries', '').toPromise(),
-      this.clientData.send('getAllFilmYears', '').toPromise(),
+      firstValueFrom(this.clientData.send('getAll.genres', '')),
+      firstValueFrom(this.clientData.send('getAll.countries', '')),
+      firstValueFrom(this.clientData.send('getAllFilmYears', '')),
     ]);
 
     return {
@@ -141,9 +142,9 @@ export class AppService implements OnModuleInit {
 
     try {
       const [films, people, genres] = await Promise.all([
-        this.clientData.send('searchFilmsByName', searchName).toPromise(),
-        this.clientData.send('searchPersonsByName', searchName).toPromise(),
-        this.clientData.send('searchGenresByName', searchName).toPromise(),
+        firstValueFrom(this.clientData.send('searchFilmsByName', searchName)),
+        firstValueFrom(this.clientData.send('searchPersonsByName', searchName)),
+        firstValueFrom(this.clientData.send('searchGenresByName', searchName)),
       ]);
 
       return {
@@ -159,48 +160,56 @@ export class AppService implements OnModuleInit {
 
   // Методы работы с фильмами
   async getFilmById(id: number): Promise<Film> {
-    return await this.clientData.send('getFilmById', id).toPromise();
+    return await firstValueFrom(this.clientData.send('getFilmById', id));
   }
 
   async updateFilm(id: number, dto: UpdateFilmDTO): Promise<Film> {
-    return await this.clientData.send('updateFilm', { id, dto }).toPromise();
+    return await firstValueFrom(
+      this.clientData.send('updateFilm', { id, dto }),
+    );
   }
 
   async deleteFilmById(id: number): Promise<boolean> {
-    return await this.clientData.send('deleteFilmById', id).toPromise();
+    return await firstValueFrom(this.clientData.send('deleteFilmById', id));
   }
 
   async searchFilms(filters: FilmFilters): Promise<Film[]> {
-    return await this.clientData.send('filters', filters).toPromise();
+    return await firstValueFrom(this.clientData.send('filters', filters));
   }
 
   // Методы работы с персонами
   async getPersonById(id: number): Promise<Person> {
-    return await this.clientData.send('getPersonById', id).toPromise();
+    return await firstValueFrom(this.clientData.send('getPersonById', id));
   }
 
   async findPersonsByNameAndProfession(
     name?: string,
     id?: number,
   ): Promise<Person[]> {
-    return await this.clientData
-      .send('findPersonsByNameAndProfession', { name, id })
-      .toPromise();
+    return await firstValueFrom(
+      this.clientData.send('findPersonsByNameAndProfession', { name, id }),
+    );
   }
 
   // Методы работы с жанрами
   async getAllGenres(): Promise<GenreListDto[]> {
-    const genres = await this.clientData.send('getAll.genres', '').toPromise();
+    const genres = await firstValueFrom(
+      this.clientData.send('getAll.genres', ''),
+    );
     return genres.map(this.transformGenreForListDto);
   }
 
   async updateGenre(id: number, dto: GenreDTO): Promise<Genre> {
-    return await this.clientData.send('updateGenre', { id, dto }).toPromise();
+    return await firstValueFrom(
+      this.clientData.send('updateGenre', { id, dto }),
+    );
   }
 
   // Методы работы с комментариями
   async getCommentsByFilmId(id: number): Promise<Comment[]> {
-    return await this.clientData.send('getCommentsByFilmId', id).toPromise();
+    return await firstValueFrom(
+      this.clientData.send('getCommentsByFilmId', id),
+    );
   }
 
   async createComment(
@@ -208,9 +217,9 @@ export class AppService implements OnModuleInit {
     dto: CommentDTO,
     userId: number,
   ): Promise<Comment> {
-    return await this.clientData
-      .send('createComment', { filmId, dto, userId })
-      .toPromise();
+    return await firstValueFrom(
+      this.clientData.send('createComment', { filmId, dto, userId }),
+    );
   }
 
   // Token validation
