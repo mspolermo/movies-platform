@@ -17,9 +17,19 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '5000:5000'
+    env_file:
+      - ./apps/api-gateway/.env
+    environment:
+      - NODE_ENV=development
+      - JWT_SECRET=your-super-secret-jwt-key-here
+      - JWT_EXPIRES_IN=124h
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:5173
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - USERS_QUEUE=users_queue
+      - FILMS_QUEUE=films_queue
     networks:
       - default
-    restart: unless-stopped  
+    restart: unless-stopped
   auth-users:
     build:
       context: .

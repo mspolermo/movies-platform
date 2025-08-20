@@ -1,6 +1,7 @@
 # compiled output
 /server/dist
 /server/node_modules
+/docs
 
 # Logs
 logs

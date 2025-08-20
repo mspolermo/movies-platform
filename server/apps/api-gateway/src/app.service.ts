@@ -5,6 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from '../../auth-users/src/users/dto/createUserDto';
 import { AuthDto } from './dto/auth.dto';
 import { CommentDTO } from './dto/commentDTO';
@@ -35,12 +36,25 @@ export class AppService implements OnModuleInit {
   private clientUsers: ClientProxy;
   private clientData: ClientProxy;
 
-  constructor() {
+  constructor(private configService: ConfigService) {
+    const rabbitmqUrl = this.configService.get<string>(
+      'RABBITMQ_URL',
+      'amqp://rabbitmq:5672',
+    );
+    const usersQueue = this.configService.get<string>(
+      'USERS_QUEUE',
+      'users_queue',
+    );
+    const filmsQueue = this.configService.get<string>(
+      'FILMS_QUEUE',
+      'films_queue',
+    );
+
     this.clientUsers = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'users_queue',
+        urls: [rabbitmqUrl],
+        queue: usersQueue,
         queueOptions: {
           durable: false,
         },
@@ -49,8 +63,8 @@ export class AppService implements OnModuleInit {
     this.clientData = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'films_queue',
+        urls: [rabbitmqUrl],
+        queue: filmsQueue,
         queueOptions: {
           durable: false,
         },
