@@ -1,0 +1,42 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Body,
+  Req,
+  UseGuards,
+  UsePipes,
+} from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { CommentsService } from './comments.service';
+import { CommentDTO } from './dto';
+import { ValidationPipe } from '../shared/pipes';
+import { JwtAuthGuard } from '../shared/guards';
+import { AuthenticatedRequest } from '../shared/interfaces';
+
+@Controller('comments')
+export class CommentsController {
+  constructor(private readonly commentsService: CommentsService) {}
+
+  @ApiOperation({ summary: 'Получение комментариев по id фильма' })
+  @ApiResponse({ status: 200, description: 'Список комментариев' })
+  @Get('/:filmId')
+  async getCommentsByFilmId(@Param('filmId') filmId: number) {
+    return await this.commentsService.getCommentsByFilmId(filmId);
+  }
+
+  @ApiOperation({ summary: 'Создание комментария' })
+  @ApiResponse({ status: 200, description: 'Созданный комментарий' })
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post('/:filmId')
+  async createComment(
+    @Param('filmId') filmId: number,
+    @Body() dto: CommentDTO,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    const userId = req.user.id;
+    return await this.commentsService.createComment(filmId, dto, userId);
+  }
+}

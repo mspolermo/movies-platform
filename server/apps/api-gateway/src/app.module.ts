@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtConfigModule } from './jwt/jwt.module';
+import { AuthModule } from './auth/auth.module';
+import { FilmsModule } from './films/films.module';
+import { PersonsModule } from './persons/persons.module';
+import { GenresModule } from './genres/genres.module';
+import { CommentsModule } from './comments/comments.module';
+import { SearchModule } from './search/search.module';
+import { FiltersModule } from './filters/filters.module';
 
 @Module({
   imports: [
@@ -10,18 +16,15 @@ import { JwtModule } from '@nestjs/jwt';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET', 'fallback-secret'),
-        signOptions: {
-          expiresIn: configService.get<string>('JWT_EXPIRES_IN', '124h'),
-        },
-      }),
-      inject: [ConfigService],
-    }),
+    JwtConfigModule,
+    AuthModule,
+    FilmsModule,
+    PersonsModule,
+    GenresModule,
+    CommentsModule,
+    SearchModule,
+    FiltersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
