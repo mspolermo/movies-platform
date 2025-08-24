@@ -32,7 +32,9 @@ export class FilmsController {
   @ApiResponse({ status: 200, description: 'Список фильмов' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
-  async searchFilms(@Query(new ValidationPipe({ transform: true })) query: SearchFilmsDto) {
+  async searchFilms(
+    @Query(new ValidationPipe({ transform: true })) query: SearchFilmsDto,
+  ) {
     return await this.filmsService.searchFilms(query);
   }
 

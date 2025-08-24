@@ -52,19 +52,24 @@ export class AuthService implements OnModuleInit {
   private async connectWithRetry(maxAttempts = 5): Promise<void> {
     for (let i = 0; i < maxAttempts; i++) {
       try {
-        console.log(`🔄 Попытка подключения к RabbitMQ (${i + 1}/${maxAttempts})`);
+        console.log(
+          `🔄 Попытка подключения к RabbitMQ (${i + 1}/${maxAttempts})`,
+        );
         await this.clientUsers.connect();
         console.log('✅ Успешное подключение к RabbitMQ');
         return;
       } catch (error) {
-        console.error(`❌ Ошибка подключения к RabbitMQ (попытка ${i + 1}):`, error);
+        console.error(
+          `❌ Ошибка подключения к RabbitMQ (попытка ${i + 1}):`,
+          error,
+        );
         if (i === maxAttempts - 1) {
           console.error('❌ Все попытки подключения исчерпаны');
           throw error;
         }
         const delay = 1000 * (i + 1);
         console.log(`⏳ Ожидание ${delay}ms перед следующей попыткой...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
   }
@@ -82,7 +87,8 @@ export class AuthService implements OnModuleInit {
       if (
         error?.message?.includes('уже зарегистрирован') ||
         error?.message?.includes('already registered') ||
-        (error?.status === 'error' && error?.message?.includes('Internal server error'))
+        (error?.status === 'error' &&
+          error?.message?.includes('Internal server error'))
       ) {
         throw new ConflictException(
           'Пользователь с таким email уже зарегистрирован',

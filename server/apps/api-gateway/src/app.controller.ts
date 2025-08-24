@@ -14,7 +14,7 @@ export class AppController {
   @Get('/health')
   async health() {
     console.log('🏥 Health check запрос');
-    
+
     // Проверяем реальное состояние RabbitMQ соединений
     const rabbitmqStatus = {
       users: await this.checkRabbitMQConnection('users'),

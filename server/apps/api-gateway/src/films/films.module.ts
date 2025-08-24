@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FilmsController } from './films.controller';
 import { FilmsService } from './films.service';
-import { JwtConfigModule } from '../jwt/jwt.module';
+import { JwtConfigModule } from '../jwt';
 
 @Module({
   imports: [JwtConfigModule],

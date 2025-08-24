@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CommentsController } from './comments.controller';
 import { CommentsService } from './comments.service';
-import { JwtConfigModule } from '../jwt/jwt.module';
+import { JwtConfigModule } from '../jwt';
 
 @Module({
   imports: [JwtConfigModule],

@@ -6,23 +6,8 @@ import {
 } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { FiltersResult, GenreDto, CountryDto } from './dto';
 import { Genre, Country } from '../shared/interfaces';
-
-export interface FiltersResult {
-  genres: GenreDto[];
-  countries: CountryDto[];
-  years: number[];
-}
-
-export interface GenreDto {
-  nameRu: string;
-  nameEn: string;
-}
-
-export interface CountryDto {
-  countryName: string;
-  countryNameEn: string;
-}
 
 @Injectable()
 export class FiltersService implements OnModuleInit {
