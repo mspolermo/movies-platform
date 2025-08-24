@@ -19,6 +19,7 @@ import { FilmPerson } from './films/filmPerson';
 import { PersonProfession } from './persons/personProfession';
 import { CommentsModule } from './comments/comments.module';
 import { Comment } from './comments/comments.model';
+import { HealthController } from './health.controller';
 
 @Module({
   imports: [
@@ -56,7 +57,7 @@ import { Comment } from './comments/comments.model';
     FilmsModule,
     CommentsModule,
   ],
-  controllers: [],
+  controllers: [HealthController],
   providers: [],
 })
 export class AppModule {}

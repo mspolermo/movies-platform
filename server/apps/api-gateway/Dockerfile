@@ -1,28 +1,40 @@
-FROM node:alpine AS development
+FROM node:18-alpine AS base
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+# Установка curl для health check
+RUN apk add --no-cache curl
 
-RUN npm install
+# Копирование package файлов
+COPY package*.json ./
+COPY nest-cli.json ./
+COPY tsconfig*.json ./
+
+# Установка зависимостей
+RUN npm ci --only=production && npm cache clean --force
+
+# Development stage
+FROM base AS development
+
+RUN npm ci
 
 COPY . .
 
 RUN npm run build api-gateway
 
-FROM node:alpine AS production
+# Production stage
+FROM base AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install --only=production
 
 COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "dist/api-gateway/auth/main"]
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:${PORT}/health || exit 1
+
+# Правильный путь к main файлу
+CMD ["node", "dist/apps/api-gateway/main"]

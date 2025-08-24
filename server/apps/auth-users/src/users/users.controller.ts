@@ -23,4 +23,9 @@ export class UsersController {
   async login(@Payload() dto: AuthDto) {
     return await this.usersService.login(dto);
   }
+
+  @MessagePattern('getUserById')
+  async getUserById(@Payload() userId: number) {
+    return await this.usersService.getUserById(userId);
+  }
 }

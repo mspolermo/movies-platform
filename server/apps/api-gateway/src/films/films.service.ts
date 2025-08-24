@@ -37,11 +37,26 @@ export class FilmsService implements OnModuleInit {
   }
 
   async onModuleInit(): Promise<void> {
-    try {
-      await this.clientData.connect();
-    } catch (error) {
-      console.error('❌ Ошибка подключения к RabbitMQ:', error);
-      throw error;
+    await this.connectWithRetry();
+  }
+
+  private async connectWithRetry(maxAttempts = 5): Promise<void> {
+    for (let i = 0; i < maxAttempts; i++) {
+      try {
+        console.log(`🔄 Попытка подключения к RabbitMQ (${i + 1}/${maxAttempts})`);
+        await this.clientData.connect();
+        console.log('✅ Успешное подключение к RabbitMQ');
+        return;
+      } catch (error) {
+        console.error(`❌ Ошибка подключения к RabbitMQ (попытка ${i + 1}):`, error);
+        if (i === maxAttempts - 1) {
+          console.error('❌ Все попытки подключения исчерпаны');
+          throw error;
+        }
+        const delay = 1000 * (i + 1);
+        console.log(`⏳ Ожидание ${delay}ms перед следующей попыткой...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
     }
   }
 
@@ -61,5 +76,25 @@ export class FilmsService implements OnModuleInit {
 
   async searchFilms(filters: FilmFilters): Promise<Film[]> {
     return await firstValueFrom(this.clientData.send('filters', filters));
+  }
+
+  async checkConnection(): Promise<boolean> {
+    try {
+      // Проверяем соединение с RabbitMQ через ping
+      await this.clientData.emit('ping', { timestamp: Date.now() });
+      return true;
+    } catch (error) {
+      console.error('❌ Ошибка проверки соединения kino-db:', error);
+      return false;
+    }
+  }
+
+  isConnected(): boolean {
+    try {
+      // Проверяем состояние клиента RabbitMQ
+      return this.clientData !== undefined;
+    } catch (error) {
+      return false;
+    }
   }
 }

@@ -107,21 +107,37 @@ export class UsersService {
   }
 
   async generateToken(user: User) {
-    // Очищаем данные пользователя от циклических ссылок
-    const cleanRoles =
-      user.roles?.map((role) => ({
-        id: role.id,
-        value: role.value,
-      })) || [];
-
+    // Создаем безопасный payload без ролей
     const payload = {
-      email: user.email,
-      id: user.id,
-      roles: cleanRoles,
+      sub: user.id, // ✅ Только ID пользователя
+      email: user.email, // ✅ Email для логирования
     };
 
     return {
       token: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getUserById(userId: number) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { id: userId },
+        include: { all: true },
+      });
+
+      if (!user) {
+        throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
+      }
+
+      return user;
+    } catch (e) {
+      if (e instanceof HttpException) {
+        throw e;
+      }
+      throw new HttpException(
+        'Ошибка при получении пользователя',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

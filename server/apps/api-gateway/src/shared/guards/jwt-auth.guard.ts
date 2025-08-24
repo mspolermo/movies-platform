@@ -4,10 +4,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_ERROR } from '../constants/errors.constants';
 import { User, AuthenticatedRequest } from '../interfaces';
+import { IS_PUBLIC_KEY } from './public.decorator';
 
 //  создание класса, который реализует интерфейс CanActivate,
 //  используемый для реализации стратегии защиты маршрута.
@@ -15,12 +17,25 @@ import { User, AuthenticatedRequest } from '../interfaces';
 export class JwtAuthGuard implements CanActivate {
   //  * конструктор класса, принимающий в качестве аргумента объект сервиса JwtService,
   //  необходимый для работы с JWT токенами.
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private reflector: Reflector,
+  ) {}
 
   //  * метод, который определяет, будет ли маршрут защищен или нет.
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
+    // Проверяем, является ли эндпойнт публичным
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    
+    if (isPublic) {
+      return true;
+    }
+
     const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
     try {
@@ -51,16 +66,29 @@ export class JwtAuthGuard implements CanActivate {
 
       console.log('🔐 JWT Guard: Проверяю токен...');
 
-      const user = this.jwtService.verify<User>(token);
-      console.log('🔐 JWT Guard: Токен проверен, пользователь ID:', user.id);
+      // Проверяем токен с новым форматом (только sub и email)
+      const tokenPayload = this.jwtService.verify<{
+        sub: number;
+        email: string;
+      }>(token);
+      console.log(
+        '🔐 JWT Guard: Токен проверен, пользователь ID:',
+        tokenPayload.sub,
+      );
 
       // Валидация данных пользователя
-      if (!user.id || !user.email || !user.roles) {
+      if (!tokenPayload.sub || !tokenPayload.email) {
         console.log('🔐 JWT Guard: Неполные данные пользователя в токене');
         throw new UnauthorizedException({
           message: 'Неполные данные пользователя в токене',
         });
       }
+
+      // Создаем объект пользователя без ролей (роли будут получены позже)
+      const user: User = {
+        id: tokenPayload.sub,
+        email: tokenPayload.email,
+      };
 
       req.user = user;
       return true;

@@ -8,7 +8,7 @@ import {
   UsePipes,
   Req,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CommentsService } from './comments.service';
 import { CommentDTO } from './dto';
 import { ValidationPipe } from '../shared/pipes';
@@ -16,11 +16,14 @@ import { JwtAuthGuard } from '../shared/guards';
 import { AuthenticatedRequest } from '../shared/interfaces';
 
 @Controller('comments')
+@UseGuards(JwtAuthGuard) // Защищаем весь контроллер
+@ApiBearerAuth()
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @ApiOperation({ summary: 'Получение комментариев по id фильма' })
   @ApiResponse({ status: 200, description: 'Список комментариев' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get('/:filmId')
   async getCommentsByFilmId(@Param('filmId') filmId: number) {
     return await this.commentsService.getCommentsByFilmId(filmId);
@@ -28,7 +31,7 @@ export class CommentsController {
 
   @ApiOperation({ summary: 'Создание комментария' })
   @ApiResponse({ status: 200, description: 'Созданный комментарий' })
-  @UseGuards(JwtAuthGuard)
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @UsePipes(ValidationPipe)
   @Post('/:filmId')
   async createComment(

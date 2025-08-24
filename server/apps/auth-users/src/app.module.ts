@@ -7,10 +7,11 @@ import { User } from './users/users.model';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-role';
+import { HealthController } from './health.controller';
 
 @Module({
   providers: [],
-  controllers: [],
+  controllers: [HealthController],
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',

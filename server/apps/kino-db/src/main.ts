@@ -3,19 +3,46 @@ import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://rabbitmq:5672'],
-        queue: 'films_queue',
-        queueOptions: {
-          durable: false,
-        },
+  // Создаем HTTP приложение
+  const app = await NestFactory.create(AppModule);
+  
+  // Настраиваем CORS
+  app.enableCors({
+    origin: true,
+    credentials: true,
+  });
+
+  // Создаем микросервис
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://rabbitmq:5672'],
+      queue: 'films_queue',
+      queueOptions: {
+        durable: false,
       },
     },
-  );
-  await app.listen();
+  });
+
+  // Запускаем все сервисы
+  await app.startAllMicroservices();
+  
+  // Запускаем HTTP сервер
+  const port = process.env.PORT || 3002;
+  await app.listen(port);
+  
+  console.log(`Kino-db service started on port ${port}`);
 }
+
 bootstrap();
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+  console.log('🔄 Получен сигнал SIGTERM, закрываю приложение...');
+  process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+  console.log('🔄 Получен сигнал SIGINT, закрываю приложение...');
+  process.exit(0);
+});
