@@ -6,11 +6,13 @@ import { getJwtConfig } from '../config';
 
 @Module({
   imports: [
+    ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) =>
         getJwtConfig(configService),
       inject: [ConfigService],
+      global: true,
     }),
   ],
   providers: [JwtAuthGuard, RolesGuard],

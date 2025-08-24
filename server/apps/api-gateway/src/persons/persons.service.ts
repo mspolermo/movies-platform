@@ -43,6 +43,10 @@ export class PersonsService implements OnModuleInit {
     }
   }
 
+  async getAllPersons(): Promise<Person[]> {
+    return await firstValueFrom(this.clientData.send('getAllPersons', {}));
+  }
+
   async getPersonById(id: number): Promise<Person> {
     return await firstValueFrom(this.clientData.send('getPersonById', id));
   }

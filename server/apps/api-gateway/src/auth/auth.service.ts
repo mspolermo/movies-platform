@@ -6,6 +6,7 @@ import {
 } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AuthDto, CreateUserDto, OauthCreateUserDTO } from './dto';
 import { AuthResponse, RegistrationResponse } from './interfaces';
 import { User } from '../shared/interfaces';
@@ -14,7 +15,10 @@ import { User } from '../shared/interfaces';
 export class AuthService implements OnModuleInit {
   private clientUsers: ClientProxy;
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private jwtService: JwtService,
+  ) {
     const rabbitmqUrl = this.configService.get<string>(
       'RABBITMQ_URL',
       'amqp://rabbitmq:5672',
@@ -75,5 +79,17 @@ export class AuthService implements OnModuleInit {
 
   async checkToken(user: User): Promise<User> {
     return user;
+  }
+
+  async refreshToken(user: User): Promise<{ token: string }> {
+    // Генерируем новый токен с теми же данными пользователя
+    const payload = {
+      email: user.email,
+      id: user.id,
+      roles: user.roles,
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+    return { token };
   }
 }

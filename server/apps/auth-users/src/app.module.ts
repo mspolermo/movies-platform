@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from './users/users.module';
 import { User } from './users/users.model';
 import { RolesModule } from './roles/roles.module';
@@ -13,6 +14,12 @@ import { UserRoles } from './roles/user-role';
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
+    }),
+    JwtModule.register({
+      secret: process.env.PRIVATE_KEY || 'your-super-secret-jwt-key-here',
+      signOptions: {
+        expiresIn: process.env.JWT_EXPIRES_IN || '124h',
+      },
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',

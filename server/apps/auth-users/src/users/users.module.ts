@@ -19,7 +19,7 @@ import { UserRoles } from '../roles/user-role';
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'SECRET',
       signOptions: {
-        expiresIn: '2h',
+        expiresIn: process.env.JWT_EXPIRES_IN || '2h',
       },
     }),
   ],

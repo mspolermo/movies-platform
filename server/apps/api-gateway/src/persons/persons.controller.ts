@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PersonsService } from './persons.service';
 
@@ -6,23 +6,17 @@ import { PersonsService } from './persons.service';
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
-  @ApiOperation({ summary: 'Получение персона по id' })
-  @ApiResponse({ status: 200, description: 'Информация о персоне' })
+  @ApiOperation({ summary: 'Получить всех людей' })
+  @ApiResponse({ status: 200, description: 'Список людей' })
+  @Get()
+  async getAllPersons() {
+    return await this.personsService.getAllPersons();
+  }
+
+  @ApiOperation({ summary: 'Получить человека по ID' })
+  @ApiResponse({ status: 200, description: 'Информация о человеке' })
   @Get('/:id')
   async getPersonById(@Param('id') id: number) {
     return await this.personsService.getPersonById(id);
-  }
-
-  @ApiOperation({ summary: 'Получение персона по имени и id профессии' })
-  @ApiResponse({ status: 200, description: 'Список персон' })
-  @Get('/search/by-profession')
-  async findPersonsByNameAndProfession(
-    @Query('name') name?: string,
-    @Query('professionId') professionId?: number,
-  ) {
-    return await this.personsService.findPersonsByNameAndProfession(
-      name,
-      professionId,
-    );
   }
 }

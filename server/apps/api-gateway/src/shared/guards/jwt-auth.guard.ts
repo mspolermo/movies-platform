@@ -21,37 +21,69 @@ export class JwtAuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    //  получение объекта запроса из контекста выполнения, который будет использоваться для проверки наличия JWT токена.
     const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
-    try {
-      //  получение заголовка авторизации из объекта запроса.
-      const authHeader = req.headers.authorization;
-      //  получение первой части заголовка авторизации,
-      //  которая должна содержать значение "Bearer".
-      const bearer = authHeader?.split(' ')[0];
-      console.log(bearer);
-      //  получение второй части заголовка авторизации, которая содержит JWT токен.
-      const token = authHeader?.split(' ')[1];
-      console.log(token);
 
-      //  проверка корректности формата заголовка авторизации.
-      if (bearer !== 'Bearer' || !token) {
-        //  выброс исключения UnauthorizedException, если заголовок авторизации некорректен.
+    try {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader) {
+        console.log('🔐 JWT Guard: Отсутствует заголовок Authorization');
         throw new UnauthorizedException({
-          message: AUTH_ERROR,
+          message: 'Отсутствует заголовок авторизации',
         });
       }
 
-      //  вызов метода verify объекта сервиса JwtService для проверки подлинности JWT токена.
+      const [bearer, token] = authHeader.split(' ');
+
+      if (bearer !== 'Bearer' || !token) {
+        console.log('🔐 JWT Guard: Неверный формат заголовка авторизации');
+        throw new UnauthorizedException({
+          message: 'Неверный формат заголовка авторизации',
+        });
+      }
+
+      if (!this.jwtService) {
+        console.log('🔐 JWT Guard: JwtService недоступен');
+        throw new UnauthorizedException({
+          message: 'Ошибка сервиса аутентификации',
+        });
+      }
+
+      console.log('🔐 JWT Guard: Проверяю токен...');
+
       const user = this.jwtService.verify<User>(token);
+      console.log('🔐 JWT Guard: Токен проверен, пользователь ID:', user.id);
 
-      // сохранение данных пользователя в объекте запроса
+      // Валидация данных пользователя
+      if (!user.id || !user.email || !user.roles) {
+        console.log('🔐 JWT Guard: Неполные данные пользователя в токене');
+        throw new UnauthorizedException({
+          message: 'Неполные данные пользователя в токене',
+        });
+      }
+
       req.user = user;
-
-      // возврат значения true, если пользователь авторизован.
       return true;
     } catch (e) {
-      // выброс исключения UnauthorizedException, если пользователь не авторизован.
+      if (e instanceof UnauthorizedException) {
+        throw e;
+      }
+
+      if (e.name === 'TokenExpiredError') {
+        console.log('🔐 JWT Guard: Токен истек');
+        throw new UnauthorizedException({
+          message: 'Токен истек',
+        });
+      }
+
+      if (e.name === 'JsonWebTokenError') {
+        console.log('🔐 JWT Guard: Неверный формат токена');
+        throw new UnauthorizedException({
+          message: 'Неверный формат токена',
+        });
+      }
+
+      console.log('🔐 JWT Guard: Ошибка при проверке токена:', e.message);
       throw new UnauthorizedException({
         message: AUTH_ERROR,
       });

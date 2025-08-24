@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './roles-auth.decorator';
-import { ACCESS_ERROR, AUTH_ERROR } from '../constants/errors.constants';
-import { User, AuthenticatedRequest } from '../interfaces';
+import { ACCESS_ERROR } from '../constants/errors.constants';
+import { AuthenticatedRequest } from '../interfaces';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -28,44 +28,51 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     try {
-      // Получение списка необходимых ролей из аннотации @Roles.
       const requiredRoles = this.reflector.getAllAndOverride<string[]>(
         ROLES_KEY,
         [context.getHandler(), context.getClass()],
       );
-      // Если роли не указаны, разрешаем доступ.
+
       if (!requiredRoles) {
         return true;
       }
-      //  получение объекта запроса из контекста выполнения,
-      //  который будет использоваться для проверки наличия JWT токена.
-      const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
-      //  получение заголовка авторизации из объекта запроса.
-      const authHeader = req.headers.authorization;
-      //  получение первой части заголовка авторизации,
-      //  которая должна содержать значение "Bearer".
-      const bearer = authHeader?.split(' ')[0];
-      //  получение второй части заголовка авторизации, которая содержит JWT токен.
-      const token = authHeader?.split(' ')[1];
 
-      //  проверка корректности формата заголовка авторизации.
-      if (bearer !== 'Bearer' || !token) {
-        //  выброс исключения UnauthorizedException, если заголовок авторизации некорректен.
+      const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
+
+      if (!req.user) {
+        console.log('🔒 RolesGuard: Пользователь не аутентифицирован');
         throw new UnauthorizedException({
-          message: AUTH_ERROR,
+          message: 'Пользователь не аутентифицирован',
         });
       }
 
-      //  вызов метода verify объекта сервиса JwtService для проверки подлинности JWT токена.
-      const user = this.jwtService.verify<User>(token);
-      // сохранение данных пользователя в объекте запроса
-      req.user = user;
-      // возврат значения true, если пользователь авторизован.
-      return (
-        user.roles?.some((role) => requiredRoles.includes(role.value)) ?? false
+      if (!req.user.roles || !Array.isArray(req.user.roles)) {
+        console.log('🔒 RolesGuard: У пользователя нет ролей');
+        throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
+      }
+
+      const hasRequiredRole = req.user.roles.some((role) =>
+        requiredRoles.includes(role.value),
       );
+
+      if (!hasRequiredRole) {
+        console.log(
+          `🔒 RolesGuard: Пользователь ${req.user.email} (ID: ${req.user.id}) не имеет требуемых ролей: ${requiredRoles.join(', ')}`,
+        );
+        throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
+      }
+
+      console.log(
+        `🔒 RolesGuard: Доступ разрешен для пользователя ${req.user.email} с ролями: ${req.user.roles.map((r) => r.value).join(', ')}`,
+      );
+
+      return true;
     } catch (e) {
-      // выброс исключения UnauthorizedException, если пользователь не авторизован.
+      if (e instanceof UnauthorizedException || e instanceof HttpException) {
+        throw e;
+      }
+
+      console.log('🔒 RolesGuard: Ошибка при проверке ролей:', e.message);
       throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
     }
   }

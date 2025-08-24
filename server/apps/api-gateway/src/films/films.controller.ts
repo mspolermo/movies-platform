@@ -11,7 +11,7 @@ import {
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FilmsService } from './films.service';
 import { UpdateFilmDTO } from './dto';
-import { Roles, RolesGuard } from '../shared/guards';
+import { Roles, RolesGuard, JwtAuthGuard } from '../shared/guards';
 
 @Controller('films')
 export class FilmsController {
@@ -53,7 +53,7 @@ export class FilmsController {
 
   @ApiOperation({ summary: 'Изменение фильма' })
   @ApiResponse({ status: 200 })
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Patch('/:id')
   async updateFilm(@Param('id') id: number, @Body() dto: UpdateFilmDTO) {
@@ -62,7 +62,7 @@ export class FilmsController {
 
   @ApiOperation({ summary: 'Удаление фильма' })
   @ApiResponse({ status: 200 })
-  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('ADMIN')
   @Delete('/:id')
   async deleteFilmById(@Param('id') id: number) {

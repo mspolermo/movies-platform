@@ -81,22 +81,47 @@ export class UsersService {
         where: { email: dto.email },
         include: { all: true },
       });
-      const passwordEquals = await bcrypt.compare(dto.password, user.password);
-      if (user && passwordEquals) {
-        return user;
+
+      if (!user) {
+        throw new UnauthorizedException({
+          message: 'Пользователь с таким email не найден',
+        });
       }
+
+      const passwordEquals = await bcrypt.compare(dto.password, user.password);
+      if (!passwordEquals) {
+        throw new UnauthorizedException({
+          message: 'Неверный пароль',
+        });
+      }
+
+      return user;
     } catch (e) {
+      if (e instanceof UnauthorizedException) {
+        throw e;
+      }
       throw new UnauthorizedException({
-        message: 'Некорректный email или пароль',
+        message: 'Ошибка при валидации пользователя',
       });
     }
   }
 
   async generateToken(user: User) {
-    const payload = { email: user.email, id: user.id, roles: user.roles };
-    const options = { secret: 'SECRET' };
+    // Очищаем данные пользователя от циклических ссылок
+    const cleanRoles =
+      user.roles?.map((role) => ({
+        id: role.id,
+        value: role.value,
+      })) || [];
+
+    const payload = {
+      email: user.email,
+      id: user.id,
+      roles: cleanRoles,
+    };
+
     return {
-      token: await this.jwtService.signAsync(payload, options),
+      token: await this.jwtService.signAsync(payload),
     };
   }
 }

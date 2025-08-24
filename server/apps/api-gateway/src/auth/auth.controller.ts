@@ -49,4 +49,12 @@ export class AuthController {
   async checkToken(@Req() req: AuthenticatedRequest) {
     return await this.authService.checkToken(req.user);
   }
+
+  @ApiOperation({ summary: 'Обновление JWT токена' })
+  @ApiResponse({ status: 200, description: 'Новый токен' })
+  @UseGuards(JwtAuthGuard)
+  @Post('/refresh')
+  async refreshToken(@Req() req: AuthenticatedRequest) {
+    return await this.authService.refreshToken(req.user);
+  }
 }
