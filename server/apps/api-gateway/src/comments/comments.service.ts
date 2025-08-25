@@ -14,14 +14,8 @@ export class CommentsService implements OnModuleInit {
   private clientData: ClientProxy;
 
   constructor(private configService: ConfigService) {
-    const rabbitmqUrl = this.configService.get<string>(
-      'RABBITMQ_URL',
-      'amqp://rabbitmq:5672',
-    );
-    const filmsQueue = this.configService.get<string>(
-      'FILMS_QUEUE',
-      'films_queue',
-    );
+    const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL');
+    const filmsQueue = this.configService.get<string>('FILMS_QUEUE');
 
     this.clientData = ClientProxyFactory.create({
       transport: Transport.RMQ,

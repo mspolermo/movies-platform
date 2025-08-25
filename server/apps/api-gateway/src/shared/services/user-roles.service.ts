@@ -1,22 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { ClientProxy, ClientProxyFactory, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { User, Role } from '../interfaces';
+import { User } from '../interfaces';
 
+//TODO: проверить нужен ли этот сервис и в правильном ли месте он лежит
 @Injectable()
 export class UserRolesService {
   private clientUsers: ClientProxy;
 
   constructor(private configService: ConfigService) {
-    const rabbitmqUrl = this.configService.get<string>(
-      'RABBITMQ_URL',
-      'amqp://rabbitmq:5672',
-    );
-    const usersQueue = this.configService.get<string>(
-      'USERS_QUEUE',
-      'users_queue',
-    );
+    const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL');
+    const usersQueue = this.configService.get<string>('USERS_QUEUE');
 
     this.clientUsers = ClientProxyFactory.create({
       transport: Transport.RMQ,

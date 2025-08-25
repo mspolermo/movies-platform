@@ -24,14 +24,8 @@ export class AuthService implements OnModuleInit {
     private configService: ConfigService,
     private jwtService: JwtService,
   ) {
-    const rabbitmqUrl = this.configService.get<string>(
-      'RABBITMQ_URL',
-      'amqp://rabbitmq:5672',
-    );
-    const usersQueue = this.configService.get<string>(
-      'USERS_QUEUE',
-      'users_queue',
-    );
+    const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL');
+    const usersQueue = this.configService.get<string>('USERS_QUEUE');
 
     this.clientUsers = ClientProxyFactory.create({
       transport: Transport.RMQ,

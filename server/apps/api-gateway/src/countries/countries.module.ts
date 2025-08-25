@@ -13,10 +13,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         useFactory: async (configService: ConfigService) => ({
           transport: Transport.RMQ,
           options: {
-            urls: [
-              configService.get<string>('RABBITMQ_URL', 'amqp://rabbitmq:5672'),
-            ],
-            queue: configService.get<string>('FILMS_QUEUE', 'films_queue'),
+            urls: [configService.get<string>('RABBITMQ_URL')],
+            queue: configService.get<string>('FILMS_QUEUE'),
             queueOptions: {
               durable: false,
             },

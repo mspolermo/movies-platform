@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 async function start() {
   // Создаем HTTP приложение
   const app = await NestFactory.create(AppModule);
-  
+
   // Настраиваем CORS
   app.enableCors({
     origin: true,
@@ -16,8 +16,8 @@ async function start() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://rabbitmq:5672'],
-      queue: 'users_queue',
+      urls: [process.env.RABBITMQ_URL],
+      queue: process.env.USERS_QUEUE,
       queueOptions: {
         durable: false,
       },
@@ -26,11 +26,11 @@ async function start() {
 
   // Запускаем все сервисы
   await app.startAllMicroservices();
-  
+
   // Запускаем HTTP сервер
   const port = process.env.PORT || 3001;
   await app.listen(port);
-  
+
   console.log(`Auth-users service started on port ${port}`);
 }
 

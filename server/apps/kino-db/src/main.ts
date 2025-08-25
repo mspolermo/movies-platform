@@ -5,7 +5,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 async function bootstrap() {
   // Создаем HTTP приложение
   const app = await NestFactory.create(AppModule);
-  
+
   // Настраиваем CORS
   app.enableCors({
     origin: true,
@@ -16,8 +16,8 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://rabbitmq:5672'],
-      queue: 'films_queue',
+      urls: [process.env.RABBITMQ_URL],
+      queue: process.env.FILMS_QUEUE,
       queueOptions: {
         durable: false,
       },
@@ -26,11 +26,11 @@ async function bootstrap() {
 
   // Запускаем все сервисы
   await app.startAllMicroservices();
-  
+
   // Запускаем HTTP сервер
   const port = process.env.PORT || 3002;
   await app.listen(port);
-  
+
   console.log(`Kino-db service started on port ${port}`);
 }
 
