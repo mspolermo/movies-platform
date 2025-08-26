@@ -1,32 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
+import { Injectable, OnModuleInit } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
+import { RabbitMQConfig } from '../../config';
 import { User } from '../interfaces';
 
 //TODO: проверить нужен ли этот сервис и в правильном ли месте он лежит
 @Injectable()
-export class UserRolesService {
+export class UserRolesService implements OnModuleInit {
   private clientUsers: ClientProxy;
 
   constructor(private configService: ConfigService) {
-    const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL');
-    const usersQueue = this.configService.get<string>('USERS_QUEUE');
+    this.clientUsers = RabbitMQConfig.createAuthUsersClient(this.configService);
+  }
 
-    this.clientUsers = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: [rabbitmqUrl],
-        queue: usersQueue,
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
+  async onModuleInit(): Promise<void> {
+    await RabbitMQConfig.connectWithRetry(
+      this.clientUsers,
+      'User Roles Service',
+    );
   }
 
   async getUserWithRoles(userId: number): Promise<User> {

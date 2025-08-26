@@ -4,14 +4,11 @@ import {
   ConflictException,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { RabbitMQConfig } from '../config';
 import { AuthDto, CreateUserDto, OauthCreateUserDTO } from './dto';
 import { AuthResponse, RegistrationResponse } from './interfaces';
 import { User } from '../shared/interfaces';
@@ -24,48 +21,11 @@ export class AuthService implements OnModuleInit {
     private configService: ConfigService,
     private jwtService: JwtService,
   ) {
-    const rabbitmqUrl = this.configService.get<string>('RABBITMQ_URL');
-    const usersQueue = this.configService.get<string>('USERS_QUEUE');
-
-    this.clientUsers = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: [rabbitmqUrl],
-        queue: usersQueue,
-        queueOptions: {
-          durable: false,
-        },
-      },
-    });
+    this.clientUsers = RabbitMQConfig.createAuthUsersClient(this.configService);
   }
 
   async onModuleInit(): Promise<void> {
-    await this.connectWithRetry();
-  }
-
-  private async connectWithRetry(maxAttempts = 5): Promise<void> {
-    for (let i = 0; i < maxAttempts; i++) {
-      try {
-        console.log(
-          `🔄 Попытка подключения к RabbitMQ (${i + 1}/${maxAttempts})`,
-        );
-        await this.clientUsers.connect();
-        console.log('✅ Успешное подключение к RabbitMQ');
-        return;
-      } catch (error) {
-        console.error(
-          `❌ Ошибка подключения к RabbitMQ (попытка ${i + 1}):`,
-          error,
-        );
-        if (i === maxAttempts - 1) {
-          console.error('❌ Все попытки подключения исчерпаны');
-          throw error;
-        }
-        const delay = 1000 * (i + 1);
-        console.log(`⏳ Ожидание ${delay}ms перед следующей попыткой...`);
-        await new Promise((resolve) => setTimeout(resolve, delay));
-      }
-    }
+    await RabbitMQConfig.connectWithRetry(this.clientUsers, 'Auth Service');
   }
 
   async registrationUser(dto: CreateUserDto): Promise<RegistrationResponse> {
