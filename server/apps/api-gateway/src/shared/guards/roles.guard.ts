@@ -10,7 +10,7 @@ import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './roles-auth.decorator';
 import { ACCESS_ERROR } from '../constants/errors.constants';
 import { AuthenticatedRequest } from '../interfaces';
-import { UserRolesService } from '../services/user-roles.service';
+import { UserRolesService } from '../../user-roles';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -36,7 +36,7 @@ export class RolesGuard implements CanActivate {
       }
 
       const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
-      
+
       if (!req.user) {
         console.log('🔒 RolesGuard: Пользователь не аутентифицирован');
         throw new UnauthorizedException({
@@ -77,7 +77,7 @@ export class RolesGuard implements CanActivate {
       if (e instanceof UnauthorizedException || e instanceof HttpException) {
         throw e;
       }
-      
+
       console.log('🔒 RolesGuard: Ошибка при проверке ролей:', e.message);
       throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
     }

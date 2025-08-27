@@ -2,10 +2,9 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { RabbitMQConfig } from '../../config';
-import { User } from '../interfaces';
+import { RabbitMQConfig } from '../config';
+import { User } from '../shared/interfaces';
 
-//TODO: проверить нужен ли этот сервис и в правильном ли месте он лежит
 @Injectable()
 export class UserRolesService implements OnModuleInit {
   private clientUsers: ClientProxy;

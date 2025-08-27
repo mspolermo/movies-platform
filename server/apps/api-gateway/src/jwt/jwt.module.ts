@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getJwtConfig } from '../config';
 import { JwtAuthGuard, RolesGuard } from '../shared/guards';
-import { UserRolesService } from '../shared/services/user-roles.service';
+import { UserRolesService } from '../user-roles';
 
 @Module({
   imports: [
