@@ -2,32 +2,10 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
+import { FilmDto, GenreDto, PersonDto } from './dto';
+import { SearchResult } from './interfaces';
 import { RabbitMQConfig } from '../config';
 import { Film, Person, Genre } from '../shared/interfaces';
-
-//TODO: вынести типы
-export interface SearchResult {
-  films: FilmDto[];
-  people: PersonDto[];
-  genres: GenreDto[];
-}
-
-export interface FilmDto {
-  id: number;
-  nameRu: string;
-  nameEn: string;
-}
-
-export interface PersonDto {
-  id: number;
-  nameRu: string;
-  nameEn: string;
-}
-
-export interface GenreDto {
-  nameRu: string;
-  nameEn: string;
-}
 
 @Injectable()
 export class SearchService implements OnModuleInit {
