@@ -1,0 +1,31 @@
+import { Module } from "@nestjs/common";
+import { CountriesController } from "./countries.controller";
+import { CountriesService } from "./countries.service";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+
+@Module({
+  imports: [
+    ClientsModule.registerAsync([
+      {
+        name: "FILMS_CLIENT",
+        imports: [ConfigModule],
+        useFactory: async (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>("RABBITMQ_URL")],
+            queue: configService.get<string>("FILMS_QUEUE"),
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+      },
+    ]),
+  ],
+  controllers: [CountriesController],
+  providers: [CountriesService],
+  exports: [CountriesService],
+})
+export class CountriesModule {}
