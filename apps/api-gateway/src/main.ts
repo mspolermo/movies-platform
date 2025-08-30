@@ -2,7 +2,7 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { SwaggerModule } from "@nestjs/swagger";
 import { ConfigService } from "@nestjs/config";
-import { getSwaggerConfig, getCorsConfig } from "./config";
+import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
 import { GlobalExceptionFilter } from "./shared/filters";
 
 let app: any = null;
@@ -15,6 +15,12 @@ async function bootstrap() {
 
   // Настройка CORS
   app.enableCors(getCorsConfig(configService));
+
+  // Настройка для правильной обработки query параметров
+  app.set('query parser', 'extended');
+
+  // Middleware для исправления кодировки UTF-8
+  app.use(getEncodingMiddleware());
 
   // Глобальный exception filter для обработки 500 ошибок
   app.useGlobalFilters(new GlobalExceptionFilter());

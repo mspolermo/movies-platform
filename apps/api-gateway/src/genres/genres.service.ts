@@ -19,19 +19,15 @@ export class GenresService implements OnModuleInit {
   }
 
   async getAllGenres(): Promise<Genre[]> {
-    const genres = await firstValueFrom(
+    const genres = await firstValueFrom<Genre[]>(
       this.clientData.send("getAll.genres", "")
     );
-    return genres.map(this.transformGenreForListDto);
+    return genres;
   }
 
   async updateGenre(id: number, dto: GenreDTO): Promise<Genre> {
     return await firstValueFrom(
       this.clientData.send("updateGenre", { id, dto })
     );
-  }
-
-  private transformGenreForListDto(genre: Genre): Genre {
-    return { id: genre.id, nameRu: genre.nameRu, nameEn: genre.nameEn };
   }
 }

@@ -27,7 +27,7 @@ export const RegisterPage = () => {
       await apiClient.post(API_ENDPOINTS.AUTH.REGISTRATION, formData);
       setSuccess(true);
       setTimeout(() => {
-        router.push('/login');
+        router.push('/auth/login');
       }, 2000);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Ошибка регистрации');

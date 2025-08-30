@@ -48,6 +48,4 @@ export class SearchService implements OnModuleInit {
   private transformPersonDto(person: Person): PersonDto {
     return { id: person.id, nameRu: person.nameRu, nameEn: person.nameEn };
   }
-
-
 }

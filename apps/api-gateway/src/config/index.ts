@@ -2,3 +2,4 @@ export * from "./jwt.config";
 export * from "./swagger.config";
 export * from "./cors.config";
 export * from "./rabbitmq.config";
+export * from "./encoding.config";

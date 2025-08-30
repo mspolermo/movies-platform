@@ -16,6 +16,8 @@ export class SearchController {
   async search(@Query("name") name?: string) {
     console.log("🔍 Поисковый запрос:", {
       name,
+      nameLength: name?.length,
+      nameBytes: name ? Buffer.from(name).toString('hex') : null,
       timestamp: new Date().toISOString(),
     });
 

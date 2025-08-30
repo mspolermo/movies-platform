@@ -92,7 +92,7 @@ export const LoginForm = () => {
       <div className={styles.registerLink}>
         <p>
           Нет аккаунта?{' '}
-          <Link href="/register" className={styles.link}>
+          <Link href="/auth/register" className={styles.link}>
             Зарегистрироваться
           </Link>
         </p>
