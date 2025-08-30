@@ -1,15 +1,15 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { AppController } from "./app.controller";
-import { JwtConfigModule } from "./jwt/jwt.module";
-import { AuthModule } from "./auth/auth.module";
-import { FilmsModule } from "./films/films.module";
-import { PersonsModule } from "./persons/persons.module";
-import { GenresModule } from "./genres/genres.module";
-import { CommentsModule } from "./comments/comments.module";
-import { SearchModule } from "./search/search.module";
-import { FiltersModule } from "./filters/filters.module";
-import { CountriesModule } from "./countries/countries.module";
+import { JwtConfigModule } from "./jwt";
+import { AuthModule } from "./auth";
+import { FilmsModule } from "./films";
+import { PersonsModule } from "./persons";
+import { GenresModule } from "./genres";
+import { CommentsModule } from "./comments";
+import { SearchModule } from "./search";
+import { FiltersModule } from "./filters";
+import { CountriesModule } from "./countries";
 
 @Module({
   imports: [

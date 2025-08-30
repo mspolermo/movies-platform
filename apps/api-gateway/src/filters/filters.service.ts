@@ -3,8 +3,8 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { FiltersResult, GenreDto, CountryDto } from "./dto";
-import { Genre, Country } from "../shared/interfaces";
+import { FiltersResult, CountryDto } from "./dto";
+import { Genre } from "@common/types";
 
 @Injectable()
 export class FiltersService implements OnModuleInit {
@@ -32,11 +32,11 @@ export class FiltersService implements OnModuleInit {
     };
   }
 
-  private transformGenreDto(genre: Genre): GenreDto {
+  private transformGenreDto(genre: Genre): Pick<Genre, 'nameRu' | 'nameEn'> {
     return { nameRu: genre.nameRu, nameEn: genre.nameEn };
   }
 
-  private transformCountryDto(country: Country): CountryDto {
+  private transformCountryDto(country: any): CountryDto {
     return {
       countryName: country.countryName,
       countryNameEn: country.countryNameEn,

@@ -46,7 +46,7 @@ export const DebugPage = () => {
         <h2>localStorage:</h2>
         <pre style={{ background: '#f5f5f5', padding: '1rem', borderRadius: '4px' }}>
           {JSON.stringify({
-            'auth-storage': localStorage.getItem('auth-storage'),
+            'auth-storage': typeof window !== 'undefined' ? localStorage.getItem('auth-storage') : 'SSR - localStorage недоступен',
           }, null, 2)}
         </pre>
       </div>

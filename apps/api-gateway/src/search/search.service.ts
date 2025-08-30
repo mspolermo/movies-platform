@@ -2,10 +2,11 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
-import { FilmDto, GenreDto, PersonDto } from "./dto";
+import { FilmDto, PersonDto } from "./dto";
 import { SearchResult } from "./interfaces";
 import { RabbitMQConfig } from "../config";
-import { Film, Person, Genre } from "../shared/interfaces";
+import { Film, Person } from "../shared/interfaces";
+import { Genre } from "@common/types";
 
 @Injectable()
 export class SearchService implements OnModuleInit {
@@ -26,13 +27,13 @@ export class SearchService implements OnModuleInit {
       const [films, people, genres] = await Promise.all([
         firstValueFrom(this.clientData.send("searchFilmsByName", searchName)),
         firstValueFrom(this.clientData.send("searchPersonsByName", searchName)),
-        firstValueFrom(this.clientData.send("searchGenresByName", searchName)),
+        firstValueFrom<Genre[]>(this.clientData.send("searchGenresByName", searchName)),
       ]);
 
       return {
         films: films?.map(this.transformFilmDto) || [],
         people: people?.map(this.transformPersonDto) || [],
-        genres: genres?.map(this.transformGenreDto) || [],
+        genres: genres || [],
       };
     } catch (error) {
       console.error("❌ Ошибка при поиске:", error);
@@ -48,7 +49,5 @@ export class SearchService implements OnModuleInit {
     return { id: person.id, nameRu: person.nameRu, nameEn: person.nameEn };
   }
 
-  private transformGenreDto(genre: Genre): GenreDto {
-    return { nameRu: genre.nameRu, nameEn: genre.nameEn };
-  }
+
 }

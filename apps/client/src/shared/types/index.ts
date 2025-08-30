@@ -1,3 +1,5 @@
+import { Genre } from '@common/types';
+
 // Основные типы данных
 export interface User {
   id: number;
@@ -23,12 +25,6 @@ export interface Film {
   genres?: Genre[];
   countries?: Country[];
   persons?: Person[];
-}
-
-export interface Genre {
-  id: number;
-  nameRu: string;
-  nameEn: string;
 }
 
 export interface Country {

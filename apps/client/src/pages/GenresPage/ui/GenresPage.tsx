@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { Genre } from '@/shared/types';
+import { Genre } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './GenresPage.module.scss';

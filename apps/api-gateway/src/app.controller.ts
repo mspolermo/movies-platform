@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
-import { AuthService } from "./auth/auth.service";
-import { FilmsService } from "./films/films.service";
+import { AuthService } from "./auth";
+import { FilmsService } from "./films";
 import { Public } from "./shared/guards";
 
 @Controller()
