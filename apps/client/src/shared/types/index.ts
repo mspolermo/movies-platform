@@ -1,4 +1,4 @@
-import { Genre } from '@common/types';
+import { Genre, Person } from '@common/types';
 
 // Основные типы данных
 export interface User {
@@ -32,11 +32,7 @@ export interface Country {
   name: string;
 }
 
-export interface Person {
-  id: number;
-  name: string;
-  profession?: string;
-}
+
 
 export interface Comment {
   id: number;

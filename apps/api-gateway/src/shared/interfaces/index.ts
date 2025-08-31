@@ -1,5 +1,4 @@
 export * from "./film.interface";
-export * from "./person.interface";
 export * from "./comment.interface";
 export * from "./country.interface";
 export * from "./user.interface";

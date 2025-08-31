@@ -2,11 +2,11 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
-import { FilmDto, PersonDto } from "./dto";
+import { FilmDto } from "./dto";
 import { SearchResult } from "./interfaces";
 import { RabbitMQConfig } from "../config";
-import { Film, Person } from "../shared/interfaces";
-import { Genre } from "@common/types";
+import { Film } from "../shared/interfaces";
+import { Genre, Person } from "@common/types";
 
 @Injectable()
 export class SearchService implements OnModuleInit {
@@ -24,15 +24,15 @@ export class SearchService implements OnModuleInit {
     const searchName = name || "";
 
     try {
-      const [films, people, genres] = await Promise.all([
+      const [films, persons, genres] = await Promise.all([
         firstValueFrom(this.clientData.send("searchFilmsByName", searchName)),
-        firstValueFrom(this.clientData.send("searchPersonsByName", searchName)),
+        firstValueFrom<Person[]>(this.clientData.send("searchPersonsByName", searchName)),
         firstValueFrom<Genre[]>(this.clientData.send("searchGenresByName", searchName)),
       ]);
 
       return {
         films: films?.map(this.transformFilmDto) || [],
-        people: people?.map(this.transformPersonDto) || [],
+        persons: persons || [],
         genres: genres || [],
       };
     } catch (error) {
@@ -43,9 +43,5 @@ export class SearchService implements OnModuleInit {
 
   private transformFilmDto(film: Film): FilmDto {
     return { id: film.id, nameRu: film.filmNameRu, nameEn: film.filmNameEn };
-  }
-
-  private transformPersonDto(person: Person): PersonDto {
-    return { id: person.id, nameRu: person.nameRu, nameEn: person.nameEn };
   }
 }

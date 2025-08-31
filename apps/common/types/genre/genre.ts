@@ -9,7 +9,6 @@ export interface Genre {
 // Тип для создания жанра
 export interface GenreCreationAtt extends Pick<Genre, "nameRu" | "nameEn"> {}
 
-
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface GenreModel extends Genre {
   films?: any[]; // Связи Sequelize
