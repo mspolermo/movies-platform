@@ -18,10 +18,17 @@ export interface Role {
 
 export interface Film {
   id: number;
-  name: string;
-  description?: string;
+  filmNameRu: string;
+  filmNameEn: string;
   year?: number;
-  rating?: number;
+  ratingKp?: number;
+  votesKp?: number;
+  description?: string;
+  posterUrl?: string;
+  trailerUrl?: string;
+  duration?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
   genres?: TGenreBased[];
   countries?: TCountryBased[];
   persons?: TPersonBased[];

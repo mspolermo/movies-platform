@@ -6,6 +6,11 @@ import { PersonsService } from "./persons.service";
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
+  @MessagePattern("getAllPersons")
+  async getAllPersons() {
+    return await this.personsService.getAllPersons();
+  }
+
   @MessagePattern("getPersonById")
   async getPersonById(@Payload() id: number) {
     return await this.personsService.getPersonById(id);

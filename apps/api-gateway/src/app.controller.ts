@@ -1,13 +1,15 @@
 import { Controller, Get } from "@nestjs/common";
 import { AuthService } from "./auth";
 import { FilmsService } from "./films";
+import { PersonsService } from "./persons";
 import { Public } from "./shared/guards";
 
 @Controller()
 export class AppController {
   constructor(
     private readonly authService: AuthService,
-    private readonly filmsService: FilmsService
+    private readonly filmsService: FilmsService,
+    private readonly personsService: PersonsService
   ) {}
 
   @Public()
@@ -19,6 +21,7 @@ export class AppController {
     const rabbitmqStatus = {
       users: await this.checkRabbitMQConnection("users"),
       films: await this.checkRabbitMQConnection("films"),
+      persons: await this.checkRabbitMQConnection("persons"),
     };
 
     return {
@@ -38,6 +41,10 @@ export class AppController {
       } else if (service === "films") {
         // Проверяем соединение с kino-db через проверку клиента
         const isConnected = this.filmsService.isConnected();
+        return isConnected ? "connected" : "disconnected";
+      } else if (service === "persons") {
+        // Проверяем соединение с kino-db через проверку клиента persons
+        const isConnected = this.personsService.isConnected();
         return isConnected ? "connected" : "disconnected";
       }
       return "unknown";

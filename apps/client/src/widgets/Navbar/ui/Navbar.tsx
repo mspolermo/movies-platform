@@ -34,6 +34,9 @@ export const Navbar = () => {
           <Link href="/countries" className={styles.link}>
             Страны
           </Link>
+          <Link href="/persons" className={styles.link}>
+            Персоны
+          </Link>
           <Link href="/debug" className={styles.link}>
             Debug
           </Link>

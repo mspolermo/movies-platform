@@ -52,18 +52,52 @@ export const FilmsPage = () => {
         <div className={styles.filmsGrid}>
           {films.map((film) => (
             <div key={film.id} className={styles.filmCard}>
-              <h3 className={styles.filmTitle}>{film.name}</h3>
-              {film.year && (
-                <p className={styles.filmYear}>{film.year}</p>
-              )}
-              {film.description && (
-                <p className={styles.filmDescription}>{film.description}</p>
-              )}
-              {film.rating && (
-                <div className={styles.filmRating}>
-                  Рейтинг: {film.rating}
+              <div className={styles.filmPoster}>
+                {film.posterUrl ? (
+                  <img src={film.posterUrl} alt={film.filmNameRu} className={styles.poster} />
+                ) : (
+                  <div className={styles.posterPlaceholder}>
+                    {film.filmNameRu.charAt(0)}
+                  </div>
+                )}
+              </div>
+              
+              <div className={styles.filmInfo}>
+                <h3 className={styles.filmTitle}>{film.filmNameRu}</h3>
+                {film.filmNameEn && film.filmNameEn !== film.filmNameRu && (
+                  <p className={styles.filmTitleEn}>{film.filmNameEn}</p>
+                )}
+                
+                <div className={styles.filmMeta}>
+                  {film.year && (
+                    <span className={styles.filmYear}>{film.year}</span>
+                  )}
+                  {film.duration && (
+                    <span className={styles.filmDuration}>{film.duration} мин</span>
+                  )}
                 </div>
-              )}
+                
+                {film.description && (
+                  <p className={styles.filmDescription}>
+                    {film.description.length > 150 
+                      ? `${film.description.substring(0, 150)}...` 
+                      : film.description
+                    }
+                  </p>
+                )}
+                
+                <div className={styles.filmRatings}>
+                  {film.ratingKp && (
+                    <div className={styles.rating}>
+                      <span className={styles.ratingLabel}>КиноПоиск</span>
+                      <span className={styles.ratingValue}>{film.ratingKp}</span>
+                      {film.votesKp && (
+                        <span className={styles.ratingVotes}>({film.votesKp})</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>

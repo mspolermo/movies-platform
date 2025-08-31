@@ -36,4 +36,8 @@ export class PersonsService implements OnModuleInit {
       })
     );
   }
+
+  isConnected(): boolean {
+    return this.clientData && !this.clientData['_closed'];
+  }
 }

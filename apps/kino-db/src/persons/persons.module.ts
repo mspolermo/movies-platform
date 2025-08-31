@@ -4,6 +4,7 @@ import { PersonsService } from "./persons.service";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { Profession } from "../professions/professions.model";
 import { Person } from "./persons.model";
+import { PersonProfession } from "./personProfession";
 import { ProfessionsModule } from "../professions/professions.module";
 import { ProfessionsService } from "../professions/professions.service";
 import { Film } from "../films/films.model";
@@ -26,6 +27,7 @@ import { Genre } from "../genres/genres.model";
       Genre,
       Person,
       Profession,
+      PersonProfession,
     ]),
     ProfessionsModule,
   ],

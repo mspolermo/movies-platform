@@ -14,6 +14,22 @@ export class PersonsService {
     private professionService: ProfessionsService
   ) {}
 
+  async getAllPersons() {
+    //TODO: Добавить pagination вместо использования limit
+    const persons = await this.personRepository.findAll({
+      include: [
+        {
+          model: Profession,
+          through: { attributes: [] },
+          attributes: ['id', 'name']
+        }
+      ],
+      attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+      limit: 10
+    });
+    return persons;
+  }
+
   async getPersonById(id: number) {
     const person = await this.personRepository.findByPk(id, {
       include: { all: true },
