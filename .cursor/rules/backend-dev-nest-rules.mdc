@@ -1,7 +1,10 @@
 ---
 description: Rules for server-side code
 globs:
-  - "server/**"
+globs:
+  - "apps/api-gateway/**"
+  - "apps/kino-db/**"
+  - "apps/auth-users/**"
 alwaysApply: false
 ---
 

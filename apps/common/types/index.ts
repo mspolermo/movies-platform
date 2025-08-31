@@ -2,3 +2,4 @@
 
 export * from './genre';
 export * from './person';
+export * from './country';

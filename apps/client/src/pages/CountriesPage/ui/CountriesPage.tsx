@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { Country } from '@/shared/types';
+import { Country } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './CountriesPage.module.scss';
@@ -52,7 +52,7 @@ export const CountriesPage = () => {
         <div className={styles.countriesGrid}>
           {countries.map((country) => (
             <div key={country.id} className={styles.countryCard}>
-              <h3 className={styles.countryName}>{country.name}</h3>
+              <h3 className={styles.countryName}>{country.countryName}</h3>
             </div>
           ))}
         </div>

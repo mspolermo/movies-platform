@@ -3,7 +3,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { Person } from "../shared/interfaces";
+import { Person } from "@common/types";
 
 @Injectable()
 export class PersonsService implements OnModuleInit {

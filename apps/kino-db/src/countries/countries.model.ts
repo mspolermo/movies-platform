@@ -7,10 +7,7 @@ import {
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
 import { FilmCountry } from "../films/filmCountry";
-
-interface CountryCreationAtt {
-  countryName: string;
-}
+import { CountryCreationAtt } from "@common";
 
 @Table({ tableName: "Country", timestamps: false })
 export class Country extends Model<Country, CountryCreationAtt> {

@@ -1,7 +1,7 @@
 ---
 description: Frontend development rules (React, Next.js, TypeScript)
 globs: 
-  - "client/**/*.{ts,tsx,js,jsx}"
+  - "apps/client/**/*.{ts,tsx,js,jsx}"
 alwaysApply: false
 ---
 
