@@ -6,7 +6,7 @@ import { FilmDto } from "./dto";
 import { SearchResult } from "./interfaces";
 import { RabbitMQConfig } from "../config";
 import { Film } from "../shared/interfaces";
-import { Genre, Person } from "@common/types";
+import { TGenreBased, TPersonBased } from "@common/types";
 
 @Injectable()
 export class SearchService implements OnModuleInit {
@@ -26,8 +26,8 @@ export class SearchService implements OnModuleInit {
     try {
       const [films, persons, genres] = await Promise.all([
         firstValueFrom(this.clientData.send("searchFilmsByName", searchName)),
-        firstValueFrom<Person[]>(this.clientData.send("searchPersonsByName", searchName)),
-        firstValueFrom<Genre[]>(this.clientData.send("searchGenresByName", searchName)),
+        firstValueFrom<TPersonBased[]>(this.clientData.send("searchPersonsByName", searchName)),
+        firstValueFrom<TGenreBased[]>(this.clientData.send("searchGenresByName", searchName)),
       ]);
 
       return {

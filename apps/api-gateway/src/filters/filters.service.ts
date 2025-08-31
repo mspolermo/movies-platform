@@ -4,7 +4,7 @@ import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
 import { FiltersResult, CountryDto } from "./dto";
-import { Genre } from "@common/types";
+import { TGenreBased } from "@common/types";
 
 @Injectable()
 export class FiltersService implements OnModuleInit {
@@ -20,7 +20,7 @@ export class FiltersService implements OnModuleInit {
 
   async getFilters(): Promise<FiltersResult> {
     const [genres, countries, years] = await Promise.all([
-      firstValueFrom<Genre[]>(this.clientData.send("getAll.genres", "")),
+      firstValueFrom<TGenreBased[]>(this.clientData.send("getAll.genres", "")),
       firstValueFrom(this.clientData.send("getAll.countries", "")),
       firstValueFrom(this.clientData.send("getAllFilmYears", "")),
     ]);

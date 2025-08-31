@@ -4,7 +4,7 @@ import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
 import { GenreDTO } from "./dto";
-import { Genre } from "@common/types";
+import { TGenreBased } from "@common/types";
 
 @Injectable()
 export class GenresService implements OnModuleInit {
@@ -18,14 +18,14 @@ export class GenresService implements OnModuleInit {
     await RabbitMQConfig.connectWithRetry(this.clientData, "Genres Service");
   }
 
-  async getAllGenres(): Promise<Genre[]> {
-    const genres = await firstValueFrom<Genre[]>(
+  async getAllGenres(): Promise<TGenreBased[]> {
+    const genres = await firstValueFrom<TGenreBased[]>(
       this.clientData.send("getAll.genres", "")
     );
     return genres;
   }
 
-  async updateGenre(id: number, dto: GenreDTO): Promise<Genre> {
+  async updateGenre(id: number, dto: GenreDTO): Promise<TGenreBased> {
     return await firstValueFrom(
       this.clientData.send("updateGenre", { id, dto })
     );

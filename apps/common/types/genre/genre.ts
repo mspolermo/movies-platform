@@ -1,4 +1,5 @@
-export interface Genre {
+// Полный базовый тип для жанра
+export interface TGenreBased {
   id: number;
   nameRu: string;
   nameEn: string;
@@ -7,9 +8,9 @@ export interface Genre {
 }
 
 // Тип для создания жанра
-export interface GenreCreationAtt extends Pick<Genre, "nameRu" | "nameEn"> {}
+export interface TGenreCreationAtt extends Pick<TGenreBased, "nameRu" | "nameEn"> {}
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface GenreModel extends Genre {
+export interface TGenreModel extends TGenreBased {
   films?: any[]; // Связи Sequelize
 }

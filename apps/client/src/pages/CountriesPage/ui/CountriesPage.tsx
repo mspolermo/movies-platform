@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { Country } from '@common/types';
+import { TCountryBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './CountriesPage.module.scss';
 
 export const CountriesPage = () => {
-  const [countries, setCountries] = useState<Country[]>([]);
+  const [countries, setCountries] = useState<TCountryBased[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

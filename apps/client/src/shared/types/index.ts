@@ -1,4 +1,4 @@
-import { Genre, Person, Country } from '@common/types';
+import { TGenreBased, TPersonBased, TCountryBased } from '@common/types';
 
 // Основные типы данных
 export interface User {
@@ -22,9 +22,9 @@ export interface Film {
   description?: string;
   year?: number;
   rating?: number;
-  genres?: Genre[];
-  countries?: Country[];
-  persons?: Person[];
+  genres?: TGenreBased[];
+  countries?: TCountryBased[];
+  persons?: TPersonBased[];
 }
 
 

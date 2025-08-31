@@ -3,7 +3,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { Person } from "@common/types";
+import { TPersonBased } from "@common/types";
 
 @Injectable()
 export class PersonsService implements OnModuleInit {
@@ -17,18 +17,18 @@ export class PersonsService implements OnModuleInit {
     await RabbitMQConfig.connectWithRetry(this.clientData, "Persons Service");
   }
 
-  async getAllPersons(): Promise<Person[]> {
+  async getAllPersons(): Promise<TPersonBased[]> {
     return await firstValueFrom(this.clientData.send("getAllPersons", {}));
   }
 
-  async getPersonById(id: number): Promise<Person> {
+  async getPersonById(id: number): Promise<TPersonBased> {
     return await firstValueFrom(this.clientData.send("getPersonById", id));
   }
 
   async findPersonsByNameAndProfession(
     name?: string,
     professionId?: number
-  ): Promise<Person[]> {
+  ): Promise<TPersonBased[]> {
     return await firstValueFrom(
       this.clientData.send("findPersonsByNameAndProfession", {
         name,

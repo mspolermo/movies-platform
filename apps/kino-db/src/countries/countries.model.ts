@@ -7,10 +7,10 @@ import {
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
 import { FilmCountry } from "../films/filmCountry";
-import { CountryCreationAtt } from "@common";
+import { TCountryCreationAtt, TCountryModel } from "@common/types";
 
 @Table({ tableName: "Country", timestamps: false })
-export class Country extends Model<Country, CountryCreationAtt> {
+export class Country extends Model<TCountryModel, TCountryCreationAtt> {
   @Column({
     type: DataType.INTEGER,
     unique: true,

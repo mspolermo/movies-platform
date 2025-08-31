@@ -1,8 +1,8 @@
 import { CountryDto } from "./country.dto";
-import { Genre } from "@common/types";
+import { TGenreBased } from "@common/types";
 
 export interface FiltersResult {
-  genres: Genre[];
+  genres: TGenreBased[];
   countries: CountryDto[];
   years: number[];
 }

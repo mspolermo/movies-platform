@@ -1,4 +1,4 @@
-export interface Country {
+export interface TCountryBased {
   id: number;
   countryName: string;
   countryNameEn: string;
@@ -7,9 +7,9 @@ export interface Country {
 }
 
 // Тип для создания страны
-export interface CountryCreationAtt extends Pick<Country, "countryName" | "countryNameEn"> {}
+export interface TCountryCreationAtt extends Pick<TCountryBased, "countryName" | "countryNameEn"> {}
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface CountryModel extends Country {
+export interface TCountryModel extends TCountryBased {
   films?: any[]; // Связи Sequelize
 }

@@ -1,7 +1,7 @@
 ---
 description: Documentation rules
 globs:
-  - "docs/temp/**/*.{md,mdx}"
+  - "docs/**/*.{md,mdx}"
 alwaysApply: true
 ---
 

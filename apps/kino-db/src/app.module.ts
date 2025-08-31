@@ -2,16 +2,13 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { GenresModule } from "./genres/genres.module";
-import { Genre } from "./genres/genres.model";
 import { CountriesModule } from "./countries/countries.module";
 import { ProfessionsModule } from "./professions/professions.module";
 import { PersonsModule } from "./persons/persons.module";
 import { FactsModule } from "./facts/facts.module";
 import { FilmsModule } from "./films/films.module";
 import { Fact } from "./facts/facts.model";
-import { Country } from "./countries/countries.model";
 import { Film } from "./films/films.model";
-import { Person } from "./persons/persons.model";
 import { Profession } from "./professions/professions.model";
 import { FilmGenre } from "./films/filmGenre";
 import { FilmCountry } from "./films/filmCountry";
@@ -20,6 +17,9 @@ import { PersonProfession } from "./persons/personProfession";
 import { CommentsModule } from "./comments/comments.module";
 import { Comment } from "./comments/comments.model";
 import { HealthController } from "./health.controller";
+import { Genre } from "./genres/genres.model";
+import { Country } from "./countries/countries.model";
+import { Person } from "./persons/persons.model";
 
 @Module({
   imports: [

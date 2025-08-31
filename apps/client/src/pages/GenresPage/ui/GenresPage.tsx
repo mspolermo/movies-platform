@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { Genre } from '@common/types';
+import { TGenreBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './GenresPage.module.scss';
 
 export const GenresPage = () => {
-  const [genres, setGenres] = useState<Genre[]>([]);
+  const [genres, setGenres] = useState<TGenreBased[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
