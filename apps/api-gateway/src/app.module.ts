@@ -10,6 +10,7 @@ import { CommentsModule } from "./comments";
 import { SearchModule } from "./search";
 import { FiltersModule } from "./filters";
 import { CountriesModule } from "./countries";
+import { ProfessionsModule } from "./professions";
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CountriesModule } from "./countries";
     SearchModule,
     FiltersModule,
     CountriesModule,
+    ProfessionsModule,
   ],
   controllers: [AppController],
 })

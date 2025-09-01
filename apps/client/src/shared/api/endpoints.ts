@@ -34,6 +34,12 @@ export const API_ENDPOINTS = {
     BY_ID: (id: number) => `/persons/${id}`,
   },
 
+  // Профессии
+  PROFESSIONS: {
+    LIST: '/professions',
+    BY_ID: (id: number) => `/professions/${id}`,
+  },
+
   // Комментарии
   COMMENTS: {
     LIST: '/comments',

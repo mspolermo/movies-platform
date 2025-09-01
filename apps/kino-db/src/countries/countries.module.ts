@@ -10,7 +10,6 @@ import { FilmCountry } from "../films/filmCountry";
 import { Fact } from "../facts/facts.model";
 import { FilmGenre } from "../films/filmGenre";
 import { Person } from "../persons/persons.model";
-import { Profession } from "../professions/professions.model";
 
 @Module({
   imports: [
@@ -23,7 +22,6 @@ import { Profession } from "../professions/professions.model";
       Country,
       Genre,
       Person,
-      Profession,
     ]),
   ],
   controllers: [CountriesController],

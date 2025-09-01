@@ -16,11 +16,6 @@ export class PersonsController {
     return await this.personsService.getPersonById(id);
   }
 
-  @MessagePattern("searchPersonsByName")
-  async searchPersonsByName(@Payload() name: string) {
-    return await this.personsService.searchPersonsByName(name);
-  }
-
   @MessagePattern("findPersonsByNameAndProfession")
   async findPersonsByNameAndProfession(
     @Payload() data: { id: number; name: string }

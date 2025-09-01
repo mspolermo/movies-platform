@@ -1,14 +1,15 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { getModelToken } from "@nestjs/sequelize";
 import { ProfessionsService } from "./professions.service";
 import { Profession } from "./professions.model";
+import { getModelToken } from "@nestjs/sequelize";
 
 describe("ProfessionsService", () => {
   let service: ProfessionsService;
 
   const mockProfessionArray = [
-    { id: 1, name: "Актёры" },
-    { id: 2, name: "Режисёры" },
+    { id: 1, name: "Актёр" },
+    { id: 2, name: "Режиссёр" },
+    { id: 3, name: "Сценарист" },
   ];
 
   const mockProfessionsRepository = {
@@ -29,10 +30,6 @@ describe("ProfessionsService", () => {
     service = module.get<ProfessionsService>(ProfessionsService);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
@@ -40,8 +37,8 @@ describe("ProfessionsService", () => {
   describe("getAllProfessions", () => {
     it("should return an array of professions", async () => {
       mockProfessionsRepository.findAll.mockResolvedValue(mockProfessionArray);
-
-      expect(await service.getAllProfessions()).toEqual(mockProfessionArray);
+      const result = await service.getAllProfessions();
+      expect(result).toEqual(mockProfessionArray);
       expect(mockProfessionsRepository.findAll).toHaveBeenCalledTimes(1);
     });
   });
@@ -49,9 +46,8 @@ describe("ProfessionsService", () => {
   describe("searchProfession", () => {
     it("should return an array of professions that match the professions names", async () => {
       const professionName = ["Актёры"];
-
+      mockProfessionsRepository.findAll.mockResolvedValue(mockProfessionArray);
       const result = await service.findProfessionByName(professionName);
-
       expect(mockProfessionsRepository.findAll).toHaveBeenCalledWith({
         where: {
           name: professionName,

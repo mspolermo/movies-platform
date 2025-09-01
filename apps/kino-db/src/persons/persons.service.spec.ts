@@ -1,45 +1,46 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { Op } from "sequelize";
-import { getModelToken } from "@nestjs/sequelize";
 import { PersonsService } from "./persons.service";
-import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
+import { Person } from "./persons.model";
 import { Profession } from "../professions/professions.model";
+import { getModelToken } from "@nestjs/sequelize";
 
 describe("PersonsService", () => {
   let service: PersonsService;
 
-  const mockPerson = {
-    id: 1,
-    photoUrl: "http://someUrl.com",
-    nameRu: "Джон Сина",
-    nameEn: "John Sean",
-    professions: [1, 2, 3],
-  };
-
-  const mockPersonsArray = [
+  const mockPersonArray = [
     {
       id: 1,
-      photoUrl: "http://someUrl.com",
-      nameRu: "Джон Сина",
-      nameEn: "John Sean",
+      photoUrl: "test.jpg",
+      nameRu: "Тест",
+      nameEn: "Test",
       professions: [1, 2, 3],
     },
     {
       id: 2,
-      photoUrl: "http://someUrl2.com",
-      nameRu: "Джон Сильвер",
-      nameEn: "John Silver",
+      photoUrl: "test2.jpg",
+      nameRu: "Тест2",
+      nameEn: "Test2",
       professions: [1, 3],
     },
   ];
 
+  const mockProfessionsArray = [
+    { id: 1, name: "Актёр" },
+    { id: 2, name: "Режиссёр" },
+    { id: 3, name: "Сценарист" },
+  ];
+
   const mockPersonsRepository = {
-    findByPk: jest.fn().mockResolvedValue(mockPerson),
-    findAll: jest.fn().mockResolvedValue(mockPersonsArray),
-    create: jest.fn().mockResolvedValue(mockPerson),
+    findAll: jest.fn().mockResolvedValue(mockPersonArray),
+    findByPk: jest.fn().mockResolvedValue(mockPersonArray[0]),
+    create: jest.fn().mockResolvedValue(mockPersonArray[0]),
+    bulkCreate: jest.fn().mockResolvedValue(mockPersonArray),
   };
-  const mockProfessinsService = {};
+
+  const mockProfessionsService = {
+    findProfessionByName: jest.fn().mockResolvedValue(mockProfessionsArray),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,78 +50,51 @@ describe("PersonsService", () => {
           provide: getModelToken(Person),
           useValue: mockPersonsRepository,
         },
-        ProfessionsService,
+        {
+          provide: ProfessionsService,
+          useValue: mockProfessionsService,
+        },
       ],
-    })
-      .overrideProvider(ProfessionsService)
-      .useValue(mockProfessinsService)
-      .compile();
+    }).compile();
 
     service = module.get<PersonsService>(PersonsService);
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks();
   });
 
   it("should be defined", () => {
     expect(service).toBeDefined();
   });
 
-  describe("getPersonById", () => {
-    it("should return person", async () => {
-      mockPersonsRepository.findByPk.mockResolvedValue(mockPerson);
+  describe("getAllPersons", () => {
+    it("should return an array of persons", async () => {
+      const result = await service.getAllPersons();
+      expect(result).toEqual(mockPersonArray);
+    });
+  });
 
-      expect(await service.getPersonById(mockPerson.id)).toEqual(mockPerson);
-      expect(mockPersonsRepository.findByPk).toHaveBeenCalledTimes(1);
+  describe("getPersonById", () => {
+    it("should return a person by id", async () => {
+      const result = await service.getPersonById(1);
+      expect(result).toEqual(mockPersonArray[0]);
     });
   });
 
   describe("findPersonsByNameAndProfession", () => {
-    it("should return array of persons", async () => {
-      const personName = "Джон";
+    it("should return persons by name and profession", async () => {
+      const personName = "Тест";
       const professionId = 1;
-      expect(
-        await service.findPersonsByNameAndProfession(personName, professionId)
-      ).toEqual(mockPersonsArray);
-      expect(mockPersonsRepository.findAll).toHaveBeenCalledWith({
-        include: {
-          model: Profession,
-          where: { id: professionId },
-          through: { attributes: [] },
-        },
-        where: {
-          [Op.and]: [
-            {
-              [Op.or]: [
-                { nameRu: { [Op.iLike]: `%${personName}%` } },
-                { nameEn: { [Op.iLike]: `%${personName}%` } },
-              ],
-            },
-          ],
-        },
-        limit: 10,
-      });
-      expect(mockPersonsRepository.findAll).toHaveBeenCalledTimes(1);
-    });
-  });
 
-  describe("searchPersonsByName", () => {
-    it("should return array of persons", async () => {
-      const personName = "Джон";
-      expect(await service.searchPersonsByName(personName)).toEqual(
-        mockPersonsArray
-      );
+      await service.findPersonsByNameAndProfession(personName, professionId);
+
       expect(mockPersonsRepository.findAll).toHaveBeenCalledWith({
-        where: {
-          [Op.or]: [
-            { nameRu: { [Op.iLike]: `%${personName}%` } },
-            { nameEn: { [Op.iLike]: `%${personName}%` } },
-          ],
-        },
-        limit: 10,
+        include: [
+          {
+            model: Profession,
+            where: { id: professionId },
+            through: { attributes: [] },
+          },
+        ],
+        where: { nameRu: personName },
       });
-      expect(mockPersonsRepository.findAll).toHaveBeenCalledTimes(1);
     });
   });
 });

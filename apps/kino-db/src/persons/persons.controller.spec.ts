@@ -33,7 +33,6 @@ describe("PersonsController", () => {
 
   const mockPersonsService = {
     getPersonById: jest.fn().mockResolvedValue(mockPerson),
-    searchPersonsByName: jest.fn().mockResolvedValue(mockPersonsArray),
     findPersonsByNameAndProfession: jest
       .fn()
       .mockResolvedValue(mockPersonsArray),
@@ -66,16 +65,6 @@ describe("PersonsController", () => {
       const id = 1;
       expect(await controller.getPersonById(id)).toEqual(mockPerson);
       expect(mockPersonsService.getPersonById).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe("searchPersonsByName", () => {
-    it("should return persons", async () => {
-      const name = "Джон";
-      expect(await controller.searchPersonsByName(name)).toEqual(
-        mockPersonsArray
-      );
-      expect(mockPersonsService.searchPersonsByName).toHaveBeenCalledTimes(1);
     });
   });
 

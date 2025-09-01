@@ -7,13 +7,10 @@ import {
 } from "sequelize-typescript";
 import { PersonProfession } from "../persons/personProfession";
 import { Person } from "../persons/persons.model";
-
-interface ProfessionCreationAtt {
-  name: string;
-}
+import { TProfessionBased, TProfessionCreationAtt, TProfessionModel } from "@common";
 
 @Table({ tableName: "Profession", timestamps: false })
-export class Profession extends Model<Profession, ProfessionCreationAtt> {
+export class Profession extends Model<TProfessionBased, TProfessionCreationAtt> implements TProfessionModel {
   @Column({
     type: DataType.INTEGER,
     unique: true,
