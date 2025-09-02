@@ -5,6 +5,7 @@ node_modules
 .next
 /apps/client/node_modules
 /apps/client/.next
+/old-client/
 
 # Logs
 logs

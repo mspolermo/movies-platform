@@ -1,0 +1,26 @@
+// Общие типы для Fact
+
+export interface TFactBased {
+  id: number;
+  value: string;
+  type: string;
+  spoiler: boolean;
+  filmId: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+// Тип для создания факта
+export interface TFactCreationAtt extends Pick<TFactBased, "value" | "type" | "spoiler" | "filmId"> {}
+
+// Тип для Sequelize модели (расширяет базовый интерфейс)
+export interface TFactModel extends TFactBased {
+  film?: any; // Связи Sequelize
+}
+
+// DTO для API
+export interface TFactDTO {
+  value: string;
+  type: string;
+  spoiler: boolean;
+}

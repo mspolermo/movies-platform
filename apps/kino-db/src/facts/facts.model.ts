@@ -7,16 +7,10 @@ import {
   Table,
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
-
-interface FactCreationAtt {
-  value: string;
-  type: string;
-  spoiler: boolean;
-  filmId: number;
-}
+import { TFactModel, TFactCreationAtt } from "@common";
 
 @Table({ tableName: "Fact", timestamps: false })
-export class Fact extends Model<Fact, FactCreationAtt> {
+export class Fact extends Model<TFactModel, TFactCreationAtt> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
