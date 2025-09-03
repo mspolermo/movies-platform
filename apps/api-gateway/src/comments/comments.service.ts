@@ -3,8 +3,8 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { CommentDTO } from "./dto";
-import { Comment } from "../shared/interfaces";
+import { TCommentBased } from "@common/types";
+import { CommentDTO } from "@common/dto";
 
 @Injectable()
 export class CommentsService implements OnModuleInit {
@@ -18,7 +18,7 @@ export class CommentsService implements OnModuleInit {
     await RabbitMQConfig.connectWithRetry(this.clientData, "Comments Service");
   }
 
-  async getCommentsByFilmId(filmId: number): Promise<Comment[]> {
+  async getCommentsByFilmId(filmId: number): Promise<TCommentBased[][]> {
     return await firstValueFrom(
       this.clientData.send("getCommentsByFilmId", filmId)
     );
@@ -28,7 +28,7 @@ export class CommentsService implements OnModuleInit {
     filmId: number,
     dto: CommentDTO,
     userId: number
-  ): Promise<Comment> {
+  ): Promise<TCommentBased> {
     return await firstValueFrom(
       this.clientData.send("createComment", { filmId, dto, userId })
     );

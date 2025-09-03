@@ -2,11 +2,12 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getModelToken } from "@nestjs/sequelize";
 import { CommentsService } from "./comments.service";
 import { Comment } from "./comments.model";
+import { TCommentBased } from "@common/types";
 
 describe("CommentsService", () => {
   let service: CommentsService;
 
-  const mockComment = {
+  const mockComment: TCommentBased = {
     id: 1,
     header: "This is header",
     value: "This is value",

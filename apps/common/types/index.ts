@@ -5,3 +5,4 @@ export * from './person';
 export * from './country';
 export * from './profession';
 export * from './fact';
+export * from './comment';

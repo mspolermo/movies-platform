@@ -8,18 +8,10 @@ import {
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
 import { ApiProperty } from "@nestjs/swagger";
-
-interface CommentCreationAtt {
-  header: string;
-  value: string;
-  authorId: number;
-  nickName: string;
-  parentId: number;
-  filmId: number;
-}
+import { TCommentBased, TCommentCreationAtt, TCommentModel } from "@common/types";
 
 @Table({ tableName: "Comment", timestamps: false })
-export class Comment extends Model<Comment, CommentCreationAtt> {
+export class Comment extends Model<TCommentBased, TCommentCreationAtt> implements TCommentModel {
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,
@@ -53,8 +45,8 @@ export class Comment extends Model<Comment, CommentCreationAtt> {
   createdAt: Date;
 
   @ApiProperty({ description: "никнейм юзера" })
-  @Column({ type: DataType.INTEGER })
-  nickName: number;
+  @Column({ type: DataType.STRING })
+  nickName: string;
 
   @ForeignKey(() => Film)
   @Column

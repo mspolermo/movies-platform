@@ -3,8 +3,8 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { FiltersResult, CountryDto } from "./dto";
-import { TGenreBased } from "@common/types";
+import { FiltersResult } from "./dto";
+import { TCountryBased, TGenreBased } from "@common/types";
 
 @Injectable()
 export class FiltersService implements OnModuleInit {
@@ -21,21 +21,14 @@ export class FiltersService implements OnModuleInit {
   async getFilters(): Promise<FiltersResult> {
     const [genres, countries, years] = await Promise.all([
       firstValueFrom<TGenreBased[]>(this.clientData.send("getAll.genres", "")),
-      firstValueFrom(this.clientData.send("getAll.countries", "")),
+      firstValueFrom<TCountryBased[]>(this.clientData.send("getAll.countries", "")),
       firstValueFrom(this.clientData.send("getAllFilmYears", "")),
     ]);
 
     return {
       genres,
-      countries: countries.map(this.transformCountryDto),
+      countries,
       years,
-    };
-  }
-
-  private transformCountryDto(country: any): CountryDto {
-    return {
-      countryName: country.countryName,
-      countryNameEn: country.countryNameEn,
     };
   }
 }

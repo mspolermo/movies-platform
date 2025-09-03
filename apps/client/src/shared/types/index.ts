@@ -1,4 +1,4 @@
-import { TGenreBased, TPersonBased, TCountryBased } from '@common/types';
+import { TGenreBased, TPersonBased, TCountryBased, TCommentBased } from '@common/types';
 
 // Основные типы данных
 export interface User {
@@ -36,13 +36,8 @@ export interface Film {
 
 
 
-export interface Comment {
-  id: number;
-  text: string;
-  userId: number;
-  filmId: number;
-  createdAt: string;
-}
+// Используем общий тип Comment из @common
+export type Comment = TCommentBased;
 
 // API типы
 export interface ApiResponse<T> {

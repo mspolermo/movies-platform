@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CommentsController } from "./comments.controller";
 import { CommentsService } from "./comments.service";
+import { TCommentBased } from "@common/types";
 
 describe("GenresController", () => {
   let controller: CommentsController;
@@ -27,7 +28,7 @@ describe("GenresController", () => {
     },
   ];
 
-  const mockComment = {
+  const mockComment: TCommentBased = {
     id: 1,
     header: "This is header",
     value: "This is value",

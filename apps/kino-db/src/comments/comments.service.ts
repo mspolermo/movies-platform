@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Comment } from "./comments.model";
-import { CommentDTO } from "./dto/commentDTO";
+import { TCommentBased } from "@common/types";
+import { CommentDTO } from "@common/dto";;
 
 @Injectable()
 export class CommentsService {
@@ -9,7 +10,7 @@ export class CommentsService {
     @InjectModel(Comment) private commentRepository: typeof Comment
   ) {}
 
-  async createComment(userId: number, filmId: number, dto: CommentDTO) {
+  async createComment(userId: number, filmId: number, dto: CommentDTO): Promise<TCommentBased> {
     const comment = await this.commentRepository.create({
       header: dto.header,
       value: dto.value,
@@ -21,7 +22,7 @@ export class CommentsService {
     return comment;
   }
 
-  async getAllCommentsByFilmId(id: number) {
+  async getAllCommentsByFilmId(id: number): Promise<TCommentBased[][]> {
     const comments = await this.commentRepository.findAll({
       where: {
         filmId: id,

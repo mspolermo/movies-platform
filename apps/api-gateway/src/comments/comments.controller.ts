@@ -10,7 +10,8 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CommentsService } from "./comments.service";
-import { CommentDTO } from "./dto";
+import { CommentDTO } from "@common/dto";
+import { TCommentBased } from "@common/types";
 import { ValidationPipe } from "../shared/pipes";
 import { JwtAuthGuard } from "../shared/guards";
 import { AuthenticatedRequest } from "../shared/interfaces";
@@ -25,7 +26,7 @@ export class CommentsController {
   @ApiResponse({ status: 200, description: "Список комментариев" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @Get("/:filmId")
-  async getCommentsByFilmId(@Param("filmId") filmId: number) {
+  async getCommentsByFilmId(@Param("filmId") filmId: number): Promise<TCommentBased[][]> {
     return await this.commentsService.getCommentsByFilmId(filmId);
   }
 
@@ -38,7 +39,7 @@ export class CommentsController {
     @Param("filmId") filmId: number,
     @Body() dto: CommentDTO,
     @Req() req: AuthenticatedRequest
-  ) {
+  ): Promise<TCommentBased> {
     const userId = req.user.id;
     return await this.commentsService.createComment(filmId, dto, userId);
   }
