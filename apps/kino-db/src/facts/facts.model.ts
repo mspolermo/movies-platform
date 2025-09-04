@@ -7,7 +7,7 @@ import {
   Table,
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
-import { TFactModel, TFactCreationAtt } from "@common";
+import { TFactModel, TFactCreationAtt } from "@common/types";
 
 @Table({ tableName: "Fact", timestamps: false })
 export class Fact extends Model<TFactModel, TFactCreationAtt> {

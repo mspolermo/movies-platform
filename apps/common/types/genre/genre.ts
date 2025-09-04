@@ -1,3 +1,5 @@
+import { TFilmBased } from "../film";
+
 // Полный базовый тип для жанра
 export interface TGenreBased {
   id: number;
@@ -12,5 +14,5 @@ export interface TGenreCreationAtt extends Pick<TGenreBased, "nameRu" | "nameEn"
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TGenreModel extends TGenreBased {
-  films?: any[]; // Связи Sequelize
+  films?: TFilmBased[]; // Связи Sequelize
 }

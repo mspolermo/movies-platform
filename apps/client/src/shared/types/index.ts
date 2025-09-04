@@ -1,4 +1,4 @@
-import { TGenreBased, TPersonBased, TCountryBased, TCommentBased } from '@common/types';
+import { TGenreBased, TPersonBased, TCountryBased, TCommentBased, TFilmBased } from '@common/types';
 
 // Основные типы данных
 export interface User {
@@ -16,19 +16,8 @@ export interface Role {
   updatedAt: string;
 }
 
-export interface Film {
-  id: number;
-  filmNameRu: string;
-  filmNameEn: string;
-  year?: number;
-  ratingKp?: number;
-  votesKp?: number;
-  description?: string;
-  posterUrl?: string;
-  trailerUrl?: string;
-  duration?: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+// Используем общий тип Film из @common
+export interface Film extends TFilmBased {
   genres?: TGenreBased[];
   countries?: TCountryBased[];
   persons?: TPersonBased[];

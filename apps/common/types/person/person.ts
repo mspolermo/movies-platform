@@ -1,5 +1,8 @@
 // Общие типы для Person
 
+import { TFilmBased } from "../film";
+import { TProfessionBased } from "../profession";
+
 export interface TPersonBased {
   id: number;
   photoUrl: string;
@@ -14,6 +17,6 @@ export interface TPersonCreationAtt extends Pick<TPersonBased, "nameRu" | "nameE
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TPersonModel extends TPersonBased {
-  professions?: any[]; // Связи Sequelize
-  films?: any[]; // Связи Sequelize
+  professions?: TProfessionBased[]; // Связи Sequelize
+  films?: TFilmBased[]; // Связи Sequelize
 }

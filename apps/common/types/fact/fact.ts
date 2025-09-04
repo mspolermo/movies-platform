@@ -1,5 +1,7 @@
 // Общие типы для Fact
 
+import { TFilmBased } from "../film";
+
 export interface TFactBased {
   id: number;
   value: string;
@@ -15,7 +17,7 @@ export interface TFactCreationAtt extends Pick<TFactBased, "value" | "type" | "s
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TFactModel extends TFactBased {
-  film?: any; // Связи Sequelize
+  film?: TFilmBased; // Связи Sequelize
 }
 
 // DTO для API

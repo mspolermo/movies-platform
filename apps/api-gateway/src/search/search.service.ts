@@ -2,11 +2,9 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
-import { FilmDto } from "./dto";
 import { SearchResult } from "./interfaces";
 import { RabbitMQConfig } from "../config";
-import { Film } from "../shared/interfaces";
-import { TGenreBased, TPersonBased } from "@common/types";
+import { TGenreBased, TPersonBased, TFilmBased } from "@common/types";
 
 @Injectable()
 export class SearchService implements OnModuleInit {
@@ -25,23 +23,15 @@ export class SearchService implements OnModuleInit {
 
     try {
       const [films, persons, genres] = await Promise.all([
-        firstValueFrom(this.clientData.send("searchFilmsByName", searchName)),
+        firstValueFrom<TFilmBased[]>(this.clientData.send("searchFilmsByName", searchName)),
         firstValueFrom<TPersonBased[]>(this.clientData.send("searchPersonsByName", searchName)),
         firstValueFrom<TGenreBased[]>(this.clientData.send("searchGenresByName", searchName)),
       ]);
 
-      return {
-        films: films?.map(this.transformFilmDto) || [],
-        persons: persons || [],
-        genres: genres || [],
-      };
+      return { films, persons, genres };
     } catch (error) {
       console.error("❌ Ошибка при поиске:", error);
       throw error;
     }
-  }
-
-  private transformFilmDto(film: Film): FilmDto {
-    return { id: film.id, nameRu: film.filmNameRu, nameEn: film.filmNameEn };
   }
 }

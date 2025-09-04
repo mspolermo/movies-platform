@@ -53,8 +53,8 @@ export const FilmsPage = () => {
           {films.map((film) => (
             <div key={film.id} className={styles.filmCard}>
               <div className={styles.filmPoster}>
-                {film.posterUrl ? (
-                  <img src={film.posterUrl} alt={film.filmNameRu} className={styles.poster} />
+                {film.smallPictureUrl ? (
+                  <img src={film.smallPictureUrl} alt={film.filmNameRu} className={styles.poster} />
                 ) : (
                   <div className={styles.posterPlaceholder}>
                     {film.filmNameRu.charAt(0)}
@@ -72,8 +72,8 @@ export const FilmsPage = () => {
                   {film.year && (
                     <span className={styles.filmYear}>{film.year}</span>
                   )}
-                  {film.duration && (
-                    <span className={styles.filmDuration}>{film.duration} мин</span>
+                  {film.movieLength && (
+                    <span className={styles.filmDuration}>{film.movieLength} мин</span>
                   )}
                 </div>
                 

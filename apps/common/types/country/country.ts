@@ -1,3 +1,5 @@
+import { TFilmBased } from "../film";
+
 export interface TCountryBased {
   id: number;
   countryName: string;
@@ -11,5 +13,5 @@ export interface TCountryCreationAtt extends Pick<TCountryBased, "countryName" |
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TCountryModel extends TCountryBased {
-  films?: any[]; // Связи Sequelize
+  films?: TFilmBased[]; // Связи Sequelize
 }

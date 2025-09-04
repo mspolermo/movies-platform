@@ -1,8 +1,6 @@
 import { Controller, HttpStatus } from "@nestjs/common";
-import { PersonsService } from "../persons/persons.service";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { FilmsService } from "./films.service";
-import { FilmDTO } from "./dto/filmDTO";
 import { UpdateFilmDTO } from "./dto/updateFilmDTO";
 
 @Controller("films")

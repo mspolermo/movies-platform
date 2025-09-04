@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { TProfessionModel } from "@common";
+import { TProfessionModel } from "@common/types";
 import { Profession } from "./professions.model";
 
 @Injectable()

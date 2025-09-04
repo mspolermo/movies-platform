@@ -1,5 +1,7 @@
 // Общие типы для Comment
 
+import { TFilmBased } from "../film";
+
 export interface TCommentBased {
   id: number;
   header: string;
@@ -17,5 +19,5 @@ export interface TCommentCreationAtt extends Pick<TCommentBased, "header" | "val
 
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TCommentModel extends TCommentBased {
-  film?: any; // Связи Sequelize
+  film?: TFilmBased; // Связи Sequelize
 }

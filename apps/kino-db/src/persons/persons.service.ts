@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
-import { TProfessionModel, TProfessionBased } from "@common";
+import { TProfessionModel, TProfessionBased } from "@common/types";
 import { Profession } from "../professions/professions.model";
 
 @Injectable()

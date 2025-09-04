@@ -3,7 +3,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 import { RabbitMQConfig } from '../config';
-import { TProfessionBased } from '@common';
+import { TProfessionBased } from '@common/types';
 
 @Injectable()
 export class ProfessionsService implements OnModuleInit {

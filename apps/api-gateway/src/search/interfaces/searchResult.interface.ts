@@ -1,12 +1,11 @@
-import { FilmDto } from "../dto/film.dto";
-import { TGenreBased, TPersonBased } from "@common/types";
+import { TFilmBased, TGenreBased, TPersonBased } from "@common/types";
 
 /**
  * Результат поиска по фильмам, людям и жанрам
  */
 export interface SearchResult {
   /** Найденные фильмы */
-  films: FilmDto[];
+  films: TFilmBased[];
   /** Найденные люди */
   persons: TPersonBased[];
   /** Найденные жанры */
