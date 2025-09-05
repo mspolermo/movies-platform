@@ -20,9 +20,3 @@ export interface TFactModel extends TFactBased {
   film?: TFilmBased; // Связи Sequelize
 }
 
-// DTO для API
-export interface TFactDTO {
-  value: string;
-  type: string;
-  spoiler: boolean;
-}

@@ -3,7 +3,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
-import { UpdateFilmDTO } from "./dto";
+import { UpdateFilmDto } from "@common/dto";
 import { FilmFilters } from "./interfaces";
 import { TFilmBased } from "@common/types";
 
@@ -23,7 +23,7 @@ export class FilmsService implements OnModuleInit {
     return await firstValueFrom(this.clientData.send("getFilmById", id));
   }
 
-  async updateFilm(id: number, dto: UpdateFilmDTO): Promise<TFilmBased> {
+  async updateFilm(id: number, dto: UpdateFilmDto): Promise<TFilmBased> {
     return await firstValueFrom(
       this.clientData.send("updateFilm", { id, dto })
     );

@@ -8,7 +8,8 @@ import { Reflector } from "@nestjs/core";
 import { Observable } from "rxjs";
 import { JwtService } from "@nestjs/jwt";
 import { AUTH_ERROR } from "../constants/errors.constants";
-import { User, AuthenticatedRequest } from "../interfaces";
+import { AuthenticatedRequest } from "../interfaces";
+import { TUserBased } from "@common/types";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
 //  создание класса, который реализует интерфейс CanActivate,
@@ -82,7 +83,7 @@ export class JwtAuthGuard implements CanActivate {
       }
 
       // Создаем объект пользователя без ролей (роли будут получены позже)
-      const user: User = {
+      const user: TUserBased = {
         id: tokenPayload.sub,
         email: tokenPayload.email,
       };

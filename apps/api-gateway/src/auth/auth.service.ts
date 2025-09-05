@@ -9,7 +9,7 @@ import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { RabbitMQConfig } from "../config";
-import { AuthDto, CreateUserDto, OauthCreateUserDTO } from "./dto";
+import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 import { AuthResponse, RegistrationResponse } from "./interfaces";
 import { TUserBased } from "@common/types";
 
@@ -66,7 +66,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async outRegistrationUser(
-    dto: OauthCreateUserDTO
+    dto: OauthCreateUserDto
   ): Promise<RegistrationResponse> {
     try {
       const { user, token } = await firstValueFrom(

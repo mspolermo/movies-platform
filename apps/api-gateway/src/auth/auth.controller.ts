@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
-import { AuthDto, CreateUserDto, OauthCreateUserDTO } from "./dto";
+import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 import { ValidationPipe } from "../shared/pipes";
 import { JwtAuthGuard, Public } from "../shared/guards";
 import { AuthenticatedRequest } from "../shared/interfaces";
@@ -32,7 +32,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: "OAuth регистрация" })
   @UsePipes(ValidationPipe)
   @Post("/outRegistration")
-  async outRegistrationUser(@Body() dto: OauthCreateUserDTO) {
+  async outRegistrationUser(@Body() dto: OauthCreateUserDto) {
     return await this.authService.outRegistrationUser(dto);
   }
 

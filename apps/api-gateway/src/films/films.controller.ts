@@ -11,7 +11,8 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { FilmsService } from "./films.service";
-import { UpdateFilmDTO, SearchFilmsDto } from "./dto";
+import { UpdateFilmDto } from "@common/dto";
+import { SearchFilmsDto } from "./dto";
 import { Roles, RolesGuard, JwtAuthGuard } from "../shared/guards";
 
 @Controller("films")
@@ -45,7 +46,7 @@ export class FilmsController {
   @UseGuards(RolesGuard)
   @Roles("ADMIN")
   @Patch("/:id")
-  async updateFilm(@Param("id") id: number, @Body() dto: UpdateFilmDTO) {
+  async updateFilm(@Param("id") id: number, @Body() dto: UpdateFilmDto) {
     return await this.filmsService.updateFilm(id, dto);
   }
 

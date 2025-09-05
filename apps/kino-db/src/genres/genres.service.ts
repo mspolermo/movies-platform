@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Genre } from "./genres.model";
 import { Op } from "sequelize";
-import { GenreDTO } from "./dto/genreDTO";
+import { GenreDto } from "@common/dto";
 
 @Injectable()
 export class GenresService {
@@ -28,7 +28,7 @@ export class GenresService {
     return genres;
   }
 
-  async updateGenre(id: number, dto: GenreDTO) {
+  async updateGenre(id: number, dto: GenreDto) {
     const genre = await this.genreRepository.update(
       { nameRu: dto.nameRu, nameEn: dto.nameEn },
       { where: { id: id } }

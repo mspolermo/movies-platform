@@ -7,11 +7,9 @@ import {
 import { InjectModel } from "@nestjs/sequelize";
 import { User } from "./users.model";
 import { RolesService } from "../roles/roles.service";
-import { CreateUserDto } from "./dto/createUserDto";
 import * as bcrypt from "bcryptjs";
-import { AuthDto } from "./dto/auth.dto";
 import { JwtService } from "@nestjs/jwt";
-import { OauthCreateUserDTO } from "./dto/oauthCreateUserDTO";
+import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 
 @Injectable()
 export class UsersService {
@@ -41,7 +39,7 @@ export class UsersService {
     return this.createUserWithRole(dto, "USER");
   }
 
-  async oauthCreateUser(dto: OauthCreateUserDTO) {
+  async oauthCreateUser(dto: OauthCreateUserDto) {
     const candidate = await this.userRepository.findOne({
       where: { email: dto.email },
       include: { all: true },
@@ -57,7 +55,7 @@ export class UsersService {
   }
 
   async createUserWithRole(
-    dto: CreateUserDto | OauthCreateUserDTO,
+    dto: CreateUserDto | OauthCreateUserDto,
     roleName: string
   ) {
     const hashPassword = await bcrypt.hash(

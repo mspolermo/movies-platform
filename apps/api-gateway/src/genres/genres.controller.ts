@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { GenresService } from "./genres.service";
-import { GenreDTO } from "./dto";
+import { GenreDto } from "@common/dto";
 import { ValidationPipe } from "../shared/pipes";
 import { Roles, RolesGuard, JwtAuthGuard } from "../shared/guards";
 
@@ -35,7 +35,7 @@ export class GenresController {
   @Roles("ADMIN")
   @UsePipes(ValidationPipe)
   @Patch("/:id")
-  async updateGenre(@Param("id") id: number, @Body() dto: GenreDTO) {
+  async updateGenre(@Param("id") id: number, @Body() dto: GenreDto) {
     return await this.genresService.updateGenre(id, dto);
   }
 }

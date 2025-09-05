@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Fact } from "./facts.model";
-import { FactDTO } from "./dto/factDTO";
+import { FactDto } from "@common/dto";
 
 @Injectable()
 export class FactsService {
@@ -17,11 +17,11 @@ export class FactsService {
     return fact;
   }
 
-  async createFact(dto: FactDTO, filmId: number) {
+  async createFact(dto: FactDto, filmId: number) {
     await this.factRepository.create({ ...dto, filmId });
   }
 
-  async updateFact(dto: FactDTO, filmId: number) {
+  async updateFact(dto: FactDto, filmId: number) {
     console.log(dto);
     await this.factRepository.update({ ...dto }, { where: { filmId: filmId } });
   }

@@ -1,7 +1,7 @@
 import { Controller, HttpStatus } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { FilmsService } from "./films.service";
-import { UpdateFilmDTO } from "./dto/updateFilmDTO";
+import { UpdateFilmDto } from "@common/dto";
 
 @Controller("films")
 export class FilmsController {
@@ -13,7 +13,7 @@ export class FilmsController {
   }
 
   @MessagePattern("updateFilm")
-  async updateFilm(@Payload() data: { id: number; dto: UpdateFilmDTO }) {
+  async updateFilm(@Payload() data: { id: number; dto: UpdateFilmDto }) {
     const { id, dto } = data;
     await this.filmService.updateFilm(id, dto);
     return HttpStatus.OK;

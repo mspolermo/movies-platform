@@ -3,7 +3,7 @@ import { FilmsController } from "./films.controller";
 import { FilmsService } from "./films.service";
 import { Film } from "./films.model";
 import { Fact } from "../facts/facts.model";
-import { UpdateFilmDTO } from "./dto/updateFilmDTO";
+import { UpdateFilmDto } from "@common/dto";
 import { HttpStatus } from "@nestjs/common";
 
 describe("FilmsController", () => {
@@ -43,7 +43,7 @@ describe("FilmsController", () => {
     comments: [],
   };
 
-  const mockUpdateFilmDTO: UpdateFilmDTO = {
+  const mockUpdateFilmDto: UpdateFilmDto = {
     filmNameRu: "string",
     filmNameEn: "string",
   };
@@ -109,12 +109,12 @@ describe("FilmsController", () => {
 
       const result = await controller.updateFilm({
         id: mockFilm.id,
-        dto: mockUpdateFilmDTO,
+        dto: mockUpdateFilmDto,
       });
 
       expect(updateFilmSpy).toHaveBeenCalledWith(
         mockFilm.id,
-        mockUpdateFilmDTO
+        mockUpdateFilmDto
       );
       expect(result).toBe(HttpStatus.OK);
     });

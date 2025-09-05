@@ -4,7 +4,7 @@ import { Person } from "../persons/persons.model";
 import { Film } from "./films.model";
 import { Country } from "../countries/countries.model";
 import { Genre } from "../genres/genres.model";
-import { UpdateFilmDTO } from "./dto/updateFilmDTO";
+import { UpdateFilmDto } from "@common/dto";
 import { Profession } from "../professions/professions.model";
 import { Fact } from "../facts/facts.model";
 import { Op, Sequelize } from "sequelize";
@@ -69,7 +69,7 @@ export class FilmsService {
     return films;
   }
 
-  async updateFilm(id: number, dto: UpdateFilmDTO) {
+  async updateFilm(id: number, dto: UpdateFilmDto) {
     const film = await this.filmRepository.findByPk(id);
     if (!film) {
       throw new Error(`Film with id ${id} not found`);

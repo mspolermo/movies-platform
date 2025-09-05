@@ -1,7 +1,7 @@
 import { Controller, HttpStatus } from "@nestjs/common";
 import { GenresService } from "./genres.service";
 import { MessagePattern, Payload } from "@nestjs/microservices";
-import { GenreDTO } from "./dto/genreDTO";
+import { GenreDto } from "@common/dto";
 
 @Controller("genres")
 export class GenresController {
@@ -18,7 +18,7 @@ export class GenresController {
   }
 
   @MessagePattern("updateGenre")
-  async updateGenre(@Payload() data: { id: number; dto: GenreDTO }) {
+  async updateGenre(@Payload() data: { id: number; dto: GenreDto }) {
     const { id, dto } = data;
     await this.genresService.updateGenre(id, dto);
     return HttpStatus.OK;
