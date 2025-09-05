@@ -17,11 +17,11 @@ export class Role extends Model<TRoleBased, TRoleCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
-  value: string;
+  value!: string;
 
   @BelongsToMany(() => User, () => UserRoles)
-  users: User[];
+  users!: User[];
 }

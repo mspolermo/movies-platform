@@ -16,23 +16,23 @@ export class CommentsService {
       value: dto.value,
       authorId: userId,
       nickName: dto.nickName,
-      parentId: dto.parentId,
+      parentId: dto.parentId || null,
       filmId: filmId,
     });
     return comment;
   }
 
-  async getAllCommentsByFilmId(id: number): Promise<TCommentBased[][]> {
+  async getAllCommentsByFilmId(id: number): Promise<TCommentBased[][] | null> {
     const comments = await this.commentRepository.findAll({
       where: {
         filmId: id,
       },
     });
 
-    const sorting = [];
+    const sorting: TCommentBased[][] = [];
 
     for (let i = 0; i < comments.length; i++) {
-      const childrenComments = [];
+      const childrenComments: TCommentBased[] = [];
 
       if (comments[i].parentId === null) {
         for (let j = 0; j < comments.length; j++) {
@@ -41,11 +41,11 @@ export class CommentsService {
           }
         }
 
-        sorting.push([comments[i], childrenComments]);
+        sorting.push([comments[i], ...childrenComments]);
       }
     }
 
-    if (!sorting) {
+    if (sorting.length === 0) {
       return null;
     }
     return sorting;

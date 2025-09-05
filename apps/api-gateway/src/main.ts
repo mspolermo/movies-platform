@@ -4,8 +4,9 @@ import { SwaggerModule } from "@nestjs/swagger";
 import { ConfigService } from "@nestjs/config";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
 import { GlobalExceptionFilter } from "./shared/filters";
+import { INestApplication } from "@nestjs/common";
 
-let app: any = null;
+let app: INestApplication | null = null;
 
 async function bootstrap() {
   app = await NestFactory.create(AppModule);
@@ -17,7 +18,8 @@ async function bootstrap() {
   app.enableCors(getCorsConfig(configService));
 
   // Настройка для правильной обработки query параметров
-  app.set('query parser', 'extended');
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.set('query parser', 'extended');
 
   // Middleware для исправления кодировки UTF-8
   app.use(getEncodingMiddleware());

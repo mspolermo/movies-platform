@@ -19,16 +19,16 @@ export class Genre extends Model<TGenreModel, TGenreCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({ example: "драма", description: "Имя жанра на русском" })
   @Column({ type: DataType.STRING, unique: true })
-  nameRu: string;
+  nameRu!: string;
 
   @ApiProperty({ example: "drama", description: "Имя жанра нв английском" })
   @Column({ type: DataType.STRING, unique: true })
-  nameEn: string;
+  nameEn!: string;
 
   @BelongsToMany(() => Film, () => FilmGenre)
-  films: Film[];
+  films!: Film[];
 }

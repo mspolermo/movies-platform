@@ -5,6 +5,15 @@ import { ConfigService } from '@nestjs/config';
 import { RabbitMQConfig } from '../config';
 import { TProfessionBased } from '@common/types';
 
+interface ClientProxyWithClosed extends ClientProxy {
+  _closed?: boolean;
+}
+
+// Type guard для проверки ClientProxy с закрытым соединением
+function hasClosedProperty(client: ClientProxy): client is ClientProxyWithClosed {
+  return '_closed' in client;
+}
+
 @Injectable()
 export class ProfessionsService implements OnModuleInit {
   private clientData: ClientProxy;
@@ -17,11 +26,18 @@ export class ProfessionsService implements OnModuleInit {
     await RabbitMQConfig.connectWithRetry(this.clientData, 'Professions Service');
   }
 
-  async getAllProfessions() {
+  async getAllProfessions(): Promise<TProfessionBased[]> {
     return await firstValueFrom<TProfessionBased[]>(this.clientData.send('getAll.professions', {}));
   }
 
   isConnected(): boolean {
-    return this.clientData && !this.clientData['_closed'];
+    // TODO: такая же логика есть в persons.service.ts
+    if (!this.clientData) return false;
+    
+    if (hasClosedProperty(this.clientData)) {
+      return !this.clientData._closed;
+    }
+    
+    return true; // Если нет свойства _closed, считаем соединение активным
   }
 }

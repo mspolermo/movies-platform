@@ -83,7 +83,7 @@ export class FilmsService {
     return film;
   }
 
-  async getAllFilms() {
+  async getAllFilms(): Promise<Film[]> {
     const films = await this.filmRepository.findAll();
     return films;
   }
@@ -135,7 +135,13 @@ export class FilmsService {
     sortBy?: string,
     year?: number
   ) {
-    const include = [];
+    const include: Array<{
+      model: typeof Genre | typeof Country | typeof Person;
+      where?: {
+        [Op.or]?: Array<{ nameRu?: string[]; nameEn?: string[]; countryName?: string[] }>;
+        countryName?: string[];
+      };
+    }> = [];
     if (genres) {
       include.push({
         model: Genre,
@@ -155,7 +161,7 @@ export class FilmsService {
         },
       });
 
-    const order = [];
+    const order: [string, string][] = [];
     if (sortBy === "rating") {
       order.push(["ratingKp", "DESC"]);
     } else if (sortBy === "novelty") {
@@ -166,7 +172,11 @@ export class FilmsService {
       order.push(["votesKp", "DESC"]);
     }
 
-    const where: any = {
+    const where: {
+      ratingKp?: { [Op.gte]: number };
+      votesKp?: { [Op.gte]: number };
+      year?: number;
+    } = {
       ratingKp: { [Op.gte]: minRatingKp },
       votesKp: { [Op.gte]: minVotesKp },
     };
@@ -184,7 +194,7 @@ export class FilmsService {
     return films;
   }
 
-  async getAllFilmYears() {
+  async getAllFilmYears(): Promise<number[]> {
     const years = await this.filmRepository.findAll({
       attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("year")), "year"]],
       order: [[Sequelize.col("year"), "ASC"]],

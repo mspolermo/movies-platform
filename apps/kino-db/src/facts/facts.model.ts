@@ -17,21 +17,21 @@ export class Fact extends Model<TFactModel, TFactCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @Column({ type: DataType.STRING, unique: true })
-  value: string;
+  value!: string;
 
   @Column({ type: DataType.STRING, unique: true })
-  type: string;
+  type!: string;
 
-  @Column({ type: DataType.STRING, unique: true })
-  spoiler: boolean;
+  @Column({ type: DataType.BOOLEAN, unique: true })
+  spoiler!: boolean;
 
   @ForeignKey(() => Film)
   @Column
-  filmId: number;
+  filmId!: number;
 
   @BelongsTo(() => Film)
-  film: Film;
+  film!: Film;
 }

@@ -12,8 +12,9 @@ export const getEncodingMiddleware = () => {
     // Исправляем кодировку query параметров
     if (req.query) {
       Object.keys(req.query).forEach(key => {
-        if (typeof req.query[key] === 'string') {
-          const originalValue = req.query[key] as string;
+        const queryValue = req.query[key];
+        if (typeof queryValue === 'string') {
+          const originalValue = queryValue;
           
           // Проверяем, нужно ли декодировать URL encoding
           if (originalValue.includes('%')) {

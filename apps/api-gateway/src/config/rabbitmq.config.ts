@@ -13,6 +13,10 @@ export class RabbitMQConfig {
     const rabbitmqUrl = configService.get<string>("RABBITMQ_URL");
     const filmsQueue = configService.get<string>("FILMS_QUEUE");
 
+    if (!rabbitmqUrl || !filmsQueue) {
+      throw new Error("RABBITMQ_URL and FILMS_QUEUE must be defined");
+    }
+
     return ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
@@ -31,6 +35,10 @@ export class RabbitMQConfig {
   static createAuthUsersClient(configService: ConfigService): ClientProxy {
     const rabbitmqUrl = configService.get<string>("RABBITMQ_URL");
     const usersQueue = configService.get<string>("USERS_QUEUE");
+
+    if (!rabbitmqUrl || !usersQueue) {
+      throw new Error("RABBITMQ_URL and USERS_QUEUE must be defined");
+    }
 
     return ClientProxyFactory.create({
       transport: Transport.RMQ,

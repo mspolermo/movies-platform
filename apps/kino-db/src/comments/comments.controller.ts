@@ -17,7 +17,7 @@ export class CommentsController {
   }
 
   @MessagePattern("getCommentsByFilmId")
-  async getCommentsByFilmId(@Payload() id: number): Promise<TCommentBased[][]> {
+  async getCommentsByFilmId(@Payload() id: number): Promise<TCommentBased[][] | null> {
     return await this.commentService.getAllCommentsByFilmId(id);
   }
 }

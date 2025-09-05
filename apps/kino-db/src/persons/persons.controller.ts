@@ -23,4 +23,9 @@ export class PersonsController {
     const { id, name } = data;
     return await this.personsService.findPersonsByNameAndProfession(name, id);
   }
+
+  @MessagePattern("searchPersonsByName")
+  async searchPersonsByName(@Payload() name: string) {
+    return await this.personsService.findPersonsByNameAndProfession(name);
+  }
 }

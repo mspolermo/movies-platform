@@ -5,6 +5,15 @@ import { ConfigService } from "@nestjs/config";
 import { RabbitMQConfig } from "../config";
 import { TPersonBased } from "@common/types";
 
+interface ClientProxyWithClosed extends ClientProxy {
+  _closed?: boolean;
+}
+
+// Type guard для проверки ClientProxy с закрытым соединением
+function hasClosedProperty(client: ClientProxy): client is ClientProxyWithClosed {
+  return '_closed' in client;
+}
+
 @Injectable()
 export class PersonsService implements OnModuleInit {
   private clientData: ClientProxy;
@@ -38,6 +47,13 @@ export class PersonsService implements OnModuleInit {
   }
 
   isConnected(): boolean {
-    return this.clientData && !this.clientData['_closed'];
+    // TODO: такая же логика есть в professions.service.ts
+    if (!this.clientData) return false;
+    
+    if (hasClosedProperty(this.clientData)) {
+      return !this.clientData._closed;
+    }
+    
+    return true; // Если нет свойства _closed, считаем соединение активным
   }
 }

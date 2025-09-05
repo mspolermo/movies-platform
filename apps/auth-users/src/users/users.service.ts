@@ -67,6 +67,9 @@ export class UsersService {
       password: hashPassword,
     });
     const role = await this.roleService.getRoleByValue(roleName);
+    if (!role) {
+      throw new Error(`Role ${roleName} not found`);
+    }
     await user.$set("roles", [role.id]);
     user.roles = [role];
     const token = await this.generateToken(user);

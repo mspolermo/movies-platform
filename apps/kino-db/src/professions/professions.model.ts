@@ -17,11 +17,11 @@ export class Profession extends Model<TProfessionBased, TProfessionCreationAtt> 
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @Column({ type: DataType.STRING, unique: true })
-  name: string;
+  name!: string;
 
   @BelongsToMany(() => Person, () => PersonProfession)
-  persons: Person[];
+  persons!: Person[];
 }

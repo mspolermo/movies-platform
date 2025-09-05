@@ -12,6 +12,11 @@ import { AuthenticatedRequest } from "../interfaces";
 import { TUserBased } from "@common/types";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
+interface JWTError extends Error {
+  name: string;
+  message: string;
+}
+
 //  создание класса, который реализует интерфейс CanActivate,
 //  используемый для реализации стратегии защиты маршрута.
 @Injectable()
@@ -95,21 +100,23 @@ export class JwtAuthGuard implements CanActivate {
         throw e;
       }
 
-      if (e.name === "TokenExpiredError") {
+      const jwtError = e as JWTError;
+      
+      if (jwtError?.name === "TokenExpiredError") {
         console.log("🔐 JWT Guard: Токен истек");
         throw new UnauthorizedException({
           message: "Токен истек",
         });
       }
 
-      if (e.name === "JsonWebTokenError") {
+      if (jwtError?.name === "JsonWebTokenError") {
         console.log("🔐 JWT Guard: Неверный формат токена");
         throw new UnauthorizedException({
           message: "Неверный формат токена",
         });
       }
 
-      console.log("🔐 JWT Guard: Ошибка при проверке токена:", e.message);
+      console.log("🔐 JWT Guard: Ошибка при проверке токена:", jwtError?.message || e);
       throw new UnauthorizedException({
         message: AUTH_ERROR,
       });

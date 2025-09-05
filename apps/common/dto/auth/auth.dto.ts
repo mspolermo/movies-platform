@@ -7,11 +7,11 @@ import { ApiProperty } from "@nestjs/swagger";
 export class AuthDto {
   @IsString({ message: "Email должен быть строкой" })
   @IsEmail({}, { message: "Некорректный email" })
-  readonly email: string;
+  readonly email!: string;
 
   @IsString({ message: "Пароль должен быть строкой" })
   @Length(4, 16, { message: "Пароль должен быть от 4 до 16 символов" })
-  readonly password: string;
+  readonly password!: string;
 }
 
 /**
@@ -23,12 +23,12 @@ export class CreateUserDto {
     description: "Email пользователя",
   })
   @IsEmail({}, { message: "Некорректный email" })
-  readonly email: string;
+  readonly email!: string;
 
   @ApiProperty({ example: "123456", description: "Пароль пользователя" })
   @IsString({ message: "Пароль должен быть строкой" })
   @MinLength(6, { message: "Пароль должен быть не менее 6 символов" })
-  readonly password: string;
+  readonly password!: string;
 
   @IsOptional()
   @IsString({ message: "Имя должно быть строкой" })
@@ -41,5 +41,5 @@ export class CreateUserDto {
 export class OauthCreateUserDto {
   @IsString({ message: "Email должен быть строкой" })
   @IsEmail({}, { message: "Некорректный email" })
-  readonly email: string;
+  readonly email!: string;
 }

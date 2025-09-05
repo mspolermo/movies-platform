@@ -8,7 +8,7 @@ export interface TCommentBased {
   value: string;
   authorId: number;
   nickName: string;
-  parentId: number;
+  parentId: number | null;
   filmId: number;
   createdAt?: Date;
   updatedAt?: Date;

@@ -19,39 +19,39 @@ export class Comment extends Model<TCommentBased, TCommentCreationAtt> implement
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({ example: "Заголовок", description: "Заголовок комента" })
   @Column({ type: DataType.STRING })
-  header: string;
+  header!: string;
 
   @ApiProperty({ example: "Текст", description: "Текст комента" })
   @Column({ type: DataType.STRING })
-  value: string;
+  value!: string;
 
   @ApiProperty({ example: "1", description: "id user который написал комент" })
   @Column({ type: DataType.INTEGER })
-  authorId: number;
+  authorId!: number;
 
   @ApiProperty({
     example: "1",
     description: "id user комента к которому пишется коментт",
   })
   @Column({ type: DataType.INTEGER })
-  parentId: number;
+  parentId!: number;
 
   @ApiProperty({ description: "дата создания комента" })
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  createdAt: Date;
+  createdAt!: Date;
 
   @ApiProperty({ description: "никнейм юзера" })
   @Column({ type: DataType.STRING })
-  nickName: string;
+  nickName!: string;
 
   @ForeignKey(() => Film)
   @Column
-  filmId: number;
+  filmId!: number;
 
   @BelongsTo(() => Film)
-  film: Film;
+  film!: Film;
 }

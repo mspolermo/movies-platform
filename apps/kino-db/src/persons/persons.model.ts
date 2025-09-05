@@ -22,23 +22,23 @@ export class Person extends Model<TPersonModel, TPersonCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({ description: "url фотографии" })
   @Column({ type: DataType.STRING, unique: true })
-  photoUrl: string;
+  photoUrl!: string;
 
   @ApiProperty({ example: "Энди", description: "Имя на русском" })
   @Column({ type: DataType.STRING, unique: true })
-  nameRu: string;
+  nameRu!: string;
 
   @ApiProperty({ example: "Andy", description: "Имя на английском" })
   @Column({ type: DataType.STRING, unique: true })
-  nameEn: string;
+  nameEn!: string;
 
   @BelongsToMany(() => Profession, () => PersonProfession)
-  professions: Profession[];
+  professions!: Profession[];
 
   @BelongsToMany(() => Film, () => FilmPerson)
-  films: Film[];
+  films!: Film[];
 }

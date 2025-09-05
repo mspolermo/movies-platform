@@ -13,11 +13,18 @@ async function bootstrap() {
   });
 
   // Создаем микросервис
+  const rabbitmqUrl = process.env.RABBITMQ_URL;
+  const filmsQueue = process.env.FILMS_QUEUE;
+  
+  if (!rabbitmqUrl || !filmsQueue) {
+    throw new Error("RABBITMQ_URL and FILMS_QUEUE must be defined");
+  }
+  
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: [process.env.RABBITMQ_URL],
-      queue: process.env.FILMS_QUEUE,
+      urls: [rabbitmqUrl],
+      queue: filmsQueue,
       queueOptions: {
         durable: false,
       },

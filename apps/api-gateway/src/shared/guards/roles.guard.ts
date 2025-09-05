@@ -12,6 +12,10 @@ import { ACCESS_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
 import { UserRolesService } from "../../user-roles";
 
+interface ErrorWithMessage {
+  message: string;
+}
+
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
@@ -82,7 +86,8 @@ export class RolesGuard implements CanActivate {
         throw e;
       }
 
-      console.log("🔒 RolesGuard: Ошибка при проверке ролей:", e.message);
+      const errorWithMessage = e as ErrorWithMessage;
+      console.log("🔒 RolesGuard: Ошибка при проверке ролей:", errorWithMessage?.message || e);
       throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
     }
   }

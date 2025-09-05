@@ -5,11 +5,11 @@ import { IsString, IsBoolean } from "class-validator";
  */
 export class FactDto {
   @IsString({ message: "Значение факта должно быть строкой" })
-  value: string;
+  value!: string;
   
   @IsString({ message: "Тип факта должен быть строкой" })
-  type: string;
+  type!: string;
   
   @IsBoolean({ message: "Поле спойлера должно быть булевым" })
-  spoiler: boolean;
+  spoiler!: boolean;
 }

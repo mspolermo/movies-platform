@@ -10,16 +10,26 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
       {
         name: "FILMS_CLIENT",
         imports: [ConfigModule],
-        useFactory: async (configService: ConfigService) => ({
-          transport: Transport.RMQ,
-          options: {
-            urls: [configService.get<string>("RABBITMQ_URL")],
-            queue: configService.get<string>("FILMS_QUEUE"),
-            queueOptions: {
-              durable: false,
+        useFactory: async (configService: ConfigService) => {
+          //TODO: вынести в общую логику по подключению к RabbitMQ
+          const rabbitmqUrl = configService.get<string>("RABBITMQ_URL");
+          const filmsQueue = configService.get<string>("FILMS_QUEUE");
+          
+          if (!rabbitmqUrl || !filmsQueue) {
+            throw new Error("RABBITMQ_URL and FILMS_QUEUE must be defined");
+          }
+          
+          return {
+            transport: Transport.RMQ,
+            options: {
+              urls: [rabbitmqUrl],
+              queue: filmsQueue,
+              queueOptions: {
+                durable: false,
+              },
             },
-          },
-        }),
+          };
+        },
         inject: [ConfigService],
       },
     ]),

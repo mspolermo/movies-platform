@@ -1,5 +1,5 @@
-import { Controller, Get, Param, UseGuards } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
 import { PersonsService } from "./persons.service";
 import { JwtAuthGuard } from "../shared/guards";
 
@@ -23,5 +23,18 @@ export class PersonsController {
   @Get("/:id")
   async getPersonById(@Param("id") id: number) {
     return await this.personsService.getPersonById(id);
+  }
+
+  @ApiOperation({ summary: "Поиск людей по имени и профессии" })
+  @ApiResponse({ status: 200, description: "Список найденных людей" })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
+  @ApiQuery({ name: "name", required: false, description: "Имя человека" })
+  @ApiQuery({ name: "professionId", required: false, description: "ID профессии" })
+  @Get("search/find")
+  async findPersonsByNameAndProfession(
+    @Query("name") name?: string,
+    @Query("professionId") professionId?: number
+  ) {
+    return await this.personsService.findPersonsByNameAndProfession(name, professionId);
   }
 }

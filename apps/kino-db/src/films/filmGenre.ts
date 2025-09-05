@@ -12,9 +12,9 @@ import { Genre } from "../genres/genres.model";
 export class FilmGenre extends Model<FilmGenre> {
   @ForeignKey(() => Film)
   @Column({ type: DataType.INTEGER })
-  A: number;
+  A!: number;
 
   @ForeignKey(() => Genre)
   @Column({ type: DataType.INTEGER })
-  B: number;
+  B!: number;
 }

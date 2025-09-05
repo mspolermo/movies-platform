@@ -13,6 +13,11 @@ import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 import { AuthResponse, RegistrationResponse } from "./interfaces";
 import { TUserBased } from "@common/types";
 
+interface ServiceError {
+  message?: string;
+  status?: string;
+}
+
 @Injectable()
 export class AuthService implements OnModuleInit {
   private clientUsers: ClientProxy;
@@ -34,15 +39,17 @@ export class AuthService implements OnModuleInit {
         this.clientUsers.send("registration", dto)
       );
       return { User: user, role: user.roles, token: token };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("❌ Ошибка регистрации:", error);
 
-      // Маппинг ошибок от auth-users сервиса
+      const serviceError = error as ServiceError;
+      const errorMessage = serviceError?.message;
+      const errorStatus = serviceError?.status;
+      
       if (
-        error?.message?.includes("уже зарегистрирован") ||
-        error?.message?.includes("already registered") ||
-        (error?.status === "error" &&
-          error?.message?.includes("Internal server error"))
+        errorMessage?.includes("уже зарегистрирован") ||
+        errorMessage?.includes("already registered") ||
+        (errorStatus === "error" && errorMessage?.includes("Internal server error"))
       ) {
         throw new ConflictException(
           "Пользователь с таким email уже зарегистрирован"
@@ -50,15 +57,10 @@ export class AuthService implements OnModuleInit {
       }
 
       if (
-        error?.message?.includes("некорректный") ||
-        error?.message?.includes("invalid")
+        errorMessage?.includes("некорректный") ||
+        errorMessage?.includes("invalid")
       ) {
         throw new UnauthorizedException("Некорректные данные для регистрации");
-      }
-
-      // Если это объект с ошибкой, извлекаем сообщение
-      if (error && typeof error === "object" && "message" in error) {
-        throw new Error(error.message as string);
       }
 
       throw error;
@@ -73,13 +75,15 @@ export class AuthService implements OnModuleInit {
         this.clientUsers.send("outRegistration", dto)
       );
       return { User: user, role: user.roles, token: token };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("❌ Ошибка OAuth регистрации:", error);
 
-      // Маппинг ошибок от auth-users сервиса
+      const serviceError = error as ServiceError;
+      const errorMessage = serviceError?.message;
+      
       if (
-        error?.message?.includes("уже зарегистрирован") ||
-        error?.message?.includes("already registered")
+        errorMessage?.includes("уже зарегистрирован") ||
+        errorMessage?.includes("already registered")
       ) {
         throw new ConflictException(
           "Пользователь с таким email уже зарегистрирован"
@@ -104,17 +108,19 @@ export class AuthService implements OnModuleInit {
     } catch (error) {
       console.error("❌ Ошибка входа:", error);
 
-      // Маппинг ошибок от auth-users сервиса
+      const serviceError = error as ServiceError;
+      const errorMessage = serviceError?.message;
+      
       if (
-        error?.message?.includes("неверный пароль") ||
-        error?.message?.includes("wrong password")
+        errorMessage?.includes("неверный пароль") ||
+        errorMessage?.includes("wrong password")
       ) {
         throw new UnauthorizedException("Неверный email или пароль");
       }
 
       if (
-        error?.message?.includes("пользователь не найден") ||
-        error?.message?.includes("user not found")
+        errorMessage?.includes("пользователь не найден") ||
+        errorMessage?.includes("user not found")
       ) {
         throw new UnauthorizedException("Пользователь не найден");
       }

@@ -13,9 +13,9 @@ import { Person } from "./persons.model";
 export class PersonProfession extends Model<PersonProfession> {
   @ForeignKey(() => Person)
   @Column({ type: DataType.INTEGER })
-  A: number;
+  A!: number;
 
   @ForeignKey(() => Profession)
   @Column({ type: DataType.INTEGER })
-  B: number;
+  B!: number;
 }

@@ -17,14 +17,14 @@ export class Country extends Model<TCountryModel, TCountryCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @Column({ type: DataType.STRING, unique: true })
-  countryName: string;
+  countryName!: string;
 
   @Column({ type: DataType.STRING, unique: true })
-  countryNameEn: string;
+  countryNameEn!: string;
 
   @BelongsToMany(() => Film, () => FilmCountry)
-  films: Film[];
+  films!: Film[];
 }

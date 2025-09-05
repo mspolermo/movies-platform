@@ -7,8 +7,8 @@ import { TGenreCreationAtt } from "@common/types";
  */
 export class GenreDto implements TGenreCreationAtt {
   @IsString({ message: "Название на русском должно быть строкой" })
-  nameRu: string;
+  nameRu!: string;
   
   @IsString({ message: "Название на английском должно быть строкой" })
-  nameEn: string;
+  nameEn!: string;
 }

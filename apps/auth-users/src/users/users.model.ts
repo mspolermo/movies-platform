@@ -19,16 +19,16 @@ export class User extends Model<TUserBased, TUserCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({ example: "email@mail.com", description: "почта" })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
-  email: string;
+  email!: string;
 
   @ApiProperty({ example: "12345", description: "пароль" })
   @Column({ type: DataType.STRING, allowNull: false })
-  password: string;
+  password!: string;
 
   @BelongsToMany(() => Role, () => UserRoles)
-  roles: Role[];
+  roles!: Role[];
 }

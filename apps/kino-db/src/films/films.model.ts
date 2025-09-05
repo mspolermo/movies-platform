@@ -27,114 +27,114 @@ export class Film extends Model<TFilmModel, TFilmCreationAtt> {
     autoIncrement: true,
     primaryKey: true,
   })
-  id: number;
+  id!: number;
 
   @ApiProperty({ example: "имя", description: "Имя трейлера" })
   @Column({ type: DataType.STRING })
-  trailerName: string;
+  trailerName!: string;
 
   @ApiProperty({ example: "url", description: "url трейлера" })
   @Column({ type: DataType.STRING })
-  trailerUrl: string;
+  trailerUrl!: string;
 
   @ApiProperty({ example: "8.4", description: "рейтинг кинопоиска" })
   @Column({ type: DataType.DOUBLE })
-  ratingKp: number;
+  ratingKp!: number;
 
   @ApiProperty({ example: "110", description: "кол-во голосов" })
   @Column({ type: DataType.INTEGER })
-  votesKp: number;
+  votesKp!: number;
 
   @ApiProperty({ example: "8.4", description: "рейтинг imdb" })
   @Column({ type: DataType.DOUBLE })
-  ratingImdb: number;
+  ratingImdb!: number;
 
   @ApiProperty({ example: "110", description: "кол-во голосов" })
   @Column({ type: DataType.INTEGER })
-  votesImdb: number;
+  votesImdb!: number;
 
   @ApiProperty({ example: "5", description: "рейтинг критиков" })
   @Column({ type: DataType.DOUBLE })
-  ratingFilmCritics: number;
+  ratingFilmCritics!: number;
 
   @ApiProperty({ example: "110", description: "кол-во голосов критиков" })
   @Column({ type: DataType.INTEGER })
-  votesFilmCritics: number;
+  votesFilmCritics!: number;
 
   @ApiProperty({ example: "5", description: "рейтинг критиков" })
   @Column({ type: DataType.DOUBLE })
-  ratingRussianFilmCritics: number;
+  ratingRussianFilmCritics!: number;
 
   @ApiProperty({ example: "110", description: "кол-во голосов критиков" })
   @Column({ type: DataType.INTEGER })
-  votesRussianFilmCritics: number;
+  votesRussianFilmCritics!: number;
 
   @ApiProperty({ example: "110", description: "длительнотсь фильма" })
   @Column({ type: DataType.INTEGER })
-  movieLength: number;
+  movieLength!: number;
 
   @ApiProperty({ example: "eng", description: "язык оригинала фильма" })
   @Column({ type: DataType.STRING })
-  originalFilmLanguage: string;
+  originalFilmLanguage!: string;
 
   @ApiProperty({ example: "имя", description: "Имя фильма русское" })
   @Column({ type: DataType.STRING })
-  filmNameRu: string;
+  filmNameRu!: string;
 
   @ApiProperty({ example: "name", description: "Имя фильма английское" })
   @Column({ type: DataType.STRING })
-  filmNameEn: string;
+  filmNameEn!: string;
 
   @ApiProperty({ example: "описание", description: "описание фильма" })
   @Column({ type: DataType.STRING })
-  description: string;
+  description!: string;
 
   @ApiProperty({ example: "1.10.2020", description: "дата приемьеры фильма" })
   @Column({ type: DataType.STRING })
-  premiereCountry: string;
+  premiereCountry!: string;
 
   @ApiProperty({ example: "слоган", description: "слоган фильма" })
   @Column({ type: DataType.STRING })
-  slogan: string;
+  slogan!: string;
 
   @ApiProperty({ example: "url", description: "url картинки фильма" })
   @Column({ type: DataType.STRING })
-  bigPictureUrl: string;
+  bigPictureUrl!: string;
 
   @ApiProperty({ example: "url", description: "url картинки фильма" })
   @Column({ type: DataType.STRING })
-  smallPictureUrl: string;
+  smallPictureUrl!: string;
 
   @ApiProperty({ example: "2022", description: "год создания фильма" })
   @Column({ type: DataType.INTEGER })
-  year: number;
+  year!: number;
 
   @ApiProperty({ example: "1", description: "номер в топ10" })
   @Column({ type: DataType.INTEGER })
-  top10: number;
+  top10!: number;
 
   @ApiProperty({ example: "1", description: "номер в топ250" })
   @Column({ type: DataType.INTEGER })
-  top250: number;
+  top250!: number;
 
   @Column({ type: DataType.DATE })
-  premiereWorldDate: Date;
+  premiereWorldDate!: Date;
 
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  createdAt: Date;
+  createdAt!: Date;
 
   @BelongsToMany(() => Person, () => FilmPerson)
-  persons: Person[];
+  persons!: Person[];
 
   @BelongsToMany(() => Country, () => FilmCountry)
-  countries: Country[];
+  countries!: Country[];
 
   @BelongsToMany(() => Genre, () => FilmGenre)
-  genres: Genre[];
+  genres!: Genre[];
 
   @HasOne(() => Fact)
-  fact: Fact;
+  fact!: Fact;
 
   @HasMany(() => Comment)
-  comments: Comment;
+  comments!: Comment;
 }
