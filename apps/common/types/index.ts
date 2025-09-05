@@ -7,3 +7,5 @@ export * from './profession';
 export * from './fact';
 export * from './comment';
 export * from './film';
+export * from './role';
+export * from './user';

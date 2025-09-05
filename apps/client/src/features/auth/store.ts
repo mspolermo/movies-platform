@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, LoginRequest, LoginResponse } from '@/shared/types';
+import { LoginRequest, LoginResponse } from '@/shared/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { TUserBased } from '@common/types';
 
 interface AuthState {
-  user: User | null;
+  user: TUserBased | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -47,7 +48,7 @@ export const useAuthStore = create<AuthStore>()(
           const { token, email, userId, role } = response.data;
 
           // Создаем объект пользователя из ответа API
-          const user: User = {
+          const user: TUserBased = {
             id: userId,
             email,
             roles: role,

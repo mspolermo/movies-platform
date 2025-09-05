@@ -11,7 +11,7 @@ import { JwtService } from "@nestjs/jwt";
 import { RabbitMQConfig } from "../config";
 import { AuthDto, CreateUserDto, OauthCreateUserDTO } from "./dto";
 import { AuthResponse, RegistrationResponse } from "./interfaces";
-import { User } from "../shared/interfaces";
+import { TUserBased } from "@common/types";
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -123,11 +123,11 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async checkToken(user: User): Promise<User> {
+  async checkToken(user: TUserBased): Promise<TUserBased> {
     return user;
   }
 
-  async refreshToken(user: User): Promise<{ token: string }> {
+  async refreshToken(user: TUserBased): Promise<{ token: string }> {
     try {
       // Генерируем новый токен только с необходимыми данными
       const payload = {

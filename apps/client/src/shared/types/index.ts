@@ -1,20 +1,7 @@
-import { TGenreBased, TPersonBased, TCountryBased, TCommentBased, TFilmBased } from '@common/types';
+import { TGenreBased, TPersonBased, TCountryBased, TFilmBased, TRoleBased } from '@common/types';
 
 // Основные типы данных
-export interface User {
-  id: number;
-  email: string;
-  name?: string;
-  roles?: Role[];
-}
 
-export interface Role {
-  id: number;
-  name: string;
-  value: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 // Используем общий тип Film из @common
 export interface Film extends TFilmBased {
@@ -22,11 +9,6 @@ export interface Film extends TFilmBased {
   countries?: TCountryBased[];
   persons?: TPersonBased[];
 }
-
-
-
-// Используем общий тип Comment из @common
-export type Comment = TCommentBased;
 
 // API типы
 export interface ApiResponse<T> {
@@ -42,7 +24,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   email: string;
   userId: number;
-  role: Role[];
+  role: TRoleBased[];
   token: {
     token: string;
   };

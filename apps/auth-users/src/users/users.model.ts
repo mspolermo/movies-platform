@@ -8,14 +8,10 @@ import {
 import { Role } from "../roles/roles.model";
 import { UserRoles } from "../roles/user-role";
 import { ApiProperty } from "@nestjs/swagger";
-
-interface UserCreationAtt {
-  email: string;
-  password: string;
-}
+import { TUserBased, TUserCreationAtt } from "@common/types";
 
 @Table({ tableName: "users" })
-export class User extends Model<User, UserCreationAtt> {
+export class User extends Model<TUserBased, TUserCreationAtt> {
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,

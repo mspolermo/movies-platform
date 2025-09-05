@@ -49,15 +49,3 @@ process.on("SIGTERM", async () => {
     process.exit(1);
   }
 });
-
-process.on("SIGINT", async () => {
-  console.log("🔄 Получен сигнал SIGINT, закрываю приложение...");
-  try {
-    await app?.close();
-    console.log("✅ Приложение успешно закрыто");
-    process.exit(0);
-  } catch (error) {
-    console.error("❌ Ошибка при закрытии приложения:", error);
-    process.exit(1);
-  }
-});

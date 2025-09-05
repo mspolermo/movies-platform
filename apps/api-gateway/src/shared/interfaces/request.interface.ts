@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { User } from "./user.interface";
+import { TUserBased } from "@common/types";
 
 export interface AuthenticatedRequest extends Request {
-  user: User;
+  user: TUserBased;
 }

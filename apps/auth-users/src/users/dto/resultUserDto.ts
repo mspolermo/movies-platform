@@ -1,5 +1,10 @@
-export class ResultUsersDto {
+import { TUserResult } from "@common/types";
+
+export class ResultUsersDto implements TUserResult {
   id: number;
   email: string;
-  roles: { id: number; value: string }[];
+  name?: string;
+  roles?: { id: number; value: string }[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }

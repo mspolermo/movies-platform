@@ -39,7 +39,7 @@ export const ProfilePage = () => {
               <div className={styles.rolesList}>
                 {user.roles.map((role) => (
                   <span key={role.id} className={styles.role}>
-                    {role.name}
+                    {role.value}
                   </span>
                 ))}
               </div>

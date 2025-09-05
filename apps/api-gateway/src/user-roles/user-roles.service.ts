@@ -3,7 +3,7 @@ import { ClientProxy } from "@nestjs/microservices";
 import { ConfigService } from "@nestjs/config";
 import { firstValueFrom } from "rxjs";
 import { RabbitMQConfig } from "../config";
-import { User } from "../shared/interfaces";
+import { TUserBased } from "@common/types";
 
 @Injectable()
 export class UserRolesService implements OnModuleInit {
@@ -20,7 +20,7 @@ export class UserRolesService implements OnModuleInit {
     );
   }
 
-  async getUserWithRoles(userId: number): Promise<User> {
+  async getUserWithRoles(userId: number): Promise<TUserBased> {
     try {
       const user = await firstValueFrom(
         this.clientUsers.send("getUserById", userId)

@@ -1,8 +1,8 @@
-import { Role } from "../../shared";
+import { TRoleBased } from "@common/types";
 
 export interface AuthResponse {
   email: string;
   userId: number;
-  role: Role[];
+  role: TRoleBased[];
   token: string;
 }

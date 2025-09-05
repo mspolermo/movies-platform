@@ -1,7 +1,7 @@
-import { User, Role } from "../../shared";
+import { TUserBased, TRoleBased } from "@common/types";
 
 export interface RegistrationResponse {
-  User: User;
-  role: Role[];
+  User: TUserBased;
+  role: TRoleBased[];
   token: string;
 }
