@@ -1,13 +1,13 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { FilmsService } from "./films.service";
+import { FilmsService } from "../films.service";
 import { getModelToken } from "@nestjs/sequelize";
-import { Film } from "./films.model";
-import { Fact } from "../facts/facts.model";
+import { Film } from "../films.model";
+import { Fact } from "../../facts/facts.model";
 import { Op, Sequelize } from "sequelize";
-import { Genre } from "../genres/genres.model";
-import { Country } from "../countries/countries.model";
-import { Person } from "../persons/persons.model";
-import { Profession } from "../professions/professions.model";
+import { Genre } from "../../genres/genres.model";
+import { Country } from "../../countries/countries.model";
+import { Person } from "../../persons/persons.model";
+import { Profession } from "../../professions/professions.model";
 
 describe("FilmsService", () => {
   let service: FilmsService;
@@ -40,7 +40,10 @@ describe("FilmsService", () => {
     createdAt: new Date("2023-05-10T16:34:56.833Z"),
     persons: [],
     countries: [],
-    genres: [],
+    genres: [
+      { id: 1, nameRu: "Драма", nameEn: "Drama" },
+      { id: 2, nameRu: "Комедия", nameEn: "Comedy" }
+    ],
     fact: Fact,
     comments: [],
   };
