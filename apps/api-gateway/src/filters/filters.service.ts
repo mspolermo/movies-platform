@@ -1,28 +1,20 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { RabbitMQConfig } from "../config";
 import { FiltersResult } from "./dto";
 import { TCountryBased, TGenreBased } from "@common/types";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class FiltersService implements OnModuleInit {
-  private clientData: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientData = RabbitMQConfig.createKinoDbClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(this.clientData, "Filters Service");
+export class FiltersService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "Filters Service");
   }
 
   async getFilters(): Promise<FiltersResult> {
     const [genres, countries, years] = await Promise.all([
-      firstValueFrom<TGenreBased[]>(this.clientData.send("getAll.genres", "")),
-      firstValueFrom<TCountryBased[]>(this.clientData.send("getAll.countries", "")),
-      firstValueFrom(this.clientData.send("getAllFilmYears", "")),
+      this.sendMessage<TGenreBased[]>("getAll.genres", ""),
+      this.sendMessage<TCountryBased[]>("getAll.countries", ""),
+      this.sendMessage<number[]>("getAllFilmYears", ""),
     ]);
 
     return {

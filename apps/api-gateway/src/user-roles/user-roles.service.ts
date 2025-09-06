@@ -1,31 +1,17 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { firstValueFrom } from "rxjs";
-import { RabbitMQConfig } from "../config";
 import { TUserBased } from "@common/types";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class UserRolesService implements OnModuleInit {
-  private clientUsers: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientUsers = RabbitMQConfig.createAuthUsersClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(
-      this.clientUsers,
-      "User Roles Service"
-    );
+export class UserRolesService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "User Roles Service", "auth-users");
   }
 
   async getUserWithRoles(userId: number): Promise<TUserBased> {
     try {
-      const user = await firstValueFrom(
-        this.clientUsers.send("getUserById", userId)
-      );
-      return user;
+      return this.sendMessage("getUserById", userId);
     } catch (error) {
       console.error("❌ Ошибка получения ролей пользователя:", error);
       throw error;

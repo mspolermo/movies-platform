@@ -1,21 +1,13 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { SearchResult } from "./interfaces";
-import { RabbitMQConfig } from "../config";
 import { TGenreBased, TPersonBased, TFilmBased } from "@common/types";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class SearchService implements OnModuleInit {
-  private clientData: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientData = RabbitMQConfig.createKinoDbClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(this.clientData, "Search Service");
+export class SearchService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "Search Service");
   }
 
   async searchByName(name?: string): Promise<SearchResult> {
@@ -23,9 +15,9 @@ export class SearchService implements OnModuleInit {
 
     try {
       const [films, persons, genres] = await Promise.all([
-        firstValueFrom<TFilmBased[]>(this.clientData.send("searchFilmsByName", searchName)),
-        firstValueFrom<TPersonBased[]>(this.clientData.send("searchPersonsByName", searchName)),
-        firstValueFrom<TGenreBased[]>(this.clientData.send("searchGenresByName", searchName)),
+        this.sendMessage<TFilmBased[]>("searchFilmsByName", searchName),
+        this.sendMessage<TPersonBased[]>("searchPersonsByName", searchName),
+        this.sendMessage<TGenreBased[]>("searchGenresByName", searchName),
       ]);
 
       return { films, persons, genres };

@@ -1,33 +1,20 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { RabbitMQConfig } from "../config";
 import { GenreDto } from "@common/dto";
 import { TGenreBased } from "@common/types";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class GenresService implements OnModuleInit {
-  private clientData: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientData = RabbitMQConfig.createKinoDbClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(this.clientData, "Genres Service");
+export class GenresService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "Genres Service");
   }
 
   async getAllGenres(): Promise<TGenreBased[]> {
-    const genres = await firstValueFrom<TGenreBased[]>(
-      this.clientData.send("getAll.genres", "")
-    );
-    return genres;
+    return this.sendMessage("getAll.genres", "");
   }
 
   async updateGenre(id: number, dto: GenreDto): Promise<TGenreBased> {
-    return await firstValueFrom(
-      this.clientData.send("updateGenre", { id, dto })
-    );
+    return this.sendMessage("updateGenre", { id, dto });
   }
 }

@@ -1,27 +1,17 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { RabbitMQConfig } from "../config";
 import { TCommentBased } from "@common/types";
 import { CommentDTO } from "@common/dto";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class CommentsService implements OnModuleInit {
-  private clientData: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientData = RabbitMQConfig.createKinoDbClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(this.clientData, "Comments Service");
+export class CommentsService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "Comments Service");
   }
 
   async getCommentsByFilmId(filmId: number): Promise<TCommentBased[][]> {
-    return await firstValueFrom(
-      this.clientData.send("getCommentsByFilmId", filmId)
-    );
+    return this.sendMessage("getCommentsByFilmId", filmId);
   }
 
   async createComment(
@@ -29,8 +19,6 @@ export class CommentsService implements OnModuleInit {
     dto: CommentDTO,
     userId: number
   ): Promise<TCommentBased> {
-    return await firstValueFrom(
-      this.clientData.send("createComment", { filmId, dto, userId })
-    );
+    return this.sendMessage("createComment", { filmId, dto, userId });
   }
 }

@@ -1,59 +1,29 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
+import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { FilmFilters } from "./interfaces";
-import { RabbitMQConfig } from "../config";
 import { UpdateFilmDto } from "@common/dto";
 import { TFilmBased } from "@common/types";
+import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
-export class FilmsService implements OnModuleInit {
-  private clientData: ClientProxy;
-
-  constructor(private configService: ConfigService) {
-    this.clientData = RabbitMQConfig.createKinoDbClient(this.configService);
-  }
-
-  async onModuleInit(): Promise<void> {
-    await RabbitMQConfig.connectWithRetry(this.clientData, "Films Service");
+export class FilmsService extends BaseMicroserviceService {
+  constructor(configService: ConfigService) {
+    super(configService, "Films Service");
   }
 
   async getFilmById(id: number): Promise<TFilmBased> {
-    return await firstValueFrom(this.clientData.send("getFilmById", id));
+    return this.sendMessage("getFilmById", id);
   }
 
   async updateFilm(id: number, dto: UpdateFilmDto): Promise<TFilmBased> {
-    return await firstValueFrom(
-      this.clientData.send("updateFilm", { id, dto })
-    );
+    return this.sendMessage("updateFilm", { id, dto });
   }
 
   async deleteFilmById(id: number): Promise<boolean> {
-    return await firstValueFrom(this.clientData.send("deleteFilmById", id));
+    return this.sendMessage("deleteFilmById", id);
   }
 
   async searchFilms(filters: FilmFilters): Promise<TFilmBased[]> {
-    return await firstValueFrom(this.clientData.send("filters", filters));
-  }
-
-  async checkConnection(): Promise<boolean> {
-    try {
-      // Проверяем соединение с RabbitMQ через ping
-      await this.clientData.emit("ping", { timestamp: Date.now() });
-      return true;
-    } catch (error) {
-      console.error("❌ Ошибка проверки соединения kino-db:", error);
-      return false;
-    }
-  }
-
-  isConnected(): boolean {
-    try {
-      // Проверяем состояние клиента RabbitMQ
-      return this.clientData !== undefined;
-    } catch (error) {
-      return false;
-    }
+    return this.sendMessage("filters", filters);
   }
 }
