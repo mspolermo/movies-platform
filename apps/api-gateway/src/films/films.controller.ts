@@ -11,9 +11,9 @@ import {
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { FilmsService } from "./films.service";
-import { UpdateFilmDto } from "@common/dto";
 import { SearchFilmsDto } from "./dto";
 import { Roles, RolesGuard, JwtAuthGuard } from "../shared/guards";
+import { UpdateFilmDto } from "@common/dto";
 
 @Controller("films")
 @UseGuards(JwtAuthGuard) // Защищаем весь контроллер

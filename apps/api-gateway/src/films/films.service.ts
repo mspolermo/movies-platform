@@ -2,9 +2,9 @@ import { Injectable, OnModuleInit } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
+import { FilmFilters } from "./interfaces";
 import { RabbitMQConfig } from "../config";
 import { UpdateFilmDto } from "@common/dto";
-import { FilmFilters } from "./interfaces";
 import { TFilmBased } from "@common/types";
 
 @Injectable()

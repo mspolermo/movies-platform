@@ -8,15 +8,12 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
+import { AuthResponse, RegistrationResponse, ServiceError } from "./interfaces";
 import { RabbitMQConfig } from "../config";
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
-import { AuthResponse, RegistrationResponse } from "./interfaces";
 import { TUserBased } from "@common/types";
 
-interface ServiceError {
-  message?: string;
-  status?: string;
-}
+
 
 @Injectable()
 export class AuthService implements OnModuleInit {
