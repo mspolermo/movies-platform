@@ -1,0 +1,38 @@
+// Z-index константы для платформы фильмов
+// Обеспечивает консистентное управление слоями
+
+// Базовые слои
+$z-base: 1;
+$z-dropdown: 10;
+$z-sticky: 20;
+$z-fixed: 30;
+$z-modal-backdrop: 40;
+$z-modal: 50;
+$z-popover: 60;
+$z-tooltip: 70;
+$z-toast: 80;
+$z-maximum: 9999;
+
+// Специфичные компоненты
+$z-navbar: 100;
+$z-sidebar: 200;
+$z-header: 300;
+$z-footer: 400;
+
+// Экспорт переменных для использования в компонентах
+:export {
+  zBase: $z-base;
+  zDropdown: $z-dropdown;
+  zSticky: $z-sticky;
+  zFixed: $z-fixed;
+  zModalBackdrop: $z-modal-backdrop;
+  zModal: $z-modal;
+  zPopover: $z-popover;
+  zTooltip: $z-tooltip;
+  zToast: $z-toast;
+  zMaximum: $z-maximum;
+  zNavbar: $z-navbar;
+  zSidebar: $z-sidebar;
+  zHeader: $z-header;
+  zFooter: $z-footer;
+}

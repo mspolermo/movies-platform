@@ -1,7 +1,9 @@
+@import '@/styles/colors.module.scss';
+
 .container {
   .title {
     font-size: 2rem;
-    color: #2c3e50;
+    color: $headingColor;
     margin-bottom: 2rem;
     text-align: center;
   }
@@ -14,7 +16,7 @@
 }
 
 .personCard {
-  background: white;
+  background: $backgroundElements;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -35,35 +37,35 @@
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #ecf0f1;
+    border: 3px solid $splitLineColor;
   }
   
   .photoPlaceholder {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: #3498db;
-    color: white;
+    background: $redColor;
+    color: $headingColor;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     font-weight: bold;
     margin: 0 auto;
-    border: 3px solid #ecf0f1;
+    border: 3px solid $splitLineColor;
   }
 }
 
 .personName {
   font-size: 1.1rem;
-  color: #2c3e50;
+  color: $headingColor;
   margin: 0 0 0.5rem 0;
   font-weight: 500;
 }
 
 .personNameEn {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: $textColor;
   margin: 0;
   font-style: italic;
 }
@@ -71,13 +73,13 @@
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: #7f8c8d;
+  color: $textColor;
   padding: 2rem;
 }
 
 .error {
   text-align: center;
-  color: #e74c3c;
+  color: $redColor;
   padding: 2rem;
   font-size: 1.1rem;
 }

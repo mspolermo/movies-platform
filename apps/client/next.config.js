@@ -1,16 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   sassOptions: {
-    includePaths: ['./src/styles'],
+    includePaths: ['./src/app/styles'],
   },
   async rewrites() {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:5000/:path*',
+        destination: 'http://localhost:5001/:path*',
       },
     ];
   },

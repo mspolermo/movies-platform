@@ -2,21 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { Film } from '@/shared/types';
-import apiClient from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { FilmCard } from '@/entities/film';
+import { filmsService } from '@/shared/api/services';
+import { TFilmBased } from '@common/types';
 import styles from './FilmsPage.module.scss';
 
 export const FilmsPage = () => {
-  const [films, setFilms] = useState<Film[]>([]);
+  const [films, setFilms] = useState<TFilmBased[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFilms = async () => {
       try {
-        const response = await apiClient.get(API_ENDPOINTS.FILMS.SEARCH);
-        setFilms(response.data);
+        const response = await filmsService.searchFilms();
+        setFilms(response.films);
         setError(null);
       } catch (err: any) {
         setError(err.response?.data?.message || 'Ошибка загрузки фильмов');
@@ -50,56 +50,19 @@ export const FilmsPage = () => {
         <h1 className={styles.title}>Фильмы</h1>
         
         <div className={styles.filmsGrid}>
-          {films.map((film) => (
-            <div key={film.id} className={styles.filmCard}>
-              <div className={styles.filmPoster}>
-                {film.smallPictureUrl ? (
-                  <img src={film.smallPictureUrl} alt={film.filmNameRu} className={styles.poster} />
-                ) : (
-                  <div className={styles.posterPlaceholder}>
-                    {film.filmNameRu.charAt(0)}
-                  </div>
-                )}
-              </div>
-              
-              <div className={styles.filmInfo}>
-                <h3 className={styles.filmTitle}>{film.filmNameRu}</h3>
-                {film.filmNameEn && film.filmNameEn !== film.filmNameRu && (
-                  <p className={styles.filmTitleEn}>{film.filmNameEn}</p>
-                )}
-                
-                <div className={styles.filmMeta}>
-                  {film.year && (
-                    <span className={styles.filmYear}>{film.year}</span>
-                  )}
-                  {film.movieLength && (
-                    <span className={styles.filmDuration}>{film.movieLength} мин</span>
-                  )}
-                </div>
-                
-                {film.description && (
-                  <p className={styles.filmDescription}>
-                    {film.description.length > 150 
-                      ? `${film.description.substring(0, 150)}...` 
-                      : film.description
-                    }
-                  </p>
-                )}
-                
-                <div className={styles.filmRatings}>
-                  {film.ratingKp && (
-                    <div className={styles.rating}>
-                      <span className={styles.ratingLabel}>КиноПоиск</span>
-                      <span className={styles.ratingValue}>{film.ratingKp}</span>
-                      {film.votesKp && (
-                        <span className={styles.ratingVotes}>({film.votesKp})</span>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
+          {films && films.length > 0 ? (
+            films.map((film) => (
+              <FilmCard 
+                key={film.id} 
+                film={film} 
+                showIcons={true}
+              />
+            ))
+          ) : (
+            <div className={styles.noFilms}>
+              Фильмы не найдены
             </div>
-          ))}
+          )}
         </div>
       </div>
     </Layout>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Layout } from '@/widgets/Layout';
-import { useAuthStore } from '@/features/auth/store';
+import { useAuthStore } from '@/features/auth/api/authStore/store';
 import styles from './ProfilePage.module.scss';
 
 export const ProfilePage = () => {

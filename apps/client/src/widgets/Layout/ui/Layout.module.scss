@@ -1,6 +1,8 @@
+@import '@/styles/colors.module.scss';
+
 .layout {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: $backgroundColor;
 }
 
 .main {

@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/features/auth/store';
+import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Navbar } from '@/widgets/Navbar';
 import styles from './Layout.module.scss';
 

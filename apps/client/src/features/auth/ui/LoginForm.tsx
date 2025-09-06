@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuthStore } from '../store';
+import { useAuthStore } from '../api/authStore/store';
 import styles from './LoginForm.module.scss';
 
 export const LoginForm = () => {

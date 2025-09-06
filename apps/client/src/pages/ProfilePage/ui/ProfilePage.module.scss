@@ -1,14 +1,16 @@
+@import '@/styles/colors.module.scss';
+
 .container {
   .title {
     font-size: 2rem;
-    color: #2c3e50;
+    color: $headingColor;
     margin-bottom: 2rem;
     text-align: center;
   }
 }
 
 .profileCard {
-  background: white;
+  background: $backgroundElements;
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -22,14 +24,14 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #ecf0f1;
+  border-bottom: 1px solid $splitLineColor;
 }
 
 .avatar {
   width: 80px;
   height: 80px;
-  background-color: #3498db;
-  color: white;
+  background-color: $redColor;
+  color: $headingColor;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -41,13 +43,13 @@
 .userInfo {
   .userName {
     font-size: 1.5rem;
-    color: #2c3e50;
+    color: $headingColor;
     margin-bottom: 0.5rem;
     font-weight: 600;
   }
   
   .userEmail {
-    color: #7f8c8d;
+    color: $textColor;
     font-size: 1rem;
     margin: 0;
   }
@@ -56,7 +58,7 @@
 .rolesSection {
   .rolesTitle {
     font-size: 1.1rem;
-    color: #2c3e50;
+    color: $headingColor;
     margin-bottom: 1rem;
     font-weight: 500;
   }
@@ -68,8 +70,8 @@
   }
   
   .role {
-    background-color: #ecf0f1;
-    color: #2c3e50;
+    background-color: $defaultIconColor;
+    color: $headingColor;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -79,7 +81,7 @@
 
 .error {
   text-align: center;
-  color: #e74c3c;
+  color: $redColor;
   padding: 2rem;
   font-size: 1.1rem;
 }

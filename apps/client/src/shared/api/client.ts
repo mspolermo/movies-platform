@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
-import { useAuthStore } from '@/features/auth/store';
+import { useAuthStore } from '@/features/auth/api/authStore/store';
 
 // Создание axios инстанса
 const apiClient: AxiosInstance = axios.create({

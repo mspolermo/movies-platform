@@ -1,0 +1,106 @@
+@import '@/styles/colors.module.scss';
+@import '@/styles/z-index.module.scss';
+
+.tooltip {
+  position: absolute;
+  z-index: $z-tooltip; // Высокий z-index для отображения поверх всех элементов
+  pointer-events: none;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+
+  &_visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &_hidden {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  &__content {
+    background: $modalOverlay;
+    color: $white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-width: 200px;
+    word-wrap: break-word;
+    white-space: normal;
+    text-align: center;
+  }
+
+  &__arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  // Стрелка сверху
+  &__arrow_top {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid $modalOverlay;
+  }
+
+  // Стрелка снизу
+  &__arrow_bottom {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid $modalOverlay;
+  }
+
+  // Стрелка слева
+  &__arrow_left {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid $modalOverlay;
+  }
+
+  // Стрелка справа
+  &__arrow_right {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid $modalOverlay;
+  }
+
+  // Позиционирование тултипа
+  &_top {
+    .tooltip__arrow {
+      @extend .tooltip__arrow_top;
+    }
+  }
+
+  &_bottom {
+    .tooltip__arrow {
+      @extend .tooltip__arrow_bottom;
+    }
+  }
+
+  &_left {
+    .tooltip__arrow {
+      @extend .tooltip__arrow_left;
+    }
+  }
+
+  &_right {
+    .tooltip__arrow {
+      @extend .tooltip__arrow_right;
+    }
+  }
+}
+

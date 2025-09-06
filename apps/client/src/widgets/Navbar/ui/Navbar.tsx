@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuthStore } from '@/features/auth/store';
+import { useAuthStore } from '@/features/auth/api/authStore/store';
 import styles from './Navbar.module.scss';
 
 export const Navbar = () => {
