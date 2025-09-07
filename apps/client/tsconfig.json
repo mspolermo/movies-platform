@@ -26,7 +26,7 @@
       "@/features/*": ["./src/features/*"],
       "@/widgets/*": ["./src/widgets/*"],
       "@/pages/*": ["./src/pages/*"],
-      "@/styles/*": ["./src/app/styles/*"],
+      "@/app/*": ["./src/app/*"],
       "@common/*": ["../../apps/common/*"]
     }
   },

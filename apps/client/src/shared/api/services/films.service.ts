@@ -4,19 +4,22 @@ import { TFilmBased } from '@common/types';
 
 export interface SearchFilmsParams {
   page?: number;
-  limit?: number;
+  perPage?: number;
   year?: number;
-  genre?: string;
-  country?: string;
-  rating?: number;
-  search?: string;
+  genres?: string[];
+  countries?: string[];
+  persons?: string[];
+  minRatingKp?: number;
+  minVotesKp?: number;
+  sortBy?: string;
 }
 
 export interface FilmsResponse {
   films: TFilmBased[];
   total: number;
   page: number;
-  limit: number;
+  perPage: number;
+  hasMore: boolean;
 }
 
 export const filmsService = {
@@ -31,19 +34,22 @@ export const filmsService = {
     const response = await apiClient.get(API_ENDPOINTS.FILMS.SEARCH, {
       params: {
         page: params.page || 1,
-        limit: params.limit || 20,
+        perPage: params.perPage || 20,
         ...params,
       },
     });
     
     // API возвращает массив TFilmBased[] напрямую
     const films = Array.isArray(response.data) ? response.data : [];
+    const page = params.page || 1;
+    const perPage = params.perPage || 20;
     
     return {
       films,
       total: films.length,
-      page: params.page || 1,
-      limit: params.limit || 20,
+      page,
+      perPage,
+      hasMore: films.length === perPage, // Если получили полную страницу, возможно есть еще
     };
   },
 

@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Layout } from '@/widgets/Layout';
-import { colors } from '@/styles/index';
+import { colors } from '@/app/styles';
 
 export const DebugPage = () => {
   const { user, token, isAuthenticated, isLoading, error } = useAuthStore();
