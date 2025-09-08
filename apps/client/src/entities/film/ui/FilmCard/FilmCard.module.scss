@@ -207,6 +207,49 @@
 
   .iconSvg {
     transition: all 0.2s;
+    
+    // Стили для разных вариантов иконок
+    &[data-variant="bookmark"] {
+      color: $textColor;
+      
+      &:hover {
+        color: $redColor;
+      }
+      
+      &[data-active="true"] {
+        color: $redColor;
+        fill: $redColor;
+      }
+    }
+    
+    &[data-variant="refresh"] {
+      color: $textColor;
+      
+      &:hover {
+        color: $activeColor;
+      }
+    }
+    
+    &[data-variant="star"] {
+      color: $textColor;
+      
+      &:hover {
+        color: $activeColor;
+      }
+    }
+    
+    &[data-variant="close"] {
+      color: $textColor;
+      
+      &:hover {
+        color: $redColor;
+      }
+      
+      &[data-active="true"] {
+        color: $redColor;
+        fill: $redColor;
+      }
+    }
   }
 }
 

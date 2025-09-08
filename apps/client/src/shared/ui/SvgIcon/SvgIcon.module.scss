@@ -1,0 +1,60 @@
+@import '@/app/styles/colors.module.scss';
+
+.svgIcon {
+  display: inline-block;
+  vertical-align: middle;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  &:focus {
+    outline: 2px solid $activeColor;
+    outline-offset: 2px;
+  }
+  
+  // Базовые стили для иконок
+  &[data-variant="bookmark"] {
+    color: $textColor;
+    
+    &:hover {
+      color: $redColor;
+    }
+    
+    &[data-active="true"] {
+      color: $redColor;
+      fill: $redColor;
+    }
+  }
+  
+  &[data-variant="refresh"] {
+    color: $textColor;
+    
+    &:hover {
+      color: $activeColor;
+    }
+  }
+  
+  &[data-variant="star"] {
+    color: $textColor;
+    
+    &:hover {
+      color: $activeColor;
+    }
+  }
+  
+  &[data-variant="close"] {
+    color: $textColor;
+    
+    &:hover {
+      color: $redColor;
+    }
+    
+    &[data-active="true"] {
+      color: $redColor;
+      fill: $redColor;
+    }
+  }
+}

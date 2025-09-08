@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './FilmCard.module.scss';
-import colors from '@/styles/colors.module.scss';
+import colors from '@/app/styles/colors.module.scss';
 import { FilmCardPreviewProps } from '../types';
 
 export const Preview = ({ film }: FilmCardPreviewProps) => {

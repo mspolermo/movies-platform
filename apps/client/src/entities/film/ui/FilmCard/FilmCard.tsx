@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Tooltip } from '@/shared/ui';
 import { FilmCardSkeleton } from './FilmCardSkeleton';
 import styles from './FilmCard.module.scss';
-import colors from '@/styles/colors.module.scss';
 import { Preview } from './Preview';
 import { FilmCardProps } from '../types';
 import { IconsBlock } from './IconsBlock';
