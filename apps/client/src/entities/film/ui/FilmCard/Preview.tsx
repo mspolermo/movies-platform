@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Skeleton, SvgIcon } from '@/shared/ui';
+import { ImageIcon } from '@/shared/assets/svg-icons';
 import styles from './FilmCard.module.scss';
-import colors from '@/app/styles/colors.module.scss';
 import { FilmCardPreviewProps } from '../types';
 
 export const Preview = ({ film }: FilmCardPreviewProps) => {
@@ -27,18 +28,11 @@ const { smallPictureUrl, bigPictureUrl, filmNameRu } = film;
   if (imageError) return (
     <div className={styles.imagePlaceholder}>
       <div className={styles.placeholderIcon}>
-        <svg 
-          width="48" 
-          height="48" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke={colors.textColor}
-          strokeWidth="1.5"
-        >
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-          <circle cx="8.5" cy="8.5" r="1.5"/>
-          <polyline points="21,15 16,10 5,21"/>
-        </svg>
+        <SvgIcon
+          icon={ImageIcon}
+          size={48}
+          data-variant="image"
+        />
       </div>
       <div className={styles.placeholderText}>
         Нет изображения
@@ -60,9 +54,14 @@ const { smallPictureUrl, bigPictureUrl, filmNameRu } = film;
           }}
         />
         {imageLoading && (
-          <div className={styles.imageLoading}>
-            <div className={styles.loadingSpinner}></div>
-          </div>
+          <Skeleton
+            width="100%"
+            height="100%"
+            borderRadius="8px"
+            variant="rectangular"
+            animation="pulse"
+            className={styles.imageSkeleton}
+          />
         )}
       </>
   )

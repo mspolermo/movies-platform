@@ -4,3 +4,4 @@ export { BookmarkFilledIcon } from './BookmarkFilledIcon';
 export { RefreshIcon } from './RefreshIcon';
 export { StarIcon } from './StarIcon';
 export { CloseIcon } from './CloseIcon';
+export { ImageIcon } from './ImageIcon';

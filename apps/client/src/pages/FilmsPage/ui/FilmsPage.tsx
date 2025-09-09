@@ -25,23 +25,7 @@ export const FilmsPage = () => {
 
             return (
               <div className={styles.filmsGrid}>
-                {films && films.length > 0 ? (
-                  films.map((film) => (
-                    <FilmCard 
-                      key={film.id} 
-                      film={film} 
-                      showIcons={true}
-                      isLoading={loading}
-                    />
-                  ))
-                ) : (
-                  !loading && (
-                    <div className={styles.noFilms}>
-                      Фильмы не найдены
-                    </div>
-                  )
-                )}
-                {loading && films.length === 0 && (
+                {loading && films.length === 0 ? (
                   // Показываем скелетоны только при первой загрузке
                   Array.from({ length: 8 }).map((_, index) => (
                     <FilmCardSkeleton 
@@ -49,6 +33,18 @@ export const FilmsPage = () => {
                       showIcons={true}
                     />
                   ))
+                ) : films && films.length > 0 ? (
+                  films.map((film) => (
+                    <FilmCard 
+                      key={film.id} 
+                      film={film} 
+                      showIcons={true}
+                    />
+                  ))
+                ) : (
+                  <div className={styles.noFilms}>
+                    Фильмы не найдены
+                  </div>
                 )}
               </div>
             );

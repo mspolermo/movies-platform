@@ -12,7 +12,6 @@ export interface FilmCardPreviewProps {
 }
 
 export interface IconsBlockProps {
-  showIcons: boolean;
   isFavorite: boolean;
   notLike: boolean;
   handleFavoritesClick: (e: React.MouseEvent) => void;

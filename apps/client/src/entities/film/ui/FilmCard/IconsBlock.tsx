@@ -10,9 +10,15 @@ import {
 } from '@/shared/assets/svg-icons';
 
 export const IconsBlock = (props: IconsBlockProps) => {
-  const { showIcons, notLike, isFavorite, handleFavoritesClick, handleSimilarClick, handleGradeClick, handleNotLikeClick } = props;
+  const { 
+    notLike, 
+    isFavorite,
+    handleFavoritesClick,
+    handleSimilarClick,
+    handleGradeClick,
+    handleNotLikeClick
+  } = props;
 
-  if (!showIcons) return null;
   
   return (
     <div className={styles.icons}>

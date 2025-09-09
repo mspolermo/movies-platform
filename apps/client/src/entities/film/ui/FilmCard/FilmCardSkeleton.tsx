@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@/shared/ui';
-import styles from './FilmCardSkeleton.module.scss';
+import styles from './FilmCard.module.scss';
 
 interface FilmCardSkeletonProps {
   showIcons?: boolean;
@@ -10,7 +10,7 @@ export const FilmCardSkeleton: React.FC<FilmCardSkeletonProps> = ({
   showIcons = false 
 }) => {
   return (
-    <div className={styles.filmcard}>
+    <div className={`${styles.filmcard} ${styles.skeletonCard}`}>
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={showIcons ? styles.poster : styles.posterTwo}>

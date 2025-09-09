@@ -57,8 +57,6 @@ export const FilmCard = ({
     return <FilmCardSkeleton showIcons={showIcons} />;
   }
 
-  //TODO: иконки вынести в shared/
-
   return (
     <div className={styles.filmcard} onClick={handleCardClick}>
       <div className={styles.container}>
@@ -70,15 +68,14 @@ export const FilmCard = ({
             </div>
           </div>
           <div className={styles.properties}>
-            <IconsBlock
-              showIcons={showIcons}
+            {showIcons && <IconsBlock
               notLike={notLike}
               isFavorite={isFavorite}
               handleFavoritesClick={handleFavoritesClick}
               handleSimilarClick={handleSimilarClick}
               handleGradeClick={handleGradeClick}
               handleNotLikeClick={handleNotLikeClick}
-            />
+            />}
 
             <div className={styles.propertiesInfo}>
               <div className={styles.rating}>
