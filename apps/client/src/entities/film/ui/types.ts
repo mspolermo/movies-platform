@@ -7,6 +7,10 @@ export interface FilmCardProps {
   isLoading?: boolean;
 }
 
+export interface FilmCardSkeletonProps {
+  showIcons?: boolean;
+}
+
 export interface FilmCardPreviewProps {
   film: TFilmBased;
 }
@@ -18,5 +22,4 @@ export interface IconsBlockProps {
   handleSimilarClick: (e: React.MouseEvent) => void;
   handleGradeClick: (e: React.MouseEvent) => void;
   handleNotLikeClick: (e: React.MouseEvent) => void;
-
 }

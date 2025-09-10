@@ -1,2 +1,1 @@
-export { FilmCard } from './FilmCard';
-export { FilmCardSkeleton } from './FilmCard/FilmCardSkeleton';
+export { FilmCard, FilmCardSkeleton } from './FilmCard';

@@ -1,14 +1,9 @@
 import React from 'react';
 import { Skeleton } from '@/shared/ui';
 import styles from './FilmCard.module.scss';
+import { FilmCardSkeletonProps } from '../types';
 
-interface FilmCardSkeletonProps {
-  showIcons?: boolean;
-}
-
-export const FilmCardSkeleton: React.FC<FilmCardSkeletonProps> = ({ 
-  showIcons = false 
-}) => {
+export const FilmCardSkeleton = ({ showIcons = false }: FilmCardSkeletonProps) => {
   return (
     <div className={`${styles.filmcard} ${styles.skeletonCard}`}>
       <div className={styles.container}>

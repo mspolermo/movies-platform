@@ -2,9 +2,10 @@ import { ReactNode } from 'react';
 import { InfiniteScroll } from '@/shared/ui';
 import { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
 import { SearchFilmsParams } from '@/shared/api/services';
+import { TFilmBased } from '@common/types';
 
 interface FilmsInfiniteScrollProps {
-  children: (films: any[], loading: boolean, error: string | null) => ReactNode;
+  children: (films: TFilmBased[], loading: boolean, error: string | null) => ReactNode;
   initialParams?: SearchFilmsParams;
   threshold?: number;
   loadingComponent?: ReactNode;
