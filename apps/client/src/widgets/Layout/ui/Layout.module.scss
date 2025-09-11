@@ -1,8 +1,8 @@
-@import '@/app/styles/colors.module.scss';
+
 
 .layout {
   min-height: 100vh;
-  background-color: $backgroundColor;
+  background-color: var(--color-background);
 }
 
 .main {

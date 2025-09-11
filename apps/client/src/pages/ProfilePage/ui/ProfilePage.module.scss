@@ -1,16 +1,16 @@
-@import '@/app/styles/colors.module.scss';
+
 
 .container {
   .title {
     font-size: 2rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 2rem;
     text-align: center;
   }
 }
 
 .profileCard {
-  background: $backgroundElements;
+  background: var(--color-background-elements);
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -24,14 +24,14 @@
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid $splitLineColor;
+  border-bottom: 1px solid var(--color-split-line);
 }
 
 .avatar {
   width: 80px;
   height: 80px;
-  background-color: $redColor;
-  color: $headingColor;
+  background-color: var(--color-red);
+  color: var(--color-heading);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -43,13 +43,13 @@
 .userInfo {
   .userName {
     font-size: 1.5rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 0.5rem;
     font-weight: 600;
   }
   
   .userEmail {
-    color: $textColor;
+    color: var(--color-text);
     font-size: 1rem;
     margin: 0;
   }
@@ -58,7 +58,7 @@
 .rolesSection {
   .rolesTitle {
     font-size: 1.1rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 1rem;
     font-weight: 500;
   }
@@ -70,8 +70,8 @@
   }
   
   .role {
-    background-color: $defaultIconColor;
-    color: $headingColor;
+    background-color: var(--color-icon-default);
+    color: var(--color-heading);
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -81,7 +81,7 @@
 
 .error {
   text-align: center;
-  color: $redColor;
+  color: var(--color-red);
   padding: 2rem;
   font-size: 1.1rem;
 }

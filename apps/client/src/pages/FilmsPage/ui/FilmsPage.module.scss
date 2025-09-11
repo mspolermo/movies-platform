@@ -1,9 +1,7 @@
-@import '@/app/styles/colors.module.scss';
-
 .container {
   .title {
     font-size: 2rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 2rem;
     text-align: center;
   }
@@ -23,7 +21,7 @@
 .noFilms {
   grid-column: 1 / -1;
   text-align: center;
-  color: $textColor;
+  color: var(--color-text);
   font-size: 1.1rem;
   padding: 2rem;
 }
@@ -31,7 +29,7 @@
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: $textColor;
+  color: var(--color-text);
   padding: 2rem;
   margin-top: 2rem;
 }
@@ -39,7 +37,7 @@
 .endMessage {
   text-align: center;
   font-size: 1rem;
-  color: $textColor;
+  color: var(--color-text);
   padding: 2rem;
   margin-top: 2rem;
   opacity: 0.7;
@@ -47,7 +45,7 @@
 
 .error {
   text-align: center;
-  color: $redColor;
+  color: var(--color-red);
   padding: 2rem;
   font-size: 1.1rem;
 }

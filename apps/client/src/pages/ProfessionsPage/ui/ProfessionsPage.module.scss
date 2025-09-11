@@ -1,9 +1,9 @@
-@import '@/app/styles/colors.module.scss';
+
 
 .container {
   .title {
     font-size: 2rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 2rem;
     text-align: center;
   }
@@ -16,7 +16,7 @@
 }
 
 .professionCard {
-  background: $backgroundElements;
+  background: var(--color-background-elements);
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@
 
 .professionName {
   font-size: 1.1rem;
-  color: $headingColor;
+  color: var(--color-heading);
   margin: 0;
   font-weight: 500;
 }
@@ -39,13 +39,13 @@
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: $textColor;
+  color: var(--color-text);
   padding: 2rem;
 }
 
 .error {
   text-align: center;
-  color: $redColor;
+  color: var(--color-red);
   padding: 2rem;
   font-size: 1.1rem;
 }

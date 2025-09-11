@@ -1,9 +1,9 @@
-@import '@/app/styles/colors.module.scss';
+
 
 .container {
   .title {
     font-size: 2rem;
-    color: $headingColor;
+    color: var(--color-heading);
     margin-bottom: 2rem;
     text-align: center;
   }
@@ -16,7 +16,7 @@
 }
 
 .personCard {
-  background: $backgroundElements;
+  background: var(--color-background-elements);
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -37,35 +37,35 @@
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid $splitLineColor;
+    border: 3px solid var(--color-split-line);
   }
   
   .photoPlaceholder {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: $redColor;
-    color: $headingColor;
+    background: var(--color-red);
+    color: var(--color-heading);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
     font-weight: bold;
     margin: 0 auto;
-    border: 3px solid $splitLineColor;
+    border: 3px solid var(--color-split-line);
   }
 }
 
 .personName {
   font-size: 1.1rem;
-  color: $headingColor;
+  color: var(--color-heading);
   margin: 0 0 0.5rem 0;
   font-weight: 500;
 }
 
 .personNameEn {
   font-size: 0.9rem;
-  color: $textColor;
+  color: var(--color-text);
   margin: 0;
   font-style: italic;
 }
@@ -73,13 +73,13 @@
 .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: $textColor;
+  color: var(--color-text);
   padding: 2rem;
 }
 
 .error {
   text-align: center;
-  color: $redColor;
+  color: var(--color-red);
   padding: 2rem;
   font-size: 1.1rem;
 }

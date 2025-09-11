@@ -1,10 +1,8 @@
-@import '@/app/styles/colors.module.scss';
-
 .container {
   max-width: 400px;
   margin: 100px auto;
   padding: 2rem;
-  background: $backgroundElements;
+  background: var(--color-background-elements);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -12,7 +10,7 @@
 .title {
   text-align: center;
   margin-bottom: 2rem;
-  color: $headingColor;
+  color: var(--color-heading);
   font-size: 1.5rem;
   font-weight: 600;
 }
@@ -31,35 +29,35 @@
 
 .label {
   font-weight: 500;
-  color: $textColor;
+  color: var(--color-text);
   font-size: 0.9rem;
 }
 
 .input {
   padding: 0.75rem;
-  border: 1px solid $splitLineColor;
+  border: 1px solid var(--color-split-line);
   border-radius: 4px;
   font-size: 1rem;
-  background-color: $inputBackground;
-  color: $inputTextDark;
+  background-color: var(--color-input-background);
+  color: var(--color-input-text-dark);
   transition: border-color 0.2s;
 
   &:focus {
     outline: none;
-    border-color: $redColor;
+    border-color: var(--color-red);
     box-shadow: 0 0 0 2px rgba(234, 0, 61, 0.25);
   }
 
   &:disabled {
-    background-color: $defaultIconColor;
+    background-color: var(--color-icon-default);
     cursor: not-allowed;
   }
 }
 
 .button {
   padding: 0.75rem;
-  background-color: $redColor;
-  color: $headingColor;
+  background-color: var(--color-red);
+  color: var(--color-heading);
   border: none;
   border-radius: 4px;
   font-size: 1rem;
@@ -68,11 +66,11 @@
   transition: background-color 0.2s;
 
   &:hover:not(:disabled) {
-    background-color: $activeRedColor;
+    background-color: var(--color-red-active);
   }
 
   &:disabled {
-    background-color: $defaultIconColor;
+    background-color: var(--color-icon-default);
     cursor: not-allowed;
   }
 }
@@ -80,7 +78,7 @@
 .error {
   padding: 0.75rem;
   background-color: rgba(234, 0, 61, 0.1);
-  color: $redColor;
+  color: var(--color-red);
   border: 1px solid rgba(234, 0, 61, 0.3);
   border-radius: 4px;
   font-size: 0.9rem;
@@ -93,15 +91,15 @@
 
 .success {
   text-align: center;
-  color: $headingColor;
+  color: var(--color-heading);
   
   h1 {
-    color: $redColor;
+    color: var(--color-red);
     margin-bottom: 1rem;
   }
   
   p {
-    color: $textColor;
+    color: var(--color-text);
   }
 }
 
@@ -109,15 +107,15 @@
   text-align: center;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid $splitLineColor;
+  border-top: 1px solid var(--color-split-line);
   
   p {
-    color: $textColor;
+    color: var(--color-text);
     margin: 0;
   }
   
   .link {
-    color: $redColor;
+    color: var(--color-red);
     text-decoration: none;
     font-weight: 500;
     
