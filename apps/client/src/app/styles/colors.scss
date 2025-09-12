@@ -1,0 +1,38 @@
+// Цветовая палитра платформы фильмов
+
+:root {
+  // Основные цвета фона
+  --color-background: #100e19;
+  --color-background-elements: #1f1b2e;
+
+  // Цвета текста
+  --color-heading: #fff;
+  --color-text: #b0afb1;
+
+  // Цвета иконок
+  --color-icon-default: #2b2640;
+  --color-icon-default-hover: #413960;
+
+  // Разделительные линии
+  --color-split-line: rgba(255, 255, 255, 0.16);
+
+  // Активные элементы
+  --color-active: #fff;
+
+  // Красные цвета (акценты)
+  --color-red: #ea003d;
+  --color-red-active: #ff1a57;
+
+  // Цвета полей ввода
+  --color-input-background: #d9d7e0;
+  --color-input-text: #a5a1b2;
+  --color-input-text-dark: #1f1b2e;
+
+  // Модальные окна
+  --color-modal-overlay: rgba(0, 0, 0, 0.9);
+
+  // Дополнительные цвета
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+}

@@ -1,0 +1,93 @@
+// IvySans Font Family
+
+// Regular styles
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-Thin.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-Thin.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-Light.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-Light.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-Regular.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-SemiBold.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-SemiBold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-Bold.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-Bold.woff') format('woff');
+}
+
+// Italic styles
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-ThinItalic.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-ThinItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-LightItalic.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-LightItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-Italic.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-Italic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-SemiBoldItalic.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-SemiBoldItalic.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'IvySans';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('./fonts/IvySans/IvyStyleSans-BoldItalic.woff2') format('woff2'),
+       url('./fonts/IvySans/IvyStyleSans-BoldItalic.woff') format('woff');
+}

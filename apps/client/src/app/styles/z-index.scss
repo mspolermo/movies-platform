@@ -1,0 +1,17 @@
+// Z-index константы для платформы фильмов
+:root {
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-toast: 80;
+  --z-maximum: 9999;
+  --z-navbar: 100;
+  --z-sidebar: 200;
+  --z-header: 300;
+  --z-footer: 400;
+}
