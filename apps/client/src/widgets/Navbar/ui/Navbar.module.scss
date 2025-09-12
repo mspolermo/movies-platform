@@ -22,11 +22,14 @@
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: bold;
+    display: flex;
+    align-items: center;
     
     &:hover {
       color: var(--color-red-active);
     }
   }
+  
 }
 
 .menu {

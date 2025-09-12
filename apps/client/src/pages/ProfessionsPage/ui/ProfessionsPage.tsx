@@ -6,6 +6,7 @@ import { TProfessionBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './ProfessionsPage.module.scss';
+import { Loader } from '@/shared/ui';
 
 export const ProfessionsPage = () => {
   const [professions, setProfessions] = useState<TProfessionBased[]>([]);
@@ -31,7 +32,7 @@ export const ProfessionsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.loading}>Загрузка...</div>
+        <Loader size='small'/>
       </Layout>
     );
   }

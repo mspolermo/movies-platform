@@ -6,6 +6,7 @@ import { TPersonBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './PersonsPage.module.scss';
+import { Loader } from '@/shared/ui';
 
 export const PersonsPage = () => {
   const [persons, setPersons] = useState<TPersonBased[]>([]);
@@ -31,7 +32,7 @@ export const PersonsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.loading}>Загрузка...</div>
+        <Loader size='small'/>
       </Layout>
     );
   }

@@ -7,3 +7,6 @@ export { SvgIcon } from './SvgIcon';
 export type { SvgIconProps } from './SvgIcon';
 export { Button } from './Button';
 export { Input } from './Input';
+export { Logo } from './Logo';
+export { Loader } from './Loader';
+export type { LoaderProps } from './Loader';

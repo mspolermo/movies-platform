@@ -6,6 +6,7 @@ import { TGenreBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './GenresPage.module.scss';
+import { Loader } from '@/shared/ui';
 
 export const GenresPage = () => {
   const [genres, setGenres] = useState<TGenreBased[]>([]);
@@ -31,7 +32,7 @@ export const GenresPage = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.loading}>Загрузка...</div>
+        <Loader size='small'/>
       </Layout>
     );
   }

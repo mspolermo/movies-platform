@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { InfiniteScroll } from '@/shared/ui';
+import { InfiniteScroll, Loader } from '@/shared/ui';
 import { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
 import { SearchFilmsParams } from '@/shared/api/services';
 import { TFilmBased } from '@common/types';
@@ -27,9 +27,7 @@ export const FilmsInfiniteScroll = ({
   });
 
   const defaultLoadingComponent = (
-    <div style={{ textAlign: 'center', padding: '2rem' }}>
-      Загрузка фильмов...
-    </div>
+    <Loader size='small'/>
   );
 
   const defaultEndMessage = (

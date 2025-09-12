@@ -1,0 +1,156 @@
+// Базовые стили лоадера - стандартная крутилка
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  
+  // Контейнер крутилки
+  &__spinner {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Кольца крутилки
+  &__ring {
+    position: absolute;
+    border: 3px solid transparent;
+    border-top: 3px solid var(--color-red);
+    border-radius: 50%;
+    animation: spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    
+    // Размеры и задержки для каждого кольца
+    &:nth-child(1) {
+      width: 60px;
+      height: 60px;
+      border-top-color: var(--color-red);
+      animation-delay: 0s;
+    }
+    
+    &:nth-child(2) {
+      width: 45px;
+      height: 45px;
+      border-top-color: var(--color-red-active);
+      animation-delay: 0.2s;
+    }
+    
+    &:nth-child(3) {
+      width: 30px;
+      height: 30px;
+      border-top-color: var(--color-gradient-end);
+      animation-delay: 0.4s;
+    }
+  }
+  
+  // Размеры лоадера
+  &--small {
+    .loader__spinner {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .loader__ring {
+      &:nth-child(1) {
+        width: 40px;
+        height: 40px;
+        border-width: 2px;
+      }
+      
+      &:nth-child(2) {
+        width: 30px;
+        height: 30px;
+        border-width: 2px;
+      }
+      
+      &:nth-child(3) {
+        width: 20px;
+        height: 20px;
+        border-width: 2px;
+      }
+    }
+  }
+  
+  &--large {
+    .loader__spinner {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .loader__ring {
+      &:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        border-width: 4px;
+      }
+      
+      &:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        border-width: 4px;
+      }
+      
+      &:nth-child(3) {
+        width: 40px;
+        height: 40px;
+        border-width: 4px;
+      }
+    }
+  }
+}
+
+// Анимация вращения
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Дополнительные эффекты для улучшения визуала
+.loader__spinner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--color-red);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse 1.5s ease-in-out infinite;
+  z-index: 10;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.8;
+  }
+}
+
+// Эффект для малого размера
+.loader--small .loader__spinner::before {
+  width: 6px;
+  height: 6px;
+}
+
+// Эффект для большого размера
+.loader--large .loader__spinner::before {
+  width: 12px;
+  height: 12px;
+}

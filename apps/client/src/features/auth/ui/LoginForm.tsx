@@ -25,7 +25,6 @@ export const LoginForm = () => {
       router.push('/films');
     } catch (error) {
       console.error('LoginForm: Login failed:', error);
-      // Ошибка уже обработана в store
     }
   };
 

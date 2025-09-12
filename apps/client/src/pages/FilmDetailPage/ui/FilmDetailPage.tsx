@@ -6,6 +6,7 @@ import { Layout } from '@/widgets/Layout';
 import { filmsService } from '@/shared/api/services';
 import { TFilmBased } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
+import { Loader } from '@/shared/ui';
 
 export const FilmDetailPage: React.FC = () => {
   const params = useParams();
@@ -38,9 +39,7 @@ export const FilmDetailPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.container}>
-          <div className={styles.loading}>Загрузка...</div>
-        </div>
+        <Loader size='small'/>
       </Layout>
     );
   }

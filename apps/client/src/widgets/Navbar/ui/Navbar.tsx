@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
-import { Button } from '@/shared/ui';
+import { Button, Logo } from '@/shared/ui';
 import styles from './Navbar.module.scss';
 
 export const Navbar = () => {
@@ -21,7 +21,7 @@ export const Navbar = () => {
       <div className={styles.container}>
         <div className={styles.brand}>
           <Link href="/films" className={styles.logo}>
-            Movies Platform
+            <Logo />
           </Link>
         </div>
 

@@ -6,6 +6,7 @@ import { TCountryBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './CountriesPage.module.scss';
+import { Loader } from '@/shared/ui';
 
 export const CountriesPage = () => {
   const [countries, setCountries] = useState<TCountryBased[]>([]);
@@ -31,7 +32,7 @@ export const CountriesPage = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.loading}>Загрузка...</div>
+        <Loader size='small'/>
       </Layout>
     );
   }

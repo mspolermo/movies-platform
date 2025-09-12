@@ -1,0 +1,28 @@
+.logoSvg {
+  height: 41px;
+  width: auto;
+  transition: transform 0.2s ease;
+  overflow: visible;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+.clapperboardBottom {
+  transition: transform 0.3s ease;
+  transform-origin: 0 12.9694;
+}
+
+.clapperboardTop {
+  transition: transform 0.3s ease;
+  transform-origin: 0 12.9694;
+}
+
+.logoSvg:hover .clapperboardTop {
+  transform: rotate(-4deg) translateY(0px);
+}
+
+// Анимация цвета текста при наведении
+.logoSvg:hover path[fill="var(--color-purple)"] {
+  fill: var(--color-red);
+  transition: fill 0.3s ease;
+}
