@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { Button, Input } from '@/shared/ui';
 import styles from './RegisterPage.module.scss';
 
 export const RegisterPage = () => {
@@ -59,68 +60,45 @@ export const RegisterPage = () => {
       <h1 className={styles.title}>Регистрация</h1>
       
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.field}>
-          <label htmlFor="name" className={styles.label}>
-            Имя
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            className={styles.input}
-            required
-            disabled={loading}
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="email" className={styles.label}>
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={styles.input}
-            required
-            disabled={loading}
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="password" className={styles.label}>
-            Пароль
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={styles.input}
-            required
-            disabled={loading}
-            minLength={6}
-          />
-        </div>
-
-        {error && (
-          <div className={styles.error}>
-            <strong>Ошибка:</strong> {error}
-          </div>
-        )}
-
-        <button
-          type="submit"
-          className={styles.button}
+        <Input
+          label="Имя"
+          name="name"
+          type="text"
+          value={formData.name}
+          onChange={handleChange}
+          required
           disabled={loading}
+        />
+
+        <Input
+          label="Email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          disabled={loading}
+        />
+
+        <Input
+          label="Пароль"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          disabled={loading}
+          minLength={6}
+        />
+
+        <Button
+          type="submit"
+          variant="red"
+          disabled={loading}
+          loading={loading}
         >
           {loading ? 'Регистрация...' : 'Зарегистрироваться'}
-        </button>
+        </Button>
       </form>
 
       <div className={styles.loginLink}>

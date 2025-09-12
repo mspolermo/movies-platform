@@ -27,6 +27,25 @@
   --color-input-background: #d9d7e0;
   --color-input-text: #a5a1b2;
   --color-input-text-dark: #1f1b2e;
+  --color-input-disabled: rgba(217, 215, 224, 0.5);
+
+  // Серые цвета
+  --color-gray: #808080;
+  --color-gray-hover: #666666;
+  --color-gray-light: #cccccc;
+
+  // Фиолетовые цвета
+  --color-purple: #7e798f;
+  --color-purple-hover: #6a6577;
+
+  // Градиенты
+  --color-gradient-start: #ea003d;
+  --color-gradient-end: #c447ff;
+
+  // Прозрачные цвета
+  --color-transparent-white: rgba(255, 255, 255, 0.32);
+  --color-transparent-red: rgba(234, 0, 61, 0.2);
+  --color-transparent-red-shadow: rgba(234, 0, 61, 0.3);
 
   // Модальные окна
   --color-modal-overlay: rgba(0, 0, 0, 0.9);

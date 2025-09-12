@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
+import { Button } from '@/shared/ui';
 import styles from './Navbar.module.scss';
 
 export const Navbar = () => {
@@ -49,9 +50,9 @@ export const Navbar = () => {
           <span className={styles.userName}>
             {user?.email}
           </span>
-          <button onClick={handleLogout} className={styles.logoutButton}>
+          <Button onClick={handleLogout} variant="red" size="small">
             Выйти
-          </button>
+          </Button>
         </div>
       </div>
     </nav>

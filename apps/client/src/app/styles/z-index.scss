@@ -1,6 +1,7 @@
 // Z-index константы для платформы фильмов
 :root {
   --z-base: 1;
+  --z-ui-element: 2;        // Для элементов UI (лейблы, иконки)
   --z-dropdown: 10;
   --z-sticky: 20;
   --z-fixed: 30;

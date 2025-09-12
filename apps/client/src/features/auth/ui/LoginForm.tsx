@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '../api/authStore/store';
+import { Button, Input } from '@/shared/ui';
 import styles from './LoginForm.module.scss';
 
 export const LoginForm = () => {
@@ -40,53 +41,35 @@ export const LoginForm = () => {
       </div>
       
       <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.field}>
-          <label htmlFor="email" className={styles.label}>
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.input}
-            required
-            disabled={isLoading}
-            placeholder="user@example.com"
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="password" className={styles.label}>
-            Пароль
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
-            required
-            disabled={isLoading}
-            placeholder="password123"
-          />
-        </div>
-
-        {error && (
-          <div className={styles.error}>
-            <strong>Ошибка входа:</strong> {error}
-            <br />
-            <small>Проверьте правильность email и пароля</small>
-          </div>
-        )}
-
-        <button
-          type="submit"
-          className={styles.button}
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+          required
           disabled={isLoading}
+          placeholder="user@example.com"
+          error={error ? 'Проверьте правильность email и пароля' : undefined}
+        />
+
+        <Input
+          label="Пароль"
+          type="password"
+          value={password}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+          required
+          disabled={isLoading}
+          placeholder="password123"
+        />
+
+        <Button
+          type="submit"
+          variant="red"
+          disabled={isLoading}
+          loading={isLoading}
         >
           {isLoading ? 'Вход...' : 'Войти'}
-        </button>
+        </Button>
       </form>
 
       <div className={styles.registerLink}>
