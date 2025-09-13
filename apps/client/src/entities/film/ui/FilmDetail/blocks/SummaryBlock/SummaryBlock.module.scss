@@ -1,0 +1,106 @@
+
+.heading {
+  margin: 0 0 16px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-heading);
+  line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.text {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.4;
+  display: flex;
+  align-items: center; // Выравнивание по центру для одинаковой высоты
+  flex-wrap: wrap;
+
+  &.textFirst {
+    margin-bottom: 12px;
+  }
+
+  // Отступы для элементов внутри текста
+  span {
+    margin-right: 8px;
+    min-height: 20px; // Минимальная высота для выравнивания
+    display: inline-flex;
+    align-items: center;
+    
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  // Специальные стили для жанров с точками
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px; // Отступ между точкой и текстом
+    min-height: 20px; // Минимальная высота для выравнивания
+    
+    .svg {
+      margin-right: 4px; // Отступ справа от точки
+    }
+  }
+}
+
+// Специальные классы для выравнивания
+.countryLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.genreLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.link {
+  color: var(--color-red);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 20px; // Минимальная высота для выравнивания
+  vertical-align: baseline; // Выравнивание по базовой линии
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+}
+
+.additional {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.svg {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 4px; // Фиксированная высота для иконки
+  width: 4px; // Фиксированная ширина для иконки
+}
+
+// Стили для текста в блоке additional
+.additional .text {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}

@@ -1,6 +1,6 @@
 import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
-import { TFilmBased } from '@common/types';
+import { TFilmModel } from '@common/types';
 
 export interface SearchFilmsParams {
   page?: number;
@@ -15,7 +15,7 @@ export interface SearchFilmsParams {
 }
 
 export interface FilmsResponse {
-  films: TFilmBased[];
+  films: TFilmModel[];
   total: number;
   page: number;
   perPage: number;
@@ -24,7 +24,7 @@ export interface FilmsResponse {
 
 export const filmsService = {
   // Получить фильм по ID
-  async getFilmById(id: number): Promise<TFilmBased> {
+  async getFilmById(id: number): Promise<TFilmModel> {
     const response = await apiClient.get(API_ENDPOINTS.FILMS.BY_ID(id));
     // API возвращает объект с полем film, извлекаем его
     return response.data.film || response.data;
@@ -40,7 +40,7 @@ export const filmsService = {
       },
     });
     
-    // API возвращает массив TFilmBased[] напрямую
+    // API возвращает массив TFilmModel[] напрямую
     const films = Array.isArray(response.data) ? response.data : [];
     const page = params.page || 1;
     const perPage = params.perPage || 20;
@@ -55,7 +55,7 @@ export const filmsService = {
   },
 
   // Обновить фильм (только для админов)
-  async updateFilm(id: number, data: Partial<TFilmBased>): Promise<TFilmBased> {
+  async updateFilm(id: number, data: Partial<TFilmModel>): Promise<TFilmModel> {
     const response = await apiClient.patch(API_ENDPOINTS.FILMS.UPDATE(id), data);
     return response.data;
   },

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { filmsService } from '@/shared/api/services';
-import { TFilmBased } from '@common/types';
+import { TFilmModel } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
 import { Loader } from '@/shared/ui';
 import { FilmDetail } from '@/entities/film';
@@ -13,7 +13,7 @@ export const FilmDetailPage: React.FC = () => {
   const params = useParams();
   const filmId = Number(params?.id);
   
-  const [film, setFilm] = useState<TFilmBased | null>(null);
+  const [film, setFilm] = useState<TFilmModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

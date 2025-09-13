@@ -1,0 +1,32 @@
+.additionalInfoBlock {
+  margin: 20px 0 40px;
+  display: none;
+
+  @media (max-width: 1160px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.line {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+
+  &Additional {
+    border-top: 1px solid var(--color-split-line);
+    border-bottom: 1px solid var(--color-split-line);
+  }
+}
+
+.text {
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.icons {
+  width: 180px;
+  display: flex;
+  justify-content: space-between;
+}
