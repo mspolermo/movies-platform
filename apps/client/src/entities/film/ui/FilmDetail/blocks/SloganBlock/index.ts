@@ -1,1 +1,2 @@
 export { SloganBlock } from './SloganBlock';
+
