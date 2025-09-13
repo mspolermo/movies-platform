@@ -1,2 +1,2 @@
-export { FilmCard, FilmCardSkeleton } from './ui';
+export { FilmCard, FilmCardSkeleton, FilmDetail } from './ui';
 

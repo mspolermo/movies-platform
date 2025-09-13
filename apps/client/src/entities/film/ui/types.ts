@@ -23,3 +23,7 @@ export interface IconsBlockProps {
   handleGradeClick: (e: React.MouseEvent) => void;
   handleNotLikeClick: (e: React.MouseEvent) => void;
 }
+
+export interface FilmDetailProps {
+  film: TFilmBased;
+}

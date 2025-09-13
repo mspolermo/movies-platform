@@ -26,7 +26,8 @@ export const filmsService = {
   // Получить фильм по ID
   async getFilmById(id: number): Promise<TFilmBased> {
     const response = await apiClient.get(API_ENDPOINTS.FILMS.BY_ID(id));
-    return response.data;
+    // API возвращает объект с полем film, извлекаем его
+    return response.data.film || response.data;
   },
 
   // Поиск фильмов
