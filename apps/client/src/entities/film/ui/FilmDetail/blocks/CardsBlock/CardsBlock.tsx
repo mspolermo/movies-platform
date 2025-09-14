@@ -3,13 +3,11 @@ import { useRouter } from 'next/navigation';
 import styles from './CardsBlock.module.scss';
 import { TPersonModel } from '@common/types';
 import { Card } from '@/shared/ui';
+import { CardsBlockProps } from '../../types';
 
-interface CardsBlockProps {
-  ratingKp?: number;
-  persons?: TPersonModel[];
-}
 
-export const CardsBlock: React.FC<CardsBlockProps> = ({ ratingKp, persons = [] }) => {
+
+export const CardsBlock = ({ persons = [] }: CardsBlockProps) => {
   const router = useRouter();
 
   const getActors = () => {
@@ -28,17 +26,8 @@ export const CardsBlock: React.FC<CardsBlockProps> = ({ ratingKp, persons = [] }
     router.push(`/persons/${actorId}`);
   };
 
-  const handleRatingClick = () => {
-    // TODO: Implement rating functionality
-  };
-
   return (
     <div className={styles.cardsBlock}>
-      <Card 
-        type="reit"
-        ratingKp={ratingKp}
-        onClick={handleRatingClick}
-      />
       {actors.map(actor => (
         <Card 
           key={actor.id}

@@ -40,44 +40,6 @@
     }
   }
 
-  &__reit {
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
-    height: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: transparent;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 8px;
-    padding: 8px;
-
-    &:hover {
-      cursor: pointer;
-      transform: translateY(-2px);
-      .card__body_small {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        transition-duration: 0.3s;
-      }
-      .card__text_reit {
-        transition-duration: 0.3s;
-        color: var(--color-active);
-      }
-    }
-    &:not(:hover):not(:active) {
-      .card__body_small {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        transition-duration: 0.3s;
-      }
-      .card__text_reit {
-        transition-duration: 0.3s;
-        color: var(--color-text);
-      }
-    }
-  }
 
   &__big {
     max-width: 88px;
@@ -124,16 +86,6 @@
       overflow: hidden;
       position: relative;
     }
-    &_rating {
-      width: 72px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      overflow: hidden;
-      padding: 0;
-    }
     &_big {
       margin-bottom: 4px;
       width: 88px;
@@ -164,33 +116,6 @@
     }
   }
 
-  &__color {
-    background: linear-gradient(135deg, var(--color-red), var(--color-red-active));
-    border-radius: 12px;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-white);
-    font-weight: 600;
-    font-size: 16px;
-    box-shadow: 0 2px 8px rgba(234, 0, 61, 0.3);
-
-    &_green {
-      border-radius: 12px;
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(135deg, #73a32f, #5d8a1f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--color-white);
-      font-weight: 600;
-      font-size: 16px;
-      box-shadow: 0 2px 8px rgba(115, 163, 47, 0.3);
-    }
-  }
 
   &__text {
     &_small {
@@ -207,14 +132,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       word-break: break-word;
-    }
-    &_reit {
-      margin-top: 9px;
-      font-size: 13px;
-      line-height: 9px;
-      font-weight: 400;
-      text-align: center;
-      color: var(--color-text);
     }
     &_big {
       font-size: 13px;
@@ -278,13 +195,6 @@
       height: 100px;
       padding: 6px;
     }
-    &__reit {
-      width: 80px;
-      min-width: 80px;
-      max-width: 80px;
-      height: 100px;
-      padding: 6px;
-    }
     &__big {
       width: 76px;
       height: 120px;
@@ -292,10 +202,6 @@
     }
     &__body {
       &_small {
-        width: 56px;
-        height: 56px;
-      }
-      &_rating {
         width: 56px;
         height: 56px;
       }
@@ -314,25 +220,11 @@
         max-width: 72px;
       }
     }
-    &__color {
-      max-height: 48px;
-      max-width: 48px;
-      font-size: 14px;
-      &_green {
-        max-height: 48px;
-        max-width: 48px;
-        font-size: 14px;
-      }
-    }
     &__text {
       &_small {
         font-size: 10px;
         line-height: 12px;
         height: 24px; /* Фиксированная высота для мобильных */
-      }
-      &_reit {
-        font-size: 10px;
-        line-height: 4px;
       }
     }
   }

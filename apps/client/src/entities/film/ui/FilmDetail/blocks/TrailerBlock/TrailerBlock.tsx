@@ -2,16 +2,12 @@ import React, { useState, useEffect } from 'react';
 import styles from './TrailerBlock.module.scss';
 import { SvgIcon, Skeleton } from '@/shared/ui';
 import { ImageIcon } from '@/shared/assets/svg-icons';
+import { TrailerBlockProps } from '../../types';
 
-interface TrailerBlockProps {
-  trailerUrl?: string;
-  filmName: string;
-}
-
-export const TrailerBlock: React.FC<TrailerBlockProps> = ({ 
+export const TrailerBlock = ({ 
   trailerUrl, 
   filmName
-}) => {
+}: TrailerBlockProps) => {
   const [videoError, setVideoError] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
 

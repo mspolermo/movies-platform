@@ -3,10 +3,9 @@ import styles from './Card.module.scss';
 import { SvgIcon } from '../SvgIcon';
 
 interface CardProps {
-  type?: 'small' | 'reit' | 'big';
+  type?: 'small' | 'big';
   title?: string;
   photoUrl?: string;
-  ratingKp?: number;
   role?: string;
   onClick?: () => void;
 }
@@ -15,7 +14,6 @@ export const Card: React.FC<CardProps> = ({
   type = 'small', 
   title, 
   photoUrl, 
-  ratingKp, 
   role, 
   onClick 
 }) => {
@@ -23,8 +21,6 @@ export const Card: React.FC<CardProps> = ({
   const [imgClass, setImgClass] = useState(styles.card__img);
   const [bodyClass, setBodyClass] = useState(styles.card__body);
   const [textClass, setTextClass] = useState(styles.card__text);
-  const [goodClass, setGoodClass] = useState(styles.card__color);
-  const [rating, setRating] = useState(ratingKp);
   const [titleArray, setTitleArray] = useState(['']);
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState(false);
@@ -48,14 +44,6 @@ export const Card: React.FC<CardProps> = ({
         setImgClass(styles.card__img_small);
         setTextClass(styles.card__text_small);
         break;
-      case 'reit':
-        setCardClass(styles.card__reit);
-        setRating(ratingKp ? Math.round(ratingKp * 10) / 10 : 0);
-        setBodyClass(styles.card__body_rating);
-        if (ratingKp && ratingKp >= 7) {
-          setGoodClass(styles.card__color_green);
-        }
-        break;
       case 'big':
         setCardClass(styles.card__big);
         setBodyClass(styles.card__body_big);
@@ -65,7 +53,7 @@ export const Card: React.FC<CardProps> = ({
         }
         break;
     }
-  }, [type, ratingKp, rating]);
+  }, [type, title]);
 
   const handleImageLoad = () => {
     setImageLoading(false);
@@ -78,14 +66,6 @@ export const Card: React.FC<CardProps> = ({
   };
 
   const renderImageContent = () => {
-    if (type === 'reit') {
-      return (
-        <div className={goodClass}>
-          <p>{rating}</p>
-        </div>
-      );
-    }
-
     // Если нет URL - показываем ошибку
     if (!photoUrl || imageError) {
       return (
@@ -122,9 +102,6 @@ export const Card: React.FC<CardProps> = ({
       </div>
       <div>
         {title && !titleArray[1] && <p className={textClass}>{title}</p>}
-        
-        {ratingKp && <p className={styles.card__text_reit}>Рейтинг</p>}
-        {ratingKp && <p className={styles.card__text_reit}>Кинопоиск</p>}
         
         {titleArray.length === 2 && (
           <div>

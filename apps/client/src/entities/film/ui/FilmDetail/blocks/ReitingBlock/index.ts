@@ -1,0 +1,1 @@
+export { ReitingBlock } from './ReitingBlock';

@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import styles from './PosterPreviewBlock.module.scss';
 import { SvgIcon, Skeleton } from '@/shared/ui';
 import { ImageIcon } from '@/shared/assets/svg-icons';
+import { PosterPreviewBlockProps } from '../../types';
 
-interface PosterPreviewBlockProps {
-  posterUrl?: string;
-  alt: string;
-}
-
-export const PosterPreviewBlock: React.FC<PosterPreviewBlockProps> = ({ 
+export const PosterPreviewBlock = ({ 
   posterUrl, 
   alt
-}) => {
+}: PosterPreviewBlockProps) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 

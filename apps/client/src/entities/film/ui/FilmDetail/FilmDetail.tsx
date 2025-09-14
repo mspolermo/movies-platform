@@ -6,6 +6,7 @@ import {
   CardsBlock, 
   DescriptionBlock, 
   PosterPreviewBlock,
+  ReitingBlock,
   SloganBlock, 
   SummaryBlock,
   TrailerBlock
@@ -23,6 +24,14 @@ export const FilmDetail = (props: FilmDetailProps) => {
             alt={film.filmNameRu}
           />
           <SloganBlock slogan={film.slogan} />
+
+          <ReitingBlock 
+            ratingKp={film.ratingKp}
+            votesKp={film.votesKp}
+            filmNameRu={film.filmNameRu}
+            filmNameEn={film.filmNameEn}
+          />
+          
         </div>
         
         <div className={styles.infoSection}>
@@ -41,9 +50,10 @@ export const FilmDetail = (props: FilmDetailProps) => {
           />
 
           <CardsBlock 
-            ratingKp={film.ratingKp}
             persons={film.persons}
           />
+
+
 
           <AdditionalInfoBlock />
 

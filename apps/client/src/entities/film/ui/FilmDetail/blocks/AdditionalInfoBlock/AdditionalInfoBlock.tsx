@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './AdditionalInfoBlock.module.scss';
 import { QualityTag } from '@/shared/ui';
 
-export const AdditionalInfoBlock: React.FC = () => {
+export const AdditionalInfoBlock = () => {
   return (
     <div className={styles.additionalInfoBlock}>
       <div className={styles.line}>

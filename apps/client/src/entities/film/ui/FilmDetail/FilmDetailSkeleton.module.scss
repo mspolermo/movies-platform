@@ -1,0 +1,271 @@
+// Стили для скелетона FilmDetail
+.skeletonContainer {
+  animation: skeletonFadeIn 0.4s ease-out;
+}
+
+@keyframes skeletonFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Постер скелетон - без дополнительных отступов
+
+.sloganSkeleton {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0 20px;
+  padding: 20px 20px 20px 32px;
+  background: var(--color-background-elements);
+  border-radius: 12px;
+  border-left: 4px solid var(--color-red);
+  position: relative;
+  min-height: 64px; // 16px font-size * 1.5 line-height + padding + 4px + 8px
+}
+
+.ratingSkeleton {
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--color-background-elements);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 1.5rem;
+}
+
+.ratingCircle {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  margin-right: 10px;
+}
+
+.ratingInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.ratingButton {
+  flex-shrink: 0;
+  height: 26px;
+  max-width: 100px;
+}
+
+.summarySkeleton {
+  margin-bottom: 1.5rem;
+}
+
+.titleSkeleton {
+  margin-bottom: 16px;
+  height: 32px;
+}
+
+.metaInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+  align-items: center;
+  animation: metaInfoAppear 0.5s ease-out 0.2s forwards;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.additionalInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+  animation: additionalInfoAppear 0.5s ease-out 0.3s forwards;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+@keyframes metaInfoAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes additionalInfoAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.descriptionSkeleton {
+  margin-bottom: 1.5rem;
+}
+
+.descriptionText {
+  margin-bottom: 0.5rem;
+  height: 60px;
+}
+
+.readMoreButton {
+  cursor: pointer;
+  height: 20px;
+  width: 100px;
+}
+
+.cardsSkeletonContainer {
+  margin: 14px 0 28px;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cardSkeleton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: transparent;
+  border-radius: 8px;
+  padding: 8px;
+  animation: cardAppear 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+}
+
+.cardSkeleton:nth-child(1) { animation-delay: 0.1s; }
+.cardSkeleton:nth-child(2) { animation-delay: 0.15s; }
+.cardSkeleton:nth-child(3) { animation-delay: 0.2s; }
+.cardSkeleton:nth-child(4) { animation-delay: 0.25s; }
+.cardSkeleton:nth-child(5) { animation-delay: 0.3s; }
+
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.95);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cardImage {
+  width: 76px;
+  height: 76px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.cardTitle {
+  width: 80%;
+  height: 14px;
+  margin: 0 auto;
+}
+
+.additionalInfoSkeleton {
+  margin-bottom: 1.5rem;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.trailerSkeleton {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.trailerTitleSkeleton {
+  height: 18px;
+  width: 80px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+}
+
+.trailerVideoSkeleton {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-width: 800px;
+  border-radius: 8px;
+  background: var(--color-background-elements);
+}
+
+// Адаптивность
+@media (max-width: 1160px) {
+  .ratingCircle {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ratingSkeleton {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 16px;
+  }
+  
+  .ratingInfo {
+    width: 100%;
+  }
+  
+  .ratingButton {
+    width: 100%;
+  }
+  
+  .cardsSkeletonContainer {
+    gap: 0.75rem;
+  }
+  
+  .trailerVideoSkeleton {
+    max-width: 100%;
+  }
+  
+  .metaInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .titleSkeleton {
+    height: 28px;
+  }
+}
+
+@media (max-width: 440px) {
+  .ratingSkeleton {
+    .inner {
+      flex: 1 0 60%;
+    }
+
+    .btn {
+      flex: 0 1 30%;
+      max-width: 90px;
+    }
+  }
+}

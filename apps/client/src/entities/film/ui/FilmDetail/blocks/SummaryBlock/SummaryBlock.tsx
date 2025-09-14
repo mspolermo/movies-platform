@@ -3,22 +3,15 @@ import { useRouter } from 'next/navigation';
 import styles from './SummaryBlock.module.scss';
 import { TCountryBased, TGenreBased } from '@common/types';
 import { SvgIcon, QualityTag } from '@/shared/ui';
+import { SummaryBlockProps } from '../../types';
 
-interface SummaryBlockProps {
-  filmName: string;
-  year?: number;
-  genres?: TGenreBased[];
-  movieLength?: number;
-  countries?: TCountryBased[];
-}
-
-export const SummaryBlock: React.FC<SummaryBlockProps> = ({ 
+export const SummaryBlock = ({ 
   filmName, 
   year, 
   genres = [], 
   movieLength, 
   countries = [] 
-}) => {
+}: SummaryBlockProps) => {
   const router = useRouter();
 
   const getType = (genres: TGenreBased[]) => {

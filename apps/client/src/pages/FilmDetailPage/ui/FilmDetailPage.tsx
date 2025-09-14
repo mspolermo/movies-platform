@@ -6,8 +6,7 @@ import { Layout } from '@/widgets/Layout';
 import { filmsService } from '@/shared/api/services';
 import { TFilmModel } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
-import { Loader } from '@/shared/ui';
-import { FilmDetail } from '@/entities/film';
+import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
 
 export const FilmDetailPage: React.FC = () => {
   const params = useParams();
@@ -43,7 +42,7 @@ export const FilmDetailPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <Loader size='small'/>
+        <FilmDetailSkeleton />
       </Layout>
     );
   }

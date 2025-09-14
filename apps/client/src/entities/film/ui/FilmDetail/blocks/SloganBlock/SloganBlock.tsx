@@ -1,12 +1,9 @@
 import React from 'react';
 import styles from './SloganBlock.module.scss';
 import { SvgIcon } from '@/shared/ui';
+import { SloganBlockProps } from '../../types';
 
-interface SloganBlockProps {
-  slogan?: string;
-}
-
-export const SloganBlock: React.FC<SloganBlockProps> = ({ slogan }) => {
+export const SloganBlock = ({ slogan }: SloganBlockProps) => {
   if (!slogan) return null;
 
   return (

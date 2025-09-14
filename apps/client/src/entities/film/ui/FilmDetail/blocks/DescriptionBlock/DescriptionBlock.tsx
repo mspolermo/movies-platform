@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './DescriptionBlock.module.scss';
 import { QualityTag } from '@/shared/ui';
+import { DescriptionBlockProps } from '../../types';
 
-interface DescriptionBlockProps {
-  description: string;
-  filmName: string;
-}
-
-export const DescriptionBlock: React.FC<DescriptionBlockProps> = ({ description, filmName }) => {
+export const DescriptionBlock= ({ description, filmName }: DescriptionBlockProps) => {
   const [isExpanded, setIsExpanded] = useState(false); // По умолчанию свернут для всех устройств
   const [isMobile, setIsMobile] = useState(false);
 

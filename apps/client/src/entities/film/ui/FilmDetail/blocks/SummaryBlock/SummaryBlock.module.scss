@@ -40,24 +40,17 @@
   .link {
     display: inline-flex;
     align-items: center;
-    gap: 4px; // Отступ между точкой и текстом
-    min-height: 20px; // Минимальная высота для выравнивания
+    gap: 4px;
+    min-height: 20px;
     
     .svg {
-      margin-right: 4px; // Отступ справа от точки
+      margin-right: 4px;
     }
   }
 }
 
 // Специальные классы для выравнивания
-.countryLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: 20px;
-  padding: 0;
-  margin: 0;
-}
-
+.countryLink,
 .genreLink {
   display: inline-flex;
   align-items: center;
@@ -73,8 +66,8 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  min-height: 20px; // Минимальная высота для выравнивания
-  vertical-align: baseline; // Выравнивание по базовой линии
+  min-height: 20px;
+  vertical-align: baseline;
 
   &:hover {
     color: var(--color-red-active);
@@ -94,8 +87,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 4px; // Фиксированная высота для иконки
-  width: 4px; // Фиксированная ширина для иконки
+  height: 4px;
+  width: 4px;
 }
 
 // Стили для текста в блоке additional
