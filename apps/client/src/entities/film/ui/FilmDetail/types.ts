@@ -1,39 +1,20 @@
-import { TCountryBased, TGenreBased, TPersonModel } from "@common/types";
+import { TCountryBased, TGenreBased, TPersonModel, TFilmBased } from "@common/types";
 
 export interface CardsBlockProps {
   persons?: TPersonModel[];
 }
 
-export interface DescriptionBlockProps {
-  description: string;
-  filmName: string;
-}
+export interface DescriptionBlockProps extends Pick<TFilmBased, 'description' | 'filmNameRu' | 'filmNameEn'> {}
 
-export interface PosterPreviewBlockProps {
-  posterUrl?: string;
-  alt: string;
-}
+export interface PosterPreviewBlockProps extends Pick<TFilmBased, 'bigPictureUrl' | 'smallPictureUrl' | 'filmNameRu' | 'filmNameEn'> {}
 
-export interface ReitingBlockProps {
-  ratingKp?: number;
-  votesKp?: number;
-  filmNameRu: string;
-  filmNameEn?: string;
-}
+export interface RatingBlockProps extends Pick<TFilmBased, 'ratingKp' | 'votesKp' | 'filmNameRu' | 'filmNameEn'> {}
 
-export interface SloganBlockProps {
-  slogan?: string;
-}
+export interface SloganBlockProps extends Pick<TFilmBased, 'slogan'> {}
 
-export interface SummaryBlockProps {
-  filmName: string;
-  year?: number;
+export interface SummaryBlockProps extends Pick<TFilmBased, 'filmNameRu' | 'filmNameEn' | 'year' | 'movieLength'> {
   genres?: TGenreBased[];
-  movieLength?: number;
   countries?: TCountryBased[];
 }
 
-export interface TrailerBlockProps {
-  trailerUrl?: string;
-  filmName: string;
-}
+export interface TrailerBlockProps extends Pick<TFilmBased, 'trailerUrl' | 'filmNameRu' | 'filmNameEn'> {}

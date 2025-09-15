@@ -5,15 +5,16 @@ import { ImageIcon } from '@/shared/assets/svg-icons';
 import { PosterPreviewBlockProps } from '../../types';
 
 export const PosterPreviewBlock = ({ 
-  posterUrl, 
-  alt
+  bigPictureUrl, 
+  smallPictureUrl, 
+  filmNameRu, 
+  filmNameEn, 
 }: PosterPreviewBlockProps) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
 
-  const getPosterUrl = () => {
-    return posterUrl || '';
-  };
+  const posterUrl = bigPictureUrl ?? smallPictureUrl ?? '';
+  const alt = filmNameRu || filmNameEn || '';
 
   const handleImageLoad = () => {
     setImageLoading(false);
@@ -48,7 +49,7 @@ export const PosterPreviewBlock = ({
   return (
     <div className={styles.posterPreviewBlock}>
       <img 
-        src={getPosterUrl()} 
+        src={posterUrl} 
         alt={alt}
         onLoad={handleImageLoad}
         onError={handleImageError}

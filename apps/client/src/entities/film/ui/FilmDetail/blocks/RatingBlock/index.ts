@@ -1,0 +1,2 @@
+export { RatingBlock } from './RatingBlock';
+

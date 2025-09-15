@@ -18,18 +18,34 @@
   z-index: 10;
 }
 
-@import '../shared/placeholder-mixins.scss';
-
 .imagePlaceholder {
-  @include placeholder-base;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-background-elements);
+  border-radius: inherit;
+  color: var(--color-text);
+  text-align: center;
+  padding: 20px;
 }
 
 .placeholderIcon {
-  @include placeholder-icon;
+  margin-bottom: 12px;
+  opacity: 0.6;
+  
+  :global(svg) {
+    color: var(--color-text);
+    opacity: 0.6;
+  }
 }
 
 .placeholderText {
-  @include placeholder-text;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .imageSkeleton {

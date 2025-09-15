@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from '@/shared/ui';
-import styles from './ReitingBlock.module.scss';
-import { ReitingBlockProps } from '../../types';
+import styles from './RatingBlock.module.scss';
+import { RatingBlockProps } from '../../types';
 
-export const ReitingBlock = ({ 
+export const RatingBlock = ({ 
   ratingKp, 
   votesKp, 
   filmNameRu, 
   filmNameEn 
-}: ReitingBlockProps) => {
+}: RatingBlockProps) => {
   const [ratingClass, setRatingClass] = useState(styles.rating);
   const [blockClass, setBlockClass] = useState(styles.reitingBlock);
 

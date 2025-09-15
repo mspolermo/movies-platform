@@ -6,13 +6,16 @@ import { SvgIcon, QualityTag } from '@/shared/ui';
 import { SummaryBlockProps } from '../../types';
 
 export const SummaryBlock = ({ 
-  filmName, 
+  filmNameRu, 
+  filmNameEn, 
   year, 
   genres = [], 
   movieLength, 
   countries = [] 
 }: SummaryBlockProps) => {
   const router = useRouter();
+
+  const filmName = filmNameRu ?? filmNameEn ?? '';
 
   const getType = (genres: TGenreBased[]) => {
     const isCartoon = genres.find(genre => 

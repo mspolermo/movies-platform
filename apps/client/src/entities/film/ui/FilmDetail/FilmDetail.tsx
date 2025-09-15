@@ -6,7 +6,7 @@ import {
   CardsBlock, 
   DescriptionBlock, 
   PosterPreviewBlock,
-  ReitingBlock,
+  RatingBlock,
   SloganBlock, 
   SummaryBlock,
   TrailerBlock
@@ -20,12 +20,14 @@ export const FilmDetail = (props: FilmDetailProps) => {
       <div className={styles.filmDetail}>
         <div className={styles.posterSection}>
           <PosterPreviewBlock 
-            posterUrl={film.bigPictureUrl || film.smallPictureUrl}
-            alt={film.filmNameRu}
+            bigPictureUrl={film.bigPictureUrl}
+            smallPictureUrl={film.smallPictureUrl}
+            filmNameRu={film.filmNameRu}
+            filmNameEn={film.filmNameEn}
           />
           <SloganBlock slogan={film.slogan} />
 
-          <ReitingBlock 
+          <RatingBlock 
             ratingKp={film.ratingKp}
             votesKp={film.votesKp}
             filmNameRu={film.filmNameRu}
@@ -37,7 +39,8 @@ export const FilmDetail = (props: FilmDetailProps) => {
         <div className={styles.infoSection}>
         
           <SummaryBlock 
-            filmName={film.filmNameRu}
+            filmNameRu={film.filmNameRu}
+            filmNameEn={film.filmNameEn}
             year={film.year}
             genres={film.genres}
             movieLength={film.movieLength}
@@ -46,7 +49,8 @@ export const FilmDetail = (props: FilmDetailProps) => {
 
           <DescriptionBlock 
             description={film.description || ''}
-            filmName={film.filmNameRu}
+            filmNameRu={film.filmNameRu}
+            filmNameEn={film.filmNameEn}
           />
 
           <CardsBlock 
@@ -59,7 +63,8 @@ export const FilmDetail = (props: FilmDetailProps) => {
 
           <TrailerBlock 
             trailerUrl={film.trailerUrl}
-            filmName={film.filmNameRu}
+            filmNameRu={film.filmNameRu}
+            filmNameEn={film.filmNameEn}
           />
         </div>
       </div>

@@ -6,8 +6,10 @@ import { TrailerBlockProps } from '../../types';
 
 export const TrailerBlock = ({ 
   trailerUrl, 
-  filmName
+  filmNameRu,
+  filmNameEn
 }: TrailerBlockProps) => {
+  const filmName = filmNameRu ?? filmNameEn ?? '';
   const [videoError, setVideoError] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
 

@@ -3,8 +3,8 @@ import styles from './DescriptionBlock.module.scss';
 import { QualityTag } from '@/shared/ui';
 import { DescriptionBlockProps } from '../../types';
 
-export const DescriptionBlock= ({ description, filmName }: DescriptionBlockProps) => {
-  const [isExpanded, setIsExpanded] = useState(false); // По умолчанию свернут для всех устройств
+export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: DescriptionBlockProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -28,8 +28,8 @@ export const DescriptionBlock= ({ description, filmName }: DescriptionBlockProps
       </p>
       
       {!isExpanded && (
-        <p className={`${styles.text} ${styles.hidden}`}>
-          Приглашаем посмотреть «{filmName}» в нашем кинотеатре
+        <p className={`${styles.text}`}>
+          Приглашаем посмотреть «{filmNameRu ?? filmNameEn ?? ''}» в нашем кинотеатре
         </p>
       )}
       
