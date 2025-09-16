@@ -1,0 +1,1 @@
+export { FilmDetailSkeleton } from './FilmDetailSkeleton';
