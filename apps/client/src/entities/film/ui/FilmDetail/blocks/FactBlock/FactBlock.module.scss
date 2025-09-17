@@ -1,0 +1,68 @@
+.factBlock {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-red);
+  margin-bottom: 12px;
+}
+
+.titleClickable {
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+}
+
+.text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0 0 16px 0;
+
+  &.short {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.btn {
+  color: var(--color-red);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 16px 0;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+
+  &.btnDesktop {
+    display: block;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &.btnMobile {
+    display: none;
+
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+}
+
+

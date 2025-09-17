@@ -1,6 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@/shared/ui';
-import styles from './FilmDetail.module.scss';
+import styles from '../FilmDetail.module.scss';
 import skeletonStyles from './FilmDetailSkeleton.module.scss';
 
 export const FilmDetailSkeleton: React.FC = () => {

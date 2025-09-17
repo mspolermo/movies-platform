@@ -1,6 +1,7 @@
 export { AdditionalInfoBlock } from './AdditionalInfoBlock';
 export { CardsBlock } from './CardsBlock';
 export { DescriptionBlock } from './DescriptionBlock';
+export { FactBlock } from './FactBlock';
 export { PosterPreviewBlock } from './PosterPreviewBlock';
 export { RatingBlock } from './RatingBlock';
 export { SloganBlock } from './SloganBlock';

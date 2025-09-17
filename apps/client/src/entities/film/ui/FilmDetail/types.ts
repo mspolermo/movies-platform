@@ -1,4 +1,4 @@
-import { TCountryBased, TGenreBased, TPersonModel, TFilmBased } from "@common/types";
+import { TCountryBased, TGenreBased, TPersonModel, TFilmBased, TFactBased } from "@common/types";
 
 export interface CardsBlockProps {
   persons?: TPersonModel[];
@@ -15,6 +15,12 @@ export interface SloganBlockProps extends Pick<TFilmBased, 'slogan'> {}
 export interface SummaryBlockProps extends Pick<TFilmBased, 'filmNameRu' | 'filmNameEn' | 'year' | 'movieLength'> {
   genres?: TGenreBased[];
   countries?: TCountryBased[];
+  isCartoon: boolean;
 }
 
 export interface TrailerBlockProps extends Pick<TFilmBased, 'trailerUrl' | 'filmNameRu' | 'filmNameEn'> {}
+
+export interface FactBlockProps {
+  fact?: TFactBased;
+  isCartoon: boolean;
+}

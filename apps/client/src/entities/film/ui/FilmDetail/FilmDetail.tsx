@@ -5,15 +5,18 @@ import {
   AdditionalInfoBlock, 
   CardsBlock, 
   DescriptionBlock, 
+  FactBlock,
   PosterPreviewBlock,
   RatingBlock,
   SloganBlock, 
   SummaryBlock,
   TrailerBlock
 } from './blocks';
+import { checkIsCartoon } from '../../lib';
 
 export const FilmDetail = (props: FilmDetailProps) => {
   const { film } = props;
+  const isCartoon = checkIsCartoon(film.genres ?? []);
 
   return (
     <div className={styles.container}>
@@ -45,6 +48,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
             genres={film.genres}
             movieLength={film.movieLength}
             countries={film.countries}
+            isCartoon={isCartoon}
           />
 
           <DescriptionBlock 
@@ -53,11 +57,14 @@ export const FilmDetail = (props: FilmDetailProps) => {
             filmNameEn={film.filmNameEn}
           />
 
+          <FactBlock 
+            fact={film.fact} 
+            isCartoon={isCartoon}
+          />  
+
           <CardsBlock 
             persons={film.persons}
           />
-
-
 
           <AdditionalInfoBlock />
 

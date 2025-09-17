@@ -4,6 +4,7 @@ import styles from './SummaryBlock.module.scss';
 import { TCountryBased, TGenreBased } from '@common/types';
 import { SvgIcon, QualityTag } from '@/shared/ui';
 import { SummaryBlockProps } from '../../types';
+import { checkIsCartoon } from '../../../../lib';
 
 export const SummaryBlock = ({ 
   filmNameRu, 
@@ -11,16 +12,14 @@ export const SummaryBlock = ({
   year, 
   genres = [], 
   movieLength, 
-  countries = [] 
+  countries = [],
+  isCartoon
 }: SummaryBlockProps) => {
   const router = useRouter();
 
   const filmName = filmNameRu ?? filmNameEn ?? '';
 
   const getType = (genres: TGenreBased[]) => {
-    const isCartoon = genres.find(genre => 
-      genre.nameRu === 'мультфильм' || genre.nameEn === 'cartoon'
-    );
     return isCartoon ? 'Мультфильм' : 'Фильм';
   };
 

@@ -1,0 +1,1 @@
+export { checkIsCartoon } from './checkIsCartoon';
