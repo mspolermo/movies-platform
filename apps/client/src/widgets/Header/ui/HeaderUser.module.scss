@@ -1,0 +1,62 @@
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification {
+  padding: 8px 20px 8px 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  
+  &:hover {
+    .icon {
+      color: var(--color-active);
+    }
+  }
+}
+
+.icon {
+  color: var(--color-text);
+  transition: color 0.4s ease;
+}
+
+.profile {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  
+  &:hover {
+    .profileBorder {
+      box-shadow: 0 0 6px var(--color-active);
+      border-color: var(--color-active);
+    }
+    .icon {
+      color: var(--color-active);
+    }
+  }
+}
+
+.profileBorder {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--color-text);
+  background: transparent;
+  transition: all 0.4s ease;
+}
+
+@media (max-width: 600px) {
+  .notification,
+  .profile {
+    display: none;
+  }
+}
