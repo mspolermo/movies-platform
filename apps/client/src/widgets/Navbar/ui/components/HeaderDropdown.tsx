@@ -6,18 +6,18 @@ import styles from './HeaderDropdown.module.scss';
 
 interface HeaderDropdownProps {
   activeDropdown: string | null;
+  isClosing: boolean;
   onClose: () => void;
   onMouseEnter?: () => void;
 }
 
 export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
   activeDropdown,
+  isClosing,
   onClose,
   onMouseEnter
 }) => {
   const router = useRouter();
-
-  if (!activeDropdown) return null;
 
   const handleGenreClick = (genre: string) => {
     router.push(`/films/genre/${genre}`);
@@ -94,7 +94,7 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
 
   return (
     <div 
-      className={styles.dropdown} 
+      className={`${styles.dropdown} ${isClosing ? styles.closing : ''}`}
       onMouseLeave={onClose}
       onMouseEnter={onMouseEnter}
     >

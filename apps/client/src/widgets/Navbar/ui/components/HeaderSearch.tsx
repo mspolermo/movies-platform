@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { SvgIcon } from '../../../shared/ui/SvgIcon';
-import { Input } from '../../../shared/ui/Input';
+import { SvgIcon } from '../../../../shared/ui/SvgIcon';
+import { Input } from '../../../../shared/ui/Input';
 import styles from './HeaderSearch.module.scss';
 
 export const HeaderSearch: React.FC = () => {

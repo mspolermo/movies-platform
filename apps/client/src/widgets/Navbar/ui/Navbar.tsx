@@ -4,14 +4,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Button, Logo } from '@/shared/ui';
-import { HeaderSearch } from '../../Header/ui/HeaderSearch';
-import { HeaderUser } from '../../Header/ui/HeaderUser';
-import { HeaderDropdown } from '../../Header/ui/HeaderDropdown';
+import { HeaderSearch } from './components/HeaderSearch';
+import { HeaderUser } from './components/HeaderUser';
+import { HeaderDropdown } from './components/HeaderDropdown';
 import styles from './Navbar.module.scss';
 
 export const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogout = () => {
@@ -19,24 +20,33 @@ export const Navbar = () => {
   };
 
   const handleDropdownOpen = (dropdownType: string) => {
+    // Очищаем таймер закрытия если он есть
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+    setIsClosing(false);
     setActiveDropdown(dropdownType);
   };
 
   const handleDropdownClose = () => {
-    timeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 150); // Небольшая задержка для плавного перехода
+    if (activeDropdown && !isClosing) {
+      setIsClosing(true);
+      // Удаляем элемент из DOM после завершения анимации
+      timeoutRef.current = setTimeout(() => {
+        setActiveDropdown(null);
+        setIsClosing(false);
+      }, 400); // Время анимации закрытия
+    }
   };
 
   const handleDropdownMouseEnter = () => {
+    // Отменяем закрытие при наведении на дропдаун
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+    setIsClosing(false);
   };
 
   // Очистка таймера при размонтировании
@@ -93,11 +103,14 @@ export const Navbar = () => {
           </div>
         </div>
 
-        <HeaderDropdown
-          activeDropdown={activeDropdown}
-          onClose={handleDropdownClose}
-          onMouseEnter={handleDropdownMouseEnter}
-        />
+        {(activeDropdown || isClosing) && (
+          <HeaderDropdown
+            activeDropdown={activeDropdown}
+            isClosing={isClosing}
+            onClose={handleDropdownClose}
+            onMouseEnter={handleDropdownMouseEnter}
+          />
+        )}
       </div>
     </nav>
   );

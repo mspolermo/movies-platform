@@ -5,10 +5,29 @@
   right: 0;
   background: transparent;
   z-index: var(--z-dropdown);
-  animation: dropdownOpen 0.4s ease-out;
   max-width: 1300px;
   margin: 0 auto;
   padding: 0 30px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  animation: dropdownSlideIn 0.4s ease-out;
+  
+  &.closing {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes dropdownSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .content {
@@ -60,13 +79,3 @@
   }
 }
 
-@keyframes dropdownOpen {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
