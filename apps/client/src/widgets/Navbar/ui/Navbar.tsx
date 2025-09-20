@@ -13,6 +13,7 @@ export const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+  const [showHeaderBackground, setShowHeaderBackground] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLogout = () => {
@@ -27,11 +28,13 @@ export const Navbar = () => {
     }
     setIsClosing(false);
     setActiveDropdown(dropdownType);
+    setShowHeaderBackground(true); // Показываем фон хедера сразу
   };
 
   const handleDropdownClose = () => {
     if (activeDropdown && !isClosing) {
       setIsClosing(true);
+      setShowHeaderBackground(false); // Убираем фон хедера сразу
       // Удаляем элемент из DOM после завершения анимации
       timeoutRef.current = setTimeout(() => {
         setActiveDropdown(null);
@@ -47,6 +50,7 @@ export const Navbar = () => {
       timeoutRef.current = null;
     }
     setIsClosing(false);
+    setShowHeaderBackground(true); // Восстанавливаем фон хедера
   };
 
   // Очистка таймера при размонтировании
@@ -65,7 +69,7 @@ export const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        <div className={`${styles.content} ${activeDropdown ? styles.active : ''}`}>
+        <div className={`${styles.content} ${showHeaderBackground ? styles.active : ''}`}>
           <div className={styles.brand}>
             <Link href="/films" className={styles.logo}>
               <Logo />
