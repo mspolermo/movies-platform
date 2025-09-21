@@ -11,28 +11,39 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { isAuthenticated, checkAuth, user, token } = useAuthStore();
+  const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Проверяем авторизацию только если есть токен, но нет пользователя
+    if (token && !user) {
+      console.log('Layout: Token exists but no user, checking auth...');
+      checkAuth();
+    }
+  }, [checkAuth, token, user]);
 
   useEffect(() => {
-    console.log('Layout: Auth state changed:', { isAuthenticated, user: !!user, token: !!token });
+    console.log('Layout: Auth state changed:', { isAuthenticated, user: !!user, token: !!token, isLoading, isInitialized });
     
-    if (!isAuthenticated && !token) {
-      console.log('Layout: Redirecting to login - not authenticated');
+    // Перенаправляем на логин только если инициализация завершена и нет токена
+    if (isInitialized && !token && !isLoading) {
+      console.log('Layout: Initialized and no token, redirecting to login');
       router.push('/auth/login');
     }
-  }, [isAuthenticated, token, router]);
+  }, [isAuthenticated, token, router, isLoading, isInitialized]);
 
   // Показываем отладочную информацию в development
   if (process.env.NODE_ENV === 'development') {
-    console.log('Layout render:', { isAuthenticated, user: !!user, token: !!token });
+    console.log('Layout render:', { isAuthenticated, user: !!user, token: !!token, isLoading, isInitialized });
   }
 
-  if (!isAuthenticated || !token) {
+  // Показываем загрузку если еще не инициализирован или идет загрузка
+  if (!isInitialized || (token && !user && isLoading)) {
+    return <div>Загрузка...</div>;
+  }
+
+  // Показываем контент только если авторизован и есть пользователь
+  if (!isAuthenticated || !user || !token) {
     return null;
   }
 

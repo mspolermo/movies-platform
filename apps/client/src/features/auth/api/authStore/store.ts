@@ -10,6 +10,7 @@ interface AuthState {
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isInitialized: boolean; // Флаг инициализации
   error: string | null;
 }
 
@@ -30,6 +31,7 @@ export const useAuthStore = create<AuthStore>()(
       token: null,
       isAuthenticated: false,
       isLoading: false,
+      isInitialized: false,
       error: null,
 
       // Действия
@@ -62,6 +64,7 @@ export const useAuthStore = create<AuthStore>()(
             token: token.token, // Извлекаем токен из вложенного объекта
             isAuthenticated: true,
             isLoading: false,
+            isInitialized: true,
             error: null,
           };
 
@@ -93,6 +96,7 @@ export const useAuthStore = create<AuthStore>()(
           token: null,
           isAuthenticated: false,
           isLoading: false,
+          isInitialized: true,
           error: null,
         });
       },
@@ -101,20 +105,39 @@ export const useAuthStore = create<AuthStore>()(
         const { token } = get();
         console.log('Auth store: checkAuth called, token exists:', !!token);
 
-        if (!token) return;
+        if (!token) {
+          console.log('Auth store: No token, skipping checkAuth');
+          return;
+        }
+
+        set({ isLoading: true, error: null });
 
         try {
+          console.log('Auth store: Checking token validity...');
           const response = await apiClient.get(API_ENDPOINTS.AUTH.CHECK_TOKEN);
           const user = response.data;
+
+          console.log('Auth store: Token is valid, user data:', user);
 
           set({
             user,
             isAuthenticated: true,
+            isLoading: false,
+            isInitialized: true,
             error: null,
           });
         } catch (error: any) {
+          console.error('Auth store: Token check failed:', error);
+          
           if (error.response?.status === 401) {
+            console.log('Auth store: Token invalid, logging out');
             get().logout();
+          } else {
+            set({
+              isLoading: false,
+              isInitialized: true,
+              error: 'Ошибка проверки авторизации',
+            });
           }
         }
       },
@@ -129,9 +152,26 @@ export const useAuthStore = create<AuthStore>()(
         user: state.user,
         token: state.token,
         isAuthenticated: state.isAuthenticated,
+        isInitialized: state.isInitialized,
       }),
       onRehydrateStorage: () => (state) => {
         console.log('Auth store: Rehydrated state:', state);
+        
+        // Если нет токена, помечаем как инициализированный
+        if (!state || !state.token) {
+          console.log('Auth store: No token found after rehydration, marking as initialized');
+          if (state) {
+            state.isInitialized = true;
+          }
+          return;
+        }
+        
+        console.log('Auth store: Token found after rehydration, checking auth...');
+        // Увеличиваем задержку для корректной инициализации
+        setTimeout(() => {
+          console.log('Auth store: Calling checkAuth after rehydration delay');
+          state.checkAuth();
+        }, 500);
       },
     }
   )
