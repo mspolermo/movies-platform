@@ -11,19 +11,8 @@ export const HeaderUser: React.FC = () => {
     <div className={styles.user}>
       <div className={styles.actions}>
         <button
-          className={styles.notification}
-          onClick={() => window.open('https://www.ivi.ru/profile/pull_notifications', '_blank')}
-        >
-          <SvgIcon 
-            name="notification" 
-            className={styles.icon}
-            size={16}
-          />
-        </button>
-        
-        <button
           className={styles.profile}
-          onClick={() => window.open('/auth', '_self')}
+          onClick={() => window.open('/auth/login', '_self')}
         >
           <div className={styles.profileBorder}>
             <SvgIcon 
