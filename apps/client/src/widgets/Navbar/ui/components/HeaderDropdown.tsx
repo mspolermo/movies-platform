@@ -36,19 +36,9 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
         <div className={styles.list}>
           <div className={styles.column}>
             <p className={styles.item} onClick={() => handleGenreClick('боевик')}>Боевик</p>
-            <p className={styles.item} onClick={() => handleGenreClick('драма')}>Драма</p>
-            <p className={styles.item} onClick={() => handleGenreClick('комедия')}>Комедия</p>
-            <p className={styles.item} onClick={() => handleGenreClick('триллер')}>Триллер</p>
-            <p className={styles.item} onClick={() => handleGenreClick('ужасы')}>Ужасы</p>
-            <p className={styles.item} onClick={() => handleGenreClick('фантастика')}>Фантастика</p>
           </div>
           <div className={styles.column}>
             <p className={styles.item} onClick={() => handleGenreClick('детектив')}>Детектив</p>
-            <p className={styles.item} onClick={() => handleGenreClick('мелодрама')}>Мелодрама</p>
-            <p className={styles.item} onClick={() => handleGenreClick('приключения')}>Приключения</p>
-            <p className={styles.item} onClick={() => handleGenreClick('семейный')}>Семейный</p>
-            <p className={styles.item} onClick={() => handleGenreClick('спорт')}>Спорт</p>
-            <p className={styles.item} onClick={() => handleGenreClick('военный')}>Военный</p>
           </div>
         </div>
       </div>
@@ -58,8 +48,6 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
         <div className={styles.list}>
           <div className={styles.column}>
             <p className={styles.item} onClick={() => handleGenreClick('Россия')}>Россия</p>
-            <p className={styles.item} onClick={() => handleGenreClick('СССР')}>СССР</p>
-            <p className={styles.item} onClick={() => handleGenreClick('США')}>США</p>
           </div>
         </div>
 
@@ -67,10 +55,6 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
         <div className={styles.list}>
           <div className={styles.column}>
             <p className={styles.item} onClick={() => handleYearClick('2024')}>2024</p>
-            <p className={styles.item} onClick={() => handleYearClick('2023')}>2023</p>
-            <p className={styles.item} onClick={() => handleYearClick('2022')}>2022</p>
-            <p className={styles.item} onClick={() => handleYearClick('2021')}>2021</p>
-            <p className={styles.item} onClick={() => handleYearClick('2020')}>2020</p>
           </div>
         </div>
       </div>
