@@ -7,9 +7,9 @@ import { Button, Logo } from '@/shared/ui';
 import { HeaderSearch } from './components/HeaderSearch';
 import { HeaderUser } from './components/HeaderUser';
 import { HeaderDropdown } from './components/HeaderDropdown';
-import styles from './Navbar.module.scss';
+import styles from './Header.module.scss';
 
-export const Navbar = () => {
+export const Header = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isClosing, setIsClosing] = useState(false);

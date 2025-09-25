@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
-import { Navbar } from '@/widgets/Navbar';
+import { Header } from '../Header';
 import styles from './Layout.module.scss';
 
 interface LayoutProps {
@@ -49,7 +49,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className={styles.layout}>
-      <Navbar />
+      <Header />
       <main className={styles.main}>
         {children}
       </main>

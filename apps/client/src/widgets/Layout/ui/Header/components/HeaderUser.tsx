@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { SvgIcon } from '../../../../shared/ui/SvgIcon';
+import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { useAuthStore } from '@/features/auth';
 import styles from './HeaderUser.module.scss';
 
