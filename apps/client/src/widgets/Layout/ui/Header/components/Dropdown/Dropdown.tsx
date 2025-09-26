@@ -2,17 +2,15 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import styles from './HeaderDropdown.module.scss';
+import styles from './Dropdown.module.scss';
 
 interface HeaderDropdownProps {
-  activeDropdown: string | null;
   isClosing: boolean;
   onClose: () => void;
   onMouseEnter?: () => void;
 }
 
-export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
-  activeDropdown,
+export const Dropdown: React.FC<HeaderDropdownProps> = ({
   isClosing,
   onClose,
   onMouseEnter
@@ -61,29 +59,13 @@ export const HeaderDropdown: React.FC<HeaderDropdownProps> = ({
     </div>
   );
 
-  const renderCartoonsDropdown = () => (
-    <div className={styles.content}>
-      <div className={styles.column}>
-        <h3 className={styles.heading}>Типы</h3>
-        <div className={styles.list}>
-          <div className={styles.column}>
-            <p className={styles.item} onClick={() => handleGenreClick('мультфильм')}>Мультфильмы</p>
-            <p className={styles.item} onClick={() => handleGenreClick('аниме')}>Аниме</p>
-            <p className={styles.item} onClick={() => handleGenreClick('детский')}>Детские</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div 
       className={`${styles.dropdown} ${isClosing ? styles.closing : ''}`}
       onMouseLeave={onClose}
       onMouseEnter={onMouseEnter}
     >
-      {activeDropdown === 'films' && renderFilmsDropdown()}
-      {activeDropdown === 'cartoons' && renderCartoonsDropdown()}
+      {renderFilmsDropdown()}
     </div>
   );
 };

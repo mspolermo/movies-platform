@@ -6,12 +6,12 @@ import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Button, Logo } from '@/shared/ui';
 import { HeaderSearch } from './components/HeaderSearch';
 import { HeaderUser } from './components/HeaderUser';
-import { HeaderDropdown } from './components/HeaderDropdown';
+import { Dropdown } from './components/Dropdown/Dropdown';
 import styles from './Header.module.scss';
 
 export const Header = () => {
   const { user, logout, isAuthenticated } = useAuthStore();
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [showHeaderBackground, setShowHeaderBackground] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -20,24 +20,24 @@ export const Header = () => {
     logout();
   };
 
-  const handleDropdownOpen = (dropdownType: string) => {
+  const handleDropdownOpen = () => {
     // Очищаем таймер закрытия если он есть
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+    setIsDropdownOpen(true);
     setIsClosing(false);
-    setActiveDropdown(dropdownType);
     setShowHeaderBackground(true); // Показываем фон хедера сразу
   };
 
   const handleDropdownClose = () => {
-    if (activeDropdown && !isClosing) {
+    if (!isClosing) {
       setIsClosing(true);
       setShowHeaderBackground(false); // Убираем фон хедера сразу
       // Удаляем элемент из DOM после завершения анимации
       timeoutRef.current = setTimeout(() => {
-        setActiveDropdown(null);
+        setIsDropdownOpen(false);
         setIsClosing(false);
       }, 400); // Время анимации закрытия
     }
@@ -49,6 +49,7 @@ export const Header = () => {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
+    setIsDropdownOpen(true);
     setIsClosing(false);
     setShowHeaderBackground(true); // Восстанавливаем фон хедера
   };
@@ -79,7 +80,7 @@ export const Header = () => {
           <div className={styles.menu}>
             <button
               className={styles.link}
-              onMouseEnter={() => handleDropdownOpen('films')}
+              onMouseEnter={() => handleDropdownOpen()}
               onMouseLeave={handleDropdownClose}
             >
               Фильмы
@@ -107,9 +108,8 @@ export const Header = () => {
           </div>
         </div>
 
-        {(activeDropdown || isClosing) && (
-          <HeaderDropdown
-            activeDropdown={activeDropdown}
+        {isDropdownOpen && (
+          <Dropdown
             isClosing={isClosing}
             onClose={handleDropdownClose}
             onMouseEnter={handleDropdownMouseEnter}
