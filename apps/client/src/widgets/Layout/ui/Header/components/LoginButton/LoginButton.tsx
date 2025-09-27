@@ -1,11 +1,10 @@
 'use client';
 
-import React from 'react';
 import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { useAuthStore } from '@/features/auth';
-import styles from './HeaderUser.module.scss';
+import styles from './LoginButton.module.scss';
 
-export const HeaderUser: React.FC = () => {
+export const LoginButton = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
 
   const handleAuthClick = () => {

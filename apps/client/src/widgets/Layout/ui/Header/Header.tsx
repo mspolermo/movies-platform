@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Button, Logo } from '@/shared/ui';
 import { HeaderSearch } from './components/HeaderSearch';
-import { HeaderUser } from './components/HeaderUser';
+import { LoginButton } from './components/LoginButton/LoginButton';
 import { Dropdown } from './components/Dropdown/Dropdown';
 import styles from './Header.module.scss';
 
@@ -104,7 +104,7 @@ export const Header = () => {
 
           <div className={styles.actions}>
             <HeaderSearch />
-            <HeaderUser />
+            <LoginButton />
           </div>
         </div>
 

@@ -5,7 +5,7 @@ import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { Input } from '@/shared/ui/Input';
 import styles from './HeaderSearch.module.scss';
 
-export const HeaderSearch: React.FC = () => {
+export const HeaderSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
@@ -15,20 +15,6 @@ export const HeaderSearch: React.FC = () => {
   const handleClose = () => {
     setIsOpen(false);
   };
-
-  // Управление overflow body при открытии/закрытии поиска
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    // Очистка при размонтировании
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
 
   // Закрытие по Escape
   useEffect(() => {
