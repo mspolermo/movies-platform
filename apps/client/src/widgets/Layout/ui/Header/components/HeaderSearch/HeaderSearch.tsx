@@ -5,6 +5,8 @@ import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { Input } from '@/shared/ui/Input';
 import styles from './HeaderSearch.module.scss';
 
+//TODO: переделать
+
 export const HeaderSearch = () => {
   const [isOpen, setIsOpen] = useState(false);
 

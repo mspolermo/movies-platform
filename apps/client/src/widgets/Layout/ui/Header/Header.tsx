@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Button, Logo } from '@/shared/ui';
-import { HeaderSearch } from './components/HeaderSearch';
+import { HeaderSearch } from './components/HeaderSearch/HeaderSearch';
 import { LoginButton } from './components/LoginButton/LoginButton';
 import { Dropdown } from './components/Dropdown/Dropdown';
 import styles from './Header.module.scss';
