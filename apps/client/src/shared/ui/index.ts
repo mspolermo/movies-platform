@@ -12,3 +12,4 @@ export { Loader } from './Loader';
 export type { LoaderProps } from './Loader';
 export { Card } from './Card';
 export { QualityTag } from './QualityTag';
+export { Overlay } from './Overlay';
