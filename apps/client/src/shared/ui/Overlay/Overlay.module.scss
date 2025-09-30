@@ -10,6 +10,8 @@
 	align-items: flex-start;
 	justify-content: center;
 	padding-top: 100px;
+	/* Не скроллим фон за оверлеем */
+	overflow: hidden;
 }
 
 .content {
@@ -22,4 +24,7 @@
 	width: 100%;
 	max-width: 600px;
 	margin: 0 20px;
+	/* Скроллим только контент, если он выше экрана */
+	max-height: calc(100vh - 140px);
+	overflow: auto;
 }

@@ -23,6 +23,7 @@ export const Overlay: React.FC<OverlayProps> = ({
 	closeOnEsc = true,
 	closeOnBackdrop = true,
 }) => {
+	// Закрытие по Escape
 	useEffect(() => {
 		if (!isOpen || !closeOnEsc) return;
 		const handleEscape = (e: KeyboardEvent) => {
@@ -35,6 +36,30 @@ export const Overlay: React.FC<OverlayProps> = ({
 			document.removeEventListener('keydown', handleEscape);
 		};
 	}, [isOpen, closeOnEsc, onClose]);
+
+	// Блокировка прокрутки html/body при открытом Overlay (с компенсацией ширины скроллбара)
+	useEffect(() => {
+		if (!isOpen) return;
+		const { body, documentElement } = document;
+		const prevBodyOverflow = body.style.overflow;
+		const prevBodyPaddingRight = body.style.paddingRight;
+		const prevHtmlOverflow = documentElement.style.overflow;
+
+		const scrollbarWidth = window.innerWidth - documentElement.clientWidth;
+		// Блокируем прокрутку
+		documentElement.style.overflow = 'hidden';
+		body.style.overflow = 'hidden';
+		if (scrollbarWidth > 0) {
+			body.style.paddingRight = `${scrollbarWidth}px`;
+		}
+
+		return () => {
+			// Восстанавливаем
+			documentElement.style.overflow = prevHtmlOverflow;
+			body.style.overflow = prevBodyOverflow;
+			body.style.paddingRight = prevBodyPaddingRight;
+		};
+	}, [isOpen]);
 
 	if (!isOpen) return null;
 
