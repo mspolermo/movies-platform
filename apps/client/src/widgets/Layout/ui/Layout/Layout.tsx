@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Header } from '../Header';
 import styles from './Layout.module.scss';
+import { Loader } from '@/shared/ui';
 
 interface LayoutProps {
   children: ReactNode;
@@ -39,7 +40,7 @@ export const Layout = ({ children }: LayoutProps) => {
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
   if (!isInitialized || (token && !user && isLoading)) {
-    return <div>Загрузка...</div>;
+    return <Loader />;
   }
 
   // Показываем контент только если авторизован и есть пользователь
