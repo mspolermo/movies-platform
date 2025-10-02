@@ -35,22 +35,6 @@
   transition: color 0.4s ease;
 }
 
-.input {
-  flex: 1;
-}
-
-.close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: var(--color-text);
-  transition: color 0.2s ease;
-  
-  &:hover {
-    color: var(--color-active);
-  }
-}
-
 @media (max-width: 1160px) {
   .button {
     .text {

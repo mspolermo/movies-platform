@@ -5,6 +5,7 @@ import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { Input } from '@/shared/ui/Input';
 import { Overlay } from '@/shared/ui';
 import styles from './HeaderSearch.module.scss';
+import { FimsSearch } from '@/features/films/search';
 
 //TODO: переделать
 
@@ -34,19 +35,7 @@ export const HeaderSearch = () => {
 				<span className={styles.text}>Поиск</span>
 			</button>
 			
-			<Overlay isOpen={isOpen} onClose={handleClose}>
-				<Input
-					placeholder="Поиск фильмов, сериалов, мультфильмов..."
-					className={styles.input}
-					autoFocus
-				/>
-				<button
-					className={styles.close}
-					onClick={handleClose}
-				>
-					<SvgIcon name="close" size={24} />
-				</button>
-			</Overlay>
+			<FimsSearch isOpen={isOpen} handleClose={handleClose} />
 		</div>
 	);
 };

@@ -1,0 +1,1 @@
+export { FimsSearch } from './FimsSearch'
