@@ -9,4 +9,5 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  padding-top: calc(2rem + 60px); /* Добавляем отступ для фиксированного хедера */
 }
