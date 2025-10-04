@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Header } from '../Header';
+import { Footer } from '../Footer';
 import styles from './Layout.module.scss';
 import { Loader } from '@/shared/ui';
 
@@ -54,6 +55,7 @@ export const Layout = ({ children }: LayoutProps) => {
       <main className={styles.main}>
         {children}
       </main>
+      <Footer />
     </div>
   );
 };
