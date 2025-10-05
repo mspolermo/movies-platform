@@ -34,7 +34,7 @@ export const Footer = () => {
 
   return (
     <>
-      <footer className={styles.footer} data-testid="footer">
+      <div className={styles.footer} data-testid="footer">
         <div className={styles.container}>
           {/* Основной контент футера */}
           <div className={styles.content}>
@@ -165,14 +165,12 @@ export const Footer = () => {
                 />
               </div>
               
-              {showPhoneNumber && (
-                <div className={styles.buttons}>
-                  <Button 
-                    title="+7 343 226-92-20"
-                    onClick={() => openUrl('tel:+73432269220')}
-                  />
-                </div>
-              )}
+              <div className={`${styles.buttons} ${!showPhoneNumber ? styles.buttonsHidden : ''}`}>
+                <Button 
+                  title="+7 343 226-92-20"
+                  onClick={() => openUrl('tel:+73432269220')}
+                />
+              </div>
               
               <div className={`${styles.ask} ${showPhoneNumber ? styles.askHidden : ''}`}>
                 <Link href="https://ask.ivi.ru/" className={styles.link}>
@@ -307,7 +305,7 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
-      </footer>
+      </div>
 
       {/* Компонент поиска */}
       <FimsSearch isOpen={isSearchOpen} handleClose={handleSearchClose} />

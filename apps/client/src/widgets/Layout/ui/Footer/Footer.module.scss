@@ -53,10 +53,15 @@
     background: none;
     border: none;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: color 0.4s ease;
     
     &:hover {
       color: var(--color-heading);
+    }
+    
+    &:not(:hover):not(:active) {
+      color: var(--color-text);
+      transition-duration: 0.4s;
     }
   }
   
@@ -102,10 +107,16 @@
   .buttons {
     display: flex;
     margin: 10px 10px 10px 0;
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn 1s ease-out;
+    animation-fill-mode: forwards;
+    animation-delay: 0s;
     
     &:first-of-type {
       margin-top: 18px;
+    }
+    
+    &Hidden {
+      display: none;
     }
   }
   
@@ -153,10 +164,15 @@
     border-radius: 100%;
     background-color: var(--color-icon-default);
     border-color: var(--color-icon-default);
-    transition: background-color 0.3s ease;
+    transition: background-color 0.4s ease;
     
     &:hover {
       background-color: var(--color-icon-default-hover);
+    }
+    
+    &:not(:hover):not(:active) {
+      background-color: var(--color-icon-default);
+      transition-duration: 0.4s;
     }
   }
   
@@ -192,12 +208,14 @@
 // Анимация появления
 @keyframes slideIn {
   0% {
+    display: block;
     opacity: 0;
-    transform: translateY(-10px);
+    visibility: hidden;
   }
   100% {
+    display: block;
     opacity: 1;
-    transform: translateY(0);
+    visibility: visible;
   }
 }
 
@@ -240,7 +258,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      z-index: var(--z-footer);
+      z-index: 2;
     }
     
     .mobileList {
