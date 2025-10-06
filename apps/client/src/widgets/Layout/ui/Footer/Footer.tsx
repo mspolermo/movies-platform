@@ -38,52 +38,6 @@ export const Footer = () => {
         <div className={styles.container}>
           {/* Основной контент футера */}
           <div className={styles.content}>
-            {/* Колонка "О нас" */}
-            <div className={styles.column}>
-              <h3 className={styles.heading}>О нас</h3>
-              <ul className={styles.list}>
-                <li className={styles.item}>
-                  <Link href="https://corp.ivi.ru/" className={styles.link}>
-                    <p className={styles.text}>О компании</p>
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://corp.ivi.ru/career/#career-vacancy-block" className={styles.link}>
-                    Вакансии
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/pages/beta" className={styles.link}>
-                    Бета-тестирование
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/info/partners" className={styles.link}>
-                    Партнёрам
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://corp.ivi.ru/advertisers/" className={styles.link}>
-                    Размещение рекламы
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/info/agreement" className={styles.link}>
-                    Пользовательское соглашение
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/info/confidential" className={styles.link}>
-                    Политика конфиденциальности
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/info/goryachaya-liniya-komplaens" className={styles.link}>
-                    Комплаенс
-                  </Link>
-                </li>
-              </ul>
-            </div>
 
             {/* Колонка "Разделы" */}
             <div className={styles.column}>
@@ -94,7 +48,7 @@ export const Footer = () => {
                     className={styles.link}
                     onClick={() => navigateTo('/films')}
                   >
-                    Мой Иви
+                    Movie Land Platform
                   </button>
                 </li>
                 <li className={styles.item}>
@@ -136,7 +90,7 @@ export const Footer = () => {
               </ul>
               <div className={styles.certificateLinkWrapper}>
                 <Link href="https://www.ivi.ru/cert" className={styles.certificateLink}>
-                  Активация сертификата
+                  Movie Land Platform
                 </Link>
               </div>
             </div>
@@ -145,39 +99,7 @@ export const Footer = () => {
             <div className={styles.column}>
               <h3 className={styles.heading}>Поддержка</h3>
               <p className={styles.text}>Мы всегда готовы вам помочь.</p>
-              <p className={styles.text}>Обращайтесь в любое время!</p>
-              
-              <div className={styles.buttons}>
-                <Button 
-                  title="Онлайн-чат"
-                  onClick={() => openUrl('https://www.ivi.ru/profile')}
-                />
-              </div>
-              
-              <div className={styles.buttons}>
-                <Button 
-                  icon={<SvgIcon name="mail" size={20} />}
-                  onClick={() => openUrl('mailto:support@ivi.ru')}
-                />
-                <Button 
-                  icon={<SvgIcon name="phone" size={20} />}
-                  onClick={handlePhoneToggle}
-                />
-              </div>
-              
-              <div className={`${styles.buttons} ${!showPhoneNumber ? styles.buttonsHidden : ''}`}>
-                <Button 
-                  title="+7 343 226-92-20"
-                  onClick={() => openUrl('tel:+73432269220')}
-                />
-              </div>
-              
-              <div className={`${styles.ask} ${showPhoneNumber ? styles.askHidden : ''}`}>
-                <Link href="https://ask.ivi.ru/" className={styles.link}>
-                  <p className={`${styles.text} ${styles.textAdditional}`}>ask.ivi.ru</p>
-                </Link>
-                <p className={styles.text}>Ответы на вопросы</p>
-              </div>
+              <p className={styles.text}>Обращайтесь в любое время!</p>                            
             </div>
 
             {/* Колонка с кнопкой подписки */}
@@ -194,72 +116,16 @@ export const Footer = () => {
           {/* Вторая строка контента */}
           <div className={styles.content}>
             <div className={`${styles.column} ${styles.columnWide}`}>
-              <div className={styles.stores}>
-                <Button 
-                  icon={<SvgIcon name="apple" size={20} />}
-                  title="Загрузить в App Store"
-                  onClick={() => openUrl('https://apps.apple.com/RU/app/id455705533?mt=8')}
-                />
-                <Button
-                  icon={<SvgIcon name="google" size={20} />}
-                  title="Доступно в Google Play"
-                  onClick={() => openUrl('https://play.google.com/store/apps/details?id=ru.ivi.client')}
-                />
-                <Button 
-                  icon={<SvgIcon name="smartTV" size={20} />}
-                  title="Смотрите на Smart TV"
-                  onClick={() => openUrl('https://www.ivi.tv/pages/tvsmart/')}
-                />
-                <Button 
-                  icon={<SvgIcon name="devices" size={22} />}
-                  title="Все устройства"
-                  onClick={() => openUrl('https://www.ivi.tv/devices')}
-                />
-              </div>
+
               <div className={styles.copyrights}>
                 <p className={styles.textCopyrights}>
                   <span>©&nbsp;</span>
-                  <span>2023</span>
-                  <span>&nbsp;Иви. Онлайн-кинотеатр</span>
+                  <span>2025</span>
+                  <span>&nbsp;Онлайн-кинотеатр</span>
                 </p>
                 <p className={`${styles.text} ${styles.textCopyrights}`}>
                   HBO ® and related service marks are the property of Home Box Office, Inc
                 </p>
-              </div>
-            </div>
-            
-            <div className={`${styles.column} ${styles.columnWide}`}>
-              <div className={styles.community}>
-                <Link className={styles.communityLink} href="https://vk.com/iviru?crc=fa4448c13e06e69ba9e814e8743c7e2e" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="vkontakte" size={20} />
-                  </div>
-                </Link>
-                <Link className={styles.communityLink} href="https://ok.ru/ivi.ru" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="odnoklasniki" size={20} />
-                  </div>
-                </Link>
-                <Link className={styles.communityLink} href="https://twitter.com/ivi_ru" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="twitter" size={20} />
-                  </div>
-                </Link>
-                <Link className={styles.communityLink} href="https://vb.me/a0544c" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="viber" size={20} />
-                  </div>
-                </Link>
-                <Link className={styles.communityLink} href="https://www.linkedin.com/company/2543415/" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="linkedin" size={20} />
-                  </div>
-                </Link>
-                <Link className={styles.communityLink} href="https://t.me/official_iviru" target="_blank" rel="noreferrer">
-                  <div className={styles.iconBlock}>
-                    <SvgIcon className={styles.icon} name="telegram" size={20} />
-                  </div>
-                </Link>
               </div>
             </div>
           </div>
@@ -278,7 +144,7 @@ export const Footer = () => {
             <ul className={styles.mobileList}>
               <li className={styles.mobileItem} onClick={() => navigateTo('/films')}>
                 <SvgIcon name="home" size={20} />
-                <h5 className={styles.mobileHeading}>Мой Иви</h5>
+                <h5 className={styles.mobileHeading}>MovieLand</h5>
               </li>
               <li className={styles.mobileItem} onClick={() => navigateTo('/films')}>
                 <SvgIcon name="devices" size={20} />
