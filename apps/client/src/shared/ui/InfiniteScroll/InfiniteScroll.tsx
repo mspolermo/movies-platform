@@ -1,5 +1,6 @@
-import { useEffect, useRef, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import styles from './InfiniteScroll.module.scss';
+import { Loader } from '@/shared/ui';
 
 export interface InfiniteScrollProps {
   children: ReactNode;
@@ -17,33 +18,15 @@ export const InfiniteScroll = ({
   onLoadMore,
   isLoading,
   hasMore,
-  threshold = 200,
+  threshold = 200, // сохраняем проп для обратной совместимости
   loadingComponent,
   endMessage,
   className,
 }: InfiniteScrollProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isLoading || !hasMore) return;
-
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-
-      if (scrollTop + windowHeight >= documentHeight - threshold) {
-        onLoadMore();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isLoading, hasMore, onLoadMore, threshold]);
 
   const defaultLoadingComponent = (
     <div className={styles.loading}>
-      Загрузка...
+      <Loader />
     </div>
   );
 
@@ -54,11 +37,19 @@ export const InfiniteScroll = ({
   );
 
   return (
-    <div ref={containerRef} className={className}>
+    <div className={className}>
       {children}
-      
+
       {isLoading && (loadingComponent || defaultLoadingComponent)}
-      
+
+      {!isLoading && hasMore && (
+        <div className={styles.controls}>
+          <button className={styles.loadMoreButton} onClick={onLoadMore}>
+            Показать ещё
+          </button>
+        </div>
+      )}
+
       {!hasMore && !isLoading && (endMessage || defaultEndMessage)}
     </div>
   );
