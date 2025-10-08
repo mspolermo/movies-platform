@@ -6,6 +6,7 @@
   z-index: var(--z-header);
   background: var(--color-background);
   border-bottom: 1px solid var(--color-split-line);
+  height: var(--header-height);
 }
 
 .container {
@@ -70,5 +71,12 @@
     &:hover {
       color: var(--color-active);
     }
+  }
+}
+
+@media (max-width: 1160px) {
+  .navbar {
+    height: 0;
+    display: none;
   }
 }

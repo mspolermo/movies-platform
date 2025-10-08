@@ -1,13 +1,19 @@
-
-
 .layout {
   min-height: 100vh;
   background-color: var(--color-background);
 }
 
 .main {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
   padding-top: calc(2rem + 60px); /* Добавляем отступ для фиксированного хедера */
+}
+
+@media (max-width: 1160px) {
+  .main {
+    padding-top: 1rem;
+    min-height: calc(100vh - var(--footer-height-mobile) - 1rem);
+  }
 }

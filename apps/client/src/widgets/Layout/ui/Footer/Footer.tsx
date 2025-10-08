@@ -34,7 +34,7 @@ export const Footer = () => {
 
   return (
     <>
-      <div className={styles.footer} data-testid="footer">
+      <footer className={styles.footer}>
         <div className={styles.container}>
           {/* Основной контент футера */}
           <div className={styles.content}>
@@ -48,13 +48,8 @@ export const Footer = () => {
                     className={styles.link}
                     onClick={() => navigateTo('/films')}
                   >
-                    Movie Land Platform
-                  </button>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/new" className={styles.link}>
                     Что нового
-                  </Link>
+                  </button>
                 </li>
                 <li className={styles.item}>
                   <button 
@@ -65,11 +60,6 @@ export const Footer = () => {
                   </button>
                 </li>
                 <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/series" className={styles.link}>
-                    Сериалы
-                  </Link>
-                </li>
-                <li className={styles.item}>
                   <button 
                     className={styles.link}
                     onClick={() => navigateTo('/films?genre=мультфильм')}
@@ -78,14 +68,12 @@ export const Footer = () => {
                   </button>
                 </li>
                 <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/tvplus" className={styles.link}>
-                    TV+
-                  </Link>
-                </li>
-                <li className={styles.item}>
-                  <Link href="https://www.ivi.ru/goodmovies" className={styles.link}>
+                  <button 
+                    className={styles.link}
+                    onClick={() => navigateTo('/films?genre=мультфильм')}
+                  >
                     Что посмотреть
-                  </Link>
+                  </button>
                 </li>
               </ul>
               <div className={styles.certificateLinkWrapper}>
@@ -171,7 +159,7 @@ export const Footer = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </footer>
 
       {/* Компонент поиска */}
       <FimsSearch isOpen={isSearchOpen} handleClose={handleSearchClose} />
