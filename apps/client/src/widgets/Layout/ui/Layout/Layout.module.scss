@@ -8,10 +8,13 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  padding-top: calc(2rem + 60px); /* Добавляем отступ для фиксированного хедера */
+  padding-top: calc(2rem + var(--header-height));
 }
 
 @media (max-width: 1160px) {
+  .layout {
+    max-height: 0;
+  }
   .main {
     padding-top: 1rem;
     min-height: calc(100vh - var(--footer-height-mobile) - 1rem);
