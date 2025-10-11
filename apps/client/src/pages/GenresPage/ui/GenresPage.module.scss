@@ -49,3 +49,17 @@
   padding: 2rem;
   font-size: 1.1rem;
 }
+
+.loaderWrapper {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1160px) {
+  .loaderWrapper {
+    min-height: calc(100vh - var(--footer-height-mobile));
+    padding-bottom: var(--footer-height-mobile);
+  }
+}

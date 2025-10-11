@@ -32,7 +32,9 @@ export const GenresPage = () => {
   if (loading) {
     return (
       <Layout>
-        <Loader size='small'/>
+        <div className={styles.loaderWrapper}>
+          <Loader size='small'/>
+        </div>
       </Layout>
     );
   }
