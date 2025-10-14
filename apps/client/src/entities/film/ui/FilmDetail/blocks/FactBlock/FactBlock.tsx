@@ -18,7 +18,7 @@ export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
         className={`${styles.title} ${styles.titleClickable}`}
         onClick={toggleExpanded}
       >
-        {`Факт о ${isCartoon ? 'мультфильме' : 'фильме'}`}
+        {`Смотреть факт о ${isCartoon ? 'мультфильме' : 'фильме'}`}
       </h3>
       {isExpanded && (
         <>
