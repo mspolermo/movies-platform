@@ -41,7 +41,11 @@ export const Layout = ({ children }: LayoutProps) => {
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
   if (!isInitialized || (token && !user && isLoading)) {
-    return <Loader />;
+    return (
+      <div className={styles.loadingLayout}>
+        <Loader />
+      </div>
+    );
   }
 
   // Показываем контент только если авторизован и есть пользователь
