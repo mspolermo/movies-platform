@@ -138,7 +138,7 @@ export const FilmDetailSkeleton: React.FC = () => {
           <div className={skeletonStyles.descriptionSkeleton}>
             <Skeleton
               width="100%"
-              height="60px"
+              height="120px"
               borderRadius="4px"
               variant="rectangular"
               animation="pulse"
@@ -154,13 +154,22 @@ export const FilmDetailSkeleton: React.FC = () => {
             />
           </div>
 
+          <Skeleton
+              width="180px"
+              height="20px"
+              borderRadius="4px"
+              variant="rectangular"
+              animation="pulse"
+              className={skeletonStyles.readMoreButton}
+            />
+
           {/* Карточки актеров */}
           <div className={skeletonStyles.cardsSkeletonContainer}>
             {Array.from({ length: 5 }).map((_, index) => (
               <div key={index} className={skeletonStyles.cardSkeleton}>
                 <Skeleton
-                  width="80px"
-                  height="80px"
+                  width="70px"
+                  height="70px"
                   borderRadius="8px"
                   variant="rectangular"
                   animation="pulse"
