@@ -15,6 +15,16 @@ export const FilmsPage = () => {
           initialParams={{}}
           threshold={200}
           className={styles.filmsContainer}
+          loadingComponent={
+            <div className={styles.filmsGrid}>
+              {Array.from({ length: 8 }).map((_, index) => (
+                <FilmCardSkeleton 
+                  key={`skeleton-${index}`} 
+                  showIcons={true}
+                />
+              ))}
+            </div>
+          }
         >
           {(films, loading, error) => {
             if (error) {
@@ -25,15 +35,7 @@ export const FilmsPage = () => {
 
             return (
               <div className={styles.filmsGrid}>
-                {loading && films.length === 0 ? (
-                  // Показываем скелетоны только при первой загрузке
-                  Array.from({ length: 8 }).map((_, index) => (
-                    <FilmCardSkeleton 
-                      key={`skeleton-${index}`} 
-                      showIcons={true}
-                    />
-                  ))
-                ) : films && films.length > 0 ? (
+                {films && films.length > 0 ? (
                   films.map((film) => (
                     <FilmCard 
                       key={film.id} 
