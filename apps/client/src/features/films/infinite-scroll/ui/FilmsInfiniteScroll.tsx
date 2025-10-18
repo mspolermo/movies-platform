@@ -1,17 +1,6 @@
-import { ReactNode } from 'react';
 import { InfiniteScroll, Loader } from '@/shared/ui';
-import { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
-import { SearchFilmsParams } from '@/shared/api/services';
-import { TFilmBased } from '@common/types';
-
-interface FilmsInfiniteScrollProps {
-  children: (films: TFilmBased[], loading: boolean, error: string | null) => ReactNode;
-  initialParams?: SearchFilmsParams;
-  threshold?: number;
-  loadingComponent?: ReactNode;
-  endMessage?: ReactNode;
-  className?: string;
-}
+import { useFilmsInfiniteScroll } from '../lib';
+import { FilmsInfiniteScrollProps } from './types';
 
 export const FilmsInfiniteScroll = ({
   children,

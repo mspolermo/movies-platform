@@ -1,0 +1,1 @@
+export { FilmsInfiniteScroll } from './FilmsInfiniteScroll';

@@ -1,2 +1,2 @@
-export { FilmsInfiniteScroll } from './FilmsInfiniteScroll';
-export { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
+export { FilmsInfiniteScroll } from './ui';
+export { useFilmsInfiniteScroll } from './lib';

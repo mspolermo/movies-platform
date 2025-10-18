@@ -1,0 +1,1 @@
+export { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
