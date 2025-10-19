@@ -32,7 +32,7 @@ export const Layout = ({ children }: LayoutProps) => {
       console.log('Layout: Initialized and no token, redirecting to login');
       router.push('/auth/login');
     }
-  }, [isAuthenticated, token, router, isLoading, isInitialized]);
+  }, [isAuthenticated, token, router, isLoading, isInitialized, user]);
 
   // Показываем отладочную информацию в development
   if (process.env.NODE_ENV === 'development') {

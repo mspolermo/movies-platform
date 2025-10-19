@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Card.module.scss';
 import { SvgIcon } from '../SvgIcon';
+import Image from 'next/image';
 
 interface CardProps {
   type?: 'small' | 'big';
@@ -77,10 +78,10 @@ export const Card: React.FC<CardProps> = ({
 
     return (
       <>
-        <img 
+        <Image 
           src={photoUrl} 
           className={imgClass} 
-          alt={title} 
+          alt={title ?? ''} 
           onLoad={handleImageLoad} 
           onError={handleImageError}
           style={{ 

@@ -3,6 +3,7 @@ import { Skeleton, SvgIcon } from '@/shared/ui';
 import { ImageIcon } from '@/shared/assets/svg-icons';
 import styles from './FilmCard.module.scss';
 import { FilmCardPreviewProps } from '../types';
+import Image from 'next/image';
 
 export const Preview = ({ film }: FilmCardPreviewProps) => {
 const { smallPictureUrl, bigPictureUrl, filmNameRu } = film;
@@ -42,7 +43,7 @@ const { smallPictureUrl, bigPictureUrl, filmNameRu } = film;
 
   return (
     <>
-        <img 
+        <Image 
           src={getPosterUrl()} 
           alt={filmNameRu}
           loading="lazy"

@@ -75,7 +75,7 @@ export const useFilmsInfiniteScroll = ({
   // Загрузка при изменении параметров
   useEffect(() => {
     reset();
-  }, [params]);
+  }, [params, reset]);
 
   return {
     films,

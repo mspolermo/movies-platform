@@ -7,6 +7,7 @@ import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './PersonsPage.module.scss';
 import { Loader } from '@/shared/ui';
+import Image from 'next/image';
 
 export const PersonsPage = () => {
   const [persons, setPersons] = useState<TPersonBased[]>([]);
@@ -55,7 +56,7 @@ export const PersonsPage = () => {
             <div key={person.id} className={styles.personCard}>
               <div className={styles.personPhoto}>
                 {person.photoUrl ? (
-                  <img src={person.photoUrl} alt={person.nameRu} className={styles.photo} />
+                  <Image src={person.photoUrl} alt={person.nameRu} className={styles.photo} />
                 ) : (
                   <div className={styles.photoPlaceholder}>
                     {person.nameRu.charAt(0)}

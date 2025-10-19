@@ -3,6 +3,7 @@ import styles from './PosterPreviewBlock.module.scss';
 import { SvgIcon, Skeleton } from '@/shared/ui';
 import { ImageIcon } from '@/shared/assets/svg-icons';
 import { PosterPreviewBlockProps } from '../../types';
+import Image from 'next/image';
 
 export const PosterPreviewBlock = ({ 
   bigPictureUrl, 
@@ -48,7 +49,7 @@ export const PosterPreviewBlock = ({
 
   return (
     <div className={styles.posterPreviewBlock}>
-      <img 
+      <Image 
         src={posterUrl} 
         alt={alt}
         onLoad={handleImageLoad}

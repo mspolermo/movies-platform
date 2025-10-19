@@ -5,12 +5,12 @@ import { FactBlockProps } from '../../types';
 
 
 export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const toggleExpanded = () => setIsExpanded(!isExpanded);
+
   if (!fact || !fact.value) {
     return null;
   }
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const toggleExpanded = () => setIsExpanded(!isExpanded);
 
   return (
     <div className={styles.factBlock}>
