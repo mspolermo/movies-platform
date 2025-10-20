@@ -15,9 +15,7 @@ export const FilmsInfiniteScroll = ({
     threshold,
   });
 
-  const defaultLoadingComponent = (
-    <Loader size='small'/>
-  );
+  const defaultLoadingComponent = <Loader size="small" />;
 
   const defaultEndMessage = (
     <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.7 }}>

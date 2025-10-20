@@ -8,10 +8,10 @@ import { Preview } from './Preview';
 import { FilmCardProps } from '../types';
 import { IconsBlock } from './IconsBlock';
 
-export const FilmCard = ({ 
-  film, 
+export const FilmCard = ({
+  film,
   showIcons = false,
-  isLoading = false
+  isLoading = false,
 }: FilmCardProps) => {
   const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
@@ -23,12 +23,12 @@ export const FilmCard = ({
 
   const handleFavoritesClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsFavorite(prev => !prev);
+    setIsFavorite((prev) => !prev);
   };
 
   const handleNotLikeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setNotLike(prev => !prev);
+    setNotLike((prev) => !prev);
   };
 
   const handleGradeClick = (e: React.MouseEvent) => {
@@ -67,14 +67,16 @@ export const FilmCard = ({
             </div>
           </div>
           <div className={styles.properties}>
-            {showIcons && <IconsBlock
-              notLike={notLike}
-              isFavorite={isFavorite}
-              handleFavoritesClick={handleFavoritesClick}
-              handleSimilarClick={handleSimilarClick}
-              handleGradeClick={handleGradeClick}
-              handleNotLikeClick={handleNotLikeClick}
-            />}
+            {showIcons && (
+              <IconsBlock
+                notLike={notLike}
+                isFavorite={isFavorite}
+                handleFavoritesClick={handleFavoritesClick}
+                handleSimilarClick={handleSimilarClick}
+                handleGradeClick={handleGradeClick}
+                handleNotLikeClick={handleNotLikeClick}
+              />
+            )}
 
             <div className={styles.propertiesInfo}>
               <div className={styles.rating}>
@@ -92,10 +94,8 @@ export const FilmCard = ({
             </div>
           </div>
         </div>
-        
-        <div className={styles.name}>
-          {film.filmNameRu || film.filmNameEn}
-        </div>
+
+        <div className={styles.name}>{film.filmNameRu || film.filmNameEn}</div>
       </div>
     </div>
   );

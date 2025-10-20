@@ -29,11 +29,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   const showTooltip = () => {
     if (disabled) return;
-    
+
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     timeoutRef.current = setTimeout(() => {
       setIsVisible(true);
       setIsAnimating(true);
@@ -44,7 +44,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     setIsAnimating(false);
     setTimeout(() => {
       setIsVisible(false);
@@ -65,18 +65,30 @@ export const Tooltip: React.FC<TooltipProps> = ({
     switch (position) {
       case 'top':
         top = triggerRect.top + scrollY - tooltipRect.height - 8;
-        left = triggerRect.left + scrollX + (triggerRect.width - tooltipRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollX +
+          (triggerRect.width - tooltipRect.width) / 2;
         break;
       case 'bottom':
         top = triggerRect.bottom + scrollY + 8;
-        left = triggerRect.left + scrollX + (triggerRect.width - tooltipRect.width) / 2;
+        left =
+          triggerRect.left +
+          scrollX +
+          (triggerRect.width - tooltipRect.width) / 2;
         break;
       case 'left':
-        top = triggerRect.top + scrollY + (triggerRect.height - tooltipRect.height) / 2;
+        top =
+          triggerRect.top +
+          scrollY +
+          (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.left + scrollX - tooltipRect.width - 8;
         break;
       case 'right':
-        top = triggerRect.top + scrollY + (triggerRect.height - tooltipRect.height) / 2;
+        top =
+          triggerRect.top +
+          scrollY +
+          (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.right + scrollX + 8;
         break;
     }
@@ -100,13 +112,13 @@ export const Tooltip: React.FC<TooltipProps> = ({
   useEffect(() => {
     if (isVisible) {
       updatePosition();
-      
+
       const handleScroll = () => updatePosition();
       const handleResize = () => updatePosition();
-      
+
       window.addEventListener('scroll', handleScroll);
       window.addEventListener('resize', handleResize);
-      
+
       return () => {
         window.removeEventListener('scroll', handleScroll);
         window.removeEventListener('resize', handleResize);
@@ -131,10 +143,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
         left: tooltipPosition.left,
       }}
     >
-      <div className={styles.tooltip__content}>
-        {content}
-      </div>
-      <div className={`${styles.tooltip__arrow} ${styles[`tooltip__arrow_${position}`]}`} />
+      <div className={styles.tooltip__content}>{content}</div>
+      <div
+        className={`${styles.tooltip__arrow} ${styles[`tooltip__arrow_${position}`]}`}
+      />
     </div>
   );
 
@@ -150,7 +162,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
       >
         {children}
       </div>
-      {typeof document !== 'undefined' && createPortal(tooltipElement, document.body)}
+      {typeof document !== 'undefined' &&
+        createPortal(tooltipElement, document.body)}
     </>
   );
 };

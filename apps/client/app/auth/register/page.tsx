@@ -1,5 +1,5 @@
-import RegisterPage from '@/pages/RegisterPage'
+import RegisterPage from '@/pages/RegisterPage';
 
 export default function RegisterPageRoute() {
-  return (<RegisterPage />)
+  return <RegisterPage />;
 }

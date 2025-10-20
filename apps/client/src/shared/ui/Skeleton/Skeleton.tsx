@@ -23,7 +23,12 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   const style: React.CSSProperties = {
     width: typeof width === 'number' ? `${width}px` : width,
     height: typeof height === 'number' ? `${height}px` : height,
-    borderRadius: variant === 'circular' ? '50%' : (typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius),
+    borderRadius:
+      variant === 'circular'
+        ? '50%'
+        : typeof borderRadius === 'number'
+          ? `${borderRadius}px`
+          : borderRadius,
   };
 
   const skeletonClasses = [
@@ -31,7 +36,9 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     styles[variant],
     styles[animation],
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   if (children) {
     return (
@@ -42,10 +49,6 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   }
 
   return (
-    <div 
-      className={skeletonClasses} 
-      style={style}
-      aria-label="Загрузка..."
-    />
+    <div className={skeletonClasses} style={style} aria-label="Загрузка..." />
   );
 };

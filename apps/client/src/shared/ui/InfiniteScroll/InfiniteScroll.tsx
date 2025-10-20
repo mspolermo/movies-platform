@@ -23,7 +23,6 @@ export const InfiniteScroll = ({
   endMessage,
   className,
 }: InfiniteScrollProps) => {
-
   const defaultLoadingComponent = (
     <div className={styles.loading}>
       <Loader />
@@ -31,9 +30,7 @@ export const InfiniteScroll = ({
   );
 
   const defaultEndMessage = (
-    <div className={styles.endMessage}>
-      Все данные загружены
-    </div>
+    <div className={styles.endMessage}>Все данные загружены</div>
   );
 
   return (

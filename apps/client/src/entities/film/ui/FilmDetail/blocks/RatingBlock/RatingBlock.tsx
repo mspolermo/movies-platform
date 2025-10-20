@@ -3,11 +3,11 @@ import { Button } from '@/shared/ui';
 import styles from './RatingBlock.module.scss';
 import { RatingBlockProps } from '../../types';
 
-export const RatingBlock = ({ 
-  ratingKp, 
-  votesKp, 
-  filmNameRu, 
-  filmNameEn 
+export const RatingBlock = ({
+  ratingKp,
+  votesKp,
+  filmNameRu,
+  filmNameEn,
 }: RatingBlockProps) => {
   const [ratingClass, setRatingClass] = useState(styles.rating);
   const [blockClass, setBlockClass] = useState(styles.reitingBlock);
@@ -24,7 +24,7 @@ export const RatingBlock = ({
     const filmName = filmNameRu || filmNameEn || '';
     const searchQuery = encodeURIComponent(filmName);
     const kinopoiskUrl = `https://www.kinopoisk.ru/index.php?kp_query=${searchQuery}`;
-    
+
     window.open(kinopoiskUrl, '_blank');
   };
 
@@ -32,7 +32,7 @@ export const RatingBlock = ({
 
   const formatVotes = (votes?: number): string => {
     if (!votes) return '0 оценок';
-    
+
     if (votes >= 1000000) {
       const millions = Math.round(votes / 100000) / 10;
       return `${millions}М оценок`;
@@ -40,7 +40,7 @@ export const RatingBlock = ({
       const thousands = Math.round(votes / 100);
       return `${thousands / 10}К оценок`;
     }
-    
+
     return `${votes} оценок`;
   };
 
@@ -57,7 +57,9 @@ export const RatingBlock = ({
         </div>
       </div>
       <div className={styles.btn}>
-        <Button variant="outline" size="small">Оценить</Button>
+        <Button variant="outline" size="small">
+          Оценить
+        </Button>
       </div>
     </div>
   );

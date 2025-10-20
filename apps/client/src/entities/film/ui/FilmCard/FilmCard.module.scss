@@ -1,12 +1,13 @@
 .filmcard {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   color: var(--color-text);
   font-weight: 400;
   cursor: pointer;
   z-index: var(--z-base);
   margin: 0 8px 24px 0;
   padding-left: 8px;
-  
+
   .container {
     position: relative;
     display: flex;
@@ -34,7 +35,7 @@
   .img {
     position: relative;
     min-height: 280px; // Минимальная высота для области изображения
-    
+
     img {
       max-width: 100%;
       border-radius: 8px;
@@ -92,8 +93,12 @@
   }
 
   @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   .imageSkeleton {
@@ -110,7 +115,7 @@
   // Стили для скелетона карточки
   &.skeletonCard {
     cursor: default; // Убираем курсор для скелетона
-    
+
     &:hover {
       .poster,
       .posterTwo {
@@ -231,54 +236,53 @@
 
   .iconSvg {
     transition: all 0.2s;
-    
+
     // Стили для разных вариантов иконок
-    &[data-variant="bookmark"] {
+    &[data-variant='bookmark'] {
       color: var(--color-text);
-      
+
       &:hover {
         color: var(--color-red);
       }
-      
-      &[data-active="true"] {
-        color: var(--color-red);
-        fill: var(--color-red);
-      }
-    }
-    
-    &[data-variant="refresh"] {
-      color: var(--color-text);
-      
-      &:hover {
-        color: var(--color-active);
-      }
-    }
-    
-    &[data-variant="star"] {
-      color: var(--color-text);
-      
-      &:hover {
-        color: var(--color-active);
-      }
-    }
-    
-    &[data-variant="close"] {
-      color: var(--color-text);
-      
-      &:hover {
-        color: var(--color-red);
-      }
-      
-      &[data-active="true"] {
+
+      &[data-active='true'] {
         color: var(--color-red);
         fill: var(--color-red);
       }
     }
-    
-    &[data-variant="image"] {
+
+    &[data-variant='refresh'] {
+      color: var(--color-text);
+
+      &:hover {
+        color: var(--color-active);
+      }
+    }
+
+    &[data-variant='star'] {
+      color: var(--color-text);
+
+      &:hover {
+        color: var(--color-active);
+      }
+    }
+
+    &[data-variant='close'] {
+      color: var(--color-text);
+
+      &:hover {
+        color: var(--color-red);
+      }
+
+      &[data-active='true'] {
+        color: var(--color-red);
+        fill: var(--color-red);
+      }
+    }
+
+    &[data-variant='image'] {
       color: var(--color-text);
       opacity: 0.6;
     }
   }
 }
-

@@ -1,13 +1,13 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
-export type ButtonVariant = 
-  | 'default'      // Основной стиль (как в старом проекте)
-  | 'red'          // Красная кнопка
-  | 'gray'         // Серая кнопка
-  | 'gradient'     // Градиентная кнопка
-  | 'transparent'  // Прозрачная кнопка
-  | 'purple'       // Фиолетовая кнопка
-  | 'outline';     // Контурная кнопка
+export type ButtonVariant =
+  | 'default' // Основной стиль (как в старом проекте)
+  | 'red' // Красная кнопка
+  | 'gray' // Серая кнопка
+  | 'gradient' // Градиентная кнопка
+  | 'transparent' // Прозрачная кнопка
+  | 'purple' // Фиолетовая кнопка
+  | 'outline'; // Контурная кнопка
 
 export type ButtonSize = 'small' | 'medium' | 'large';
 

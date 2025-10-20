@@ -32,7 +32,7 @@ export const CountriesPage = () => {
   if (loading) {
     return (
       <Layout>
-        <Loader size='small'/>
+        <Loader size="small" />
       </Layout>
     );
   }
@@ -49,7 +49,7 @@ export const CountriesPage = () => {
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>Страны</h1>
-        
+
         <div className={styles.countriesGrid}>
           {countries.map((country) => (
             <div key={country.id} className={styles.countryCard}>
@@ -60,4 +60,4 @@ export const CountriesPage = () => {
       </div>
     </Layout>
   );
-}
+};

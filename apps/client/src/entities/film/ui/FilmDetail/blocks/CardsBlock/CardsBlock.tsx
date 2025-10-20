@@ -5,17 +5,15 @@ import { TPersonModel } from '@common/types';
 import { Card } from '@/shared/ui';
 import { CardsBlockProps } from '../../types';
 
-
-
 export const CardsBlock = ({ persons = [] }: CardsBlockProps) => {
   const router = useRouter();
 
   const getActors = () => {
-    const filteredList = persons.filter(person => 
-      person.professions?.[0]?.name === 'актеры'
+    const filteredList = persons.filter(
+      (person) => person.professions?.[0]?.name === 'актеры'
     );
-    
-    return filteredList.length >= 5 
+
+    return filteredList.length >= 5
       ? filteredList.slice(0, 5)
       : persons.slice(0, 5);
   };
@@ -28,8 +26,8 @@ export const CardsBlock = ({ persons = [] }: CardsBlockProps) => {
 
   return (
     <div className={styles.cardsBlock}>
-      {actors.map(actor => (
-        <Card 
+      {actors.map((actor) => (
+        <Card
           key={actor.id}
           type="small"
           title={actor.nameRu || actor.nameEn}

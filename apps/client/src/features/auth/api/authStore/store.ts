@@ -128,7 +128,7 @@ export const useAuthStore = create<AuthStore>()(
           });
         } catch (error: any) {
           console.error('Auth store: Token check failed:', error);
-          
+
           if (error.response?.status === 401) {
             console.log('Auth store: Token invalid, logging out');
             get().logout();
@@ -156,17 +156,21 @@ export const useAuthStore = create<AuthStore>()(
       }),
       onRehydrateStorage: () => (state) => {
         console.log('Auth store: Rehydrated state:', state);
-        
+
         // Если нет токена, помечаем как инициализированный
         if (!state || !state.token) {
-          console.log('Auth store: No token found after rehydration, marking as initialized');
+          console.log(
+            'Auth store: No token found after rehydration, marking as initialized'
+          );
           if (state) {
             state.isInitialized = true;
           }
           return;
         }
-        
-        console.log('Auth store: Token found after rehydration, checking auth...');
+
+        console.log(
+          'Auth store: Token found after rehydration, checking auth...'
+        );
         // Увеличиваем задержку для корректной инициализации
         setTimeout(() => {
           console.log('Auth store: Calling checkAuth after rehydration delay');

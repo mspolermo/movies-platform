@@ -20,7 +20,7 @@
   border-radius: 8px;
   overflow: hidden;
   background: var(--color-background-elements);
-  
+
   @media (max-width: 768px) {
     max-width: 100%; // На мобильных занимает всю ширину
   }
@@ -58,7 +58,7 @@
 .placeholderIcon {
   margin-bottom: 12px;
   opacity: 0.6;
-  
+
   :global(svg) {
     color: var(--color-text);
     opacity: 0.6;

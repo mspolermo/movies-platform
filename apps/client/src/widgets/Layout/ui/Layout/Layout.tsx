@@ -13,7 +13,8 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children }: LayoutProps) => {
-  const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } = useAuthStore();
+  const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
+    useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -25,8 +26,14 @@ export const Layout = ({ children }: LayoutProps) => {
   }, [checkAuth, token, user]);
 
   useEffect(() => {
-    console.log('Layout: Auth state changed:', { isAuthenticated, user: !!user, token: !!token, isLoading, isInitialized });
-    
+    console.log('Layout: Auth state changed:', {
+      isAuthenticated,
+      user: !!user,
+      token: !!token,
+      isLoading,
+      isInitialized,
+    });
+
     // Перенаправляем на логин только если инициализация завершена и нет токена
     if (isInitialized && !token && !isLoading) {
       console.log('Layout: Initialized and no token, redirecting to login');
@@ -36,7 +43,13 @@ export const Layout = ({ children }: LayoutProps) => {
 
   // Показываем отладочную информацию в development
   if (process.env.NODE_ENV === 'development') {
-    console.log('Layout render:', { isAuthenticated, user: !!user, token: !!token, isLoading, isInitialized });
+    console.log('Layout render:', {
+      isAuthenticated,
+      user: !!user,
+      token: !!token,
+      isLoading,
+      isInitialized,
+    });
   }
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
@@ -56,9 +69,7 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={styles.layout}>
       <Header />
-      <main className={styles.main}>
-        {children}
-      </main>
+      <main className={styles.main}>{children}</main>
       <Footer />
     </div>
   );

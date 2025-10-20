@@ -6,9 +6,5 @@ interface QualityTagProps {
 }
 
 export const QualityTag: React.FC<QualityTagProps> = ({ quality }) => {
-  return (
-    <p className={styles.icon}>
-      {quality}
-    </p>
-  );
+  return <p className={styles.icon}>{quality}</p>;
 };

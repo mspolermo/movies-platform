@@ -3,54 +3,54 @@
   vertical-align: middle;
   transition: all 0.2s ease;
   cursor: pointer;
-  
+
   &:hover {
     transform: scale(1.05);
   }
-  
+
   &:focus {
     outline: 2px solid var(--color-active);
     outline-offset: 2px;
   }
-  
+
   // Базовые стили для иконок
-  &[data-variant="bookmark"] {
+  &[data-variant='bookmark'] {
     color: var(--color-text);
-    
+
     &:hover {
       color: var(--color-red);
     }
-    
-    &[data-active="true"] {
+
+    &[data-active='true'] {
       color: var(--color-red);
       fill: var(--color-red);
     }
   }
-  
-  &[data-variant="refresh"] {
+
+  &[data-variant='refresh'] {
     color: var(--color-text);
-    
+
     &:hover {
       color: var(--color-active);
     }
   }
-  
-  &[data-variant="star"] {
+
+  &[data-variant='star'] {
     color: var(--color-text);
-    
+
     &:hover {
       color: var(--color-active);
     }
   }
-  
-  &[data-variant="close"] {
+
+  &[data-variant='close'] {
     color: var(--color-text);
-    
+
     &:hover {
       color: var(--color-red);
     }
-    
-    &[data-active="true"] {
+
+    &[data-active='true'] {
       color: var(--color-red);
       fill: var(--color-red);
     }

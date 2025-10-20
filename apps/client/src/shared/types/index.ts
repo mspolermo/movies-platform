@@ -1,7 +1,12 @@
-import { TGenreBased, TPersonBased, TCountryBased, TFilmBased, TRoleBased } from '@common/types';
+import {
+  TGenreBased,
+  TPersonBased,
+  TCountryBased,
+  TFilmBased,
+  TRoleBased,
+} from '@common/types';
 
 // Основные типы данных
-
 
 // Используем общий тип Film из @common
 export interface Film extends TFilmBased {

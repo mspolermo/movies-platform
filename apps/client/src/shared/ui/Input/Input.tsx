@@ -25,7 +25,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue);
+    const [hasValue, setHasValue] = useState(
+      !!props.value || !!props.defaultValue
+    );
     const inputId = useId();
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -84,11 +86,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               {required && <span className={styles.input__required}>*</span>}
             </label>
           )}
-          
+
           {icon && iconPosition === 'left' && (
             <div className={styles.input__icon}>{icon}</div>
           )}
-          
+
           <input
             ref={ref}
             id={inputId}
@@ -100,11 +102,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             onChange={handleChange}
             {...props}
           />
-          
+
           {icon && iconPosition === 'right' && (
             <div className={styles.input__icon}>{icon}</div>
           )}
-          
+
           {clearable && hasValue && !disabled && (
             <button
               type="button"
@@ -116,7 +118,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </button>
           )}
         </div>
-        
+
         {error && <div className={styles.input__error}>{error}</div>}
       </div>
     );

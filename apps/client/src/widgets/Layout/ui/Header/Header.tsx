@@ -70,7 +70,9 @@ export const Header = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        <div className={`${styles.content} ${showHeaderBackground ? styles.active : ''}`}>
+        <div
+          className={`${styles.content} ${showHeaderBackground ? styles.active : ''}`}
+        >
           <div className={styles.brand}>
             <Link href="/films" className={styles.logo}>
               <Logo />

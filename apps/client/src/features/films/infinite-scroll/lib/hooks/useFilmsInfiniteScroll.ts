@@ -1,6 +1,10 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TFilmBased } from '@common/types';
-import { filmsService, SearchFilmsParams, FilmsResponse } from '@/shared/api/services';
+import {
+  filmsService,
+  SearchFilmsParams,
+  FilmsResponse,
+} from '@/shared/api/services';
 
 interface UseFilmsInfiniteScrollOptions {
   initialParams?: SearchFilmsParams;
@@ -26,38 +30,41 @@ export const useFilmsInfiniteScroll = ({
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [params, setParams] = useState<SearchFilmsParams>(initialParams);
-  
+
   const isLoadingRef = useRef(false);
 
-  const loadFilms = useCallback(async (page: number, reset = false) => {
-    if (isLoadingRef.current) return;
-    
-    isLoadingRef.current = true;
-    setLoading(true);
-    setError(null);
+  const loadFilms = useCallback(
+    async (page: number, reset = false) => {
+      if (isLoadingRef.current) return;
 
-    try {
-      const response: FilmsResponse = await filmsService.searchFilms({
-        ...params,
-        page,
-        perPage: 20,
-      });
+      isLoadingRef.current = true;
+      setLoading(true);
+      setError(null);
 
-      if (reset) {
-        setFilms(response.films);
-      } else {
-        setFilms(prev => [...prev, ...response.films]);
+      try {
+        const response: FilmsResponse = await filmsService.searchFilms({
+          ...params,
+          page,
+          perPage: 20,
+        });
+
+        if (reset) {
+          setFilms(response.films);
+        } else {
+          setFilms((prev) => [...prev, ...response.films]);
+        }
+
+        setHasMore(response.hasMore);
+        setCurrentPage(page);
+      } catch (err: any) {
+        setError(err.response?.data?.message || 'Ошибка загрузки фильмов');
+      } finally {
+        setLoading(false);
+        isLoadingRef.current = false;
       }
-      
-      setHasMore(response.hasMore);
-      setCurrentPage(page);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Ошибка загрузки фильмов');
-    } finally {
-      setLoading(false);
-      isLoadingRef.current = false;
-    }
-  }, [params]);
+    },
+    [params]
+  );
 
   const loadMore = useCallback(async () => {
     if (!hasMore || loading) return;

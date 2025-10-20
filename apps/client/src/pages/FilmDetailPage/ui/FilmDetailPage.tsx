@@ -11,7 +11,7 @@ import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
 export const FilmDetailPage: React.FC = () => {
   const params = useParams();
   const filmId = Number(params?.id);
-  
+
   const [film, setFilm] = useState<TFilmModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,15 +51,11 @@ export const FilmDetailPage: React.FC = () => {
     return (
       <Layout>
         <div className={styles.container}>
-          <div className={styles.error}>
-            {error || 'Фильм не найден'}
-          </div>
+          <div className={styles.error}>{error || 'Фильм не найден'}</div>
         </div>
       </Layout>
     );
   }
-
-
 
   return (
     <Layout>

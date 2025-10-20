@@ -38,13 +38,12 @@ export const Footer = () => {
         <div className={styles.container}>
           {/* Основной контент футера */}
           <div className={styles.content}>
-
             {/* Колонка "Разделы" */}
             <div className={styles.column}>
               <h3 className={styles.heading}>Разделы</h3>
               <ul className={styles.list}>
                 <li className={styles.item}>
-                  <button 
+                  <button
                     className={styles.link}
                     onClick={() => navigateTo('/films')}
                   >
@@ -52,7 +51,7 @@ export const Footer = () => {
                   </button>
                 </li>
                 <li className={styles.item}>
-                  <button 
+                  <button
                     className={styles.link}
                     onClick={() => navigateTo('/films')}
                   >
@@ -60,7 +59,7 @@ export const Footer = () => {
                   </button>
                 </li>
                 <li className={styles.item}>
-                  <button 
+                  <button
                     className={styles.link}
                     onClick={() => navigateTo('/films?genre=мультфильм')}
                   >
@@ -68,7 +67,7 @@ export const Footer = () => {
                   </button>
                 </li>
                 <li className={styles.item}>
-                  <button 
+                  <button
                     className={styles.link}
                     onClick={() => navigateTo('/films?genre=мультфильм')}
                   >
@@ -77,7 +76,10 @@ export const Footer = () => {
                 </li>
               </ul>
               <div className={styles.certificateLinkWrapper}>
-                <Link href="https://www.ivi.ru/cert" className={styles.certificateLink}>
+                <Link
+                  href="https://www.ivi.ru/cert"
+                  className={styles.certificateLink}
+                >
                   Movie Land Platform
                 </Link>
               </div>
@@ -87,7 +89,7 @@ export const Footer = () => {
             <div className={styles.column}>
               <h3 className={styles.heading}>Поддержка</h3>
               <p className={styles.text}>Мы всегда готовы вам помочь.</p>
-              <p className={styles.text}>Обращайтесь в любое время!</p>                            
+              <p className={styles.text}>Обращайтесь в любое время!</p>
             </div>
 
             {/* Колонка с кнопкой подписки */}
@@ -104,7 +106,6 @@ export const Footer = () => {
           {/* Вторая строка контента */}
           <div className={styles.content}>
             <div className={`${styles.column} ${styles.columnWide}`}>
-
               <div className={styles.copyrights}>
                 <p className={styles.textCopyrights}>
                   <span>©&nbsp;</span>
@@ -112,7 +113,8 @@ export const Footer = () => {
                   <span>&nbsp;Онлайн-кинотеатр</span>
                 </p>
                 <p className={`${styles.text} ${styles.textCopyrights}`}>
-                  HBO ® and related service marks are the property of Home Box Office, Inc
+                  HBO ® and related service marks are the property of Home Box
+                  Office, Inc
                 </p>
               </div>
             </div>
@@ -124,17 +126,24 @@ export const Footer = () => {
           <div className={styles.mobileContainer}>
             <div className={styles.copyrightsMobile}>
               <p className={styles.mobileText}>
-                HBO ® and related service marks are the property of Home Box Office, Inc
+                HBO ® and related service marks are the property of Home Box
+                Office, Inc
               </p>
             </div>
           </div>
           <div className={styles.bottomBar}>
             <ul className={styles.mobileList}>
-              <li className={styles.mobileItem} onClick={() => navigateTo('/films')}>
+              <li
+                className={styles.mobileItem}
+                onClick={() => navigateTo('/films')}
+              >
                 <SvgIcon name="home" size={20} />
                 <h5 className={styles.mobileHeading}>MovieLand</h5>
               </li>
-              <li className={styles.mobileItem} onClick={() => navigateTo('/films')}>
+              <li
+                className={styles.mobileItem}
+                onClick={() => navigateTo('/films')}
+              >
                 <SvgIcon name="devices" size={20} />
                 <h5 className={styles.mobileHeading}>Каталог</h5>
               </li>
@@ -144,14 +153,24 @@ export const Footer = () => {
                   <h5 className={styles.mobileHeading}>Поиск</h5>
                 </div>
               </li>
-              <li className={styles.mobileItem} onClick={() => openUrl('https://www.ivi.ru/series')}>
+              <li
+                className={styles.mobileItem}
+                onClick={() => openUrl('https://www.ivi.ru/series')}
+              >
                 <SvgIcon name="tv" size={20} />
                 <h5 className={styles.mobileHeading}>TV+</h5>
               </li>
-              <li className={styles.mobileItem} onClick={() => openUrl('https://www.ivi.ru/')}>
+              <li
+                className={styles.mobileItem}
+                onClick={() => openUrl('https://www.ivi.ru/')}
+              >
                 <div className={styles.svgBlock}>
                   <SvgIcon name="circle-flooded" size={5} />
-                  <SvgIcon name="circle-flooded" size={5} className={styles.svgCircleCenter} />
+                  <SvgIcon
+                    name="circle-flooded"
+                    size={5}
+                    className={styles.svgCircleCenter}
+                  />
                   <SvgIcon name="circle-flooded" size={5} />
                 </div>
                 <h5 className={styles.mobileHeading}>Ещё</h5>

@@ -10,7 +10,7 @@ export const FilmsPage = () => {
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>Фильмы</h1>
-        
+
         <FilmsInfiniteScroll
           initialParams={{}}
           threshold={200}
@@ -18,35 +18,24 @@ export const FilmsPage = () => {
           loadingComponent={
             <div className={styles.filmsGrid}>
               {Array.from({ length: 8 }).map((_, index) => (
-                <FilmCardSkeleton 
-                  key={`skeleton-${index}`} 
-                  showIcons={true}
-                />
+                <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
               ))}
             </div>
           }
         >
           {(films, loading, error) => {
             if (error) {
-              return (
-                <div className={styles.error}>{error}</div>
-              );
+              return <div className={styles.error}>{error}</div>;
             }
 
             return (
               <div className={styles.filmsGrid}>
                 {films && films.length > 0 ? (
                   films.map((film) => (
-                    <FilmCard 
-                      key={film.id} 
-                      film={film} 
-                      showIcons={true}
-                    />
+                    <FilmCard key={film.id} film={film} showIcons={true} />
                   ))
                 ) : (
-                  <div className={styles.noFilms}>
-                    Фильмы не найдены
-                  </div>
+                  <div className={styles.noFilms}>Фильмы не найдены</div>
                 )}
               </div>
             );
@@ -55,5 +44,4 @@ export const FilmsPage = () => {
       </div>
     </Layout>
   );
-}
-
+};

@@ -1,16 +1,16 @@
 import { TFilmModel } from '@common/types';
 import styles from './FilmDetail.module.scss';
 import { FilmDetailProps } from '../types';
-import { 
-  AdditionalInfoBlock, 
-  CardsBlock, 
-  DescriptionBlock, 
+import {
+  AdditionalInfoBlock,
+  CardsBlock,
+  DescriptionBlock,
   FactBlock,
   PosterPreviewBlock,
   RatingBlock,
-  SloganBlock, 
+  SloganBlock,
   SummaryBlock,
-  TrailerBlock
+  TrailerBlock,
 } from './blocks';
 import { checkIsCartoon } from '../../lib';
 
@@ -22,7 +22,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
     <div className={styles.container}>
       <div className={styles.filmDetail}>
         <div className={styles.posterSection}>
-          <PosterPreviewBlock 
+          <PosterPreviewBlock
             bigPictureUrl={film.bigPictureUrl}
             smallPictureUrl={film.smallPictureUrl}
             filmNameRu={film.filmNameRu}
@@ -30,18 +30,16 @@ export const FilmDetail = (props: FilmDetailProps) => {
           />
           <SloganBlock slogan={film.slogan} />
 
-          <RatingBlock 
+          <RatingBlock
             ratingKp={film.ratingKp}
             votesKp={film.votesKp}
             filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
           />
-          
         </div>
-        
+
         <div className={styles.infoSection}>
-        
-          <SummaryBlock 
+          <SummaryBlock
             filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
             year={film.year}
@@ -51,24 +49,19 @@ export const FilmDetail = (props: FilmDetailProps) => {
             isCartoon={isCartoon}
           />
 
-          <DescriptionBlock 
+          <DescriptionBlock
             description={film.description || ''}
             filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
           />
 
-          <FactBlock 
-            fact={film.fact} 
-            isCartoon={isCartoon}
-          />  
+          <FactBlock fact={film.fact} isCartoon={isCartoon} />
 
-          <CardsBlock 
-            persons={film.persons}
-          />
+          <CardsBlock persons={film.persons} />
 
           <AdditionalInfoBlock />
 
-          <TrailerBlock 
+          <TrailerBlock
             trailerUrl={film.trailerUrl}
             filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}

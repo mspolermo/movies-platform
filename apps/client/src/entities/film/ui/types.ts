@@ -1,6 +1,5 @@
 import { TFilmModel } from '@common/types';
 
-
 export interface FilmCardProps {
   film: TFilmModel;
   showIcons?: boolean;

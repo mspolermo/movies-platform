@@ -1,5 +1,5 @@
-@import "./colors.scss";
-@import "./z-index.scss";
+@import './colors.scss';
+@import './z-index.scss';
 @import './fonts.scss';
 @import './sizes.scss';
 
@@ -13,8 +13,18 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  font-family: 'IvySans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family:
+    'IvySans',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

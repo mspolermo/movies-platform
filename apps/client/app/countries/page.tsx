@@ -1,5 +1,5 @@
-import CountriesPage from '@/pages/CountriesPage'
+import CountriesPage from '@/pages/CountriesPage';
 
 export default function CountriesPageRoute() {
-  return <CountriesPage />
+  return <CountriesPage />;
 }

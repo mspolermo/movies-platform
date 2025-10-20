@@ -1,5 +1,5 @@
-import GenresPage from '@/pages/GenresPage'
+import GenresPage from '@/pages/GenresPage';
 
 export default function GenresPageRoute() {
-  return <GenresPage />
+  return <GenresPage />;
 }

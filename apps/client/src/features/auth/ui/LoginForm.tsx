@@ -31,20 +31,28 @@ export const LoginForm = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Вход в систему</h1>
-      
+
       <div className={styles.testInfo}>
         <h3>Тестовые данные:</h3>
-        <p><strong>Email:</strong> user@example.com</p>
-        <p><strong>Password:</strong> password123</p>
-        <p><em>Или создайте нового пользователя через регистрацию</em></p>
+        <p>
+          <strong>Email:</strong> user@example.com
+        </p>
+        <p>
+          <strong>Password:</strong> password123
+        </p>
+        <p>
+          <em>Или создайте нового пользователя через регистрацию</em>
+        </p>
       </div>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           label="Email"
           type="email"
           value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
           required
           disabled={isLoading}
           placeholder="user@example.com"
@@ -55,7 +63,9 @@ export const LoginForm = () => {
           label="Пароль"
           type="password"
           value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
           required
           disabled={isLoading}
           placeholder="password123"

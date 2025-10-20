@@ -4,10 +4,10 @@ import { SvgIcon, Skeleton } from '@/shared/ui';
 import { ImageIcon } from '@/shared/assets/svg-icons';
 import { TrailerBlockProps } from '../../types';
 
-export const TrailerBlock = ({ 
-  trailerUrl, 
+export const TrailerBlock = ({
+  trailerUrl,
   filmNameRu,
-  filmNameEn
+  filmNameEn,
 }: TrailerBlockProps) => {
   const filmName = filmNameRu ?? filmNameEn ?? '';
   const [videoError, setVideoError] = useState(false);
@@ -40,7 +40,7 @@ export const TrailerBlock = ({
       const timer = setTimeout(() => {
         setVideoLoading(false);
       }, 5000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [trailerUrl, videoLoading]);
@@ -65,15 +65,9 @@ export const TrailerBlock = ({
         {(!trailerUrl || videoError) && !videoLoading && (
           <div className={styles.videoPlaceholder}>
             <div className={styles.placeholderIcon}>
-              <SvgIcon
-                icon={ImageIcon}
-                size={48}
-                data-variant="image"
-              />
+              <SvgIcon icon={ImageIcon} size={48} data-variant="image" />
             </div>
-            <div className={styles.placeholderText}>
-              Нет трейлера
-            </div>
+            <div className={styles.placeholderText}>Нет трейлера</div>
           </div>
         )}
 
@@ -86,9 +80,9 @@ export const TrailerBlock = ({
             allowFullScreen
             onLoad={handleVideoLoad}
             onError={handleVideoError}
-            style={{ 
+            style={{
               opacity: videoLoading || videoError ? 0 : 1,
-              transition: 'opacity 0.3s ease'
+              transition: 'opacity 0.3s ease',
             }}
           />
         )}

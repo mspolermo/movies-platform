@@ -1,2 +1,1 @@
 export { PosterPreviewBlock } from './PosterPreviewBlock';
-

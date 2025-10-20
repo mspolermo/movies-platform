@@ -3,7 +3,11 @@ import styles from './DescriptionBlock.module.scss';
 import { QualityTag } from '@/shared/ui';
 import { DescriptionBlockProps } from '../../types';
 
-export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: DescriptionBlockProps) => {
+export const DescriptionBlock = ({
+  description,
+  filmNameRu,
+  filmNameEn,
+}: DescriptionBlockProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -11,7 +15,7 @@ export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: Descrip
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -26,16 +30,17 @@ export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: Descrip
       <p className={`${styles.text} ${!isExpanded ? styles.short : ''}`}>
         {description}
       </p>
-      
+
       {!isExpanded && (
         <p className={`${styles.text}`}>
-          Приглашаем посмотреть «{filmNameRu ?? filmNameEn ?? ''}» в нашем кинотеатре
+          Приглашаем посмотреть «{filmNameRu ?? filmNameEn ?? ''}» в нашем
+          кинотеатре
         </p>
       )}
-      
+
       {!isExpanded && (
-        <p 
-          className={`${styles.btn} ${isMobile ? styles.btnMobile : styles.btnDesktop}`} 
+        <p
+          className={`${styles.btn} ${isMobile ? styles.btnMobile : styles.btnDesktop}`}
           onClick={toggleExpanded}
         >
           {isMobile ? 'Читать' : 'Подробнее'}
@@ -46,10 +51,14 @@ export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: Descrip
         <div className={styles.desktop}>
           <div className={styles.block}>
             <p className={styles.text}>Язык</p>
-            <p className={`${styles.text} ${styles.textActive}`}>Русский, Английский</p>
+            <p className={`${styles.text} ${styles.textActive}`}>
+              Русский, Английский
+            </p>
 
             <p className={styles.text}>Субтитры</p>
-            <p className={`${styles.text} ${styles.textActive}`}>Русский, Английский</p>
+            <p className={`${styles.text} ${styles.textActive}`}>
+              Русский, Английский
+            </p>
 
             <p className={styles.text}>
               <span>Изображение </span>
@@ -63,7 +72,7 @@ export const DescriptionBlock= ({ description, filmNameRu, filmNameEn }: Descrip
               <QualityTag quality="720" />
             </div>
           </div>
-          
+
           <p className={styles.btn} onClick={toggleExpanded}>
             Свернуть
           </p>

@@ -33,7 +33,7 @@ export const PersonsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <Loader size='small'/>
+        <Loader size="small" />
       </Layout>
     );
   }
@@ -50,13 +50,17 @@ export const PersonsPage = () => {
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>Персоны</h1>
-        
+
         <div className={styles.personsGrid}>
           {persons.map((person) => (
             <div key={person.id} className={styles.personCard}>
               <div className={styles.personPhoto}>
                 {person.photoUrl ? (
-                  <Image src={person.photoUrl} alt={person.nameRu} className={styles.photo} />
+                  <img
+                    src={person.photoUrl}
+                    alt={person.nameRu}
+                    className={styles.photo}
+                  />
                 ) : (
                   <div className={styles.photoPlaceholder}>
                     {person.nameRu.charAt(0)}
@@ -73,4 +77,4 @@ export const PersonsPage = () => {
       </div>
     </Layout>
   );
-}
+};

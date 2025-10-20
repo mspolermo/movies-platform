@@ -1,30 +1,30 @@
 .overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: var(--color-modal-overlay);
-	z-index: var(--z-modal);
-	display: flex;
-	align-items: flex-start;
-	justify-content: center;
-	padding-top: 100px;
-	/* Не скроллим фон за оверлеем */
-	overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-modal-overlay);
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+  /* Не скроллим фон за оверлеем */
+  overflow: hidden;
 }
 
 .content {
-	display: flex;
-	align-items: center;
-	gap: 16px;
-	background: var(--color-background-elements);
-	border-radius: 12px;
-	padding: 16px 20px;
-	width: 100%;
-	max-width: 600px;
-	margin: 0 20px;
-	/* Скроллим только контент, если он выше экрана */
-	max-height: calc(100vh - 140px);
-	overflow: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-background-elements);
+  border-radius: 12px;
+  padding: 16px 20px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 20px;
+  /* Скроллим только контент, если он выше экрана */
+  max-height: calc(100vh - 140px);
+  overflow: auto;
 }

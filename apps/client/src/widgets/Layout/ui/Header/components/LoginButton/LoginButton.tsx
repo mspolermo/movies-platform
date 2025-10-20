@@ -27,8 +27,8 @@ export const LoginButton = () => {
           title={isAuthenticated ? 'Выйти' : 'Войти'}
         >
           <div className={styles.profileBorder}>
-            <SvgIcon 
-              name={isAuthenticated ? "personFull" : "person"} 
+            <SvgIcon
+              name={isAuthenticated ? 'personFull' : 'person'}
               className={styles.icon}
               size={20}
             />

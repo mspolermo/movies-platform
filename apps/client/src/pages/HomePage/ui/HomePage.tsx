@@ -17,4 +17,4 @@ export const HomePage = () => {
   }, [isAuthenticated, router]);
 
   return null;
-}
+};

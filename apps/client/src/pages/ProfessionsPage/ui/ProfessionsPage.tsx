@@ -32,7 +32,7 @@ export const ProfessionsPage = () => {
   if (loading) {
     return (
       <Layout>
-        <Loader size='small'/>
+        <Loader size="small" />
       </Layout>
     );
   }
@@ -49,7 +49,7 @@ export const ProfessionsPage = () => {
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>Профессии</h1>
-        
+
         <div className={styles.professionsGrid}>
           {professions.map((profession) => (
             <div key={profession.id} className={styles.professionCard}>
@@ -60,4 +60,4 @@ export const ProfessionsPage = () => {
       </div>
     </Layout>
   );
-}
+};

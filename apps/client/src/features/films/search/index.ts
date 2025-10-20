@@ -1,1 +1,1 @@
-export { FimsSearch } from './ui'
+export { FimsSearch } from './ui';

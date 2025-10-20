@@ -5,11 +5,11 @@ import { ImageIcon } from '@/shared/assets/svg-icons';
 import { PosterPreviewBlockProps } from '../../types';
 import Image from 'next/image';
 
-export const PosterPreviewBlock = ({ 
-  bigPictureUrl, 
-  smallPictureUrl, 
-  filmNameRu, 
-  filmNameEn, 
+export const PosterPreviewBlock = ({
+  bigPictureUrl,
+  smallPictureUrl,
+  filmNameRu,
+  filmNameEn,
 }: PosterPreviewBlockProps) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -33,15 +33,9 @@ export const PosterPreviewBlock = ({
       <div className={styles.posterPreviewBlock}>
         <div className={styles.imagePlaceholder}>
           <div className={styles.placeholderIcon}>
-            <SvgIcon
-              icon={ImageIcon}
-              size={48}
-              data-variant="image"
-            />
+            <SvgIcon icon={ImageIcon} size={48} data-variant="image" />
           </div>
-          <div className={styles.placeholderText}>
-            Нет изображения
-          </div>
+          <div className={styles.placeholderText}>Нет изображения</div>
         </div>
       </div>
     );
@@ -49,14 +43,14 @@ export const PosterPreviewBlock = ({
 
   return (
     <div className={styles.posterPreviewBlock}>
-      <Image 
-        src={posterUrl} 
+      <img
+        src={posterUrl}
         alt={alt}
         onLoad={handleImageLoad}
         onError={handleImageError}
-        style={{ 
+        style={{
           opacity: imageLoading ? 0 : 1,
-          transition: 'opacity 0.3s ease'
+          transition: 'opacity 0.3s ease',
         }}
         className={styles.poster}
       />

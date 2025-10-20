@@ -6,14 +6,14 @@ import { SvgIcon, QualityTag } from '@/shared/ui';
 import { SummaryBlockProps } from '../../types';
 import { checkIsCartoon } from '../../../../lib';
 
-export const SummaryBlock = ({ 
-  filmNameRu, 
-  filmNameEn, 
-  year, 
-  genres = [], 
-  movieLength, 
+export const SummaryBlock = ({
+  filmNameRu,
+  filmNameEn,
+  year,
+  genres = [],
+  movieLength,
   countries = [],
-  isCartoon
+  isCartoon,
 }: SummaryBlockProps) => {
   const router = useRouter();
 
@@ -54,71 +54,68 @@ export const SummaryBlock = ({
       <h2 className={styles.heading}>
         {filmName} ({type} {year})
       </h2>
-      
+
       <p className={`${styles.text} ${styles.textFirst}`}>
-        <span 
-          className={styles.link}
-          onClick={handleYearClick}
-        >
+        <span className={styles.link} onClick={handleYearClick}>
           {year}
         </span>
         <span> {length} </span>
         <span>16+</span>
       </p>
-      
+
       <p className={styles.text}>
-        <span 
+        <span
           className={`${styles.link} ${styles.countryLink}`}
           onClick={handleCountryClick}
         >
           {country}
         </span>
 
-        {genres.map(genre => (
-          <span 
-            key={genre.id} 
+        {genres.map((genre) => (
+          <span
+            key={genre.id}
             className={`${styles.link} ${styles.genreLink}`}
             onClick={() => handleGenreClick(genre)}
           >
-            <SvgIcon 
+            <SvgIcon
               className={styles.svg}
-              name="circle-filled" 
-              size={4} 
+              name="circle-filled"
+              size={4}
               color="var(--color-text)"
             />
-{genre.nameRu}
+            {genre.nameRu}
           </span>
         ))}
       </p>
 
       <div className={styles.additional}>
         <QualityTag quality="FullHD" />
-        <SvgIcon 
+        <SvgIcon
           className={styles.svg}
-          name="volume-down" 
-          size={22} 
+          name="volume-down"
+          size={22}
           color="var(--color-text)"
         />
         <p className={styles.text}>Рус</p>
-        <SvgIcon 
+        <SvgIcon
           className={styles.svg}
-          name="circle-filled" 
-          size={4} 
+          name="circle-filled"
+          size={4}
           color="var(--color-text)"
         />
         <p className={styles.text}>Eng</p>
-        <SvgIcon 
+        <SvgIcon
           className={styles.svg}
-          name="keyboard" 
-          size={18} 
+          name="keyboard"
+          size={18}
           color="var(--color-text)"
           strokeWidth={2}
         />
         <p className={styles.text}>Рус</p>
-        <SvgIcon 
+        <SvgIcon
           className={styles.svg}
-          name="circle-filled" 
-          size={4} 
+          name="circle-filled"
+          size={4}
           color="var(--color-text)"
         />
         <p className={styles.text}>Eng</p>

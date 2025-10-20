@@ -58,7 +58,7 @@ export const RegisterPage = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Регистрация</h1>
-      
+
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           label="Имя"
@@ -111,4 +111,4 @@ export const RegisterPage = () => {
       </div>
     </div>
   );
-}
+};

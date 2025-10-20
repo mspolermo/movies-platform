@@ -39,12 +39,12 @@ export const filmsService = {
         ...params,
       },
     });
-    
+
     // API возвращает массив TFilmModel[] напрямую
     const films = Array.isArray(response.data) ? response.data : [];
     const page = params.page || 1;
     const perPage = params.perPage || 20;
-    
+
     return {
       films,
       total: films.length,
@@ -56,7 +56,10 @@ export const filmsService = {
 
   // Обновить фильм (только для админов)
   async updateFilm(id: number, data: Partial<TFilmModel>): Promise<TFilmModel> {
-    const response = await apiClient.patch(API_ENDPOINTS.FILMS.UPDATE(id), data);
+    const response = await apiClient.patch(
+      API_ENDPOINTS.FILMS.UPDATE(id),
+      data
+    );
     return response.data;
   },
 

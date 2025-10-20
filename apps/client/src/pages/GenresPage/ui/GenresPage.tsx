@@ -33,7 +33,7 @@ export const GenresPage = () => {
     return (
       <Layout>
         <div className={styles.loaderWrapper}>
-          <Loader size='small'/>
+          <Loader size="small" />
         </div>
       </Layout>
     );
@@ -51,7 +51,7 @@ export const GenresPage = () => {
     <Layout>
       <div className={styles.container}>
         <h1 className={styles.title}>Жанры</h1>
-        
+
         <div className={styles.genresGrid}>
           {genres.map((genre) => (
             <div key={genre.id} className={styles.genreCard}>
@@ -63,4 +63,4 @@ export const GenresPage = () => {
       </div>
     </Layout>
   );
-}
+};

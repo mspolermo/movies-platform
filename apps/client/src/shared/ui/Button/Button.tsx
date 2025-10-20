@@ -48,13 +48,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && <div className={styles.button__spinner} />}
-        
+
         {icon && iconPosition === 'left' && (
           <span className={styles.button__icon}>{icon}</span>
         )}
-        
+
         {children && <span className={styles.button__content}>{children}</span>}
-        
+
         {icon && iconPosition === 'right' && (
           <span className={styles.button__icon}>{icon}</span>
         )}

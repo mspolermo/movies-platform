@@ -1,2 +1,1 @@
 export { QualityTag } from './QualityTag';
-

@@ -13,7 +13,9 @@ export const AuthInitializer = () => {
   useEffect(() => {
     // Проверяем авторизацию при монтировании компонента
     if (token && !user && !isLoading) {
-      console.log('AuthInitializer: Token found but no user data, checking auth...');
+      console.log(
+        'AuthInitializer: Token found but no user data, checking auth...'
+      );
       checkAuth();
     }
   }, [checkAuth, token, user, isLoading]);

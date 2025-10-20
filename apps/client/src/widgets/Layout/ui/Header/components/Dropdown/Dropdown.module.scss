@@ -10,9 +10,11 @@
   padding: 0 30px;
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
   animation: dropdownSlideIn 0.4s ease-out;
-  
+
   &.closing {
     opacity: 0;
     transform: translateY(-10px);
@@ -41,7 +43,7 @@
 
 .column {
   min-width: 180px;
-  
+
   &:last-child {
     width: 180px;
   }
@@ -68,13 +70,12 @@
   cursor: pointer;
   font-size: 14px;
   transition: color 0.4s ease;
-  
+
   &:hover {
     color: var(--color-heading);
   }
-  
+
   &:first-letter {
     text-transform: uppercase;
   }
 }
-

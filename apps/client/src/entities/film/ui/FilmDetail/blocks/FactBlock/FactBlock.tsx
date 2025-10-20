@@ -3,7 +3,6 @@ import styles from './FactBlock.module.scss';
 import { TFactBased } from '@common/types';
 import { FactBlockProps } from '../../types';
 
-
 export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpanded = () => setIsExpanded(!isExpanded);
@@ -14,7 +13,7 @@ export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
 
   return (
     <div className={styles.factBlock}>
-      <h3 
+      <h3
         className={`${styles.title} ${styles.titleClickable}`}
         onClick={toggleExpanded}
       >
@@ -33,5 +32,3 @@ export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
     </div>
   );
 };
-
-

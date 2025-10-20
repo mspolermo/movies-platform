@@ -8,9 +8,17 @@ export const SloganBlock = ({ slogan }: SloganBlockProps) => {
 
   return (
     <div className={styles.sloganBlock}>
-      <SvgIcon name="quote-open" className={`${styles.quote} ${styles.quoteOpen}`} size={12} />
+      <SvgIcon
+        name="quote-open"
+        className={`${styles.quote} ${styles.quoteOpen}`}
+        size={12}
+      />
       <p className={styles.text}>{slogan}</p>
-      <SvgIcon name="quote-close" className={`${styles.quote} ${styles.quoteClose}`} size={12} />
+      <SvgIcon
+        name="quote-close"
+        className={`${styles.quote} ${styles.quoteClose}`}
+        size={12}
+      />
     </div>
   );
 };

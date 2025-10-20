@@ -11,12 +11,12 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({ 
-  type = 'small', 
-  title, 
-  photoUrl, 
-  role, 
-  onClick 
+export const Card: React.FC<CardProps> = ({
+  type = 'small',
+  title,
+  photoUrl,
+  role,
+  onClick,
 }) => {
   const [cardClass, setCardClass] = useState(styles.card);
   const [imgClass, setImgClass] = useState(styles.card__img);
@@ -78,32 +78,28 @@ export const Card: React.FC<CardProps> = ({
 
     return (
       <>
-        <Image 
-          src={photoUrl} 
-          className={imgClass} 
-          alt={title ?? ''} 
-          onLoad={handleImageLoad} 
+        <img
+          src={photoUrl}
+          className={imgClass}
+          alt={title ?? ''}
+          onLoad={handleImageLoad}
           onError={handleImageError}
-          style={{ 
+          style={{
             opacity: imageLoading ? 0 : 1,
-            transition: 'opacity 0.3s ease'
+            transition: 'opacity 0.3s ease',
           }}
         />
-        {imageLoading && (
-          <div className={styles.skeleton}></div>
-        )}
+        {imageLoading && <div className={styles.skeleton}></div>}
       </>
     );
   };
 
   return (
     <div className={cardClass} onClick={onClick}>
-      <div className={bodyClass}>
-        {renderImageContent()}
-      </div>
+      <div className={bodyClass}>{renderImageContent()}</div>
       <div>
         {title && !titleArray[1] && <p className={textClass}>{title}</p>}
-        
+
         {titleArray.length === 2 && (
           <div>
             <p className={styles.card__text_big}>{titleArray[0]}</p>

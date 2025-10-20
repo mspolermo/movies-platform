@@ -1,4 +1,4 @@
 export interface FilmsSearchProps {
-  isOpen: boolean
-  handleClose: () => void
+  isOpen: boolean;
+  handleClose: () => void;
 }

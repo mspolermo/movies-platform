@@ -6,7 +6,9 @@ import skeletonStyles from './FilmDetailSkeleton.module.scss';
 export const FilmDetailSkeleton: React.FC = () => {
   return (
     <div className={styles.container}>
-      <div className={`${styles.filmDetail} ${skeletonStyles.skeletonContainer}`}>
+      <div
+        className={`${styles.filmDetail} ${skeletonStyles.skeletonContainer}`}
+      >
         <div className={styles.posterSection}>
           {/* Постер */}
           <Skeleton
@@ -17,7 +19,7 @@ export const FilmDetailSkeleton: React.FC = () => {
             animation="pulse"
             className={skeletonStyles.posterSkeleton}
           />
-          
+
           {/* Слоган */}
           <div className={skeletonStyles.sloganSkeleton}>
             <Skeleton
@@ -72,7 +74,7 @@ export const FilmDetailSkeleton: React.FC = () => {
             />
           </div>
         </div>
-        
+
         <div className={styles.infoSection}>
           {/* Заголовок и основная информация */}
           <div className={skeletonStyles.summarySkeleton}>
@@ -84,7 +86,7 @@ export const FilmDetailSkeleton: React.FC = () => {
               animation="pulse"
               className={skeletonStyles.titleSkeleton}
             />
-            
+
             <div className={skeletonStyles.metaInfo}>
               <Skeleton
                 width="120px"
@@ -108,7 +110,7 @@ export const FilmDetailSkeleton: React.FC = () => {
                 animation="pulse"
               />
             </div>
-            
+
             <div className={skeletonStyles.additionalInfo}>
               <Skeleton
                 width="60px"
@@ -155,13 +157,13 @@ export const FilmDetailSkeleton: React.FC = () => {
           </div>
 
           <Skeleton
-              width="180px"
-              height="20px"
-              borderRadius="4px"
-              variant="rectangular"
-              animation="pulse"
-              className={skeletonStyles.readMoreButton}
-            />
+            width="180px"
+            height="20px"
+            borderRadius="4px"
+            variant="rectangular"
+            animation="pulse"
+            className={skeletonStyles.readMoreButton}
+          />
 
           {/* Карточки актеров */}
           <div className={skeletonStyles.cardsSkeletonContainer}>
@@ -186,8 +188,6 @@ export const FilmDetailSkeleton: React.FC = () => {
               </div>
             ))}
           </div>
-
-
 
           {/* Трейлер */}
           <div className={skeletonStyles.trailerSkeleton}>

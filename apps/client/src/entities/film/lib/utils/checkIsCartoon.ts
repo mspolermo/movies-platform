@@ -1,28 +1,24 @@
-import { TGenreBased } from "@common/types";
+import { TGenreBased } from '@common/types';
 
 export const checkIsCartoon = (genres: TGenreBased[]): boolean => {
-  return genres.some(g => {
+  return genres.some((g) => {
     const ru = g.nameRu?.toLowerCase() || '';
     const en = g.nameEn?.toLowerCase() || '';
-    
+
     // Проверяем русские названия
     const ruPatterns = [
       'мультфильм',
       'анимация',
       'анимационный',
-      'мультипликация'
+      'мультипликация',
     ];
-    
+
     // Проверяем английские названия
-    const enPatterns = [
-      'animation',
-      'cartoon',
-      'animated',
-      'anime'
-    ];
-    
-    return ruPatterns.some(pattern => ru.includes(pattern)) ||
-           enPatterns.some(pattern => en.includes(pattern));
+    const enPatterns = ['animation', 'cartoon', 'animated', 'anime'];
+
+    return (
+      ruPatterns.some((pattern) => ru.includes(pattern)) ||
+      enPatterns.some((pattern) => en.includes(pattern))
+    );
   });
 };
-

@@ -13,7 +13,7 @@ interface HeaderDropdownProps {
 export const Dropdown: React.FC<HeaderDropdownProps> = ({
   isClosing,
   onClose,
-  onMouseEnter
+  onMouseEnter,
 }) => {
   const router = useRouter();
 
@@ -33,10 +33,20 @@ export const Dropdown: React.FC<HeaderDropdownProps> = ({
         <h3 className={styles.heading}>Жанры</h3>
         <div className={styles.list}>
           <div className={styles.column}>
-            <p className={styles.item} onClick={() => handleGenreClick('боевик')}>Боевик</p>
+            <p
+              className={styles.item}
+              onClick={() => handleGenreClick('боевик')}
+            >
+              Боевик
+            </p>
           </div>
           <div className={styles.column}>
-            <p className={styles.item} onClick={() => handleGenreClick('детектив')}>Детектив</p>
+            <p
+              className={styles.item}
+              onClick={() => handleGenreClick('детектив')}
+            >
+              Детектив
+            </p>
           </div>
         </div>
       </div>
@@ -45,14 +55,21 @@ export const Dropdown: React.FC<HeaderDropdownProps> = ({
         <h3 className={styles.heading}>Страны</h3>
         <div className={styles.list}>
           <div className={styles.column}>
-            <p className={styles.item} onClick={() => handleGenreClick('Россия')}>Россия</p>
+            <p
+              className={styles.item}
+              onClick={() => handleGenreClick('Россия')}
+            >
+              Россия
+            </p>
           </div>
         </div>
 
         <h3 className={styles.heading}>Годы</h3>
         <div className={styles.list}>
           <div className={styles.column}>
-            <p className={styles.item} onClick={() => handleYearClick('2024')}>2024</p>
+            <p className={styles.item} onClick={() => handleYearClick('2024')}>
+              2024
+            </p>
           </div>
         </div>
       </div>
@@ -60,7 +77,7 @@ export const Dropdown: React.FC<HeaderDropdownProps> = ({
   );
 
   return (
-    <div 
+    <div
       className={`${styles.dropdown} ${isClosing ? styles.closing : ''}`}
       onMouseLeave={onClose}
       onMouseEnter={onMouseEnter}

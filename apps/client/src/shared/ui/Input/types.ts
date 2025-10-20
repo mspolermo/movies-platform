@@ -3,7 +3,8 @@ import { InputHTMLAttributes, ReactNode } from 'react';
 export type InputVariant = 'default' | 'search' | 'email';
 export type InputSize = 'small' | 'medium' | 'large';
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /** Подпись поля */
   label?: string;
   /** Плейсхолдер */
