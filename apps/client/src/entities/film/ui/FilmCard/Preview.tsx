@@ -36,14 +36,16 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
     );
 
   return (
-    <>
-      <img
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <Image
         src={getPosterUrl()}
         alt={filmNameRu}
-        loading="lazy"
+        fill
         onLoad={handleImageLoad}
         onError={handleImageError}
+        sizes="100vw"
         style={{
+          objectFit: 'cover',
           opacity: imageLoading ? 0 : 1,
           transition: 'opacity 0.3s ease',
         }}
@@ -58,6 +60,6 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
           className={styles.imageSkeleton}
         />
       )}
-    </>
+    </div>
   );
 };

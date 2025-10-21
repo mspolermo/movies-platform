@@ -78,17 +78,21 @@ export const Card: React.FC<CardProps> = ({
 
     return (
       <>
-        <img
-          src={photoUrl}
-          className={imgClass}
-          alt={title ?? ''}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          style={{
-            opacity: imageLoading ? 0 : 1,
-            transition: 'opacity 0.3s ease',
-          }}
-        />
+        <div className={imgClass} style={{ position: 'relative' }}>
+          <Image
+            src={photoUrl}
+            alt={title ?? ''}
+            fill
+            sizes="(max-width: 768px) 100vw, 300px"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            style={{
+              objectFit: 'cover',
+              opacity: imageLoading ? 0 : 1,
+              transition: 'opacity 0.3s ease',
+            }}
+          />
+        </div>
         {imageLoading && <div className={styles.skeleton}></div>}
       </>
     );

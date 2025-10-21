@@ -43,17 +43,21 @@ export const PosterPreviewBlock = ({
 
   return (
     <div className={styles.posterPreviewBlock}>
-      <img
-        src={posterUrl}
-        alt={alt}
-        onLoad={handleImageLoad}
-        onError={handleImageError}
-        style={{
-          opacity: imageLoading ? 0 : 1,
-          transition: 'opacity 0.3s ease',
-        }}
-        className={styles.poster}
-      />
+      <div className={styles.poster} style={{ position: 'relative' }}>
+        <Image
+          src={posterUrl}
+          alt={alt}
+          fill
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          sizes="(max-width: 768px) 100vw, 600px"
+          style={{
+            objectFit: 'cover',
+            opacity: imageLoading ? 0 : 1,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+      </div>
       {imageLoading && (
         <Skeleton
           width="100%"

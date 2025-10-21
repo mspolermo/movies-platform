@@ -56,11 +56,15 @@ export const PersonsPage = () => {
             <div key={person.id} className={styles.personCard}>
               <div className={styles.personPhoto}>
                 {person.photoUrl ? (
-                  <img
-                    src={person.photoUrl}
-                    alt={person.nameRu}
-                    className={styles.photo}
-                  />
+                  <div className={styles.photo} style={{ position: 'relative' }}>
+                    <Image
+                      src={person.photoUrl}
+                      alt={person.nameRu}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 200px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
                 ) : (
                   <div className={styles.photoPlaceholder}>
                     {person.nameRu.charAt(0)}
