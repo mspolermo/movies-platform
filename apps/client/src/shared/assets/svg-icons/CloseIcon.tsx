@@ -2,7 +2,7 @@ import React from 'react';
 
 export const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg
-    viewBox="0 0 22 22"
+    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="1"

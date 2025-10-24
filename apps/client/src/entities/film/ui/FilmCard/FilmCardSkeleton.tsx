@@ -7,88 +7,72 @@ export const FilmCardSkeleton = ({
   showIcons = false,
 }: FilmCardSkeletonProps) => {
   return (
-    <div className={`${styles.filmcard} ${styles.skeletonCard}`}>
+    <article className={`${styles.card} ${styles.skeletonCard}`}>
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={showIcons ? styles.poster : styles.posterTwo}>
-            <div className={styles.img}>
+          <div className={styles.poster}>
+            <div className={styles.imageContainer}>
               <Skeleton
                 width="100%"
-                height="280px"
+                height="100%"
                 borderRadius="8px"
                 variant="rectangular"
                 animation="pulse"
               />
+              
+              {showIcons && (
+                <div className={styles.overlay}>
+                  <div className={styles.overlayContent}>
+                    <div className={styles.iconsContainer}>
+                      {Array.from({ length: 4 }).map((_, index) => (
+                        <Skeleton
+                          key={index}
+                          width="32px"
+                          height="32px"
+                          borderRadius="4px"
+                          variant="rectangular"
+                          animation="pulse"
+                        />
+                      ))}
+                    </div>
+
+                    <div className={styles.filmInfo}>
+                      <div className={styles.rating}>
+                        <Skeleton
+                          width="40px"
+                          height="28px"
+                          borderRadius="4px"
+                          variant="rectangular"
+                          animation="pulse"
+                        />
+                      </div>
+                      <div className={styles.filmDetails}>
+                        <Skeleton
+                          width="80px"
+                          height="16px"
+                          borderRadius="4px"
+                          variant="rectangular"
+                          animation="pulse"
+                        />
+                      </div>
+                      <div className={styles.duration}>
+                        <Skeleton
+                          width="60px"
+                          height="16px"
+                          borderRadius="4px"
+                          variant="rectangular"
+                          animation="pulse"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-
-          {showIcons && (
-            <div className={styles.properties}>
-              <div className={styles.icons}>
-                <Skeleton
-                  width="25px"
-                  height="25px"
-                  borderRadius="4px"
-                  variant="rectangular"
-                  animation="pulse"
-                />
-                <Skeleton
-                  width="25px"
-                  height="25px"
-                  borderRadius="4px"
-                  variant="rectangular"
-                  animation="pulse"
-                />
-                <Skeleton
-                  width="25px"
-                  height="25px"
-                  borderRadius="4px"
-                  variant="rectangular"
-                  animation="pulse"
-                />
-                <Skeleton
-                  width="25px"
-                  height="25px"
-                  borderRadius="4px"
-                  variant="rectangular"
-                  animation="pulse"
-                />
-              </div>
-
-              <div className={styles.propertiesInfo}>
-                <div className={styles.rating}>
-                  <Skeleton
-                    width="40px"
-                    height="28px"
-                    borderRadius="4px"
-                    variant="rectangular"
-                    animation="pulse"
-                  />
-                </div>
-                <div className={styles.infoShort}>
-                  <Skeleton
-                    width="80px"
-                    height="16px"
-                    borderRadius="4px"
-                    variant="rectangular"
-                    animation="pulse"
-                  />
-                </div>
-                <div className={styles.infoTime}>
-                  <Skeleton
-                    width="60px"
-                    height="16px"
-                    borderRadius="4px"
-                    variant="rectangular"
-                    animation="pulse"
-                  />
-                </div>
-              </div>
-            </div>
-          )}
         </div>
 
-        <div className={styles.name}>
+        <h3 className={styles.title}>
           <Skeleton
             width="150px"
             height="20px"
@@ -96,8 +80,8 @@ export const FilmCardSkeleton = ({
             variant="rectangular"
             animation="pulse"
           />
-        </div>
+        </h3>
       </div>
-    </div>
+    </article>
   );
 };

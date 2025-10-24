@@ -20,60 +20,64 @@ export const IconsBlock = (props: IconsBlockProps) => {
   } = props;
 
   return (
-    <div className={styles.icons}>
+    <>
       <Tooltip content="Добавить в избранное" position="top">
-        <div className={styles.iconStyle}>
+        <button 
+          className={styles.iconButton}
+          onClick={handleFavoritesClick}
+          aria-label={isFavorite ? "Убрать из избранного" : "Добавить в избранное"}
+          aria-pressed={isFavorite}
+        >
           <SvgIcon
             icon={isFavorite ? BookmarkFilledIcon : BookmarkIcon}
             size={25.8}
-            className={styles.iconSvg}
-            data-variant="bookmark"
-            data-active={isFavorite}
-            onClick={handleFavoritesClick}
-            aria-label="Добавить в избранное"
+            className={`${styles.iconSvg} ${isFavorite ? styles.iconActive : styles.iconDefault}`}
           />
-        </div>
+        </button>
       </Tooltip>
 
       <Tooltip content="Похожие фильмы" position="top">
-        <div className={styles.iconStyle}>
+        <button 
+          className={styles.iconButton}
+          onClick={handleSimilarClick}
+          aria-label="Показать похожие фильмы"
+        >
           <SvgIcon
             icon={RefreshIcon}
             size={20.8}
-            className={styles.iconSvg}
-            data-variant="refresh"
-            onClick={handleSimilarClick}
-            aria-label="Похожие фильмы"
+            className={`${styles.iconSvg} ${styles.iconDefault}`}
           />
-        </div>
+        </button>
       </Tooltip>
 
       <Tooltip content="Оценить фильм" position="top">
-        <div className={styles.iconStyle}>
+        <button 
+          className={styles.iconButton}
+          onClick={handleGradeClick}
+          aria-label="Оценить фильм"
+        >
           <SvgIcon
             icon={StarIcon}
             size={25.8}
-            className={styles.iconSvg}
-            data-variant="star"
-            onClick={handleGradeClick}
-            aria-label="Оценить фильм"
+            className={`${styles.iconSvg} ${styles.iconDefault}`}
           />
-        </div>
+        </button>
       </Tooltip>
 
       <Tooltip content="Не нравится" position="top">
-        <div className={styles.iconStyle}>
+        <button 
+          className={styles.iconButton}
+          onClick={handleNotLikeClick}
+          aria-label={notLike ? "Убрать из непонравившихся" : "Не нравится"}
+          aria-pressed={notLike}
+        >
           <SvgIcon
             icon={CloseIcon}
             size={20.8}
-            className={styles.iconSvg}
-            data-variant="close"
-            data-active={notLike}
-            onClick={handleNotLikeClick}
-            aria-label="Не нравится"
+            className={`${styles.iconSvg} ${notLike ? styles.iconActive : styles.iconDefault}`}
           />
-        </div>
+        </button>
       </Tooltip>
-    </div>
+    </>
   );
 };

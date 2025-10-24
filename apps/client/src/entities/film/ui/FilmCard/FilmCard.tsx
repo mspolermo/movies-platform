@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { FilmCardSkeleton } from './FilmCardSkeleton';
 import styles from './FilmCard.module.scss';
@@ -17,39 +17,55 @@ export const FilmCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const [notLike, setNotLike] = useState(false);
 
-  const handleCardClick = () => {
+  const handleCardClick = useCallback(() => {
     router.push(`/films/${film.id}`);
-  };
+  }, [router, film.id]);
 
-  const handleFavoritesClick = (e: React.MouseEvent) => {
+  const handleFavoritesClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setIsFavorite((prev) => !prev);
-  };
+  }, []);
 
-  const handleNotLikeClick = (e: React.MouseEvent) => {
+  const handleNotLikeClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setNotLike((prev) => !prev);
-  };
+  }, []);
 
-  const handleGradeClick = (e: React.MouseEvent) => {
+  const handleGradeClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     // TODO: Implement grade functionality
-  };
+  }, []);
 
-  const handleSimilarClick = (e: React.MouseEvent) => {
+  const handleSimilarClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     // TODO: Implement similar films functionality
-  };
+  }, []);
 
-  const formatRating = (rating?: number) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
+  }, [handleCardClick]);
+
+  const formatRating = useCallback((rating?: number) => {
     if (!rating) return '0,0';
     return rating.toFixed(1).replace('.', ',');
-  };
+  }, []);
 
-  const formatDuration = (minutes?: number) => {
+  const formatDuration = useCallback((minutes?: number) => {
     if (!minutes) return '';
     return `${minutes} мин`;
-  };
+  }, []);
+
+  const formatFilmDetails = useCallback(() => {
+    const parts = [];
+    if (film.year) parts.push(film.year);
+    if (film.premiereCountry) parts.push(film.premiereCountry);
+    return parts.join(', ');
+  }, [film.year, film.premiereCountry]);
+
+  const filmTitle = film.filmNameRu || film.filmNameEn || 'Без названия';
 
   // Показываем скелетон во время загрузки
   if (isLoading) {
@@ -57,46 +73,57 @@ export const FilmCard = ({
   }
 
   return (
-    <div className={styles.filmcard} onClick={handleCardClick}>
+    <article 
+      className={styles.card} 
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={0}
+      role="button"
+      aria-label={`Открыть информацию о фильме ${filmTitle}`}
+    >
       <div className={styles.container}>
         <div className={styles.content}>
-          <div className={showIcons ? styles.poster : styles.posterTwo}>
-            <div className={styles.img}>
+          <div className={styles.poster}>
+            <div className={styles.imageContainer}>
               <Preview film={film} />
-              <div className={styles.imgBackground}></div>
-            </div>
-          </div>
-          <div className={styles.properties}>
-            {showIcons && (
-              <IconsBlock
-                notLike={notLike}
-                isFavorite={isFavorite}
-                handleFavoritesClick={handleFavoritesClick}
-                handleSimilarClick={handleSimilarClick}
-                handleGradeClick={handleGradeClick}
-                handleNotLikeClick={handleNotLikeClick}
-              />
-            )}
+              <div className={styles.imageBackground} />
+              
+              {showIcons && (
+                <div className={styles.overlay}>
+                  <div className={styles.overlayContent}>
+                    <div className={styles.iconsContainer}>
+                      <IconsBlock
+                        notLike={notLike}
+                        isFavorite={isFavorite}
+                        handleFavoritesClick={handleFavoritesClick}
+                        handleSimilarClick={handleSimilarClick}
+                        handleGradeClick={handleGradeClick}
+                        handleNotLikeClick={handleNotLikeClick}
+                      />
+                    </div>
 
-            <div className={styles.propertiesInfo}>
-              <div className={styles.rating}>
-                <span className={styles.bigRating}>
-                  {formatRating(film.ratingKp)}
-                </span>
-              </div>
-              <div className={styles.infoShort}>
-                {film.year && `${film.year}, `}
-                {film.premiereCountry || ''}
-              </div>
-              <div className={styles.infoTime}>
-                {formatDuration(film.movieLength)}
-              </div>
+                    <div className={styles.filmInfo}>
+                      <div className={styles.rating}>
+                        <span className={styles.ratingValue}>
+                          {formatRating(film.ratingKp)}
+                        </span>
+                      </div>
+                      <div className={styles.filmDetails}>
+                        {formatFilmDetails()}
+                      </div>
+                      <div className={styles.duration}>
+                        {formatDuration(film.movieLength)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className={styles.name}>{film.filmNameRu || film.filmNameEn}</div>
+        <h3 className={styles.title}>{filmTitle}</h3>
       </div>
-    </div>
+    </article>
   );
 };
