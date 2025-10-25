@@ -28,6 +28,17 @@ export const FilmsPage = () => {
               return <div className={styles.error}>{error}</div>;
             }
 
+            // Показываем скелетоны во время первой загрузки
+            if (loading && films.length === 0) {
+              return (
+                <div className={styles.filmsGrid}>
+                  {Array.from({ length: 8 }).map((_, index) => (
+                    <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
+                  ))}
+                </div>
+              );
+            }
+
             return (
               <div className={styles.filmsGrid}>
                 {films && films.length > 0 ? (
