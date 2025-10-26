@@ -1,0 +1,191 @@
+.filterTwoBlocks {
+  .container {
+    display: block;
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 100%;
+      font-size: 13px;
+      line-height: 16px;
+      font-weight: 600;
+      color: rgba(217, 215, 224, 0.8);
+      overflow: hidden;
+
+      .scrollPane {
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--color-transparent-white);
+
+        .viewport {
+          padding: 0 10px;
+
+          .popularContainer {
+            display: flex;
+            justify-content: flex-start;
+            flex: 0 0 auto;
+            transition: margin-left 250ms;
+            gap: 8px;
+
+            .popularButton {
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 20px;
+              padding: 8px 16px;
+              color: var(--color-text);
+              font-size: 12px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              white-space: nowrap;
+              flex-shrink: 0;
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateY(-1px);
+              }
+
+              &.popularButtonActive {
+                background: var(--color-red);
+                border-color: var(--color-red);
+                color: var(--color-white);
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+              }
+            }
+          }
+        }
+      }
+
+      .listContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding-top: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        .listItem {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 20px;
+          padding: 8px 16px;
+          color: var(--color-text);
+          font-size: 12px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+          }
+
+          &.listItemActive {
+            background: var(--color-red);
+            border-color: var(--color-red);
+            color: var(--color-white);
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+
+            .checkmark {
+              opacity: 1;
+              color: var(--color-white);
+            }
+          }
+
+          .text {
+            color: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+          }
+
+          .checkmark {
+            opacity: 0;
+            color: var(--color-icon-default);
+            transition: all 0.2s ease;
+            font-size: 16px;
+
+            &.checkmarkActive {
+              opacity: 1;
+              color: var(--color-white);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .mobile {
+    display: none;
+
+    @media (max-width: 600px) {
+      display: contents;
+      position: relative;
+
+      .mobileScroll {
+        padding-bottom: 16px;
+
+        .mobileViewport {
+          padding: 0 10px;
+
+          .mobileContainer {
+            display: flex;
+            justify-content: flex-start;
+            flex: 0 0 auto;
+            transition: margin-left 250ms;
+            gap: 8px;
+
+            .popularButton {
+              background: rgba(255, 255, 255, 0.05);
+              border: 1px solid rgba(255, 255, 255, 0.1);
+              border-radius: 20px;
+              padding: 8px 16px;
+              color: var(--color-text);
+              font-size: 12px;
+              font-weight: 500;
+              cursor: pointer;
+              transition: all 0.2s ease;
+              white-space: nowrap;
+              flex-shrink: 0;
+
+              &:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateY(-1px);
+              }
+
+              &.popularButtonActive {
+                background: var(--color-red);
+                border-color: var(--color-red);
+                color: var(--color-white);
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 880px) {
+    .container .content {
+      max-width: 100%;
+      padding: 4px 12px 0 0;
+
+      .listContainer {
+        max-height: 150px;
+      }
+    }
+  }
+}

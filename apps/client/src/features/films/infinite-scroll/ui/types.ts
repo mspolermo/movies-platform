@@ -13,4 +13,5 @@ export interface FilmsInfiniteScrollProps {
   loadingComponent?: ReactNode;
   endMessage?: ReactNode;
   className?: string;
+  onParamsChange?: (params: SearchFilmsParams) => void;
 }

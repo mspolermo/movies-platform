@@ -44,6 +44,44 @@ button {
   font-family: inherit;
 }
 
+// CSS переменные для слайдеров
+:root {
+  --slider-track-height: 3px;
+  --slider-thumb-width: 12px;
+  --slider-thumb-height: 25px;
+  --slider-bubble-size: 38px;
+  --slider-bubble-border: 2px;
+  --slider-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+  --slider-transition: all 0.2s ease-in-out;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background-color: var(--color-white);
+  border-radius: 5px;
+  background-image: linear-gradient(var(--color-red), var(--color-red));
+  background-repeat: no-repeat;
+  width: 100%;
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-radius: 10px;
+    background: var(--color-red);
+    cursor: pointer;
+    box-shadow: 0 0 2px 0 #555;
+    transition: all 0.1s;
+  }
+
+  ::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

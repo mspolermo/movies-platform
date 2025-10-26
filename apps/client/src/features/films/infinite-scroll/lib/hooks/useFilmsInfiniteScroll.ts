@@ -18,6 +18,7 @@ interface UseFilmsInfiniteScrollReturn {
   hasMore: boolean;
   loadMore: () => Promise<void>;
   reset: () => void;
+  updateParams: (newParams: SearchFilmsParams) => void;
 }
 
 export const useFilmsInfiniteScroll = ({
@@ -79,6 +80,10 @@ export const useFilmsInfiniteScroll = ({
     loadFilms(1, true);
   }, [loadFilms]);
 
+  const updateParams = useCallback((newParams: SearchFilmsParams) => {
+    setParams(newParams);
+  }, []);
+
   // Загрузка при изменении параметров
   useEffect(() => {
     reset();
@@ -91,5 +96,6 @@ export const useFilmsInfiniteScroll = ({
     hasMore,
     loadMore,
     reset,
+    updateParams,
   };
 };

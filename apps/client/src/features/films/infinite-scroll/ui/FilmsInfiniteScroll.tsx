@@ -1,4 +1,5 @@
 import { InfiniteScroll, Loader } from '@/shared/ui';
+import { SearchFilmsParams } from '@/shared/api/services';
 import { useFilmsInfiniteScroll } from '../lib';
 import { FilmsInfiniteScrollProps } from './types';
 
@@ -9,11 +10,17 @@ export const FilmsInfiniteScroll = ({
   loadingComponent,
   endMessage,
   className,
+  onParamsChange,
 }: FilmsInfiniteScrollProps) => {
-  const { films, loading, error, hasMore, loadMore } = useFilmsInfiniteScroll({
+  const { films, loading, error, hasMore, loadMore, updateParams } = useFilmsInfiniteScroll({
     initialParams,
     threshold,
   });
+
+  const handleParamsChange = (newParams: SearchFilmsParams) => {
+    updateParams(newParams);
+    onParamsChange?.(newParams);
+  };
 
   const defaultLoadingComponent = <Loader size="small" />;
 
