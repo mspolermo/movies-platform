@@ -31,7 +31,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
   }, [isActive, blockName, setActiveBlock]);
 
   return (
-    <div className={styles.filterButton}>
+    <div className={`${styles.filterButton} ${isWideMenu ? styles.filterButtonWide : ''}`}>
       <div className={styles.container}>
         <div className={`${styles.content} ${isActive ? styles.contentActive : ''}`}>
           <div className={styles.header} onClick={handleToggle}>

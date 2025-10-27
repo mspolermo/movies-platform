@@ -8,6 +8,11 @@
   cursor: pointer;
   position: relative;
 
+  &.filterButtonWide {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
   .container {
     display: block;
 
@@ -94,10 +99,17 @@
       }
 
       &.menuWide {
-        left: 0;
-        right: 0;
-        width: 100%;
-        max-width: 100%;
+        position: absolute;
+        left: 50%;
+        width: calc(100vw - 48px);
+        max-width: 1200px;
+        top: calc(100% + 4px);
+        transform: translate(-50%, -10px);
+        margin-left: 0;
+        
+        &.menuVisible {
+          transform: translate(-50%, 0);
+        }
       }
     }
   }

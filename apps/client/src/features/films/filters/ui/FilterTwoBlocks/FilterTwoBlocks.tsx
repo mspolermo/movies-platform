@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FilterItem } from '../../types/filters';
 import styles from './FilterTwoBlocks.module.scss';
 
@@ -19,6 +19,20 @@ export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
   selectValues,
   handleChangeFilter
 }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
   const createPopularValue = () => {
     return popularValues.map((popular) => (
       <button
@@ -58,10 +72,20 @@ export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
           {/* Popular values carousel */}
           <div className={styles.scrollPane}>
             <div className={styles.viewport}>
-              <div className={styles.popularContainer}>
+              <div className={styles.popularContainer} ref={scrollRef}>
                 {createPopularValue()}
               </div>
             </div>
+            <button className={styles.scrollButtonLeft} onClick={scrollLeft}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M12 15L7 10L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <button className={styles.scrollButtonRight} onClick={scrollRight}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
           </div>
 
           {/* All values list */}
