@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FilterItem } from '../../types/filters';
 import styles from './FilterTwoBlocks.module.scss';
 
@@ -20,6 +20,34 @@ export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
   handleChangeFilter
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    const handleResize = () => checkScroll();
+    window.addEventListener('resize', handleResize);
+    
+    const currentRef = scrollRef.current;
+    if (currentRef) {
+      currentRef.addEventListener('scroll', checkScroll);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (currentRef) {
+        currentRef.removeEventListener('scroll', checkScroll);
+      }
+    };
+  }, [popularValues]);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -76,16 +104,20 @@ export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
                 {createPopularValue()}
               </div>
             </div>
-            <button className={styles.scrollButtonLeft} onClick={scrollLeft}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M12 15L7 10L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button className={styles.scrollButtonRight} onClick={scrollRight}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+            {canScrollLeft && (
+              <button className={styles.scrollButtonLeft} onClick={scrollLeft}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12 15L7 10L12 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            )}
+            {canScrollRight && (
+              <button className={styles.scrollButtonRight} onClick={scrollRight}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M8 5L13 10L8 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            )}
           </div>
 
           {/* All values list */}
