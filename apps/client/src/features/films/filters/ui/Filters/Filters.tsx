@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ActiveFilters, AllFilters } from '../../types/filters';
 import { FilterButton } from '../FilterButton/FilterButton';
 import { FilterTwoBlocks } from '../FilterTwoBlocks/FilterTwoBlocks';
@@ -32,7 +32,23 @@ export const Filters: React.FC<FiltersProps> = ({
   setSelectedFilters
 }) => {
   const [activeBlock, setActiveBlock] = useState<string[]>([]);
+  const filtersRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
+        setActiveBlock([]);
+      }
+    };
+
+    if (activeBlock.length > 0) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeBlock]);
 
   const updateFilters = useCallback((updates: Partial<ActiveFilters>) => {
     setSelectedFilters({ ...selectedFilters, ...updates });
@@ -77,7 +93,7 @@ export const Filters: React.FC<FiltersProps> = ({
   }, [updateFilters]);
 
   return (
-    <div className={styles.filters}>
+    <div className={styles.filters} ref={filtersRef}>
       <div className={styles.content}>
         <div className={styles.blocks}>
 
