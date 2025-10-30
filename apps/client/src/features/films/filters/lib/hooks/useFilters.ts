@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ActiveFilters, AllFilters, SortOption, DEFAULT_ACTIVE_FILTERS, DEFAULT_ALL_FILTERS } from '../../types/filters';
 import { SearchFilmsParams } from '@/shared/api/services';
+import apiClient from '@/shared/api/client';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
 
 export const useFilters = () => {
   const [allFilters, setAllFilters] = useState<AllFilters>(DEFAULT_ALL_FILTERS);
@@ -12,19 +14,19 @@ export const useFilters = () => {
   const fetchFilters = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/filters');
-      const data = await response.json();
-      
+      const { data } = await apiClient.get(API_ENDPOINTS.FILTERS.ROOT);
+
       const filters: AllFilters = {
         ...DEFAULT_ALL_FILTERS,
         genres: data.genres || [],
-        countries: data.countries?.map((item: any) => ({
-          nameRu: item.countryName,
-          nameEn: item.countryNameEn
-        })) || [],
-        years: data.years?.reverse() || []
+        countries:
+          data.countries?.map((item: any) => ({
+            nameRu: item.countryName,
+            nameEn: item.countryNameEn,
+          })) || [],
+        years: data.years?.reverse() || [],
       };
-      
+
       setAllFilters(filters);
     } catch (error) {
       console.error('Ошибка загрузки фильтров:', error);

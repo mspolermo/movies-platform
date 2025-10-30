@@ -53,7 +53,14 @@ export const API_ENDPOINTS = {
 
   // Фильтры
   FILTERS: {
+    ROOT: '/filters',
     GENRES: '/filters/genres',
     COUNTRIES: '/filters/countries',
   },
+
+  // Расширенные операции для персон
+  PERSONS_EX:
+    {
+      SEARCH_FIND: '/persons/search/find',
+    },
 } as const;

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import apiClient from '@/shared/api/client';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import styles from './FilterPersonSearch.module.scss';
 
 interface Person {
@@ -49,8 +51,9 @@ export const FilterPersonSearch: React.FC<FilterPersonSearchProps> = ({
 
   const fetchPersons = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/findPersonsByNameAndProfession?id=${professionId}&name=${encodeURIComponent(searchQuery)}`);
-      const data = await response.json();
+      const { data } = await apiClient.get(API_ENDPOINTS.PERSONS_EX.SEARCH_FIND, {
+        params: { professionId, name: searchQuery },
+      });
       
       const searchResults = data.map((item: any) => ({
         id: item.id,
