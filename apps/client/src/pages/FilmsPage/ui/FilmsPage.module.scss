@@ -128,52 +128,39 @@
   // Контейнер для infinite scroll
 }
 
+
 .filmsGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
   padding-top: 24px;
 
   .filmCard {
-    flex: 0 1 14.285%;
-    margin-right: -8px;
+    width: 100%;
   }
 
   @media (max-width: 1270px) {
-    .filmCard {
-      flex: 0 1 16.666%;
-    }
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   @media (max-width: 1095px) {
-    .filmCard {
-      flex: 0 1 20%;
-    }
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   @media (max-width: 920px) {
-    .filmCard {
-      flex: 0 1 25%;
-    }
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   @media (max-width: 770px) {
-    .filmCard {
-      flex: 0 1 33.333%;
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (max-width: 600px) {
-    display: flex;
-    
-    .filmCard {
-      flex: 0 1 50%;
-    }
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   @media (max-width: 375px) {
-    .filmCard {
-      flex: 0 1 50%;
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
