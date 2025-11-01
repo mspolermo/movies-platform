@@ -106,7 +106,6 @@ export const Filters: React.FC<FiltersProps> = ({
             isWideMenu={true}
           >
             <FilterTwoBlocks
-              popularValues={allFilters.popularGenres}
               allValues={allFilters.genres}
               selectValues={selectedFilters.genres}
               handleChangeFilter={selectedGenres}
@@ -122,7 +121,6 @@ export const Filters: React.FC<FiltersProps> = ({
             isWideMenu={true}
           >
             <FilterTwoBlocks
-              popularValues={allFilters.popularCountries}
               allValues={allFilters.countries}
               selectValues={selectedFilters.countries}
               handleChangeFilter={selectedCountries}
