@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Layout } from '@/widgets/Layout';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { FilmsInfiniteScroll } from '@/features/films/infinite-scroll/ui/FilmsInfiniteScroll';
-import { Filters, Sorting, useFilters } from '@/features/films/filters';
+import { Filters, SortFilter, useFilters } from '@/features/films/filters';
 import { SearchFilmsParams } from '@/shared/api/services';
 import styles from './FilmsPage.module.scss';
 
@@ -16,7 +16,6 @@ export const FilmsPage = () => {
     isEmptyFilters,
     setSortValue,
     updateFilters,
-    resetFilters,
     getFilterParams
   } = useFilters();
 
@@ -46,7 +45,7 @@ export const FilmsPage = () => {
           {/* Desktop filters */}
           <div className={styles.desktopFilters}>
             <div className={styles.sortingContainer}>
-              <Sorting sortValue={sortValue} setSortValue={handleSortChange} />
+              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
             </div>
             <div className={styles.filtersContainer}>
               <Filters
@@ -86,7 +85,7 @@ export const FilmsPage = () => {
             </div>
             
             <div className={styles.mobileSorting}>
-              <Sorting sortValue={sortValue} setSortValue={handleSortChange} />
+              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-.filterButton {
+.filterDropdown {
   display: flex;
   flex-direction: column;
   margin-bottom: 12px;
@@ -8,7 +8,7 @@
   cursor: pointer;
   position: relative;
 
-  &.filterButtonWide {
+  &.filterDropdownWide {
     flex: 1 1 100%;
     min-width: 100%;
   }

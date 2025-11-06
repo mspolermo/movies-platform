@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ActiveFilters, AllFilters } from '../../types/filters';
-import { FilterButton } from '../FilterButton/FilterButton';
-import { FilterTwoBlocks } from '../FilterTwoBlocks/FilterTwoBlocks';
-import { FilterYear } from '../FilterYear/FilterYear';
-import { FilterRangeSlider } from '../FilterRangeSlider/FilterRangeSlider';
-import { FilterPersonSearch } from '../FilterPersonSearch/FilterPersonSearch';
-import { FilterReset } from '../FilterReset/FilterReset';
+import { FilterDropdown } from '../FilterDropdown/FilterDropdown';
+import { FilterCheckboxList } from '../FilterCheckboxList/FilterCheckboxList';
+import { YearFilter } from '../YearFilter/YearFilter';
+import { RangeFilter } from '../RangeFilter/RangeFilter';
+import { PersonSearchFilter } from '../PersonSearchFilter/PersonSearchFilter';
+import { ResetFiltersButton } from '../ResetFiltersButton/ResetFiltersButton';
 import styles from './Filters.module.scss';
 
 interface FiltersProps {
@@ -97,7 +97,7 @@ export const Filters: React.FC<FiltersProps> = ({
       <div className={styles.content}>
         <div className={styles.blocks}>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Жанры"
             selectedFiltersBy={languageFilters(selectedFilters.genres, allFilters.genres, 'ru').join(', ')}
             activeBlock={activeBlock}
@@ -105,14 +105,14 @@ export const Filters: React.FC<FiltersProps> = ({
             setActiveBlock={setActiveBlock}
             isWideMenu={true}
           >
-            <FilterTwoBlocks
+            <FilterCheckboxList
               allValues={allFilters.genres}
               selectValues={selectedFilters.genres}
               handleChangeFilter={selectedGenres}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Страны"
             selectedFiltersBy={languageFilters(selectedFilters.countries, allFilters.countries, 'ru').join(', ')}
             activeBlock={activeBlock}
@@ -120,86 +120,86 @@ export const Filters: React.FC<FiltersProps> = ({
             setActiveBlock={setActiveBlock}
             isWideMenu={true}
           >
-            <FilterTwoBlocks
+            <FilterCheckboxList
               allValues={allFilters.countries}
               selectValues={selectedFilters.countries}
               handleChangeFilter={selectedCountries}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Год"
             selectedFiltersBy={selectedFilters.years ? String(selectedFilters.years) : ''}
             activeBlock={activeBlock}
             blockName="years"
             setActiveBlock={setActiveBlock}
           >
-            <FilterYear
+            <YearFilter
               allValues={allFilters.years}
               selectValues={selectedFilters.years}
               handleChangeFilter={selectedYears}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Рейтинг"
             selectedFiltersBy={selectedFilters.rating === 0 ? '' : selectedFilters.rating}
             activeBlock={activeBlock}
             blockName="rating"
             setActiveBlock={setActiveBlock}
           >
-            <FilterRangeSlider
+            <RangeFilter
               handleChangeFilter={selectedRating}
               blockName="rating"
               initialValue={selectedFilters.rating}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Оценки"
             selectedFiltersBy={selectedFilters.grade === 0 ? '' : selectedFilters.grade}
             activeBlock={activeBlock}
             blockName="grade"
             setActiveBlock={setActiveBlock}
           >
-            <FilterRangeSlider
+            <RangeFilter
               handleChangeFilter={selectedGrade}
               blockName="grade"
               initialValue={selectedFilters.grade}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Режиссер"
             selectedFiltersBy={selectedFilters.producer}
             activeBlock={activeBlock}
             blockName="producer"
             setActiveBlock={setActiveBlock}
           >
-            <FilterPersonSearch
+            <PersonSearchFilter
               handleChangeFilter={selectedProducer}
               professionId={2}
               setActiveBlock={setActiveBlock}
             />
-          </FilterButton>
+          </FilterDropdown>
 
-          <FilterButton
+          <FilterDropdown
             filterName="Актер"
             selectedFiltersBy={selectedFilters.actor}
             activeBlock={activeBlock}
             blockName="actor"
             setActiveBlock={setActiveBlock}
           >
-            <FilterPersonSearch
+            <PersonSearchFilter
               handleChangeFilter={selectedActor}
               professionId={1}
               setActiveBlock={setActiveBlock}
             />
-          </FilterButton>
+          </FilterDropdown>
         </div>
 
         <div className={styles.button}>
-          <FilterReset
+          <ResetFiltersButton
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
           />

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import styles from './FilterButton.module.scss';
+import styles from './FilterDropdown.module.scss';
 
-interface FilterButtonProps {
+interface FilterDropdownProps {
   filterName: string;
   selectedFiltersBy: string | number;
   activeBlock: string[];
@@ -11,7 +11,7 @@ interface FilterButtonProps {
   isWideMenu?: boolean;
 }
 
-export const FilterButton: React.FC<FilterButtonProps> = ({
+export const FilterDropdown: React.FC<FilterDropdownProps> = ({
   filterName,
   selectedFiltersBy,
   activeBlock,
@@ -31,7 +31,7 @@ export const FilterButton: React.FC<FilterButtonProps> = ({
   }, [isActive, blockName, setActiveBlock]);
 
   return (
-    <div className={`${styles.filterButton} ${isWideMenu ? styles.filterButtonWide : ''}`}>
+    <div className={`${styles.filterDropdown} ${isWideMenu ? styles.filterDropdownWide : ''}`}>
       <div className={styles.container}>
         <div className={`${styles.content} ${isActive ? styles.contentActive : ''}`}>
           <div className={styles.header} onClick={handleToggle}>

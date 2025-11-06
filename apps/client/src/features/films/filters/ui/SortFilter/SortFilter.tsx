@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { SortOption, SORT_OPTIONS } from '../../types/filters';
-import styles from './Sorting.module.scss';
+import styles from './SortFilter.module.scss';
 
-interface SortingProps {
+interface SortFilterProps {
   sortValue: SortOption;
   setSortValue: (value: SortOption) => void;
 }
@@ -14,7 +14,7 @@ const sortLabels: Record<SortOption, string> = {
   alphabet: 'По алфавиту'
 };
 
-export const Sorting: React.FC<SortingProps> = ({ sortValue, setSortValue }) => {
+export const SortFilter: React.FC<SortFilterProps> = ({ sortValue, setSortValue }) => {
   const [active, setActive] = useState(false);
 
   const handleOptionClick = (option: SortOption) => {
@@ -23,7 +23,7 @@ export const Sorting: React.FC<SortingProps> = ({ sortValue, setSortValue }) => 
   };
 
   return (
-    <div className={styles.sorting}>
+    <div className={styles.sortFilter}>
       <div className={styles.content}>
         <div className={styles.block}>
           <div 

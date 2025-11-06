@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
-import styles from './FilterRangeSlider.module.scss';
+import styles from './RangeFilter.module.scss';
 
-interface FilterRangeSliderProps {
+interface RangeFilterProps {
   handleChangeFilter: (value: number) => void;
   blockName: 'rating' | 'grade';
   initialValue?: number;
@@ -27,7 +27,7 @@ const SLIDER_CONFIG = {
   }
 } as const;
 
-export const FilterRangeSlider: React.FC<FilterRangeSliderProps> = ({
+export const RangeFilter: React.FC<RangeFilterProps> = ({
   handleChangeFilter,
   blockName,
   initialValue = 0
@@ -72,7 +72,7 @@ export const FilterRangeSlider: React.FC<FilterRangeSliderProps> = ({
   }, [config.min, config.max, config.step, handleChangeFilter]);
 
   return (
-    <div className={styles.rangeSlider}>
+    <div className={styles.rangeFilter}>
       <div className={styles.block}>
         <div className={styles.input}>
           <span

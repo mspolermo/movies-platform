@@ -1,8 +1,8 @@
 import React from 'react';
 import { FilterItem } from '../../types/filters';
-import styles from './FilterTwoBlocks.module.scss';
+import styles from './FilterCheckboxList.module.scss';
 
-interface FilterTwoBlocksProps {
+interface FilterCheckboxListProps {
   allValues: FilterItem[];
   selectValues: string[];
   handleChangeFilter: (item: string) => void;
@@ -12,7 +12,7 @@ const firstCharUp = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
+export const FilterCheckboxList: React.FC<FilterCheckboxListProps> = ({
   allValues,
   selectValues,
   handleChangeFilter
@@ -32,7 +32,7 @@ export const FilterTwoBlocks: React.FC<FilterTwoBlocksProps> = ({
   };
 
   return (
-    <div className={styles.filterTwoBlocks}>
+    <div className={styles.filterCheckboxList}>
       {/* Desktop version */}
       <div className={styles.container}>
         <div 

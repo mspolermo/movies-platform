@@ -1,13 +1,13 @@
 import React from 'react';
 import { ActiveFilters, DEFAULT_ACTIVE_FILTERS } from '../../types/filters';
-import styles from './FilterReset.module.scss';
+import styles from './ResetFiltersButton.module.scss';
 
-interface FilterResetProps {
+interface ResetFiltersButtonProps {
   selectedFilters: ActiveFilters;
   setSelectedFilters: (filters: ActiveFilters) => void;
 }
 
-export const FilterReset: React.FC<FilterResetProps> = ({
+export const ResetFiltersButton: React.FC<ResetFiltersButtonProps> = ({
   selectedFilters,
   setSelectedFilters
 }) => {
@@ -18,7 +18,7 @@ export const FilterReset: React.FC<FilterResetProps> = ({
   };
 
   return (
-    <div className={styles.filterReset}>
+    <div className={styles.resetFiltersButton}>
       {/* Desktop version */}
       <div className={styles.desktop}>
         <div 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
-import styles from './FilterPersonSearch.module.scss';
+import styles from './PersonSearchFilter.module.scss';
 
 interface Person {
   id: number;
@@ -9,13 +9,13 @@ interface Person {
   nameEn: string;
 }
 
-interface FilterPersonSearchProps {
+interface PersonSearchFilterProps {
   handleChangeFilter: (person: string) => void;
   professionId: number; // 1 - актер, 2 - режиссер
   setActiveBlock: (activeBlockName: string[]) => void;
 }
 
-export const FilterPersonSearch: React.FC<FilterPersonSearchProps> = ({
+export const PersonSearchFilter: React.FC<PersonSearchFilterProps> = ({
   handleChangeFilter,
   professionId,
   setActiveBlock
@@ -69,7 +69,7 @@ export const FilterPersonSearch: React.FC<FilterPersonSearchProps> = ({
   };
 
   return (
-    <div className={styles.typeSearch}>
+    <div className={styles.personSearchFilter}>
       <div className={styles.content}>
         <input
           type="text"

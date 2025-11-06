@@ -1,13 +1,13 @@
 import React from 'react';
-import styles from './FilterYear.module.scss';
+import styles from './YearFilter.module.scss';
 
-interface FilterYearProps {
+interface YearFilterProps {
   allValues: number[];
   selectValues: number | null | string;
   handleChangeFilter: (year: number | null) => void;
 }
 
-export const FilterYear: React.FC<FilterYearProps> = ({
+export const YearFilter: React.FC<YearFilterProps> = ({
   allValues,
   selectValues,
   handleChangeFilter
@@ -75,7 +75,7 @@ export const FilterYear: React.FC<FilterYearProps> = ({
   };
 
   return (
-    <div className={styles.filterTypeYear}>
+    <div className={styles.yearFilter}>
       {/* Desktop version */}
       <div className={styles.content}>
         {allValues.map((value) => createYears(value))}
