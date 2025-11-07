@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { InfiniteScroll, Loader } from '@/shared/ui';
 import { SearchFilmsParams } from '@/shared/api/services';
 import { useFilmsInfiniteScroll } from '../lib';
@@ -17,10 +18,10 @@ export const FilmsInfiniteScroll = ({
     threshold,
   });
 
-  const handleParamsChange = (newParams: SearchFilmsParams) => {
-    updateParams(newParams);
-    onParamsChange?.(newParams);
-  };
+  useEffect(() => {
+    updateParams(initialParams);
+    onParamsChange?.(initialParams);
+  }, [initialParams, onParamsChange, updateParams]);
 
   const defaultLoadingComponent = <Loader size="small" />;
 
