@@ -43,11 +43,13 @@ export const useFilmsInfiniteScroll = ({
       setError(null);
 
       try {
-        const response: FilmsResponse = await filmsService.searchFilms({
+        const searchParams: SearchFilmsParams = {
           ...params,
           page,
-          perPage: 20,
-        });
+          perPage: params.perPage ?? 20,
+        };
+
+        const response: FilmsResponse = await filmsService.searchFilms(searchParams);
 
         if (reset) {
           setFilms(response.films);

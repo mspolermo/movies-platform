@@ -5,6 +5,7 @@ import { Layout } from '@/widgets/Layout';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { FilmsInfiniteScroll } from '@/features/films/infinite-scroll/ui/FilmsInfiniteScroll';
 import { Filters, SortFilter, useFilters } from '@/features/films/filters';
+import { SortOption } from '@/features/films/filters/types/filters';
 import { SearchFilmsParams } from '@/shared/api/services';
 import styles from './FilmsPage.module.scss';
 
@@ -16,7 +17,8 @@ export const FilmsPage = () => {
     isEmptyFilters,
     setSortValue,
     updateFilters,
-    getFilterParams
+    getFilterParams,
+    buildFilterParams
   } = useFilters();
 
   const [currentParams, setCurrentParams] = useState<SearchFilmsParams>({});
@@ -26,13 +28,14 @@ export const FilmsPage = () => {
   };
 
   const handleSortChange = (newSort: string) => {
-    setSortValue(newSort as any);
-    const newParams: SearchFilmsParams = getFilterParams(1, 20);
+    const nextSort = newSort as SortOption;
+    setSortValue(nextSort);
+    const newParams: SearchFilmsParams = buildFilterParams(selectedFilters, 1, 20, nextSort);
     setCurrentParams(newParams);
   };
 
-  const handleFiltersChange = () => {
-    const newParams: SearchFilmsParams = getFilterParams(1, 20);
+  const handleFiltersUpdate = (nextFilters: typeof selectedFilters) => {
+    const newParams: SearchFilmsParams = buildFilterParams(nextFilters, 1, 20);
     setCurrentParams(newParams);
   };
 
@@ -53,7 +56,7 @@ export const FilmsPage = () => {
                 selectedFilters={selectedFilters}
                 setSelectedFilters={(filters) => {
                   updateFilters(filters);
-                  handleFiltersChange();
+                  handleFiltersUpdate(filters);
                 }}
               />
             </div>

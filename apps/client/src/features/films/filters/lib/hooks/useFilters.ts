@@ -14,6 +14,7 @@ export const useFilters = () => {
   const fetchFilters = useCallback(async () => {
     try {
       setLoading(true);
+
       const { data } = await apiClient.get(API_ENDPOINTS.FILTERS.ROOT);
 
       const filters: AllFilters = {
@@ -45,32 +46,44 @@ export const useFilters = () => {
     setSelectedFilters(DEFAULT_ACTIVE_FILTERS);
   }, []);
 
-  // Получение параметров для API
-  const getFilterParams = useCallback((page: number = 1, limit: number = 35): SearchFilmsParams => {
+  // Построение параметров для API
+  const buildFilterParams = useCallback((
+    filters: ActiveFilters,
+    page: number = 1,
+    limit: number = 35,
+    sort: SortOption = sortValue
+  ): SearchFilmsParams => {
     const persons: string[] = [];
-    if (selectedFilters.producer) persons.push(selectedFilters.producer);
-    if (selectedFilters.actor) persons.push(selectedFilters.actor);
+    if (filters.producer) persons.push(filters.producer);
+    if (filters.actor) persons.push(filters.actor);
 
     // Конвертируем year в number если это строка
     let year: number | undefined;
-    if (selectedFilters.years) {
-      year = typeof selectedFilters.years === 'string' 
-        ? parseInt(selectedFilters.years, 10) 
-        : selectedFilters.years;
+    if (filters.years) {
+      year = typeof filters.years === 'string' 
+        ? parseInt(filters.years, 10) 
+        : filters.years;
     }
 
-    return {
+    const params: SearchFilmsParams = {
       perPage: limit,
       page,
-      genres: selectedFilters.genres.length > 0 ? selectedFilters.genres : undefined,
-      countries: selectedFilters.countries.length > 0 ? selectedFilters.countries : undefined,
+      genres: filters.genres.length > 0 ? filters.genres : undefined,
+      countries: filters.countries.length > 0 ? filters.countries : undefined,
       year,
       persons: persons.length > 0 ? persons : undefined,
-      minRatingKp: selectedFilters.rating || undefined,
-      minVotesKp: selectedFilters.grade || undefined,
-      sortBy: sortValue
+      minRatingKp: filters.rating || undefined,
+      minVotesKp: filters.grade || undefined,
+      sortBy: sort,
     };
-  }, [selectedFilters, sortValue]);
+
+    return params;
+  }, [sortValue]);
+
+  // Получение параметров для текущего состояния
+  const getFilterParams = useCallback((page: number = 1, limit: number = 35) => {
+    return buildFilterParams(selectedFilters, page, limit);
+  }, [buildFilterParams, selectedFilters]);
 
   // Обновление фильтров
   const updateFilters = useCallback((updates: Partial<ActiveFilters>) => {
@@ -92,6 +105,7 @@ export const useFilters = () => {
     updateFilters,
     resetFilters,
     getFilterParams,
+    buildFilterParams,
     fetchFilters
   };
 };
