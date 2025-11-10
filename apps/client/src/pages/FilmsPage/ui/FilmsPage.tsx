@@ -46,10 +46,7 @@ export const FilmsPage = () => {
           <h1 className={styles.title}>Фильмы</h1>
           
           {/* Desktop filters */}
-          <div className={styles.desktopFilters}>
-            <div className={styles.sortingContainer}>
-              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
-            </div>
+          <div className={styles.filtersBlock}>
             <div className={styles.filtersContainer}>
               <Filters
                 allFilters={allFilters}
@@ -59,6 +56,9 @@ export const FilmsPage = () => {
                   handleFiltersUpdate(filters);
                 }}
               />
+            </div>
+            <div className={styles.sortingContainer}>
+              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
             </div>
           </div>
 
