@@ -5,13 +5,15 @@
   line-height: 16px;
   font-weight: 600;
   color: rgba(217, 215, 224, 0.8);
-  overflow: hidden;
 
-  .selectAll {
-    cursor: pointer;
+  .content {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
   }
 
-  .year {
+  .yearOption {
     padding: 8px 12px;
     display: flex;
     justify-content: space-between;
@@ -44,12 +46,8 @@
     }
   }
 
-  .yearWhite {
-    display: flex;
-    justify-content: space-between;
-    height: 31px;
+  .yearOptionActive {
     color: var(--color-white);
-    cursor: pointer;
 
     .circleMarkChecked {
       opacity: 1;
