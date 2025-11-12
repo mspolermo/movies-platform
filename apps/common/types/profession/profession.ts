@@ -14,3 +14,10 @@ export interface TProfessionCreationAtt extends Pick<TProfessionBased, "name"> {
 export interface TProfessionModel extends TProfessionBased {
   persons?: TPersonBased[]; // Связи Sequelize
 }
+
+// Тип для профессии с персонами (используется в Film)
+export interface TProfessionWithPersons {
+  id: number;
+  name: string;
+  persons: TPersonBased[];
+}

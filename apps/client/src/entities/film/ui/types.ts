@@ -1,7 +1,7 @@
-import { TFilmModel } from '@common/types';
+import { TFilmWithProfessions } from '@common/types';
 
 export interface FilmCardProps {
-  film: TFilmModel;
+  film: TFilmWithProfessions;
   showIcons?: boolean;
   isLoading?: boolean;
 }
@@ -11,7 +11,7 @@ export interface FilmCardSkeletonProps {
 }
 
 export interface FilmCardPreviewProps {
-  film: TFilmModel;
+  film: TFilmWithProfessions;
 }
 
 export interface IconsBlockProps {
@@ -24,5 +24,5 @@ export interface IconsBlockProps {
 }
 
 export interface FilmDetailProps {
-  film: TFilmModel;
+  film: TFilmWithProfessions;
 }

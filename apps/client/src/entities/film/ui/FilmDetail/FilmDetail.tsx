@@ -57,7 +57,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
 
           <FactBlock fact={film.fact} isCartoon={isCartoon} />
 
-          <CardsBlock persons={film.persons} />
+          <CardsBlock professions={film.professions} />
 
           <AdditionalInfoBlock />
 

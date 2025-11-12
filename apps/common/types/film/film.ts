@@ -5,6 +5,7 @@ import { TCountryBased } from "../country";
 import { TFactBased } from "../fact";
 import { TGenreBased } from "../genre";
 import { TPersonBased } from "../person";
+import { TProfessionWithPersons } from "../profession";
 
 export interface TFilmBased {
   id: number;
@@ -45,4 +46,8 @@ export interface TFilmModel extends TFilmBased {
   genres?: TGenreBased[]; // Связи Sequelize
   fact?: TFactBased; // Связи Sequelize
   comments?: TCommentBased[]; // Связи Sequelize
+}
+
+export interface TFilmWithProfessions extends Omit<TFilmModel, 'persons'> {
+  professions?: TProfessionWithPersons[]; // Профессии с персонами
 }

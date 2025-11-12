@@ -1,13 +1,13 @@
 import {
   TCountryBased,
   TGenreBased,
-  TPersonModel,
   TFilmBased,
   TFactBased,
+  TProfessionWithPersons,
 } from '@common/types';
 
 export interface CardsBlockProps {
-  persons?: TPersonModel[];
+  professions?: TProfessionWithPersons[];
 }
 
 export interface DescriptionBlockProps

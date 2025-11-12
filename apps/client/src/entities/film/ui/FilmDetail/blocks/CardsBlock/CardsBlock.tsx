@@ -1,24 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './CardsBlock.module.scss';
-import { TPersonModel } from '@common/types';
 import { Card } from '@/shared/ui';
 import { CardsBlockProps } from '../../types';
 
-export const CardsBlock = ({ persons = [] }: CardsBlockProps) => {
+export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
   const router = useRouter();
 
-  const getActors = () => {
-    const filteredList = persons.filter(
-      (person) => person.professions?.[0]?.name === 'актеры'
-    );
+  // Находим профессию "актеры" (с учетом разных вариантов написания)
+  const actorsProfession = professions.find((prof) => {
+    const name = prof.name?.toLowerCase() || '';
+    return name.includes('актер') || name.includes('actor');
+  });
 
-    return filteredList.length >= 5
-      ? filteredList.slice(0, 5)
-      : persons.slice(0, 5);
-  };
-
-  const actors = getActors();
+  // Получаем список актеров из профессии или первые 5 персон из первой профессии
+  const actors = actorsProfession
+    ? actorsProfession.persons.slice(0, 5)
+    : professions[0]?.persons?.slice(0, 5) || [];
 
   const handleActorClick = (actorId: number) => {
     router.push(`/persons/${actorId}`);

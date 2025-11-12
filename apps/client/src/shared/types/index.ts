@@ -1,9 +1,9 @@
 import {
   TGenreBased,
-  TPersonBased,
   TCountryBased,
   TFilmBased,
   TRoleBased,
+  TProfessionWithPersons,
 } from '@common/types';
 
 // Основные типы данных
@@ -12,7 +12,7 @@ import {
 export interface Film extends TFilmBased {
   genres?: TGenreBased[];
   countries?: TCountryBased[];
-  persons?: TPersonBased[];
+  professions?: TProfessionWithPersons[];
 }
 
 // API типы

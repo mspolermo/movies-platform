@@ -8,6 +8,7 @@ import { UpdateFilmDto } from "@common/dto";
 import { Profession } from "../professions/professions.model";
 import { Fact } from "../facts/facts.model";
 import { Op, Sequelize } from "sequelize";
+import { TProfessionWithPersons, TPersonBased } from "@common/types";
 
 @Injectable()
 export class FilmsService {
@@ -15,28 +16,40 @@ export class FilmsService {
 
   async getFilmById(id: number) {
     const film = await this.filmRepository.findByPk(id, {
+      attributes: {
+        exclude: ['createdAt'],
+      },
       include: [
         {
           model: Person,
           as: "persons",
+          attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+          through: { attributes: [] },
           include: [
             {
               model: Profession,
               as: "professions",
+              attributes: ['id', 'name'],
+              through: { attributes: [] },
             },
           ],
         },
         {
           model: Country,
           as: "countries",
+          attributes: ['id', 'countryName'],
+          through: { attributes: [] },
         },
         {
           model: Genre,
           as: "genres",
+          attributes: ['id', 'nameRu', 'nameEn'],
+          through: { attributes: [] },
         },
         {
           model: Fact,
           as: "fact",
+          attributes: ['id', 'value', 'type', 'spoiler'],
         },
       ],
     });
@@ -44,11 +57,54 @@ export class FilmsService {
     if (!film) {
       return null;
     }
+
+    // Группируем персон по профессиям и ограничиваем до 10 в каждой
+    const professionsMap = new Map<number, TProfessionWithPersons>();
+    
+    if (film.persons) {
+      for (const person of film.persons) {
+        if (person.professions && person.professions.length > 0) {
+          for (const profession of person.professions) {
+            if (!professionsMap.has(profession.id)) {
+              professionsMap.set(profession.id, {
+                id: profession.id,
+                name: profession.name,
+                persons: [],
+              });
+            }
+            
+            const professionData = professionsMap.get(profession.id)!;
+            // Ограничиваем до 10 персон в каждой профессии
+            if (professionData.persons.length < 10) {
+              const personData: TPersonBased = {
+                id: person.id,
+                photoUrl: person.photoUrl,
+                nameRu: person.nameRu,
+                nameEn: person.nameEn,
+              };
+              professionData.persons.push(personData);
+            }
+          }
+        }
+      }
+    }
+
+    // Преобразуем Map в массив
+    const professions = Array.from(professionsMap.values());
+
+    // Создаем объект фильма с professions вместо persons
+    const filmData = film.toJSON();
+    const { persons, ...filmWithoutPersons } = filmData;
+    const filmWithProfessions = {
+      ...filmWithoutPersons,
+      professions,
+    };
+
     const similarFilms = await this.findFilmsByGenre(
       film.genres.map((g) => g.nameRu)
     );
     return {
-      film,
+      film: filmWithProfessions,
       similarFilms,
     };
   }
