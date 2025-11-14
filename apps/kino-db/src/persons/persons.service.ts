@@ -4,6 +4,7 @@ import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
 import { TProfessionModel, TProfessionBased } from "@common/types";
 import { Profession } from "../professions/professions.model";
+import { Film } from "../films/films.model";
 import { Op } from "sequelize";
 
 @Injectable()
@@ -29,10 +30,17 @@ export class PersonsService {
 
   async getPersonById(id: number): Promise<Person | null> {
     const person = await this.personRepository.findByPk(id, {
+      attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
       include: [
         {
           model: Profession,
           through: { attributes: [] },
+        },
+        {
+          model: Film,
+          as: 'films',
+          through: { attributes: [] },
+          attributes: ['id', 'smallPictureUrl', 'filmNameRu', 'filmNameEn', 'year', 'ratingKp'],
         },
       ],
     });

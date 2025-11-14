@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.error {
+  color: var(--color-red);
+  font-size: 18px;
+  text-align: center;
+}
+
+.actorPage {
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  &__info {
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 40px;
+  }
+
+  &__btn-back {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    margin-top: 10px;
+    color: var(--color-heading);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 52px;
+    gap: 8px;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &__arrow {
+    &_big {
+      display: none;
+    }
+
+    &_small {
+      margin-bottom: -18px;
+      margin-right: -5px;
+    }
+  }
+
+  // Переключение стрелок при наведении на кнопку
+  // Используем правильный селектор для дочерних элементов в SCSS модулях
+  &__btn-back:hover {
+    // Используем селектор атрибутов для поиска дочерних элементов
+    [class*='arrow_big'] {
+      display: flex !important;
+      align-items: baseline;
+      margin-right: -15px;
+      margin-top: -4px;
+    }
+
+    [class*='arrow_small'] {
+      display: none !important;
+    }
+  }
+
+  &__filmography {
+    margin-top: 0;
+  }
+
+  &__filmsList {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .actorPage {
+    margin: 0 25px;
+    padding-bottom: 40px;
+
+    &__btn-back {
+      padding-left: 0;
+    }
+  }
+}
+
