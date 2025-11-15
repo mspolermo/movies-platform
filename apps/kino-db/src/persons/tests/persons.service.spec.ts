@@ -1,8 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { PersonsService } from "./persons.service";
-import { ProfessionsService } from "../professions/professions.service";
-import { Person } from "./persons.model";
-import { Profession } from "../professions/professions.model";
+import { PersonsService } from "../persons.service";
+import { ProfessionsService } from "../../professions/professions.service";
+import { Person } from "../persons.model";
+import { Profession } from "../../professions/professions.model";
 import { getModelToken } from "@nestjs/sequelize";
 
 describe("PersonsService", () => {
@@ -25,15 +25,33 @@ describe("PersonsService", () => {
     },
   ];
 
+  const mockFilms = [
+    {
+      id: 10,
+      smallPictureUrl: "film.jpg",
+      filmNameRu: "Фильм 1",
+      filmNameEn: "Film 1",
+      year: 2020,
+      ratingKp: 7.5,
+    },
+  ];
+
   const mockProfessionsArray = [
     { id: 1, name: "Актёр" },
     { id: 2, name: "Режиссёр" },
     { id: 3, name: "Сценарист" },
   ];
 
+  const mockPersonInstance = {
+    ...mockPersonArray[0],
+    get: jest.fn().mockReturnValue(mockPersonArray[0]),
+    $count: jest.fn().mockResolvedValue(mockFilms.length),
+    $get: jest.fn().mockResolvedValue(mockFilms),
+  };
+
   const mockPersonsRepository = {
     findAll: jest.fn().mockResolvedValue(mockPersonArray),
-    findByPk: jest.fn().mockResolvedValue(mockPersonArray[0]),
+    findByPk: jest.fn().mockResolvedValue(mockPersonInstance),
     create: jest.fn().mockResolvedValue(mockPersonArray[0]),
     bulkCreate: jest.fn().mockResolvedValue(mockPersonArray),
   };
@@ -72,9 +90,26 @@ describe("PersonsService", () => {
   });
 
   describe("getPersonById", () => {
-    it("should return a person by id", async () => {
-      const result = await service.getPersonById(1);
-      expect(result).toEqual(mockPersonArray[0]);
+    it("should return a person by id with films and total", async () => {
+      const result = await service.getPersonById(1, { filmsLimit: 10, filmsOffset: 0 });
+      expect(mockPersonsRepository.findByPk).toHaveBeenCalledWith(1, {
+        attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+        include: [
+          {
+            model: Profession,
+            through: { attributes: [] },
+          },
+        ],
+      });
+      expect(mockPersonInstance.$get).toHaveBeenCalledWith("films", expect.objectContaining({
+        limit: 10,
+        offset: 0,
+      }));
+      expect(result).toEqual({
+        ...mockPersonArray[0],
+        films: mockFilms,
+        filmsTotal: mockFilms.length,
+      });
     });
   });
 

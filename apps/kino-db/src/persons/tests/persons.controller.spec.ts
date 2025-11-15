@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { PersonsController } from "./persons.controller";
-import { PersonsService } from "./persons.service";
+import { PersonsController } from "../persons.controller";
+import { PersonsService } from "../persons.service";
 
 describe("PersonsController", () => {
   let controller: PersonsController;
@@ -61,10 +61,15 @@ describe("PersonsController", () => {
   });
 
   describe("getPersonById", () => {
-    it("should return person", async () => {
+    it("should return person with pagination params", async () => {
       const id = 1;
-      expect(await controller.getPersonById(id)).toEqual(mockPerson);
-      expect(mockPersonsService.getPersonById).toHaveBeenCalledTimes(1);
+      const filmsLimit = 10;
+      const filmsOffset = 5;
+      await controller.getPersonById({id, filmsLimit, filmsOffset});
+      expect(mockPersonsService.getPersonById).toHaveBeenCalledWith(id, {
+        filmsLimit: 10,
+        filmsOffset: 5,
+      });
     });
   });
 

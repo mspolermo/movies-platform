@@ -2,9 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
-import { TProfessionModel, TProfessionBased } from "@common/types";
+import { TProfessionModel, TProfessionBased, TPersonFullWithPagination } from "@common/types";
 import { Profession } from "../professions/professions.model";
-import { Film } from "../films/films.model";
 import { Op } from "sequelize";
 
 @Injectable()
@@ -28,7 +27,15 @@ export class PersonsService {
     return persons;
   }
 
-  async getPersonById(id: number): Promise<Person | null> {
+  async getPersonById(
+    id: number,
+    options?: { filmsLimit?: number; filmsOffset?: number }
+  ): Promise<TPersonFullWithPagination | null> {
+    const filmsLimitRaw = options?.filmsLimit ?? 10;
+    const filmsOffsetRaw = options?.filmsOffset ?? 0;
+    const filmsLimit = filmsLimitRaw > 0 ? filmsLimitRaw : 10;
+    const filmsOffset = filmsOffsetRaw >= 0 ? filmsOffsetRaw : 0;
+
     const person = await this.personRepository.findByPk(id, {
       attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
       include: [
@@ -36,15 +43,29 @@ export class PersonsService {
           model: Profession,
           through: { attributes: [] },
         },
-        {
-          model: Film,
-          as: 'films',
-          through: { attributes: [] },
-          attributes: ['id', 'smallPictureUrl', 'filmNameRu', 'filmNameEn', 'year', 'ratingKp'],
-        },
       ],
     });
-    return person;
+
+    if (!person) {
+      return null;
+    }
+
+    const filmsTotal = await person.$count("films");
+    const films = await person.$get("films", {
+      attributes: ['id', 'smallPictureUrl', 'filmNameRu', 'filmNameEn', 'year', 'ratingKp'],
+      limit: filmsLimit,
+      offset: filmsOffset,
+      order: [
+        ['year', 'DESC'],
+        ['filmNameRu', 'ASC'],
+      ],
+    });
+
+    return {
+      ...person.get({ plain: true }),
+      films,
+      filmsTotal,
+    };
   }
 
   async findPersonsByNameAndProfession(

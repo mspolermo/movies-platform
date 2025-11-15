@@ -12,8 +12,16 @@ export class PersonsController {
   }
 
   @MessagePattern("getPersonById")
-  async getPersonById(@Payload() id: number) {
-    return await this.personsService.getPersonById(id);
+  async getPersonById(
+    @Payload()
+    data: number | { id: number; filmsLimit?: number; filmsOffset?: number }
+  ) {
+    if (typeof data === "number") {
+      return await this.personsService.getPersonById(data);
+    }
+
+    const { id, filmsLimit, filmsOffset } = data;
+    return await this.personsService.getPersonById(id, { filmsLimit, filmsOffset });
   }
 
   @MessagePattern("findPersonsByNameAndProfession")

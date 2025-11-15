@@ -20,9 +20,23 @@ export class PersonsController {
   @ApiOperation({ summary: "Получить человека по ID" })
   @ApiResponse({ status: 200, description: "Информация о человеке" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
+  @ApiQuery({ name: "filmsLimit", required: false, description: "Количество фильмов в ответе", type: Number })
+  @ApiQuery({ name: "filmsOffset", required: false, description: "Смещение по фильмам", type: Number })
   @Get("/:id")
-  async getPersonById(@Param("id") id: number) {
-    return await this.personsService.getPersonById(id);
+  async getPersonById(
+    @Param("id") id: number,
+    @Query("filmsLimit") filmsLimit?: string,
+    @Query("filmsOffset") filmsOffset?: string
+  ) {
+    const parsedLimit =
+      filmsLimit !== undefined && !isNaN(Number(filmsLimit)) ? Number(filmsLimit) : undefined;
+    const parsedOffset =
+      filmsOffset !== undefined && !isNaN(Number(filmsOffset)) ? Number(filmsOffset) : undefined;
+
+    return await this.personsService.getPersonById(id, {
+      filmsLimit: parsedLimit,
+      filmsOffset: parsedOffset,
+    });
   }
 
   @ApiOperation({ summary: "Поиск людей по имени и профессии" })
