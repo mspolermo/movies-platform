@@ -136,11 +136,6 @@ export const PersonDetailPage: React.FC = () => {
                 size={40}
                 className={styles.actorPage__arrow_small}
               />
-              <SvgIcon
-                icon={BackArrowIcon}
-                size={50}
-                className={styles.actorPage__arrow_big}
-              />
               Назад
             </div>
 
