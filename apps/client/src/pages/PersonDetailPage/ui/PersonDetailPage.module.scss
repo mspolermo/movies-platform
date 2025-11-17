@@ -1,73 +1,112 @@
+.page {
+  width: 100%;
+  min-height: 100vh;
+}
+
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  color: var(--color-heading);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.backIcon {
+  flex-shrink: 0;
+}
+
+.backText {
+  user-select: none;
+}
+
+.content {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+.filmography {
+  width: 100%;
+  margin-top: 0;
+}
+
+.filmsScroll {
+  width: 100%;
+}
+
+.filmsList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
+}
+
+.loaderWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 400px;
+  width: 100%;
 }
 
-.error {
+.errorWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+.errorMessage {
   color: var(--color-red);
   font-size: 18px;
+  line-height: 24px;
   text-align: center;
-}
-
-.actorPage {
-  &__container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-
-  &__info {
-    max-width: 900px;
-    margin-right: auto;
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 40px;
-  }
-
-  &__btn-back {
-    display: flex;
-    align-items: center;
-    color: var(--color-heading);
-    font-size: 15px;
-    line-height: 20px;
-    font-weight: 600;
-    cursor: pointer;
-    height: 52px;
-    gap: 4px;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-
-
-
-  &__filmography {
-    margin-top: 0;
-  }
-
-  &__filmsWrapper {
-    width: 100%;
-  }
-
-  &__filmsList {
-    display: flex;
-    flex-direction: column;
-  }
+  padding: 20px;
 }
 
 @media (max-width: 600px) {
-  .actorPage {
-    margin: 0 25px;
-    padding-bottom: 40px;
+  .container {
+    padding: 0 16px;
+  }
 
-    &__btn-back {
-      padding-left: 0;
-    }
+  .content {
+    padding-bottom: 32px;
+  }
+
+  .backButton {
+    margin-top: 8px;
+    margin-bottom: 16px;
   }
 }
 

@@ -105,7 +105,7 @@ export const PersonDetailPage: React.FC = () => {
   if (loading) {
     return (
       <Layout>
-        <div className={styles.container}>
+        <div className={styles.loaderWrapper}>
           <Loader />
         </div>
       </Layout>
@@ -115,8 +115,10 @@ export const PersonDetailPage: React.FC = () => {
   if (error || !person) {
     return (
       <Layout>
-        <div className={styles.container}>
-          <div className={styles.error}>{error || 'Персона не найдена'}</div>
+        <div className={styles.errorWrapper}>
+          <div className={styles.errorMessage}>
+            {error || 'Персона не найдена'}
+          </div>
         </div>
       </Layout>
     );
@@ -124,44 +126,46 @@ export const PersonDetailPage: React.FC = () => {
 
   return (
     <Layout>
-      <div className={styles.actorPage}>
-        <div className={styles.actorPage__container}>
-          <div className={styles.actorPage__content}>
-            <div
-              className={styles['actorPage__btn-back']}
-              onClick={handleBackClick}
-            >
-              <SvgIcon
-                icon={BackArrowIcon}
-                size={40}
-                className={styles.actorPage__arrow_small}
-              />
-              Назад
-            </div>
+      <div className={styles.page}>
+        <div className={styles.container}>
+          <button
+            type="button"
+            className={styles.backButton}
+            onClick={handleBackClick}
+            aria-label="Вернуться назад"
+          >
+            <SvgIcon
+              icon={BackArrowIcon}
+              size={40}
+              className={styles.backIcon}
+            />
+            <span className={styles.backText}>Назад</span>
+          </button>
 
-            <div className={styles.actorPage__info}>
-              <PersonHeader person={person} />
+          <div className={styles.content}>
+            <PersonHeader person={person} />
 
-              {person.professions && person.professions.length > 0 && (
-                <Professions professions={person.professions} />
-              )}
+            {person.professions && person.professions.length > 0 && (
+              <Professions professions={person.professions} />
+            )}
 
-              <div className={styles.actorPage__filmography}>
-                <Filmography moviesCount={filmsTotal} />
-                <InfiniteScroll
-                  onLoadMore={handleLoadMore}
-                  isLoading={isLoadingMore}
-                  hasMore={hasMoreFilms}
-                  className={styles.actorPage__filmsWrapper}
-                >
-                  <div className={styles.actorPage__filmsList}>
-                    {films.map((film) => (
-                      <ShortMovieCard key={`${film.id}-${film.year}`} film={film} />
-                    ))}
-                  </div>
-                </InfiniteScroll>
-              </div>
-            </div>
+            <section className={styles.filmography}>
+              <Filmography moviesCount={filmsTotal} />
+              <InfiniteScroll
+                onLoadMore={handleLoadMore}
+                isLoading={isLoadingMore}
+                hasMore={hasMoreFilms}
+                className={styles.filmsScroll}
+              >
+                <ul className={styles.filmsList}>
+                  {films.map((film) => (
+                    <li key={`${film.id}-${film.year}`}>
+                      <ShortMovieCard film={film} />
+                    </li>
+                  ))}
+                </ul>
+              </InfiniteScroll>
+            </section>
           </div>
         </div>
       </div>
