@@ -34,17 +34,17 @@ export const Professions: React.FC<ProfessionsProps> = ({ professions }) => {
 
   return (
     <div className={styles.professions}>
-      <div className={styles.professions__content}>
-        <div className={styles.professions__header}>
-          <div className={styles.professions__title}>Профессии</div>
-          <div className={styles.professions__subtitle}>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <div className={styles.title}>Профессии</div>
+          <div className={styles.subtitle}>
             {professionsCount} {getProfessionsWord(professionsCount)}
           </div>
         </div>
 
-        <div className={styles.professions__list}>
+        <div className={styles.list}>
           {professions.map((profession) => (
-            <div key={profession.id} className={styles.professions__item}>
+            <div key={profession.id} className={styles.item}>
               {profession.name}
             </div>
           ))}

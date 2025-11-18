@@ -27,17 +27,17 @@ const getFilmsWord = (count: number): string => {
 export const Filmography: React.FC<FilmographyProps> = ({ moviesCount }) => {
   return (
     <div className={styles.filmography}>
-      <div className={styles.filmography__content}>
-        <div className={styles.filmography__header}>
-          <div className={styles.filmography__title}>Фильмография</div>
-          <div className={styles.filmography__subtitle}>
+      <div className={styles.content}>
+        <div className={styles.header}>
+          <div className={styles.title}>Фильмография</div>
+          <div className={styles.subtitle}>
             {moviesCount} {getFilmsWord(moviesCount)}
           </div>
         </div>
 
-        <div className={styles.filmography__lists}>
-          <div className={styles.filmography__role}>
-            <div className={styles.filmography__role_active}>Фильмы</div>
+        <div className={styles.lists}>
+          <div className={styles.role}>
+            <div className={styles.roleActive}>Фильмы</div>
           </div>
         </div>
       </div>

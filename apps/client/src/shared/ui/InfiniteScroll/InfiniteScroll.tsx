@@ -29,10 +29,6 @@ export const InfiniteScroll = ({
     </div>
   );
 
-  const defaultEndMessage = (
-    <div className={styles.endMessage}>Все данные загружены</div>
-  );
-
   return (
     <div className={className}>
       {children}
@@ -47,7 +43,7 @@ export const InfiniteScroll = ({
         </div>
       )}
 
-      {!hasMore && !isLoading && (endMessage || defaultEndMessage)}
+      {!hasMore && !isLoading && (endMessage)}
     </div>
   );
 };

@@ -1,84 +1,91 @@
-.shortMovieCard {
+.card {
   margin-top: 16px;
+}
 
-  &__mobile {
+.desktop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-heading);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.mobile {
+  display: none;
+}
+
+.movie {
+  display: flex;
+  align-items: center;
+}
+
+.poster {
+  img {
+    width: 80px;
+    border-radius: 4px;
+  }
+}
+
+.specification {
+  margin-left: 16px;
+}
+
+.year {
+  // Базовые стили наследуются от родителя
+}
+
+.name {
+  margin-top: 4px;
+}
+
+.rating {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 16px;
+  color: var(--color-input-text);
+}
+
+.button {
+  // Базовые стили наследуются от родителя
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 600px) {
+  .desktop {
     display: none;
   }
 
-  &__content {
+  .mobile {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
     color: var(--color-heading);
     font-size: 15px;
     line-height: 22px;
     font-weight: 600;
   }
 
-  &__movie {
+  .info {
     display: flex;
-    align-items: center;
-  }
-
-  &__info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__poster {
-    img {
-      width: 80px;
-      border-radius: 4px;
-    }
-  }
-
-  .specification {
+    flex: 0 1 100%;
+    flex-direction: column;
+    align-items: start;
     margin-left: 16px;
-
-    &__year {
-    }
-
-    &__name {
-      margin-top: 4px;
-    }
-
-    &__rating {
-      margin-top: 4px;
-      font-size: 13px;
-      line-height: 16px;
-      color: var(--color-input-text);
-    }
   }
-}
 
-@media (max-width: 600px) {
-  .shortMovieCard {
-    &__content {
-      display: none;
-    }
-    &__mobile {
-      display: flex;
-      color: var(--color-heading);
-      font-size: 15px;
-      line-height: 22px;
-      font-weight: 600;
-    }
-    &__info {
-      display: flex;
-      flex: 0 1 100%;
-      flex-direction: column;
-      align-items: start;
-      margin-left: 16px;
-    }
-    &__rating {
-      font-size: 13px;
-      line-height: 16px;
-      color: var(--color-input-text);
-    }
-    &__button {
-      min-width: 100%;
-    }
+  .rating {
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--color-input-text);
+  }
+
+  .button {
+    min-width: 100%;
   }
 }
 

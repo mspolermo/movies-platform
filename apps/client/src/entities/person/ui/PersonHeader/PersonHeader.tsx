@@ -7,20 +7,16 @@ interface PersonHeaderProps {
 }
 
 export const PersonHeader: React.FC<PersonHeaderProps> = ({ person }) => {
-
   return (
-    <div className={styles.actorHeader}>
-      <div className={styles.actorHeader__content}>
-        <div className={styles.actorHeader__foto}>
-          <img 
-            src={person.photoUrl} 
-            alt={person.nameRu}
-          />
+    <div className={styles.header}>
+      <div className={styles.content}>
+        <div className={styles.photo}>
+          <img src={person.photoUrl} alt={person.nameRu} />
         </div>
         <div className={styles.name}>
-          <div className={styles.name__title}>{person.nameRu}</div>
+          <div className={styles.title}>{person.nameRu}</div>
           {person.nameEn && (
-            <div className={styles.name__subtitle}>{person.nameEn}</div>
+            <div className={styles.subtitle}>{person.nameEn}</div>
           )}
         </div>
       </div>

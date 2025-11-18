@@ -24,39 +24,35 @@ export const ShortMovieCard: React.FC<ShortMovieCardProps> = ({ film }) => {
   const rating = formatRating(film.ratingKp);
 
   return (
-    <div className={styles.shortMovieCard}>
+    <div className={styles.card}>
       {/* Desktop версия */}
-      <div className={styles.shortMovieCard__content}>
-        <div className={styles.shortMovieCard__movie}>
-          <div className={styles.shortMovieCard__poster}>
+      <div className={styles.desktop}>
+        <div className={styles.movie}>
+          <div className={styles.poster}>
             <img src={posterUrl} alt={film.filmNameRu} />
           </div>
           <div className={styles.specification}>
-            <div className={styles.specification__year}>{film.year || '—'}</div>
-            <div className={styles.specification__name}>{film.filmNameRu}</div>
-            <div className={styles.specification__rating}>
-              Рейтинг: {rating}
-            </div>
+            <div className={styles.year}>{film.year || '—'}</div>
+            <div className={styles.name}>{film.filmNameRu}</div>
+            <div className={styles.rating}>Рейтинг: {rating}</div>
           </div>
         </div>
-        <div className={styles.shortMovieCard__button}>
+        <div className={styles.button}>
           <Button onClick={handleFilmClick}>К фильму</Button>
         </div>
       </div>
 
       {/* Mobile версия */}
-      <div className={styles.shortMovieCard__mobile}>
-        <div className={styles.shortMovieCard__poster}>
+      <div className={styles.mobile}>
+        <div className={styles.poster}>
           <img src={posterUrl} alt={film.filmNameRu} />
         </div>
 
-        <div className={styles.shortMovieCard__info}>
-          <div className={styles.shortMovieCard__year}>{film.year || '—'}</div>
-          <div className={styles.shortMovieCard__name}>{film.filmNameRu}</div>
-          <div className={styles.shortMovieCard__rating}>
-            Рейтинг: {rating}
-          </div>
-          <div className={styles.shortMovieCard__button}>
+        <div className={styles.info}>
+          <div className={styles.year}>{film.year || '—'}</div>
+          <div className={styles.name}>{film.filmNameRu}</div>
+          <div className={styles.rating}>Рейтинг: {rating}</div>
+          <div className={styles.button}>
             <Button onClick={handleFilmClick} size="large">
               К фильму
             </Button>
