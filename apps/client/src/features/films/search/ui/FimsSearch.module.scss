@@ -1,15 +1,69 @@
-.input {
-  flex: 1;
+.searchBlock {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 0;
 }
 
 .close {
+  position: absolute;
+  right: 30px;
+  top: 30px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--color-text);
   transition: color 0.2s ease;
+  z-index: 10;
 
   &:hover {
-    color: var(--color-active);
+    color: var(--color-red);
+  }
+}
+
+.modal {
+  width: 50%;
+  max-width: 1240px;
+  padding-top: 64px;
+}
+
+.heading {
+  padding-bottom: 40px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin: 0;
+}
+
+.input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.loading {
+  padding: 20px 0;
+  color: var(--color-text);
+  font-size: 14px;
+  text-align: center;
+}
+
+@media (max-width: 1060px) {
+  .modal {
+    width: 90%;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .heading {
+    font-size: 32px;
   }
 }

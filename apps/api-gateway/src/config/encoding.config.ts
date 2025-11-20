@@ -10,24 +10,24 @@ export const getEncodingMiddleware = () => {
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     
     // Исправляем кодировку query параметров
+    // Express автоматически декодирует URL-encoded параметры, но иногда
+    // может быть проблема с кириллицей, если исходный URL был неправильно закодирован
     if (req.query) {
       Object.keys(req.query).forEach(key => {
         const queryValue = req.query[key];
-        if (typeof queryValue === 'string') {
-          const originalValue = queryValue;
-          
-          // Проверяем, нужно ли декодировать URL encoding
-          if (originalValue.includes('%')) {
-            req.query[key] = decodeURIComponent(originalValue);
-          } else {
-            // Если нет % символов, но есть искаженные символы, исправляем
-            const fixedValue = Buffer.from(originalValue, 'latin1').toString('utf8');
-            if (fixedValue !== originalValue) {
-              console.log(`🔧 Исправляем кодировку для ${key}:`, {
-                original: originalValue,
-                fixed: fixedValue
+        if (typeof queryValue === 'string' && queryValue.length > 0) {
+          // Проверяем, есть ли в строке символы, которые выглядят как URL-encoded
+          // но не были декодированы (например, %D0 вместо кириллицы)
+          if (queryValue.includes('%')) {
+            try {
+              const decoded = decodeURIComponent(queryValue);
+              req.query[key] = decoded;
+              console.log(`🔧 Декодирован параметр ${key}:`, {
+                original: queryValue,
+                decoded: decoded
               });
-              req.query[key] = fixedValue;
+            } catch (error) {
+              console.warn(`⚠️ Не удалось декодировать параметр ${key}:`, queryValue);
             }
           }
         }
