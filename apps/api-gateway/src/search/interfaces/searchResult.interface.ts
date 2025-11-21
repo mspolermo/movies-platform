@@ -1,13 +1,11 @@
-import { TFilmBased, TGenreBased, TPersonBased } from "@common/types";
+import { TFilmBased, TPersonBased } from "@common/types";
 
 /**
- * Результат поиска по фильмам, людям и жанрам
+ * Результат поиска по фильмам и людям
  */
 export interface SearchResult {
   /** Найденные фильмы */
   films: TFilmBased[];
   /** Найденные люди */
   persons: TPersonBased[];
-  /** Найденные жанры */
-  genres: TGenreBased[];
 }

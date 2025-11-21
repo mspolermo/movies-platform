@@ -1,1 +1,1 @@
-export { FimsSearch } from './FimsSearch';
+export { SearchResultItem } from './SearchResultItem/SearchResultItem';

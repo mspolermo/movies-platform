@@ -86,11 +86,23 @@ export class PersonsService {
 
     const persons = await this.personRepository.findAll({
       include,
-      where: personName ? { 
-        nameRu: {
-          [Op.iLike]: `%${personName}%`
-        }
-      } : {},
+      where: personName
+        ? {
+            [Op.or]: [
+              {
+                nameRu: {
+                  [Op.iLike]: `%${personName}%`,
+                },
+              },
+              {
+                nameEn: {
+                  [Op.iLike]: `%${personName}%`,
+                },
+              },
+            ],
+          }
+        : {},
+      limit: 20,
     });
     return persons;
   }

@@ -3,25 +3,15 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Button, SvgIcon } from '@/shared/ui';
-import { FimsSearch } from '@/features/films/search';
+import { SvgIcon } from '@/shared/ui';
 import styles from './Footer.module.scss';
 
 export const Footer = () => {
   const router = useRouter();
   const [showPhoneNumber, setShowPhoneNumber] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handlePhoneToggle = () => {
     setShowPhoneNumber(!showPhoneNumber);
-  };
-
-  const handleSearchToggle = () => {
-    setIsSearchOpen(true);
-  };
-
-  const handleSearchClose = () => {
-    setIsSearchOpen(false);
   };
 
   const navigateTo = (path: string) => {
@@ -148,7 +138,7 @@ export const Footer = () => {
                 <h5 className={styles.mobileHeading}>Каталог</h5>
               </li>
               <li className={styles.mobileItem}>
-                <div className={styles.search} onClick={handleSearchToggle}>
+                <div className={styles.search} onClick={() => navigateTo('/search')}>
                   <SvgIcon name="search" size={20} />
                   <h5 className={styles.mobileHeading}>Поиск</h5>
                 </div>
@@ -179,9 +169,6 @@ export const Footer = () => {
           </div>
         </div>
       </footer>
-
-      {/* Компонент поиска */}
-      <FimsSearch isOpen={isSearchOpen} handleClose={handleSearchClose} />
     </>
   );
 };

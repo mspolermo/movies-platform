@@ -170,8 +170,8 @@ export class FilmsService {
     const films = await this.filmRepository.findAll({
       where: {
         [Op.or]: [
-          { filmNameRu: { [Op.like]: `%${name}%` } },
-          { filmNameEn: { [Op.like]: `%${name}%` } },
+          { filmNameRu: { [Op.iLike]: `%${name}%` } },
+          { filmNameEn: { [Op.iLike]: `%${name}%` } },
         ],
       },
       limit: 10,

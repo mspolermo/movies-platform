@@ -1,2 +1,2 @@
-export { PersonHeader, Filmography, ShortMovieCard, Professions } from './ui';
+export { PersonHeader, Filmography, ShortMovieCard, Professions, PersonCard } from './ui';
 
