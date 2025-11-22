@@ -91,13 +91,11 @@ export const SearchPage = () => {
               {results.films.length > 0 && (
                 <section className={styles.section}>
                   <h2 className={styles.sectionTitle}>Фильмы</h2>
-                  <div className={styles.filmsList}>
+                  <div className={styles.filmsGrid}>
                     {results.films.map((film) => (
-                      <FilmCard
-                        key={`film-${film.id}`}
-                        film={film}
-                        showIcons
-                      />
+                      <div key={`film-${film.id}`} className={styles.filmCard}>
+                        <FilmCard film={film} showIcons />
+                      </div>
                     ))}
                   </div>
                 </section>
@@ -106,9 +104,14 @@ export const SearchPage = () => {
               {results.persons.length > 0 && (
                 <section className={styles.section}>
                   <h2 className={styles.sectionTitle}>Персоны</h2>
-                  <div className={styles.personsList}>
+                  <div className={styles.personsGrid}>
                     {results.persons.map((person) => (
-                      <PersonCard key={`person-${person.id}`} person={person} />
+                      <div
+                        key={`person-${person.id}`}
+                        className={styles.personCard}
+                      >
+                        <PersonCard person={person} />
+                      </div>
                     ))}
                   </div>
                 </section>
