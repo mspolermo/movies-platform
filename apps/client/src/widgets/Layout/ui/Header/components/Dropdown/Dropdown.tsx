@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { TGenreBased, TCountryBased } from '@common/types';
 import { dropdownCache } from './dropdownCache';
 import styles from './Dropdown.module.scss';
@@ -18,12 +18,17 @@ export const Dropdown: React.FC<HeaderDropdownProps> = ({
   onMouseEnter,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [genres, setGenres] = useState<TGenreBased[]>([]);
   const [genresLoading, setGenresLoading] = useState(!dropdownCache.isGenresLoaded());
   const [countries, setCountries] = useState<TCountryBased[]>([]);
   const [countriesLoading, setCountriesLoading] = useState(!dropdownCache.isCountriesLoaded());
   const [years, setYears] = useState<number[]>([]);
   const [yearsLoading, setYearsLoading] = useState(!dropdownCache.isYearsLoaded());
+
+  // Проверяем, находимся ли именно на странице со списком фильмов (не детальная страница)
+  const isOnFilmsPage = pathname === '/films';
 
   useEffect(() => {
     const loadGenres = async () => {
@@ -85,19 +90,95 @@ export const Dropdown: React.FC<HeaderDropdownProps> = ({
     loadYears();
   }, []);
 
-  const handleGenreClick = (genreNameEn: string) => {
-    router.push(`/films/genre/${genreNameEn}`);
+  // Обновление query-параметров на странице фильмов (с очисткой остальных фильтров)
+  const updateQueryParams = (updates: Record<string, string | null>, clearOthers = false) => {
+    if (!isOnFilmsPage) return;
+    
+    const params = clearOthers ? new URLSearchParams() : new URLSearchParams(searchParams?.toString() || '');
+    
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null || value === '') {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+
+    const newUrl = params.toString() 
+      ? `${pathname}?${params.toString()}` 
+      : pathname || '/films';
+    
+    router.replace(newUrl, { scroll: false });
     onClose();
+  };
+
+  const handleGenreClick = (genreNameEn: string) => {
+    // Получаем имя жанра на русском для query-параметра
+    const genre = genres.find(g => (g.nameEn || g.nameRu) === genreNameEn);
+    if (!genre) return;
+
+    const genreNameRu = genre.nameRu;
+    
+    if (isOnFilmsPage) {
+      // Если на странице фильмов, устанавливаем только выбранный жанр, остальные параметры сбрасываем
+      const currentGenres = searchParams?.get('genres')?.split(',').filter(Boolean) || [];
+      
+      // Если жанр уже выбран один и это он, сбрасываем все, иначе устанавливаем только его
+      const isCurrentlySelected = currentGenres.length === 1 && currentGenres[0] === genreNameRu;
+      
+      updateQueryParams(
+        { genres: isCurrentlySelected ? null : genreNameRu },
+        true // Очищаем остальные параметры
+      );
+    } else {
+      // Если не на странице фильмов, переходим на страницу только с выбранным жанром
+      const params = new URLSearchParams();
+      params.set('genres', genreNameRu);
+      router.push(`/films?${params.toString()}`);
+      onClose();
+    }
   };
 
   const handleCountryClick = (countryName: string) => {
-    router.push(`/films/country/${countryName}`);
-    onClose();
+    if (isOnFilmsPage) {
+      // Если на странице фильмов, устанавливаем только выбранную страну, остальные параметры сбрасываем
+      const currentCountries = searchParams?.get('countries')?.split(',').filter(Boolean) || [];
+      
+      // Если страна уже выбрана одна и это она, сбрасываем все, иначе устанавливаем только её
+      const isCurrentlySelected = currentCountries.length === 1 && currentCountries[0] === countryName;
+      
+      updateQueryParams(
+        { countries: isCurrentlySelected ? null : countryName },
+        true // Очищаем остальные параметры
+      );
+    } else {
+      // Если не на странице фильмов, переходим на страницу только с выбранной страной
+      const params = new URLSearchParams();
+      params.set('countries', countryName);
+      router.push(`/films?${params.toString()}`);
+      onClose();
+    }
   };
 
   const handleYearClick = (year: string) => {
-    router.push(`/films/year/${year}`);
-    onClose();
+    if (isOnFilmsPage) {
+      // Если на странице фильмов, устанавливаем только выбранный год, остальные параметры сбрасываем
+      const currentYear = searchParams?.get('year');
+      
+      // Если год уже выбран и это он, сбрасываем все, иначе устанавливаем только его
+      const isCurrentlySelected = currentYear === year;
+      
+      updateQueryParams(
+        { year: isCurrentlySelected ? null : year },
+        true // Очищаем остальные параметры
+      );
+    } else {
+      // Если не на странице фильмов, переходим на страницу только с выбранным годом
+      const params = new URLSearchParams();
+      params.set('year', year);
+      router.push(`/films?${params.toString()}`);
+      onClose();
+    }
   };
 
   const renderFilmsDropdown = () => {

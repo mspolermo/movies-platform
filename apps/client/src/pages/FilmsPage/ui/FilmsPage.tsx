@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { Layout } from '@/widgets/Layout';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { FilmsInfiniteScroll } from '@/features/films/infinite-scroll/ui/FilmsInfiniteScroll';
@@ -21,22 +21,23 @@ export const FilmsPage = () => {
     buildFilterParams
   } = useFilters();
 
-  const [currentParams, setCurrentParams] = useState<SearchFilmsParams>({});
+  // Вычисляем параметры на основе selectedFilters и sortValue
+  const currentParams = useMemo(() => {
+    return buildFilterParams(selectedFilters, 1, 20, sortValue);
+  }, [selectedFilters, sortValue, buildFilterParams]);
 
   const handleParamsChange = (params: SearchFilmsParams) => {
-    setCurrentParams(params);
+    // Параметры обновляются автоматически через useMemo
   };
 
   const handleSortChange = (newSort: string) => {
     const nextSort = newSort as SortOption;
     setSortValue(nextSort);
-    const newParams: SearchFilmsParams = buildFilterParams(selectedFilters, 1, 20, nextSort);
-    setCurrentParams(newParams);
   };
 
   const handleFiltersUpdate = (nextFilters: typeof selectedFilters) => {
-    const newParams: SearchFilmsParams = buildFilterParams(nextFilters, 1, 20);
-    setCurrentParams(newParams);
+    // Параметры обновляются автоматически через useMemo при изменении selectedFilters
+    updateFilters(nextFilters);
   };
 
   return (
