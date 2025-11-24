@@ -39,16 +39,24 @@
 .item {
   padding: 8px 16px;
   background-color: var(--color-background-elements);
+  border: none;
   border-radius: 8px;
   color: var(--color-heading);
   font-size: 15px;
   line-height: 20px;
   font-weight: 500;
+  cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
+  font-family: inherit;
 
   &:hover {
     background-color: var(--color-icon-default-hover);
     transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
   }
 }
 

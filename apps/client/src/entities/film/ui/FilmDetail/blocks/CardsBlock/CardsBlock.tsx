@@ -1,38 +1,84 @@
-import React from 'react';
-import { useRouter } from 'next/navigation';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { FilmProfessionsSlider } from '@/features/film/profession-slider';
+import { FilmPersonsList } from '@/features/film/persons-by-profession';
+import { filmsService } from '@/shared/api/services';
+import { TProfessionBased } from '@common/types';
 import styles from './CardsBlock.module.scss';
-import { Card } from '@/shared/ui';
 import { CardsBlockProps } from '../../types';
 
 export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
-  const router = useRouter();
+  const params = useParams();
+  const filmId = Number(params?.id);
+  const [filmProfessions, setFilmProfessions] = useState<TProfessionBased[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeProfessionName, setActiveProfessionName] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Находим профессию "актеры" (с учетом разных вариантов написания)
-  const actorsProfession = professions.find((prof) => {
-    const name = prof.name?.toLowerCase() || '';
-    return name.includes('актер') || name.includes('actor');
-  });
+  useEffect(() => {
+    const fetchProfessions = async () => {
+      if (!filmId) return;
 
-  // Получаем список актеров из профессии или первые 5 персон из первой профессии
-  const actors = actorsProfession
-    ? actorsProfession.persons.slice(0, 5)
-    : professions[0]?.persons?.slice(0, 5) || [];
+      try {
+        setLoading(true);
+        const data = await filmsService.getFilmProfessions(filmId);
+        setFilmProfessions(data);
+        
+        // Автоматически выбираем первую профессию, если есть
+        if (data.length > 0) {
+          setActiveProfessionName((prev) => prev || data[0].name);
+        }
+      } catch (err) {
+        console.error('Error fetching film professions:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const handleActorClick = (actorId: number) => {
-    router.push(`/persons/${actorId}`);
+    fetchProfessions();
+  }, [filmId]);
+
+  const handleProfessionChange = (professionName: string) => {
+    setActiveProfessionName(professionName);
   };
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  if (loading) {
+    return null;
+  }
+
+  if (filmProfessions.length === 0) {
+    return null;
+  }
 
   return (
     <div className={styles.cardsBlock}>
-      {actors.map((actor) => (
-        <Card
-          key={actor.id}
-          type="small"
-          title={actor.nameRu || actor.nameEn}
-          photoUrl={actor.photoUrl}
-          onClick={() => handleActorClick(actor.id)}
-        />
-      ))}
+      <h3
+        className={`${styles.title} ${styles.titleClickable}`}
+        onClick={toggleExpanded}
+      >
+        {isExpanded ? 'Скрыть создателей и актёров' : 'Смотреть создателей и актёров'}
+      </h3>
+      {isExpanded && (
+        <>
+          <FilmProfessionsSlider
+            professions={filmProfessions}
+            activeProfessionName={activeProfessionName}
+            onProfessionChange={handleProfessionChange}
+          />
+          {activeProfessionName && (
+            <FilmPersonsList
+              filmId={filmId}
+              professionName={activeProfessionName}
+            />
+          )}
+        </>
+      )}
     </div>
   );
 };

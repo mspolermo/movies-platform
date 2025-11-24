@@ -13,3 +13,4 @@ export type { LoaderProps } from './Loader';
 export { Card } from './Card';
 export { QualityTag } from './QualityTag';
 export { Overlay } from './Overlay';
+export { FilterCardButton } from './FilterCardButton';

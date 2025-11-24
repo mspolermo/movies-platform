@@ -8,7 +8,7 @@ import { UpdateFilmDto } from "@common/dto";
 import { Profession } from "../professions/professions.model";
 import { Fact } from "../facts/facts.model";
 import { Op, Sequelize } from "sequelize";
-import { TProfessionWithPersons, TPersonBased } from "@common/types";
+import { TProfessionWithPersons, TPersonBased, TProfessionBased, PaginatedPersonsResponse } from "@common/types";
 
 @Injectable()
 export class FilmsService {
@@ -257,5 +257,108 @@ export class FilmsService {
     });
 
     return years.map((year) => year.year);
+  }
+
+  async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
+    const film = await this.filmRepository.findByPk(filmId, {
+      include: [
+        {
+          model: Person,
+          as: "persons",
+          attributes: ['id'],
+          through: { attributes: [] },
+          include: [
+            {
+              model: Profession,
+              as: "professions",
+              attributes: ['id', 'name'],
+              through: { attributes: [] },
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!film) {
+      return [];
+    }
+
+    // Собираем уникальные профессии
+    const professionsMap = new Map<number, TProfessionBased>();
+    
+    if (film.persons) {
+      for (const person of film.persons) {
+        if (person.professions && person.professions.length > 0) {
+          for (const profession of person.professions) {
+            if (!professionsMap.has(profession.id)) {
+              professionsMap.set(profession.id, {
+                id: profession.id,
+                name: profession.name,
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return Array.from(professionsMap.values());
+  }
+
+  async getFilmPersonsByProfession(
+    filmId: number,
+    professionName: string,
+    page: number = 1,
+    limit: number = 20
+  ): Promise<PaginatedPersonsResponse> {
+    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
+    const normalizedPage = page > 0 ? page : 1;
+    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+
+    const film = await this.filmRepository.findByPk(filmId, {
+      include: [
+        {
+          model: Person,
+          as: "persons",
+          attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+          through: { attributes: [] },
+          include: [
+            {
+              model: Profession,
+              as: "professions",
+              attributes: ['id', 'name'],
+              through: { attributes: [] },
+              where: { name: professionName },
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!film) {
+      return {
+        items: [],
+        total: 0,
+        hasMore: false,
+      };
+    }
+
+    // Фильтруем персон с нужной профессией
+    const personsWithProfession = (film.persons || []).filter(
+      (person) => person.professions && person.professions.length > 0
+    );
+
+    const total = personsWithProfession.length;
+    const paginatedPersons = personsWithProfession.slice(
+      normalizedOffset,
+      normalizedOffset + normalizedLimit
+    );
+
+    const hasMore = normalizedOffset + paginatedPersons.length < total;
+
+    return {
+      items: paginatedPersons,
+      total,
+      hasMore,
+    };
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { FilmFilters } from "./interfaces";
 import { UpdateFilmDto } from "@common/dto";
-import { TFilmBased } from "@common/types";
+import { TFilmBased, TProfessionBased, PaginatedPersonsResponse } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -25,5 +25,23 @@ export class FilmsService extends BaseMicroserviceService {
 
   async searchFilms(filters: FilmFilters): Promise<TFilmBased[]> {
     return this.sendMessage("filters", filters);
+  }
+
+  async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
+    return this.sendMessage("getFilmProfessions", filmId);
+  }
+
+  async getFilmPersonsByProfession(
+    filmId: number,
+    professionName: string,
+    page?: number,
+    limit?: number
+  ): Promise<PaginatedPersonsResponse> {
+    return this.sendMessage("getFilmPersonsByProfession", {
+      filmId,
+      professionName,
+      page,
+      limit,
+    });
   }
 }

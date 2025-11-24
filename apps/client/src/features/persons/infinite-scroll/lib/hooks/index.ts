@@ -1,0 +1,2 @@
+export { usePersonsInfiniteScroll } from './usePersonsInfiniteScroll';
+

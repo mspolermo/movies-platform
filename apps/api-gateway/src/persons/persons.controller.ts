@@ -12,8 +12,22 @@ export class PersonsController {
   @ApiOperation({ summary: "Получить всех людей" })
   @ApiResponse({ status: 200, description: "Список людей" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
+  @ApiQuery({ name: "page", required: false, description: "Номер страницы", type: Number })
+  @ApiQuery({ name: "limit", required: false, description: "Количество элементов на странице", type: Number })
   @Get()
-  async getAllPersons() {
+  async getAllPersons(
+    @Query("page") page?: string,
+    @Query("limit") limit?: string
+  ) {
+    const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
+    const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
+
+    // Если переданы параметры пагинации, используем новый метод
+    if (parsedPage !== undefined || parsedLimit !== undefined) {
+      return await this.personsService.getAllPersonsPaginated(parsedPage, parsedLimit);
+    }
+
+    // Иначе используем старый метод для обратной совместимости
     return await this.personsService.getAllPersons();
   }
 

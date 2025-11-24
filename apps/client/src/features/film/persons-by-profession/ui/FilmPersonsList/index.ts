@@ -1,0 +1,2 @@
+export { FilmPersonsList } from './FilmPersonsList';
+

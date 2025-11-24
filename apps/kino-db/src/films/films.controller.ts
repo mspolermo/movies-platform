@@ -83,4 +83,17 @@ export class FilmsController {
   async searchFilmsByName(@Payload() name: string) {
     return await this.filmService.searchFilmsByName(name);
   }
+
+  @MessagePattern("getFilmProfessions")
+  async getFilmProfessions(@Payload() filmId: number) {
+    return await this.filmService.getFilmProfessions(filmId);
+  }
+
+  @MessagePattern("getFilmPersonsByProfession")
+  async getFilmPersonsByProfession(
+    @Payload() data: { filmId: number; professionName: string; page?: number; limit?: number }
+  ) {
+    const { filmId, professionName, page = 1, limit = 20 } = data;
+    return await this.filmService.getFilmPersonsByProfession(filmId, professionName, page, limit);
+  }
 }

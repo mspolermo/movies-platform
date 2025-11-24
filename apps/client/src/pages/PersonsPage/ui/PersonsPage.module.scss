@@ -7,74 +7,42 @@
   }
 }
 
+.infiniteScroll {
+  width: 100%;
+}
+
 .personsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
-}
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
 
-.personCard {
-  background: var(--color-background-elements);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  @media (max-width: 1270px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  @media (max-width: 1095px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 920px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 770px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 
-.personPhoto {
-  margin-bottom: 1rem;
-
-  .photo {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--color-split-line);
-  }
-
-  .photoPlaceholder {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: var(--color-red);
-    color: var(--color-heading);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0 auto;
-    border: 3px solid var(--color-split-line);
-  }
-}
-
-.personName {
-  font-size: 1.1rem;
-  color: var(--color-heading);
-  margin: 0 0 0.5rem 0;
-  font-weight: 500;
-}
-
-.personNameEn {
-  font-size: 0.9rem;
-  color: var(--color-text);
-  margin: 0;
-  font-style: italic;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--color-text);
-  padding: 2rem;
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
 }
 
 .error {

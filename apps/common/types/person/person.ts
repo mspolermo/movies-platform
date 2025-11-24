@@ -24,3 +24,10 @@ export interface TPersonModel extends TPersonBased {
 export interface TPersonFullWithPagination extends TPersonModel {
   filmsTotal?: number; // Общее количество фильмов (для пагинации)
 }
+
+// Тип для ответа с пагинацией персон
+export interface PaginatedPersonsResponse {
+  items: TPersonBased[];
+  total: number;
+  hasMore: boolean;
+}

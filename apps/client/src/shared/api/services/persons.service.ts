@@ -1,6 +1,6 @@
 import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
-import { TPersonModel, TFilmBased, TPersonFullWithPagination } from '@common/types';
+import { TPersonModel, TFilmBased, TPersonFullWithPagination, PaginatedPersonsResponse } from '@common/types';
 
 
 export interface PersonFilmsParams {
@@ -29,6 +29,17 @@ export const personsService = {
   async getAllPersons(): Promise<TPersonModel[]> {
     const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST);
     return Array.isArray(response.data) ? response.data : [];
+  },
+
+  // Получить всех персон с пагинацией
+  async getAllPersonsPaginated(page: number = 1, limit: number = 20): Promise<PaginatedPersonsResponse> {
+    const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST, {
+      params: {
+        page,
+        limit,
+      },
+    });
+    return response.data;
   },
 
   // Поиск персон по имени и профессии

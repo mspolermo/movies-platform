@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { TGenreBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { Loader, FilterCardButton } from '@/shared/ui';
 import styles from './GenresPage.module.scss';
-import { Loader } from '@/shared/ui';
 
 export const GenresPage = () => {
+  const router = useRouter();
   const [genres, setGenres] = useState<TGenreBased[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,12 @@ export const GenresPage = () => {
 
     fetchGenres();
   }, []);
+
+  const handleGenreClick = (genreNameRu: string) => {
+    const params = new URLSearchParams();
+    params.set('genres', genreNameRu);
+    router.push(`/films?${params.toString()}`);
+  };
 
   if (loading) {
     return (
@@ -54,10 +62,16 @@ export const GenresPage = () => {
 
         <div className={styles.genresGrid}>
           {genres.map((genre) => (
-            <div key={genre.id} className={styles.genreCard}>
+            <FilterCardButton
+              key={genre.id}
+              onClick={() => handleGenreClick(genre.nameRu)}
+              ariaLabel={`Открыть фильмы жанра ${genre.nameRu}`}
+            >
               <h3 className={styles.genreName}>{genre.nameRu}</h3>
-              <p className={styles.genreDescription}>{genre.nameEn}</p>
-            </div>
+              {genre.nameEn && (
+                <p className={styles.genreDescription}>{genre.nameEn}</p>
+              )}
+            </FilterCardButton>
           ))}
         </div>
       </div>

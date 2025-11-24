@@ -11,6 +11,22 @@ export class PersonsController {
     return await this.personsService.getAllPersons();
   }
 
+  @MessagePattern("getAllPersonsPaginated")
+  async getAllPersonsPaginated(
+    @Payload() data: { page?: number; limit?: number }
+  ) {
+    const { page = 1, limit = 20 } = data;
+    return await this.personsService.getAllPersonsPaginated(page, limit);
+  }
+
+  @MessagePattern("getPersonsByProfessionId")
+  async getPersonsByProfessionId(
+    @Payload() data: { professionId: number; page?: number; limit?: number }
+  ) {
+    const { professionId, page = 1, limit = 20 } = data;
+    return await this.personsService.getPersonsByProfessionId(professionId, page, limit);
+  }
+
   @MessagePattern("getPersonById")
   async getPersonById(
     @Payload()

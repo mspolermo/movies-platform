@@ -1,0 +1,2 @@
+export { FilmProfessionsSlider } from './FilmProfessionsSlider';
+

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TPersonBased, TPersonModel } from "@common/types";
+import { TPersonBased, TPersonModel, PaginatedPersonsResponse } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -11,6 +11,10 @@ export class PersonsService extends BaseMicroserviceService {
 
   async getAllPersons(): Promise<TPersonBased[]> {
     return this.sendMessage("getAllPersons", {});
+  }
+
+  async getAllPersonsPaginated(page?: number, limit?: number): Promise<PaginatedPersonsResponse> {
+    return this.sendMessage("getAllPersonsPaginated", { page, limit });
   }
 
   async getPersonById(

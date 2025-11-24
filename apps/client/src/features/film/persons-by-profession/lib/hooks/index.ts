@@ -1,0 +1,2 @@
+export { useFilmPersonsByProfession } from './useFilmPersonsByProfession';
+

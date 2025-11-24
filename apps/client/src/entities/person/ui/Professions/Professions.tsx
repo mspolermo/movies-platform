@@ -1,10 +1,10 @@
+'use client';
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { TProfessionBased } from '@common/types';
 import styles from './Professions.module.scss';
-
-interface ProfessionsProps {
-  professions: TProfessionBased[];
-}
+import { ProfessionsProps } from '../types';
 
 const getProfessionsWord = (count: number): string => {
   const lastDigit = count % 10;
@@ -26,7 +26,12 @@ const getProfessionsWord = (count: number): string => {
 };
 
 export const Professions: React.FC<ProfessionsProps> = ({ professions }) => {
+  const router = useRouter();
   const professionsCount = professions.length;
+
+  const handleProfessionClick = (professionName: string) => {
+    router.push(`/professions?profession=${encodeURIComponent(professionName)}`);
+  };
 
   if (professionsCount === 0) {
     return null;
@@ -44,13 +49,17 @@ export const Professions: React.FC<ProfessionsProps> = ({ professions }) => {
 
         <div className={styles.list}>
           {professions.map((profession) => (
-            <div key={profession.id} className={styles.item}>
+            <button
+              key={profession.id}
+              type="button"
+              className={styles.item}
+              onClick={() => handleProfessionClick(profession.name)}
+            >
               {profession.name}
-            </div>
+            </button>
           ))}
         </div>
       </div>
     </div>
   );
 };
-

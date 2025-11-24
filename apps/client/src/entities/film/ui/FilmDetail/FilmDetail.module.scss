@@ -2,12 +2,14 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  overflow-x: visible;
 }
 
 .filmDetail {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
+  overflow-x: visible;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -19,4 +21,6 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  overflow-x: visible;
+  min-width: 0;
 }

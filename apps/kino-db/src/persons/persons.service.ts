@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
-import { TProfessionModel, TProfessionBased, TPersonFullWithPagination } from "@common/types";
+import { TProfessionModel, TProfessionBased, TPersonFullWithPagination, PaginatedPersonsResponse } from "@common/types";
 import { Profession } from "../professions/professions.model";
 import { Op } from "sequelize";
 
@@ -25,6 +25,36 @@ export class PersonsService {
       limit: 10
     });
     return persons;
+  }
+
+  async getAllPersonsPaginated(page: number = 1, limit: number = 20): Promise<PaginatedPersonsResponse> {
+    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
+    const normalizedPage = page > 0 ? page : 1;
+    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+
+    const [persons, total] = await Promise.all([
+      this.personRepository.findAll({
+        include: [
+          {
+            model: Profession,
+            through: { attributes: [] },
+          },
+        ],
+        attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+        limit: normalizedLimit,
+        offset: normalizedOffset,
+        order: [['nameRu', 'ASC']],
+      }),
+      this.personRepository.count(),
+    ]);
+
+    const hasMore = normalizedOffset + persons.length < total;
+
+    return {
+      items: persons,
+      total,
+      hasMore,
+    };
   }
 
   async getPersonById(
@@ -105,6 +135,49 @@ export class PersonsService {
       limit: 20,
     });
     return persons;
+  }
+
+  async getPersonsByProfessionId(
+    professionId: number,
+    page: number = 1,
+    limit: number = 20
+  ): Promise<PaginatedPersonsResponse> {
+    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
+    const normalizedPage = page > 0 ? page : 1;
+    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+
+    const [persons, total] = await Promise.all([
+      this.personRepository.findAll({
+        include: [
+          {
+            model: Profession,
+            through: { attributes: [] },
+            where: { id: professionId },
+          },
+        ],
+        attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+        limit: normalizedLimit,
+        offset: normalizedOffset,
+        order: [['nameRu', 'ASC']],
+      }),
+      this.personRepository.count({
+        include: [
+          {
+            model: Profession,
+            through: { attributes: [] },
+            where: { id: professionId },
+          },
+        ],
+      }),
+    ]);
+
+    const hasMore = normalizedOffset + persons.length < total;
+
+    return {
+      items: persons,
+      total,
+      hasMore,
+    };
   }
 
   async createPerson(dto: { photoUrl: string; nameRu: string; nameEn: string; professions?: TProfessionBased[] }): Promise<Person> {

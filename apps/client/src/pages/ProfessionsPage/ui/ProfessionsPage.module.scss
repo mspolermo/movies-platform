@@ -1,4 +1,8 @@
 .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+
   .title {
     font-size: 2rem;
     color: var(--color-heading);
@@ -7,40 +11,52 @@
   }
 }
 
-.professionsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1.5rem;
+.content {
+  width: 100%;
+  margin-top: 20px;
 }
 
-.professionCard {
-  background: var(--color-background-elements);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+.personsSection {
+  width: 100%;
+  margin-top: 20px;
+}
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.infiniteScroll {
+  width: 100%;
+}
+
+.personsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 1270px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1095px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 920px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 770px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 }
 
-.professionName {
-  font-size: 1.1rem;
-  color: var(--color-heading);
-  margin: 0;
-  font-weight: 500;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--color-text);
-  padding: 2rem;
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
 }
 
 .error {
@@ -48,4 +64,17 @@
   color: var(--color-red);
   padding: 2rem;
   font-size: 1.1rem;
+}
+
+.emptyState {
+  text-align: center;
+  color: var(--color-text);
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
 }

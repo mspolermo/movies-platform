@@ -1,0 +1,59 @@
+.infiniteScroll {
+  width: 100%;
+  overflow: visible;
+  margin-top: 32px;
+
+  @media (max-width: 768px) {
+    margin-top: 24px;
+  }
+
+  @media (max-width: 600px) {
+    margin-top: 20px;
+  }
+}
+
+.personsList {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0px 0 24px 0;
+  width: 100%;
+  overflow: visible;
+
+  @media (max-width: 1500px) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1270px) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1095px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 920px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 770px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+.error {
+  color: var(--color-red);
+  padding: 1rem 0;
+  font-size: 1rem;
+}
+
+.emptyState {
+  color: var(--color-text);
+  padding: 2rem 0;
+  font-size: 1rem;
+}
+

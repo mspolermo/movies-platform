@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { TCountryBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { Loader, FilterCardButton } from '@/shared/ui';
 import styles from './CountriesPage.module.scss';
-import { Loader } from '@/shared/ui';
 
 export const CountriesPage = () => {
+  const router = useRouter();
   const [countries, setCountries] = useState<TCountryBased[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,12 @@ export const CountriesPage = () => {
 
     fetchCountries();
   }, []);
+
+  const handleCountryClick = (countryName: string) => {
+    const params = new URLSearchParams();
+    params.set('countries', countryName);
+    router.push(`/films?${params.toString()}`);
+  };
 
   if (loading) {
     return (
@@ -52,9 +60,13 @@ export const CountriesPage = () => {
 
         <div className={styles.countriesGrid}>
           {countries.map((country) => (
-            <div key={country.id} className={styles.countryCard}>
+            <FilterCardButton
+              key={country.id}
+              onClick={() => handleCountryClick(country.countryName)}
+              ariaLabel={`Открыть фильмы страны ${country.countryName}`}
+            >
               <h3 className={styles.countryName}>{country.countryName}</h3>
-            </div>
+            </FilterCardButton>
           ))}
         </div>
       </div>

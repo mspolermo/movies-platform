@@ -14,6 +14,8 @@ export const API_ENDPOINTS = {
     BY_ID: (id: number) => `/films/${id}`,
     UPDATE: (id: number) => `/films/${id}`,
     DELETE: (id: number) => `/films/${id}`,
+    PROFESSIONS: (id: number) => `/films/${id}/professions`,
+    PERSONS_BY_PROFESSION: (id: number) => `/films/${id}/persons-by-profession`,
   },
 
   // Жанры
@@ -38,6 +40,7 @@ export const API_ENDPOINTS = {
   PROFESSIONS: {
     LIST: '/professions',
     BY_ID: (id: number) => `/professions/${id}`,
+    PERSONS: (id: number) => `/professions/${id}/persons`,
   },
 
   // Комментарии

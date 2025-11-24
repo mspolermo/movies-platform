@@ -1,0 +1,21 @@
+.card {
+  background-color: var(--color-background-elements);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    background-color: var(--color-icon-default-hover);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+}
+

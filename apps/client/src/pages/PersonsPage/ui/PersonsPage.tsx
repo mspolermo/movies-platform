@@ -1,44 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Layout } from '@/widgets/Layout';
-import { TPersonBased } from '@common/types';
-import apiClient from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { PersonCard } from '@/entities/person/ui/PersonCard';
+import { InfiniteScroll, Loader } from '@/shared/ui';
+import { usePersonsInfiniteScroll } from '@/features/persons/infinite-scroll';
 import styles from './PersonsPage.module.scss';
-import { Loader } from '@/shared/ui';
-import Image from 'next/image';
 
 export const PersonsPage = () => {
-  const [persons, setPersons] = useState<TPersonBased[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { persons, loading, error, hasMore, loadMore } = usePersonsInfiniteScroll({
+    initialPage: 1,
+    initialLimit: 20,
+  });
 
-  useEffect(() => {
-    const fetchPersons = async () => {
-      try {
-        const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST);
-        setPersons(response.data);
-        setError(null);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Ошибка загрузки персон');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPersons();
-  }, []);
-
-  if (loading) {
+  if (loading && persons.length === 0) {
     return (
       <Layout>
-        <Loader size="small" />
+        <div className={styles.loaderWrapper}>
+          <Loader size="small" />
+        </div>
       </Layout>
     );
   }
 
-  if (error) {
+  if (error && persons.length === 0) {
     return (
       <Layout>
         <div className={styles.error}>{error}</div>
@@ -51,33 +35,18 @@ export const PersonsPage = () => {
       <div className={styles.container}>
         <h1 className={styles.title}>Персоны</h1>
 
-        <div className={styles.personsGrid}>
-          {persons.map((person) => (
-            <div key={person.id} className={styles.personCard}>
-              <div className={styles.personPhoto}>
-                {person.photoUrl ? (
-                  <div className={styles.photo} style={{ position: 'relative' }}>
-                    <Image
-                      src={person.photoUrl}
-                      alt={person.nameRu}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 200px"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                ) : (
-                  <div className={styles.photoPlaceholder}>
-                    {person.nameRu.charAt(0)}
-                  </div>
-                )}
-              </div>
-              <h3 className={styles.personName}>{person.nameRu}</h3>
-              {person.nameEn && person.nameEn !== person.nameRu && (
-                <p className={styles.personNameEn}>{person.nameEn}</p>
-              )}
-            </div>
-          ))}
-        </div>
+        <InfiniteScroll
+          onLoadMore={loadMore}
+          isLoading={loading}
+          hasMore={hasMore}
+          className={styles.infiniteScroll}
+        >
+          <div className={styles.personsGrid}>
+            {persons.map((person) => (
+              <PersonCard key={person.id} person={person} />
+            ))}
+          </div>
+        </InfiniteScroll>
       </div>
     </Layout>
   );
