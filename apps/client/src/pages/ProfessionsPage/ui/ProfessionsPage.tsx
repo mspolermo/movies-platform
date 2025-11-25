@@ -40,7 +40,7 @@ export const ProfessionsPage = () => {
         setError(null);
         
         // Проверяем query-параметр profession
-        const professionParam = searchParams.get('profession');
+        const professionParam = searchParams?.get('profession');
         
         if (professionParam && data.length > 0) {
           // Ищем профессию по названию (без учета регистра)
@@ -74,7 +74,7 @@ export const ProfessionsPage = () => {
     // Обновляем query-параметр в URL
     const profession = professions.find((p) => p.id === professionId);
     if (profession) {
-      const params = new URLSearchParams(searchParams.toString());
+      const params = new URLSearchParams(searchParams?.toString());
       params.set('profession', profession.name);
       router.push(`${pathname}?${params.toString()}`);
     }

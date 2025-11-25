@@ -35,6 +35,7 @@ export const ProfessionsTabs: React.FC<ProfessionsTabsProps> = ({
       if (!tabsRef.current) return;
       
       const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+
       const canScroll = scrollWidth > clientWidth;
       const tolerance = 1; // Небольшая погрешность для учета округления
       
@@ -117,7 +118,8 @@ export const ProfessionsTabs: React.FC<ProfessionsTabsProps> = ({
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const width = rect.width;
-    const edgeThreshold = 80; // Расстояние от края, при котором показываются стрелки
+
+    const edgeThreshold = 80;// Расстояние от края, при котором показываются стрелки
     
     setHoverLeft(x < edgeThreshold && showLeftArrow);
     setHoverRight(x > width - edgeThreshold && showRightArrow);
