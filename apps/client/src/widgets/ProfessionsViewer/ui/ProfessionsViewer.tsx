@@ -2,19 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { FilmProfessionsSlider } from '@/features/film/profession-slider';
 import { FilmPersonsList } from '@/features/film/persons-by-profession';
 import { filmsService } from '@/shared/api/services';
 import { TProfessionBased } from '@common/types';
-import styles from './CardsBlock.module.scss';
-import { CardsBlockProps } from '../../types';
+import styles from './ProfessionsViewer.module.scss';
+import { ProfessionsViewerProps } from '../types';
+import { ProfessionsSlider } from '@/features/professions/slider';
 
-export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
+export const ProfessionsViewer = ({ professions = [] }: ProfessionsViewerProps) => {
   const params = useParams();
   const filmId = Number(params?.id);
   const [filmProfessions, setFilmProfessions] = useState<TProfessionBased[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeProfessionName, setActiveProfessionName] = useState<string | null>(null);
+  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
         
         // Автоматически выбираем первую профессию, если есть
         if (data.length > 0) {
-          setActiveProfessionName((prev) => prev || data[0].name);
+          setActiveProfessionId((prev) => prev || data[0].id);
         }
       } catch (err) {
         console.error('Error fetching film professions:', err);
@@ -40,8 +40,8 @@ export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
     fetchProfessions();
   }, [filmId]);
 
-  const handleProfessionChange = (professionName: string) => {
-    setActiveProfessionName(professionName);
+  const handleProfessionChange = (id: number) => {
+    setActiveProfessionId(id);
   };
 
   const toggleExpanded = () => {
@@ -56,6 +56,8 @@ export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
     return null;
   }
 
+  const activeProfessionName = filmProfessions.find((profession) => profession.id === activeProfessionId)?.name ?? null
+
   return (
     <div className={styles.cardsBlock}>
       <h3
@@ -66,12 +68,12 @@ export const CardsBlock = ({ professions = [] }: CardsBlockProps) => {
       </h3>
       {isExpanded && (
         <>
-          <FilmProfessionsSlider
+          <ProfessionsSlider
             professions={filmProfessions}
-            activeProfessionName={activeProfessionName}
+            activeProfessionId={activeProfessionId}
             onProfessionChange={handleProfessionChange}
           />
-          {activeProfessionName && (
+          {activeProfessionId && (
             <FilmPersonsList
               filmId={filmId}
               professionName={activeProfessionName}

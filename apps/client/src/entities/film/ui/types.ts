@@ -1,4 +1,5 @@
 import { TFilmWithProfessions } from '@common/types';
+import { ReactNode } from 'react';
 
 export interface FilmCardProps {
   film: TFilmWithProfessions;
@@ -25,4 +26,5 @@ export interface IconsBlockProps {
 
 export interface FilmDetailProps {
   film: TFilmWithProfessions;
+  professionsViewer: ReactNode
 }

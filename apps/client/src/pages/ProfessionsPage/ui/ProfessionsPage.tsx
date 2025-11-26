@@ -5,7 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { TProfessionBased } from '@common/types';
 import { professionsService } from '@/shared/api/services';
-import { ProfessionsTabs } from '@/features/professions/tabs';
+import { ProfessionsSlider } from '@/features/professions/slider';
 import { useProfessionPersons } from '@/features/professions/persons';
 import { PersonCard } from '@/entities/person/ui/PersonCard';
 import { InfiniteScroll, Loader } from '@/shared/ui';
@@ -105,7 +105,7 @@ export const ProfessionsPage = () => {
 
         {professions.length > 0 && (
           <div className={styles.content}>
-            <ProfessionsTabs
+            <ProfessionsSlider
               professions={professions}
               activeProfessionId={activeProfessionId}
               onProfessionChange={handleProfessionChange}

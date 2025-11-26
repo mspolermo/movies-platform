@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { filmsService } from '@/shared/api/services';
-import { TFilmModel } from '@common/types';
+import { TFilmWithProfessions } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
 import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
+import { ProfessionsViewer } from '@/widgets/ProfessionsViewer';
 
 export const FilmDetailPage: React.FC = () => {
   const params = useParams();
   const filmId = Number(params?.id);
 
-  const [film, setFilm] = useState<TFilmModel | null>(null);
+  const [film, setFilm] = useState<TFilmWithProfessions | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,7 +60,10 @@ export const FilmDetailPage: React.FC = () => {
 
   return (
     <Layout>
-      <FilmDetail film={film} />
+      <FilmDetail
+        film={film}
+        professionsViewer={<ProfessionsViewer professions={film.professions} />}
+      />
     </Layout>
   );
 };

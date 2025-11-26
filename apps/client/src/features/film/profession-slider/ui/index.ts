@@ -1,2 +1,0 @@
-export { FilmProfessionsSlider } from './FilmProfessionsSlider';
-

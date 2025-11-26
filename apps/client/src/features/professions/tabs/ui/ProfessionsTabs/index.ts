@@ -1,2 +1,0 @@
-export { ProfessionsTabs } from './ProfessionsTabs';
-

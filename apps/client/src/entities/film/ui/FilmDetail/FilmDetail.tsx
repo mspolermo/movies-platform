@@ -3,7 +3,6 @@ import styles from './FilmDetail.module.scss';
 import { FilmDetailProps } from '../types';
 import {
   AdditionalInfoBlock,
-  CardsBlock,
   DescriptionBlock,
   FactBlock,
   PosterPreviewBlock,
@@ -15,7 +14,7 @@ import {
 import { checkIsCartoon } from '../../lib';
 
 export const FilmDetail = (props: FilmDetailProps) => {
-  const { film } = props;
+  const { film, professionsViewer } = props;
   const isCartoon = checkIsCartoon(film.genres ?? []);
 
   return (
@@ -57,7 +56,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
 
           <FactBlock fact={film.fact} isCartoon={isCartoon} />
 
-          <CardsBlock professions={film.professions} />
+          { professionsViewer }
 
           <AdditionalInfoBlock />
 

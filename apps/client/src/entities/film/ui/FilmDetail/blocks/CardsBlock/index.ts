@@ -1,1 +1,0 @@
-export { CardsBlock } from './CardsBlock';
