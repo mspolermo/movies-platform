@@ -10,11 +10,12 @@ import {
   SloganBlock,
   SummaryBlock,
   TrailerBlock,
+  CreatorsViewerBlock
 } from './blocks';
 import { checkIsCartoon } from '../../lib';
 
 export const FilmDetail = (props: FilmDetailProps) => {
-  const { film, professionsViewer } = props;
+  const { film, creatorsViewer } = props;
   const isCartoon = checkIsCartoon(film.genres ?? []);
 
   return (
@@ -56,7 +57,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
 
           <FactBlock fact={film.fact} isCartoon={isCartoon} />
 
-          { professionsViewer }
+          <CreatorsViewerBlock creatorsViewer={creatorsViewer} />
 
           <AdditionalInfoBlock />
 

@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TPersonBased, PaginatedPersonsResponse } from '@common/types';
-import { personsService  } from '@/shared/api/services';
+import { getPersonsByProfession } from '@/entities/person';
 
-interface UsePersonsInfiniteScrollOptions {
+interface UseProfessionPersonsOptions {
+  professionId: number | null;
   initialPage?: number;
   initialLimit?: number;
 }
 
-interface UsePersonsInfiniteScrollReturn {
+interface UseProfessionPersonsReturn {
   persons: TPersonBased[];
   loading: boolean;
   error: string | null;
@@ -16,10 +17,20 @@ interface UsePersonsInfiniteScrollReturn {
   reset: () => void;
 }
 
-export const usePersonsInfiniteScroll = ({
+/**
+Хук для загрузки и постраничного получения персон, относящихся к выбранной профессии.
+
+Обеспечивает:
+- начальную загрузку персон при смене professionId;
+- пагинацию (подгрузку следующей страницы);
+- защиту от одновременных запросов;
+- хранение состояния загрузки, ошибки и возможности подгрузки.
+*/
+export const useProfessionPersons = ({
+  professionId,
   initialPage = 1,
   initialLimit = 20,
-}: UsePersonsInfiniteScrollOptions = {}): UsePersonsInfiniteScrollReturn => {
+}: UseProfessionPersonsOptions): UseProfessionPersonsReturn => {
   const [persons, setPersons] = useState<TPersonBased[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,14 +42,18 @@ export const usePersonsInfiniteScroll = ({
 
   const loadPersons = useCallback(
     async (page: number, reset = false) => {
-      if (isLoadingRef.current) return;
+      if (isLoadingRef.current || !professionId) return;
 
       isLoadingRef.current = true;
       setLoading(true);
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse = await personsService.getAllPersonsPaginated(page, limit);
+        const response: PaginatedPersonsResponse = await getPersonsByProfession(
+          professionId,
+          page,
+          limit
+        );
 
         if (reset) {
           setPersons(response.items);
@@ -55,26 +70,39 @@ export const usePersonsInfiniteScroll = ({
         isLoadingRef.current = false;
       }
     },
-    [limit]
+    [professionId, limit]
   );
 
   const loadMore = useCallback(async () => {
-    if (!hasMore || loading) return;
+    if (!hasMore || loading || !professionId) return;
     await loadPersons(currentPage + 1, false);
-  }, [hasMore, loading, currentPage, loadPersons]);
+  }, [hasMore, loading, currentPage, loadPersons, professionId]);
 
   const reset = useCallback(() => {
     setPersons([]);
     setCurrentPage(initialPage);
     setHasMore(true);
     setError(null);
-    loadPersons(initialPage, true);
-  }, [loadPersons, initialPage]);
+    if (professionId) {
+      loadPersons(initialPage, true);
+    }
+  }, [loadPersons, initialPage, professionId]);
 
-  // Загрузка при монтировании
+  // Загрузка при изменении professionId
   useEffect(() => {
-    loadPersons(initialPage, true);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (professionId) {
+      setPersons([]);
+      setCurrentPage(initialPage);
+      setHasMore(true);
+      setError(null);
+      loadPersons(initialPage, true);
+    } else {
+      setPersons([]);
+      setHasMore(false);
+      setError(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [professionId]);
 
   return {
     persons,

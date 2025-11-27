@@ -7,7 +7,7 @@ import { filmsService } from '@/shared/api/services';
 import { TFilmWithProfessions } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
 import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
-import { ProfessionsViewer } from '@/widgets/ProfessionsViewer';
+import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 
 export const FilmDetailPage: React.FC = () => {
   const params = useParams();
@@ -62,7 +62,7 @@ export const FilmDetailPage: React.FC = () => {
     <Layout>
       <FilmDetail
         film={film}
-        professionsViewer={<ProfessionsViewer professions={film.professions} />}
+        creatorsViewer={<FilmCreatorsViewer professions={film.professions} />}
       />
     </Layout>
   );

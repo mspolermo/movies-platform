@@ -1,6 +1,6 @@
 import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
-import { TFilmModel, TProfessionBased, PaginatedPersonsResponse } from '@common/types';
+import { TFilmModel, PaginatedPersonsResponse } from '@common/types';
 
 export interface SearchFilmsParams {
   page?: number;
@@ -66,28 +66,5 @@ export const filmsService = {
   // Удалить фильм (только для админов)
   async deleteFilm(id: number): Promise<void> {
     await apiClient.delete(API_ENDPOINTS.FILMS.DELETE(id));
-  },
-
-  // Получить профессии фильма
-  async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
-    const response = await apiClient.get(API_ENDPOINTS.FILMS.PROFESSIONS(filmId));
-    return Array.isArray(response.data) ? response.data : [];
-  },
-
-  // Получить персон фильма по профессии с пагинацией
-  async getFilmPersonsByProfession(
-    filmId: number,
-    professionName: string,
-    page: number = 1,
-    limit: number = 20
-  ): Promise<PaginatedPersonsResponse> {
-    const response = await apiClient.get(API_ENDPOINTS.FILMS.PERSONS_BY_PROFESSION(filmId), {
-      params: {
-        profession: professionName,
-        page,
-        limit,
-      },
-    });
-    return response.data;
   },
 };

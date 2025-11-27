@@ -1,0 +1,44 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  .title {
+    font-size: 2rem;
+    color: var(--color-heading);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+}
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.error {
+  text-align: center;
+  color: var(--color-red);
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.content {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.emptyState {
+  text-align: center;
+  color: var(--color-text);
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
+}

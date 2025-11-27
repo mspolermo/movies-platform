@@ -6,3 +6,4 @@ export { RatingBlock } from './RatingBlock';
 export { SloganBlock } from './SloganBlock';
 export { SummaryBlock } from './SummaryBlock';
 export { TrailerBlock } from './TrailerBlock';
+export { CreatorsViewerBlock } from './CreatorsViewerBlock'

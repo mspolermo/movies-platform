@@ -5,6 +5,7 @@ import {
   TFactBased,
   TProfessionWithPersons,
 } from '@common/types';
+import { ReactNode } from 'react';
 
 export interface CardsBlockProps {
   professions?: TProfessionWithPersons[];
@@ -43,4 +44,8 @@ export interface TrailerBlockProps
 export interface FactBlockProps {
   fact?: TFactBased;
   isCartoon: boolean;
+}
+
+export interface TCreatorsViewerBlockProps {
+  creatorsViewer: ReactNode
 }

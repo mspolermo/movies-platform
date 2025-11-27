@@ -26,5 +26,5 @@ export interface IconsBlockProps {
 
 export interface FilmDetailProps {
   film: TFilmWithProfessions;
-  professionsViewer: ReactNode
+  creatorsViewer: ReactNode
 }

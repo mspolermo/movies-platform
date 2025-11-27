@@ -1,0 +1,50 @@
+.personsSection {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.error {
+  text-align: center;
+  color: var(--color-red);
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.emptyState {
+  text-align: center;
+  color: var(--color-text);
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+}
+
+.infiniteScroll {
+  width: 100%;
+}
+
+
+.personsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 1270px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1095px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  @media (max-width: 920px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 770px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
