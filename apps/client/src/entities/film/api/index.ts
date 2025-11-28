@@ -1,0 +1,1 @@
+export { getFilmById } from './getFilmById'

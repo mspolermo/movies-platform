@@ -17,7 +17,6 @@ export const FilmsPage = () => {
     isEmptyFilters,
     setSortValue,
     updateFilters,
-    getFilterParams,
     buildFilterParams
   } = useFilters();
 

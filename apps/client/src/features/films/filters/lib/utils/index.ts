@@ -1,0 +1,1 @@
+export { parseFiltersFromURL } from './parseFiltersFromURL'

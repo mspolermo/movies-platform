@@ -9,9 +9,7 @@ export const ProfessionsPage = () => {
 
   return (
     <Layout>
-      <AllCreatorsViewer
-        searchParams={searchParams}
-      />
+      <AllCreatorsViewer searchParams={searchParams} />
     </Layout>
   );
 };

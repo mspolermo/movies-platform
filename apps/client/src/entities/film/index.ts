@@ -5,3 +5,4 @@ export {
   FilmDetailSkeleton,
 } from './ui';
 export { checkIsCartoon } from './lib';
+export { getFilmById } from './api'

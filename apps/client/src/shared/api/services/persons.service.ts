@@ -25,12 +25,6 @@ export const personsService = {
     return response.data;
   },
 
-  // Получить всех персон
-  async getAllPersons(): Promise<TPersonModel[]> {
-    const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST);
-    return Array.isArray(response.data) ? response.data : [];
-  },
-
   // Получить всех персон с пагинацией
   async getAllPersonsPaginated(page: number = 1, limit: number = 20): Promise<PaginatedPersonsResponse> {
     const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST, {
@@ -40,20 +34,6 @@ export const personsService = {
       },
     });
     return response.data;
-  },
-
-  // Поиск персон по имени и профессии
-  async findPersonsByNameAndProfession(
-    name?: string,
-    professionId?: number
-  ): Promise<TPersonModel[]> {
-    const response = await apiClient.get(API_ENDPOINTS.PERSONS_EX.SEARCH_FIND, {
-      params: {
-        name,
-        professionId,
-      },
-    });
-    return Array.isArray(response.data) ? response.data : [];
   },
 };
 

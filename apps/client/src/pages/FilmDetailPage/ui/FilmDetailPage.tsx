@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
-import { filmsService } from '@/shared/api/services';
 import { TFilmWithProfessions } from '@common/types';
 import styles from './FilmDetailPage.module.scss';
-import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
+import { FilmDetail, FilmDetailSkeleton, getFilmById } from '@/entities/film';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 
 export const FilmDetailPage: React.FC = () => {
@@ -22,7 +21,7 @@ export const FilmDetailPage: React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        const filmData = await filmsService.getFilmById(filmId);
+        const filmData = await getFilmById(filmId);
         setFilm(filmData);
       } catch (err) {
         console.error('Error fetching film:', err);

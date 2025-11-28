@@ -1,6 +1,6 @@
 import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
-import { TFilmModel, PaginatedPersonsResponse } from '@common/types';
+import { TFilmModel, TFilmWithProfessions } from '@common/types';
 
 export interface SearchFilmsParams {
   page?: number;
@@ -23,13 +23,6 @@ export interface FilmsResponse {
 }
 
 export const filmsService = {
-  // Получить фильм по ID
-  async getFilmById(id: number): Promise<TFilmModel> {
-    const response = await apiClient.get(API_ENDPOINTS.FILMS.BY_ID(id));
-    // API возвращает объект с полем film, извлекаем его
-    return response.data.film || response.data;
-  },
-
   // Поиск фильмов
   async searchFilms(params: SearchFilmsParams = {}): Promise<FilmsResponse> {
     const response = await apiClient.get(API_ENDPOINTS.FILMS.SEARCH, {
@@ -52,19 +45,5 @@ export const filmsService = {
       perPage,
       hasMore: films.length === perPage, // Если получили полную страницу, возможно есть еще
     };
-  },
-
-  // Обновить фильм (только для админов)
-  async updateFilm(id: number, data: Partial<TFilmModel>): Promise<TFilmModel> {
-    const response = await apiClient.patch(
-      API_ENDPOINTS.FILMS.UPDATE(id),
-      data
-    );
-    return response.data;
-  },
-
-  // Удалить фильм (только для админов)
-  async deleteFilm(id: number): Promise<void> {
-    await apiClient.delete(API_ENDPOINTS.FILMS.DELETE(id));
   },
 };
