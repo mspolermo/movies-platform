@@ -1,3 +1,8 @@
+.container {
+  width: 100%;
+  margin-top: 0;
+}
+
 .filmography {
   width: 100%;
 }
@@ -47,6 +52,19 @@
   padding-bottom: 12px;
   margin-right: 20px;
   border-bottom: 4px solid var(--color-red);
+}
+
+.filmsScroll {
+  width: 100%;
+}
+
+.filmsList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0;
 }
 
 @media (max-width: 600px) {

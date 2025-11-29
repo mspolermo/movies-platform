@@ -2,18 +2,14 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/shared/ui/Button';
 import { TFilmBased } from '@common/types';
-import styles from './ShortMovieCard.module.scss';
+import styles from './ShortFilmCard.module.scss';
+import { formatRating } from '../../lib';
 
-interface ShortMovieCardProps {
+interface ShortFilmCardProps {
   film: TFilmBased;
 }
 
-const formatRating = (rating?: number): string => {
-  if (!rating) return '0';
-  return rating.toFixed(1).replace('.', ',');
-};
-
-export const ShortMovieCard: React.FC<ShortMovieCardProps> = ({ film }) => {
+export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
   const router = useRouter();
 
   const handleFilmClick = () => {
@@ -34,7 +30,7 @@ export const ShortMovieCard: React.FC<ShortMovieCardProps> = ({ film }) => {
           <div className={styles.specification}>
             <div className={styles.year}>{film.year || '—'}</div>
             <div className={styles.name}>{film.filmNameRu}</div>
-            <div className={styles.rating}>Рейтинг: {rating}</div>
+            <div className={styles.rating}>{rating}</div>
           </div>
         </div>
         <div className={styles.button}>
@@ -51,7 +47,7 @@ export const ShortMovieCard: React.FC<ShortMovieCardProps> = ({ film }) => {
         <div className={styles.info}>
           <div className={styles.year}>{film.year || '—'}</div>
           <div className={styles.name}>{film.filmNameRu}</div>
-          <div className={styles.rating}>Рейтинг: {rating}</div>
+          <div className={styles.rating}>{rating}</div>
           <div className={styles.button}>
             <Button onClick={handleFilmClick} size="large">
               К фильму

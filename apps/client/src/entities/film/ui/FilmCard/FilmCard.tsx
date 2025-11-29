@@ -7,6 +7,7 @@ import styles from './FilmCard.module.scss';
 import { Preview } from './Preview';
 import { FilmCardProps } from '../types';
 import { IconsBlock } from './IconsBlock';
+import { formatRating } from '../../lib';
 
 export const FilmCard = ({
   film,
@@ -47,11 +48,6 @@ export const FilmCard = ({
       handleCardClick();
     }
   }, [handleCardClick]);
-
-  const formatRating = useCallback((rating?: number) => {
-    if (!rating) return '0,0';
-    return rating.toFixed(1).replace('.', ',');
-  }, []);
 
   const formatDuration = useCallback((minutes?: number) => {
     if (!minutes) return '';
@@ -105,7 +101,7 @@ export const FilmCard = ({
                     <div className={styles.filmInfo}>
                       <div className={styles.rating}>
                         <span className={styles.ratingValue}>
-                          {formatRating(film.ratingKp)}
+                          {formatRating(film.ratingKp, true)}
                         </span>
                       </div>
                       <div className={styles.filmDetails}>

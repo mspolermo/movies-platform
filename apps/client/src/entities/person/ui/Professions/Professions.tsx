@@ -4,7 +4,10 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { TProfessionBased } from '@common/types';
 import styles from './Professions.module.scss';
-import { ProfessionsProps } from '../types';
+
+type ProfessionsProps = {
+  professions: TProfessionBased[]
+}
 
 const getProfessionsWord = (count: number): string => {
   const lastDigit = count % 10;

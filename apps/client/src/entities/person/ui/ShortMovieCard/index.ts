@@ -1,2 +1,0 @@
-export { ShortMovieCard } from './ShortMovieCard';
-

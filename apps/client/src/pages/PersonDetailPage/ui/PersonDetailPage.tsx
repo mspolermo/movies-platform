@@ -5,12 +5,13 @@ import { useParams, useRouter } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
 import { personsService } from '@/shared/api/services';
 import { TFilmBased, TPersonFullWithPagination } from '@common/types';
-import { PersonHeader, Filmography, ShortMovieCard, Professions } from '@/entities/person';
+import { PersonHeader, Professions } from '@/entities/person';
 import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { BackArrowIcon } from '@/shared/assets/svg-icons';
 import Loader from '@/shared/ui/Loader/Loader';
 import { InfiniteScroll } from '@/shared/ui';
 import styles from './PersonDetailPage.module.scss';
+import { Filmography } from '@/entities/film';
 
 const FILMS_PAGE_SIZE = 10;
 
@@ -149,23 +150,13 @@ export const PersonDetailPage: React.FC = () => {
               <Professions professions={person.professions} />
             )}
 
-            <section className={styles.filmography}>
-              <Filmography moviesCount={filmsTotal} />
-              <InfiniteScroll
-                onLoadMore={handleLoadMore}
-                isLoading={isLoadingMore}
-                hasMore={hasMoreFilms}
-                className={styles.filmsScroll}
-              >
-                <ul className={styles.filmsList}>
-                  {films.map((film) => (
-                    <li key={`${film.id}-${film.year}`}>
-                      <ShortMovieCard film={film} />
-                    </li>
-                  ))}
-                </ul>
-              </InfiniteScroll>
-            </section>
+            <Filmography
+              filmsTotal={filmsTotal}
+              films={films}
+              onLoadMore={handleLoadMore}
+              isLoading={isLoadingMore}
+              hasMoreFilms={hasMoreFilms}
+            />
           </div>
         </div>
       </div>
