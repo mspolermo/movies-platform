@@ -1,3 +1,5 @@
+@use '@/shared/styles/mixins/grid' as mixins;
+
 .container {
   max-width: 1300px;
   margin: 0 auto;
@@ -125,38 +127,7 @@
 
 
 .filmsGrid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 16px;
-  padding-top: 24px;
-
-  .filmCard {
-    width: 100%;
-  }
-
-  @media (max-width: 1270px) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  @media (max-width: 1095px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  @media (max-width: 920px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 770px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-
-  @media (max-width: 375px) {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
+  @include mixins.bigCardsGrid;
 }
 
 .noFilms {

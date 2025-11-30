@@ -2,43 +2,19 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { TProfessionBased } from '@common/types';
-import styles from './Professions.module.scss';
+import styles from './ProfessionsList.module.scss';
+import { getProfessionsWord } from '../../lib';
+import { TProfessionsListProps } from './types';
 
-type ProfessionsProps = {
-  professions: TProfessionBased[]
-}
-
-const getProfessionsWord = (count: number): string => {
-  const lastDigit = count % 10;
-  const lastTwoDigits = count % 100;
-
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-    return 'профессий';
-  }
-
-  if (lastDigit === 1) {
-    return 'профессия';
-  }
-
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    return 'профессии';
-  }
-
-  return 'профессий';
-};
-
-export const Professions: React.FC<ProfessionsProps> = ({ professions }) => {
+export const ProfessionsList = ({ professions }: TProfessionsListProps) => {
   const router = useRouter();
+
+  if (!professions || professions.length === 0) return null
   const professionsCount = professions.length;
 
   const handleProfessionClick = (professionName: string) => {
     router.push(`/professions?profession=${encodeURIComponent(professionName)}`);
   };
-
-  if (professionsCount === 0) {
-    return null;
-  }
 
   return (
     <div className={styles.professions}>

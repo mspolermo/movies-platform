@@ -1,0 +1,42 @@
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  color: var(--color-heading);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.backIcon {
+  flex-shrink: 0;
+}
+
+.backText {
+  user-select: none;
+}
+
+@media (max-width: 600px) {
+  .backButton {
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+}

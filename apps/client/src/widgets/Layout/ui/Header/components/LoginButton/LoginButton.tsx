@@ -2,6 +2,7 @@
 
 import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { useAuthStore } from '@/features/auth';
+import Link from 'next/link';
 import styles from './LoginButton.module.scss';
 
 export const LoginButton = () => {
@@ -15,11 +16,17 @@ export const LoginButton = () => {
     }
   };
 
+  const handleProfileClick = () => {
+
+  }
+
   return (
     <div className={styles.user}>
       <div className={styles.actions}>
-        {isAuthenticated && user && (
-          <span className={styles.userEmail}>{user.email}</span>
+        {isAuthenticated && user && (            <Link href="/profile" className={styles.userEmail}>
+          <span className={styles.link}>{user.email} </span>
+            </Link>
+          
         )}
         <button
           className={styles.profile}

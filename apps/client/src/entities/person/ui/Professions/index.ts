@@ -1,2 +1,0 @@
-export { Professions } from './Professions';
-

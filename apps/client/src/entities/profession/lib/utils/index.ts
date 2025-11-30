@@ -1,1 +1,1 @@
-export { capitalizeFirst } from './capitalizeFirst';
+export { getProfessionsWord } from './getProfessionsWord'

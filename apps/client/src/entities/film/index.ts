@@ -6,4 +6,4 @@ export {
   Filmography
 } from './ui';
 export { checkIsCartoon } from './lib';
-export { getFilmById } from './api'
+export { getFilmById, searchFilms } from './api'

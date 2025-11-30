@@ -1,4 +1,3 @@
-export { PersonHeader } from './PersonHeader';
-export { Professions } from './Professions';
+export { PersonInfo } from './PersonInfo';
 export { PersonCard } from './PersonCard';
 

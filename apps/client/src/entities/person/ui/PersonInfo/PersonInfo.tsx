@@ -1,12 +1,9 @@
 import React from 'react';
 import { TPersonModel } from '@common/types';
-import styles from './PersonHeader.module.scss';
+import styles from './PersonInfo.module.scss';
+import { TPersonInfoProps } from './types';
 
-interface PersonHeaderProps {
-  person: TPersonModel;
-}
-
-export const PersonHeader: React.FC<PersonHeaderProps> = ({ person }) => {
+export const PersonInfo = ({ person }: TPersonInfoProps) => {
   return (
     <div className={styles.header}>
       <div className={styles.content}>

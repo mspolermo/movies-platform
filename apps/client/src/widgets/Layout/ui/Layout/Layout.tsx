@@ -7,12 +7,14 @@ import { Header } from '../Header';
 import { Footer } from '../Footer';
 import styles from './Layout.module.scss';
 import { Loader } from '@/shared/ui';
+import { BackButton } from '@/features/navigateBack';
 
 interface LayoutProps {
+  withBackButton?: boolean;
   children: ReactNode;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout = ({ children, withBackButton }: LayoutProps) => {
   const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
     useAuthStore();
   const router = useRouter();
@@ -69,7 +71,10 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={styles.layout}>
       <Header />
-      <main className={styles.main}>{children}</main>
+        <main className={styles.main}>
+          {withBackButton && <BackButton />}
+          {children}
+        </main>
       <Footer />
     </div>
   );

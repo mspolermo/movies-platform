@@ -1,0 +1,2 @@
+export { ProfessionsList } from './ProfessionsList';
+

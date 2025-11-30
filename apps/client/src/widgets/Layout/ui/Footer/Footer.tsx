@@ -37,21 +37,13 @@ export const Footer = () => {
                     className={styles.link}
                     onClick={() => navigateTo('/films')}
                   >
-                    Что нового
-                  </button>
-                </li>
-                <li className={styles.item}>
-                  <button
-                    className={styles.link}
-                    onClick={() => navigateTo('/films')}
-                  >
                     Фильмы
                   </button>
                 </li>
                 <li className={styles.item}>
                   <button
                     className={styles.link}
-                    onClick={() => navigateTo('/films?genre=мультфильм')}
+                    onClick={() => navigateTo('/films?genres=мультфильм')}
                   >
                     Мультфильмы
                   </button>
@@ -59,19 +51,43 @@ export const Footer = () => {
                 <li className={styles.item}>
                   <button
                     className={styles.link}
-                    onClick={() => navigateTo('/films?genre=мультфильм')}
+                    onClick={() => navigateTo('/genres')}
                   >
-                    Что посмотреть
+                    Жанры
+                  </button>
+                </li>
+                <li className={styles.item}>
+                  <button
+                    className={styles.link}
+                    onClick={() => navigateTo('/countries')}
+                  >
+                    Страны
+                  </button>
+                </li>
+                <li className={styles.item}>
+                  <button
+                    className={styles.link}
+                    onClick={() => navigateTo('/persons')}
+                  >
+                    Персоны
+                  </button>
+                </li>
+                <li className={styles.item}>
+                  <button
+                    className={styles.link}
+                    onClick={() => navigateTo('/professions')}
+                  >
+                    Профессии
                   </button>
                 </li>
               </ul>
               <div className={styles.certificateLinkWrapper}>
-                <Link
-                  href="https://www.ivi.ru/cert"
+                <div
+                  onClick={() => navigateTo('/')}
                   className={styles.certificateLink}
                 >
                   Movie Land Platform
-                </Link>
+                </div>
               </div>
             </div>
 
@@ -83,7 +99,7 @@ export const Footer = () => {
             </div>
 
             {/* Колонка с кнопкой подписки */}
-            <Link className={styles.column} href="https://www.ivi.ru/subscribe">
+            <Link className={styles.column} href="/">
               <div className={styles.bigButton}>
                 <SvgIcon name="mute" size={56} />
               </div>
@@ -145,14 +161,14 @@ export const Footer = () => {
               </li>
               <li
                 className={styles.mobileItem}
-                onClick={() => openUrl('https://www.ivi.ru/series')}
+                onClick={() => openUrl('/')}
               >
                 <SvgIcon name="tv" size={20} />
                 <h5 className={styles.mobileHeading}>TV+</h5>
               </li>
               <li
                 className={styles.mobileItem}
-                onClick={() => openUrl('https://www.ivi.ru/')}
+                onClick={() => openUrl('/')}
               >
                 <div className={styles.svgBlock}>
                   <SvgIcon name="circle-flooded" size={5} />

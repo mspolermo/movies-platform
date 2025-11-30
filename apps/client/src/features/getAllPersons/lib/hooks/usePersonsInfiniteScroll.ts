@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TPersonBased, PaginatedPersonsResponse } from '@common/types';
-import { personsService  } from '@/shared/api/services';
+import { getAllPersonsPaginated } from '@/entities/person';
 
 interface UsePersonsInfiniteScrollOptions {
   initialPage?: number;
@@ -38,7 +38,7 @@ export const usePersonsInfiniteScroll = ({
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse = await personsService.getAllPersonsPaginated(page, limit);
+        const response: PaginatedPersonsResponse = await getAllPersonsPaginated(page, limit);
 
         if (reset) {
           setPersons(response.items);

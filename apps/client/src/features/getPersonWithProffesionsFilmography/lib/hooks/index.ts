@@ -1,0 +1,1 @@
+export { usePersonDetails } from './usePersonDetails'

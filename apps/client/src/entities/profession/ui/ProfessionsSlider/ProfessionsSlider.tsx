@@ -3,10 +3,11 @@
 
 import React from 'react';
 import cn  from 'classnames';
-import { capitalizeFirst, useScrollArrows } from '../../lib';
+import { useScrollArrows } from '../../lib';
 import styles from './ProfessionsSlider.module.scss';
 import { SvgIcon } from '@/shared/ui';
 import { TProfessionsTabsProps } from './types';
+import { capitalizeFirst } from '@/shared/lib';
 
 /**
  * UI слайдер профессий для выбора профессии

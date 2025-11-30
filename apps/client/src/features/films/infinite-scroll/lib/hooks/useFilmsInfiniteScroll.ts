@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { TFilmBased } from '@common/types';
-import {
-  filmsService,
-  SearchFilmsParams,
-  FilmsResponse,
-} from '@/shared/api/services';
+import { searchFilms } from '@/entities/film';
+import { FilmsResponse, SearchFilmsParams } from '@/shared/types';
 
 interface UseFilmsInfiniteScrollOptions {
   initialParams?: SearchFilmsParams;
@@ -49,7 +46,7 @@ export const useFilmsInfiniteScroll = ({
           perPage: params.perPage ?? 20,
         };
 
-        const response: FilmsResponse = await filmsService.searchFilms(searchParams);
+        const response: FilmsResponse = await searchFilms(searchParams);
 
         if (reset) {
           setFilms(response.films);

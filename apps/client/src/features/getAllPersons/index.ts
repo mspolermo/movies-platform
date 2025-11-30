@@ -1,0 +1,2 @@
+export { AllPersonsList } from './ui'
+

@@ -35,18 +35,18 @@ export const SummaryBlock = ({
 
   const handleYearClick = () => {
     if (year) {
-      router.push(`/films/year/${year}`);
+      router.push(`/films?year=${year}`);
     }
   };
 
   const handleCountryClick = () => {
     if (countries[0]?.countryName) {
-      router.push(`/films/country/${countries[0].countryName}`);
+      router.push(`/films?countries=${countries[0].countryName}`);
     }
   };
 
   const handleGenreClick = (genre: TGenreBased) => {
-    router.push(`/films/genre/${genre.nameEn}`);
+    router.push(`/films?genres=${genre.nameEn}`);
   };
 
   return (

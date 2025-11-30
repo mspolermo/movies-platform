@@ -74,12 +74,13 @@ export const Header = () => {
           className={`${styles.content} ${showHeaderBackground ? styles.active : ''}`}
         >
           <div className={styles.brand}>
-            <Link href="/films" className={styles.logo}>
+            <Link href="/" className={styles.logo}>
               <Logo />
             </Link>
           </div>
 
           <div className={styles.menu}>
+          <Link href="/films" className={styles.link}>
             <button
               className={styles.link}
               onMouseEnter={() => handleDropdownOpen()}
@@ -87,17 +88,9 @@ export const Header = () => {
             >
               Фильмы
             </button>
-            <Link href="/genres" className={styles.link}>
-              Жанры
             </Link>
-            <Link href="/countries" className={styles.link}>
-              Страны
-            </Link>
-            <Link href="/persons" className={styles.link}>
-              Персоны
-            </Link>
-            <Link href="/professions" className={styles.link}>
-              Профессии
+            <Link href="/films?genres=мультфильм" className={styles.link}>
+              Мультфильмы
             </Link>
             <Link href="/debug" className={styles.link}>
               Debug

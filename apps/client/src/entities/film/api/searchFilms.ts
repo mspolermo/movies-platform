@@ -1,30 +1,10 @@
-import apiClient from '../client';
-import { API_ENDPOINTS } from '../endpoints';
-import { TFilmModel, TFilmWithProfessions } from '@common/types';
+import apiClient from '@/shared/api/client';
+import { API_ENDPOINTS } from '@/shared/api/endpoints';
+import { FilmsResponse, SearchFilmsParams } from '@/shared/types';
 
-export interface SearchFilmsParams {
-  page?: number;
-  perPage?: number;
-  year?: number;
-  genres?: string[];
-  countries?: string[];
-  persons?: string[];
-  minRatingKp?: number;
-  minVotesKp?: number;
-  sortBy?: string;
-}
-
-export interface FilmsResponse {
-  films: TFilmModel[];
-  total: number;
-  page: number;
-  perPage: number;
-  hasMore: boolean;
-}
-
-export const filmsService = {
+export const searchFilms =
   // Поиск фильмов
-  async searchFilms(params: SearchFilmsParams = {}): Promise<FilmsResponse> {
+  async (params: SearchFilmsParams = {}): Promise<FilmsResponse> => {
     const response = await apiClient.get(API_ENDPOINTS.FILMS.SEARCH, {
       params: {
         page: params.page || 1,
@@ -45,5 +25,4 @@ export const filmsService = {
       perPage,
       hasMore: films.length === perPage, // Если получили полную страницу, возможно есть еще
     };
-  },
-};
+  }

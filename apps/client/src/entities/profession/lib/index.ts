@@ -1,2 +1,2 @@
-export { capitalizeFirst } from './utils'
+export { getProfessionsWord } from './utils'
 export { useScrollArrows } from './hooks'

@@ -1,17 +1,4 @@
-.container {
-  .title {
-    font-size: 2rem;
-    color: var(--color-heading);
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-}
-
-.infiniteScroll {
-  width: 100%;
-}
-
-.personsGrid {
+@mixin bigCardsGrid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
@@ -36,18 +23,4 @@
   @media (max-width: 600px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-}
-
-.loaderWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-}
-
-.error {
-  text-align: center;
-  color: var(--color-red);
-  padding: 2rem;
-  font-size: 1.1rem;
 }
