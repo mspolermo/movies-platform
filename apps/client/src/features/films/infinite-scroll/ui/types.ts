@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import { SearchFilmsParams } from '@/shared/api/services';
 import { TFilmBased } from '@common/types';
+import { SearchFilmsParams } from '@/shared/types';
 
 export interface FilmsInfiniteScrollProps {
   children: (

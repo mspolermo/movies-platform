@@ -6,8 +6,8 @@ import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { FilmsInfiniteScroll } from '@/features/films/infinite-scroll/ui/FilmsInfiniteScroll';
 import { Filters, SortFilter, useFilters } from '@/features/films/filters';
 import { SortOption } from '@/features/films/filters/types/filters';
-import { SearchFilmsParams } from '@/shared/api/services';
 import styles from './FilmsPage.module.scss';
+import { SearchFilmsParams } from '@/shared/types';
 
 export const FilmsPage = () => {
   const {

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { InfiniteScroll, Loader } from '@/shared/ui';
-import { SearchFilmsParams } from '@/shared/api/services';
+
 import { useFilmsInfiniteScroll } from '../lib';
 import { FilmsInfiniteScrollProps } from './types';
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ActiveFilters, AllFilters, SortOption, DEFAULT_ACTIVE_FILTERS, DEFAULT_ALL_FILTERS } from '../../types/filters';
-import { SearchFilmsParams } from '@/shared/api/services';
+import { SearchFilmsParams } from '@/shared/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import { parseFiltersFromURL } from '../utils/parseFiltersFromURL';
