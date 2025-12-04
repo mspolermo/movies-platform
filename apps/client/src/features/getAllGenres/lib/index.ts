@@ -1,0 +1,1 @@
+export { useAllGenres } from './hooks'
