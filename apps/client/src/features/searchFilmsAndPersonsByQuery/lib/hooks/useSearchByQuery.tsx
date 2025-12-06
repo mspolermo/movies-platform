@@ -3,8 +3,8 @@ import { API_ENDPOINTS } from "@/shared/api/endpoints";
 import { useEffect, useState } from "react";
 import { TSearchResultProps } from "../../model";
 
-export const useSearchByQuery = () => {
-  const [query, setQuery] = useState('');
+export const useSearchByQuery = (query: string) => {
+
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<TSearchResultProps>({
     films: [],
@@ -48,7 +48,10 @@ export const useSearchByQuery = () => {
     }
   };
 
-  const hasResults =
-    results.films.length > 0 || results.persons.length > 0;
 
+
+    return {
+      loading,
+      results
+    }
 }

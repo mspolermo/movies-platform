@@ -1,0 +1,1 @@
+export { SearchFilmsAndPersons } from './ui'
