@@ -48,8 +48,6 @@ export const useSearchByQuery = (query: string) => {
     }
   };
 
-
-
     return {
       loading,
       results
