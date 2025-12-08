@@ -1,0 +1,1 @@
+export { useFilmDetails } from './useFilmDetails'
