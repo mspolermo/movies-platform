@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import styles from './InfiniteScroll.module.scss';
+import styles from './LoadMoreSection.module.scss';
 import { Loader } from '@/shared/ui';
 
-export interface InfiniteScrollProps {
+export interface LoadMoreSectionProps {
   children: ReactNode;
   onLoadMore: () => void;
   isLoading: boolean;
@@ -13,7 +13,7 @@ export interface InfiniteScrollProps {
   className?: string;
 }
 
-export const InfiniteScroll = ({
+export const LoadMoreSection = ({
   children,
   onLoadMore,
   isLoading,
@@ -22,7 +22,7 @@ export const InfiniteScroll = ({
   loadingComponent,
   endMessage,
   className,
-}: InfiniteScrollProps) => {
+}: LoadMoreSectionProps) => {
   const defaultLoadingComponent = (
     <div className={styles.loading}>
       <Loader />

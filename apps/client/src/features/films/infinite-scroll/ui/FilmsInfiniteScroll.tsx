@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { InfiniteScroll, Loader } from '@/shared/ui';
+import { LoadMoreSection, Loader } from '@/shared/ui';
 
 import { useFilmsInfiniteScroll } from '../lib';
 import { FilmsInfiniteScrollProps } from './types';
@@ -32,7 +32,7 @@ export const FilmsInfiniteScroll = ({
   );
 
   return (
-    <InfiniteScroll
+    <LoadMoreSection
       onLoadMore={loadMore}
       isLoading={loading}
       hasMore={hasMore}
@@ -42,6 +42,6 @@ export const FilmsInfiniteScroll = ({
       className={className}
     >
       {children(films, loading, error)}
-    </InfiniteScroll>
+    </LoadMoreSection>
   );
 };

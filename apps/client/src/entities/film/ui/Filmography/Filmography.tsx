@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Filmography.module.scss';
-import { InfiniteScroll } from '@/shared/ui';
+import { LoadMoreSection } from '@/shared/ui';
 import { ShortFilmCard } from '../ShortFilmCard';
 import { TFilmBased } from '@common/types';
 import { getFilmsWord } from '../../lib';
@@ -34,7 +34,7 @@ export const Filmography = (props: FilmographyProps) => {
         </div>
       </div>
 
-      <InfiniteScroll
+      <LoadMoreSection
         onLoadMore={onLoadMore}
         isLoading={isLoading}
         hasMore={hasMoreFilms}
@@ -47,7 +47,7 @@ export const Filmography = (props: FilmographyProps) => {
             </li>
           ))}
         </ul>
-      </InfiniteScroll>
+      </LoadMoreSection>
     </section>
   );
 };

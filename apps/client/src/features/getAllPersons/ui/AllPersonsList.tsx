@@ -1,7 +1,7 @@
 'use client';
 
 import { PersonCard } from '@/entities/person/ui/PersonCard';
-import { InfiniteScroll, Loader } from '@/shared/ui';
+import { LoadMoreSection, Loader } from '@/shared/ui';
 import styles from './AllPersonsList.module.scss';
 import { usePersonsInfiniteScroll } from '../lib';
 
@@ -29,7 +29,7 @@ export const AllPersonsList = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Персоны</h1>
 
-      <InfiniteScroll
+      <LoadMoreSection
         onLoadMore={loadMore}
         isLoading={loading}
         hasMore={hasMore}
@@ -40,7 +40,7 @@ export const AllPersonsList = () => {
             <PersonCard key={person.id} person={person} />
           ))}
         </div>
-      </InfiniteScroll>
+      </LoadMoreSection>
     </div>
   );
 }

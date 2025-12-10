@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { InfiniteScroll } from '@/shared/ui';
+import { LoadMoreSection } from '@/shared/ui';
 import { Card } from '@/shared/ui';
 import { useFilmPersonsByProfession } from '../../lib';
 import styles from './FilmPersonsByProfession.module.scss';
@@ -45,7 +45,7 @@ export const FilmPersonsByProfession = ({
   }
 
   return (
-    <InfiniteScroll
+    <LoadMoreSection
       onLoadMore={loadMore}
       isLoading={loading}
       hasMore={hasMore}
@@ -62,7 +62,7 @@ export const FilmPersonsByProfession = ({
           />
         ))}
       </div>
-    </InfiniteScroll>
+    </LoadMoreSection>
   );
 };
 

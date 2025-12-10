@@ -1,5 +1,5 @@
 import { PersonCard } from '@/entities/person';
-import { InfiniteScroll, Loader } from '@/shared/ui';
+import { LoadMoreSection, Loader } from '@/shared/ui';
 import styles from './AllPersonsByProfession.module.scss';
 import { TAllPersonsByProfessionProps } from './types';
 import { useProfessionPersons } from '../lib';
@@ -34,7 +34,7 @@ export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProf
         </div>
       )}
 
-      <InfiniteScroll
+      <LoadMoreSection
         onLoadMore={loadMore}
         isLoading={personsLoading}
         hasMore={hasMore}
@@ -45,7 +45,7 @@ export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProf
             <PersonCard key={person.id} person={person} />
           ))}
         </div>
-      </InfiniteScroll>
+      </LoadMoreSection>
     </div>
   )
 }
