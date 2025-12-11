@@ -1,1 +1,1 @@
-export { useFilmsInfiniteScroll } from './hooks';
+export { useLoadMoreFilms } from './hooks';

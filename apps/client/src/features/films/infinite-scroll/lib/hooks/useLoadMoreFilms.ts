@@ -3,25 +3,15 @@ import { TFilmBased } from '@common/types';
 import { searchFilms } from '@/entities/film';
 import { FilmsResponse, SearchFilmsParams } from '@/shared/types';
 
-interface UseFilmsInfiniteScrollOptions {
+interface UseLoadMoreFilmsOptions {
   initialParams?: SearchFilmsParams;
   threshold?: number;
 }
 
-interface UseFilmsInfiniteScrollReturn {
-  films: TFilmBased[];
-  loading: boolean;
-  error: string | null;
-  hasMore: boolean;
-  loadMore: () => Promise<void>;
-  reset: () => void;
-  updateParams: (newParams: SearchFilmsParams) => void;
-}
-
-export const useFilmsInfiniteScroll = ({
+export const useLoadMoreFilms = ({
   initialParams = {},
   threshold = 200,
-}: UseFilmsInfiniteScrollOptions = {}): UseFilmsInfiniteScrollReturn => {
+}: UseLoadMoreFilmsOptions = {}) => {
   const [films, setFilms] = useState<TFilmBased[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

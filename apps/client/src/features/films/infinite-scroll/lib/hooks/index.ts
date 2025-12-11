@@ -1,1 +1,1 @@
-export { useFilmsInfiniteScroll } from './useFilmsInfiniteScroll';
+export {  useLoadMoreFilms } from './useLoadMoreFilms';

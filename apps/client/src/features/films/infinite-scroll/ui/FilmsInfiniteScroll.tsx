@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { LoadMoreSection, Loader } from '@/shared/ui';
 
-import { useFilmsInfiniteScroll } from '../lib';
+import { useLoadMoreFilms } from '../lib';
 import { FilmsInfiniteScrollProps } from './types';
 
 export const FilmsInfiniteScroll = ({
@@ -13,7 +13,7 @@ export const FilmsInfiniteScroll = ({
   className,
   onParamsChange,
 }: FilmsInfiniteScrollProps) => {
-  const { films, loading, error, hasMore, loadMore, updateParams } = useFilmsInfiniteScroll({
+  const { films, loading, error, hasMore, loadMore, updateParams } = useLoadMoreFilms({
     initialParams,
     threshold,
   });
