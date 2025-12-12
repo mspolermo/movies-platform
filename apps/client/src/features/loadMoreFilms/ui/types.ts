@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { TFilmBased } from '@common/types';
 import { SearchFilmsParams } from '@/shared/types';
 
-export interface FilmsInfiniteScrollProps {
+export interface LoadMoreFilmsProps {
   children: (
     films: TFilmBased[],
     loading: boolean,

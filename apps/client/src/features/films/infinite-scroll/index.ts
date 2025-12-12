@@ -1,1 +1,0 @@
-export { FilmsInfiniteScroll } from './ui';

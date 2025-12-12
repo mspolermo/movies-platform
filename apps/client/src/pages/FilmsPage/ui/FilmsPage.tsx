@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Layout } from '@/widgets/Layout';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
-import { FilmsInfiniteScroll } from '@/features/films/infinite-scroll/ui/FilmsInfiniteScroll';
+import { LoadMoreFilms } from '@/features/loadMoreFilms/ui/LoadMoreFilms';
 import { Filters, SortFilter, useFilters } from '@/features/films/filters';
 import { SortOption } from '@/features/films/filters/types/filters';
 import styles from './FilmsPage.module.scss';
@@ -93,7 +93,7 @@ export const FilmsPage = () => {
           </div>
         </div>
 
-        <FilmsInfiniteScroll
+        <LoadMoreFilms
           initialParams={currentParams}
           threshold={200}
           className={styles.filmsContainer}
@@ -140,7 +140,7 @@ export const FilmsPage = () => {
               </div>
             );
           }}
-        </FilmsInfiniteScroll>
+        </LoadMoreFilms>
       </div>
     </Layout>
   );
