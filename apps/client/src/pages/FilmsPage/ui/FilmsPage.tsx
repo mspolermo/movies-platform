@@ -4,8 +4,8 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { Layout } from '@/widgets/Layout';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { LoadMoreFilms } from '@/features/loadMoreFilms/ui/LoadMoreFilms';
-import { Filters, SortFilter, useFilters } from '@/features/films/filters';
-import { SortOption } from '@/features/films/filters/types/filters';
+import { Filters, SortFilter, useFilters } from '@/features/filterFilms';
+import { SortOption } from '@/features/filterFilms/types/filters';
 import styles from './FilmsPage.module.scss';
 import { SearchFilmsParams } from '@/shared/types';
 
