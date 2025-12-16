@@ -236,8 +236,8 @@ export const Filters: React.FC<FiltersProps> = ({
           >
             <FilterCheckboxList
               allValues={allFilters.genres}
-              selectValues={selectedFilters.genres}
-              handleChangeFilter={selectedGenres}
+              selectedValues={selectedFilters.genres}
+              onChange={selectedGenres}
             />
           </FilterDropdown>
 
@@ -251,8 +251,8 @@ export const Filters: React.FC<FiltersProps> = ({
           >
             <FilterCheckboxList
               allValues={allFilters.countries}
-              selectValues={selectedFilters.countries}
-              handleChangeFilter={selectedCountries}
+              selectedValues={selectedFilters.countries}
+              onChange={selectedCountries}
             />
           </FilterDropdown>
 
