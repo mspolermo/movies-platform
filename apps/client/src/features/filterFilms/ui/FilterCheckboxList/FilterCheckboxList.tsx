@@ -10,11 +10,11 @@ interface FilterCheckboxListProps {
   onChange: (value: string) => void;
 }
 
-export const FilterCheckboxList: React.FC<FilterCheckboxListProps> = ({
+export const FilterCheckboxList = ({
   allValues,
   selectedValues,
   onChange,
-}) => {
+}: FilterCheckboxListProps) => {
   const isSelected = (value: string) => selectedValues.includes(value);
 
   return (
