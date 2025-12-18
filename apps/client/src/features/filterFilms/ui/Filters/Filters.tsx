@@ -306,7 +306,7 @@ export const Filters: React.FC<FiltersProps> = ({
             setActiveBlock={setActiveBlock}
           >
             <PersonSearchFilter
-              handleChangeFilter={selectedProducer}
+              onChangeFilter={selectedProducer}
               professionId={2}
               setActiveBlock={setActiveBlock}
             />
@@ -320,7 +320,7 @@ export const Filters: React.FC<FiltersProps> = ({
             setActiveBlock={setActiveBlock}
           >
             <PersonSearchFilter
-              handleChangeFilter={selectedActor}
+              onChangeFilter={selectedActor}
               professionId={1}
               setActiveBlock={setActiveBlock}
             />

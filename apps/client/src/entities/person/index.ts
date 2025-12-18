@@ -1,2 +1,2 @@
 export { PersonInfo, PersonCard } from './ui';
-export { getPersonsByProfession, getFilmPersonsByProfession, getPersonById, getAllPersonsPaginated } from './api'
+export { getPersonsByProfession, getFilmPersonsByProfession, getPersonById, getAllPersonsPaginated, searchPersonsByNameAndProfession } from './api'
