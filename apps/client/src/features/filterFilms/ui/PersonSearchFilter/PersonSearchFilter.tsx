@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import styles from './PersonSearchFilter.module.scss';
 import { usePersonSearch } from '../../lib/hooks/usePersonSearch';
 
@@ -9,11 +9,11 @@ interface PersonSearchFilterProps {
   setActiveBlock: (activeBlockName: string[]) => void;
 }
 
-export const PersonSearchFilter: React.FC<PersonSearchFilterProps> = ({
+export const PersonSearchFilter = ({
   onChangeFilter,
   professionId,
   setActiveBlock,
-}) => {
+}: PersonSearchFilterProps) => {
   const [name, setName] = useState('');
 
   const { results } = usePersonSearch({

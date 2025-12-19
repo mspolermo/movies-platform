@@ -1,4 +1,3 @@
-import React from 'react';
 import cn from 'classnames';
 import { FilterItem } from '../../types/filters';
 import styles from './FilterCheckboxList.module.scss';
