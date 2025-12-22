@@ -1,5 +1,9 @@
-import React from 'react';
-import { ActiveFilters, DEFAULT_ACTIVE_FILTERS } from '../../types/filters';
+import { useCallback } from 'react';
+import cn from 'classnames';
+
+import { ActiveFilters, DEFAULT_ACTIVE_FILTERS } from '../../types';
+import { areFiltersDefault } from '../../lib';
+
 import styles from './ResetFiltersButton.module.scss';
 
 interface ResetFiltersButtonProps {
@@ -7,47 +11,48 @@ interface ResetFiltersButtonProps {
   setSelectedFilters: (filters: ActiveFilters) => void;
 }
 
-export const ResetFiltersButton: React.FC<ResetFiltersButtonProps> = ({
+export const ResetFiltersButton = ({
   selectedFilters,
-  setSelectedFilters
-}) => {
-  const isEmptyFilters = JSON.stringify(selectedFilters) === JSON.stringify(DEFAULT_ACTIVE_FILTERS);
+  setSelectedFilters,
+}: ResetFiltersButtonProps) => {
+  const isDisabled = areFiltersDefault(selectedFilters);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setSelectedFilters(DEFAULT_ACTIVE_FILTERS);
-  };
+  }, [setSelectedFilters]);
 
   return (
-    <div className={styles.resetFiltersButton}>
-      {/* Desktop version */}
-      <div className={styles.desktop}>
-        <div 
-          className={`${styles.resetButton} ${isEmptyFilters ? styles.resetButtonDisabled : ''}`}
-          onClick={handleReset}
-        >
-          <div className={styles.content}>
-            <div className={styles.icon}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <div className={styles.text}>
-              Сбросить фильтры
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className={styles.root}>
+      {/* Desktop */}
+      <button
+        type="button"
+        className={cn(styles.button, styles.desktop)}
+        onClick={handleReset}
+        disabled={isDisabled}
+      >
+        <span className={styles.icon}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M15 5L5 15M5 5L15 15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </span>
 
-      {/* Mobile version */}
-      <div className={styles.mobile}>
-        <button 
-          className={`${styles.resetButtonMobile} ${isEmptyFilters ? styles.resetButtonMobileDisabled : ''}`}
-          onClick={handleReset}
-        >
-          Сбросить фильтры
-        </button>
-      </div>
+        <span className={styles.text}>Сбросить фильтры</span>
+      </button>
+
+      {/* Mobile */}
+      <button
+        type="button"
+        className={cn(styles.button, styles.mobile)}
+        onClick={handleReset}
+        disabled={isDisabled}
+      >
+        Сбросить фильтры
+      </button>
     </div>
   );
 };
-

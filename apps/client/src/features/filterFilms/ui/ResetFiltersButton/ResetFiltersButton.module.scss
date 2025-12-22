@@ -1,11 +1,46 @@
-.resetFiltersButton {
+.root {
   display: flex;
   align-items: center;
 }
 
-.desktop {
+.button {
   display: flex;
-  
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+
+  font-size: 14px;
+  color: var(--text-secondary, #999);
+  cursor: pointer;
+
+  transition: background 0.2s ease, opacity 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  white-space: nowrap;
+}
+
+/* Desktop / Mobile */
+
+.desktop {
   @media (max-width: 768px) {
     display: none;
   }
@@ -13,72 +48,12 @@
 
 .mobile {
   display: none;
-  
+  width: 100%;
+
   @media (max-width: 768px) {
     display: flex;
-    width: 100%;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color, #333);
   }
 }
-
-.resetButton {
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: transparent;
-  
-  &:hover:not(.resetButtonDisabled) {
-    background: rgba(255, 255, 255, 0.1);
-  }
-}
-
-.resetButtonDisabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.content {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary, #999);
-}
-
-.text {
-  font-size: 14px;
-  color: var(--text-secondary, #999);
-  white-space: nowrap;
-}
-
-.resetButtonMobile {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border-color, #333);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-secondary, #999);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  
-  &:hover:not(.resetButtonMobileDisabled) {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--text-secondary, #666);
-  }
-}
-
-.resetButtonMobileDisabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
