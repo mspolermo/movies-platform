@@ -1,15 +1,6 @@
 .sortFilter {
   position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.content {
-  width: 100%;
-}
-
-.block {
-  position: relative;
+  display: inline-flex;
 }
 
 .select {
@@ -23,11 +14,11 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  border: 1px solid var(--border-color, #333);
   border-radius: 8px;
+  border: 1px solid var(--border-color, #333);
   background: var(--background-secondary, #1a1a1a);
-  transition: all 0.2s ease;
-  
+  transition: border-color 0.2s ease;
+
   &:hover {
     border-color: var(--text-secondary, #666);
   }
@@ -42,8 +33,9 @@
 
 .title {
   font-size: 14px;
-  color: var(--text-primary, #fff);
+  line-height: 1;
   white-space: nowrap;
+  color: var(--text-primary, #fff);
 }
 
 .arrow {
@@ -62,25 +54,24 @@
   transform: rotate(180deg);
 }
 
+/* Клик вне дропдауна */
 .closeBlock {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   z-index: 10;
 }
 
+/* Выпадающий список */
 .value {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
   min-width: 100%;
   padding: 8px;
-  border: 1px solid var(--border-color, #333);
   border-radius: 8px;
+  border: 1px solid var(--border-color, #333);
   background: var(--background-secondary, #1a1a1a);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   z-index: 11;
 }
 
@@ -95,13 +86,12 @@
 
 .option {
   padding: 10px 12px;
+  border-radius: 6px;
   font-size: 14px;
   color: var(--text-primary, #fff);
-  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  
+  transition: background 0.15s ease, color 0.15s ease;
+
   &:hover {
     background: rgba(255, 255, 255, 0.05);
   }
@@ -112,4 +102,3 @@
   color: var(--accent-color, #4a9eff);
   font-weight: 500;
 }
-

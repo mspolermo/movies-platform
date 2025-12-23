@@ -224,6 +224,37 @@ const icons = {
       <path d="M9 18L15 12L9 6" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   ),
+  'sort': (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      {...props}
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M8 1L10.5 6H5.5L8 1Z"
+        fill="currentColor"
+      />
+      <path
+        d="M8 15L5.5 10H10.5L8 15Z"
+        fill="currentColor"
+      />
+    </svg>
+  ),
+  'chevron': (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    {...props}
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <path
+      d="M5 7.5L10 12.5L15 7.5"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+),
 };
 
 export const SvgIcon: React.FC<SvgIconProps> = ({
