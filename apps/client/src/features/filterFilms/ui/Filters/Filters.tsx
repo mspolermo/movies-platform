@@ -265,8 +265,12 @@ export const Filters: React.FC<FiltersProps> = ({
           >
             <YearFilter
               allValues={allFilters.years}
-              selectValues={selectedFilters.years}
-              handleChangeFilter={selectedYears}
+              selectValue={
+                typeof selectedFilters.years === 'number'
+                  ? selectedFilters.years
+                  : null
+              }
+              onChange={selectedYears}
             />
           </FilterDropdown>
 
