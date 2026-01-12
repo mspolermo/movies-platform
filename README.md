@@ -1,37 +1,45 @@
 # 🎬 Movies Platform
 
-Киноплатформа
+Киноплатформа с микросервисным backend на NestJS и современным frontend на Next.js 14 (FSD, TypeScript, SCSS). B2C-продукт, собирающий API вокруг доменной модели (фильмы, люди, жанры, страны, комментарии, рейтинги) и обёрнутый в Docker-инфраструктуру.
 
-## 🏗️ Архитектура
+## 🎯 Что делает платформа
 
-Backend: Микросервисная архитектура на NestJS, Frontend: FSD на Next.js
+- **Каталог фильмов**: карточки фильмов, жанры, страны, факты, состав команды.
+- **Люди и профессии**: отдельные страницы людей, профессий и фильмографии.
+- **Поиск и фильтрация**: сложные фильтры, поиск по фильмам и людям, пагинация/подгрузка.
+- **Пользователи и роли**: регистрация/логин, роли и права, профиль пользователя.
+- **Комментарии и рейтинги**: комментарии к фильмам, пользовательские оценки (b2c-сценарий).
 
-- **api-gateway** (порт 5000) - API шлюз для всех запросов
-- **auth-users** (порт 3001) - аутентификация и управление пользователями  
-- **kino-db** (порт 3002) - основной сервис с данными о фильмах
-- **client** - Next.js фронтенд приложение
+## 🏗️ Архитектура и стек
 
-## 📁 Структура проекта
+- **Backend**: NestJS 9, микросервисы, PostgreSQL + Sequelize, RabbitMQ, JWT, Swagger.
+- **Frontend**: Next.js 14 (App Router), React 18, FSD-архитектура, Zustand, SCSS-модули.
+- **Инфраструктура**: Docker Compose, два PostgreSQL-инстанса (фильмы / пользователи), pgAdmin, RabbitMQ management.
+- **Тестирование**: Jest + Supertest для backend, Vitest + Testing Library для frontend.
 
-```
-├── apps/                 # Микросервисы
-│   ├── api-gateway/     # API шлюз
-│   ├── auth-users/      # Аутентификация
-│   ├── kino-db/         # Данные фильмов
-│   └── client/          # Фронтенд
-├── devops/              # Docker и SQL скрипты
-├── docs/                # Документация
-└── docker-compose.yml   # Конфигурация сервисов
-```
+### Микросервисы (`apps/`)
 
-## 🌐 Доступные сервисы
+- **api-gateway** (порт 5000) — единая точка входа, маршрутизация и агрегация данных, авторизация.
+- **auth-users** (порт 3001) — пользователи, роли, JWT-аутентификация.
+- **kino-db** (порт 3002) — фильмы, жанры, страны, люди, профессии, комментарии и связи между ними.
+- **client** — Next.js фронтенд, страницы фильмов, людей, подборок и профиля.
 
-- **API Gateway**: http://localhost:5000
+## 🌐 Доступные сервисы локально
+
+- **API Gateway**: http://localhost:5001 (во внешнем мире; внутри Docker — 5000)
 - **Auth Users**: http://localhost:3001  
 - **Kino DB**: http://localhost:3002
 - **Frontend**: http://localhost:3000
-- **PgAdmin**: http://localhost:5050 (admin@example.com/admin)
-- **RabbitMQ**: http://localhost:15672 (guest/guest)
+- **PgAdmin**: http://localhost:5050 (admin@example.com / admin)
+- **RabbitMQ**: http://localhost:15672 (guest / guest)
 
-## 📚 Документация
+## 🚀 Быстрый старт (Docker)
 
+- **Требования**: Docker, Docker Compose, `.env` в корне (порты, креды Postgres, очереди RabbitMQ, JWT).
+- **Запуск всего стенда**:
+  - `docker compose up -d --build`
+- **После старта**:
+  - backend-микросервисы и базы поднимаются автоматически с начальными дампами.
+  - pgAdmin и RabbitMQ доступны по адресам выше.
+
+Фронтенд (`apps/client`) можно разворачивать отдельно: `cd apps/client && npm install && npm run dev`.
