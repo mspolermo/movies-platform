@@ -71,11 +71,14 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
   return (
     <div className={styles.layout}>
       <Header />
+      <div className={styles.headerSpacer} aria-hidden />
+      <div className={styles.body}>
         <main className={styles.main}>
-          {withBackButton && <BackButton />}
-          {children}
-        </main>
-      <Footer />
+            {withBackButton && <BackButton />}
+            {children}
+          </main>
+        <Footer />
+      </div>
     </div>
   );
 };

@@ -1,13 +1,19 @@
 .layout {
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   background-color: var(--color-background);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.headerSpacer {
+  flex-shrink: 0;
+  height: var(--header-height);
 }
 
 .loadingLayout {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--header-height));
   width: 100%;
   background-color: var(--color-background);
   display: flex;
@@ -15,18 +21,28 @@
   justify-content: center;
 }
 
-.main {
+.body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: calc(100vh - var(--header-height));
+  overflow-y: auto;
   width: 100%;
+}
+
+.main {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
-  padding-top: calc(2rem + var(--header-height));
 }
 
 @media (max-width: 1160px) {
   .layout {
     display: block;
+  }
+  .headerSpacer {
+    height: 0;
   }
   .main {
     padding-top: 1rem;
