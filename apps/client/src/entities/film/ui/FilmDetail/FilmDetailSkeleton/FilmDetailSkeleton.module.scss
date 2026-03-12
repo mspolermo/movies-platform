@@ -20,7 +20,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 16px 0 20px;
+  margin: 20px 0;
   padding: 20px 20px 20px 32px;
   background: var(--color-background-elements);
   border-radius: 12px;
@@ -36,8 +36,7 @@
   align-items: center;
   background: var(--color-background-elements);
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 1.5rem;
+  padding: 20px 20px 20px 32px;
 }
 
 .ratingCircle {
@@ -63,9 +62,7 @@
   max-width: 100px;
 }
 
-.summarySkeleton {
-  margin-bottom: 1.5rem;
-}
+
 
 .titleSkeleton {
   margin-bottom: 16px;
@@ -117,7 +114,7 @@
 }
 
 .descriptionSkeleton {
-  margin-bottom: 1.5rem;
+  margin-top: 20px; // как в DescriptionBlock
 }
 
 .descriptionText {
@@ -132,7 +129,7 @@
 }
 
 .cardsSkeletonContainer {
-  margin: 14px 0 28px;
+  margin: 0 0 24px 0;
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
@@ -206,7 +203,6 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
 }
 
 .trailerTitleSkeleton {
