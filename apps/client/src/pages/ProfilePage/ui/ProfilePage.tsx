@@ -17,7 +17,7 @@ export const ProfilePage = () => {
 
   return (
     <Layout>
-      <div className={styles.container}>
+      <>
         <h1 className={styles.title}>Профиль</h1>
 
         <div className={styles.profileCard}>
@@ -44,7 +44,7 @@ export const ProfilePage = () => {
             </div>
           )}
         </div>
-      </div>
+      </>
     </Layout>
   );
 };

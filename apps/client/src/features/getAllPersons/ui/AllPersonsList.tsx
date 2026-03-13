@@ -26,7 +26,7 @@ export const AllPersonsList = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <>
       <h1 className={styles.title}>Персоны</h1>
 
       <LoadMoreSection
@@ -41,6 +41,6 @@ export const AllPersonsList = () => {
           ))}
         </div>
       </LoadMoreSection>
-    </div>
+    </>
   );
 }

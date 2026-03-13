@@ -39,9 +39,10 @@ export const FilmsPage = () => {
     updateFilters(nextFilters);
   };
 
+  //TODO: мобильные фильтры не работают, разобраться со стилями
+
   return (
     <Layout>
-      <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>Фильмы</h1>
           
@@ -141,7 +142,6 @@ export const FilmsPage = () => {
             );
           }}
         </LoadMoreFilms>
-      </div>
     </Layout>
   );
 };

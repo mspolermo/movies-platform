@@ -18,7 +18,7 @@ export const AllCountriesList = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <>
       <h1 className={styles.title}>Страны</h1>
 
       <div className={styles.countriesGrid}>
@@ -32,6 +32,6 @@ export const AllCountriesList = () => {
           </FilterCardButton>
         ))}
       </div>
-    </div>
+    </>
   );
 }

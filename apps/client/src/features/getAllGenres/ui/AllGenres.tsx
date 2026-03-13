@@ -20,7 +20,7 @@ export const AllGenres = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <>
       <h1 className={styles.title}>Жанры</h1>
 
       <div className={styles.genresGrid}>
@@ -37,6 +37,6 @@ export const AllGenres = () => {
           </FilterCardButton>
         ))}
       </div>
-    </div>
+    </>
   );
 }

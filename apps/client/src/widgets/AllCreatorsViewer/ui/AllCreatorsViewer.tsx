@@ -26,24 +26,24 @@ export const AllCreatorsViewer = ({searchParams }: TAllCreatorsViewerProps) => {
   }
 
   return (
-    <div className={styles.container}>
-        <h1 className={styles.title}>Профессии</h1>
+    <>
+      <h1 className={styles.title}>Профессии</h1>
 
-        {professions.length > 0 && (
-          <div className={styles.content}>
-            <ProfessionsSlider
-              professions={professions}
-              activeProfessionId={activeProfessionId}
-              onProfessionChange={handleProfessionChange}
-            />
+      {professions.length > 0 && (
+        <div className={styles.content}>
+          <ProfessionsSlider
+            professions={professions}
+            activeProfessionId={activeProfessionId}
+            onProfessionChange={handleProfessionChange}
+          />
 
-            <AllPersonsByProfession activeProfessionId={activeProfessionId}/>
-          </div>
-        )}
+          <AllPersonsByProfession activeProfessionId={activeProfessionId}/>
+        </div>
+      )}
 
-        {professions.length === 0 && (
-          <div className={styles.emptyState}>Нет доступных профессий</div>
-        )}
-      </div>
+      {professions.length === 0 && (
+        <div className={styles.emptyState}>Нет доступных профессий</div>
+      )}
+    </>
   )
 }

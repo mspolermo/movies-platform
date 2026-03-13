@@ -1,14 +1,8 @@
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-
-  .title {
-    font-size: 2rem;
-    color: var(--color-heading);
-    margin-bottom: 2rem;
-    text-align: center;
-  }
+.title {
+  font-size: 2rem;
+  color: var(--color-heading);
+  padding: 2rem 0 0 0;
+  text-align: center;
 }
 
 .loaderWrapper {
@@ -27,7 +21,6 @@
 
 .content {
   width: 100%;
-  margin-top: 20px;
 }
 
 .emptyState {

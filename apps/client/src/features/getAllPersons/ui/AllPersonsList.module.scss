@@ -1,12 +1,10 @@
 @use '@/shared/styles/mixins/grid' as mixins;
 
-.container {
-  .title {
-    font-size: 2rem;
-    color: var(--color-heading);
-    margin-bottom: 2rem;
-    text-align: center;
-  }
+.title {
+  font-size: 2rem;
+  color: var(--color-heading);
+  padding: 2rem;
+  text-align: center;
 }
 
 .infiniteScroll {

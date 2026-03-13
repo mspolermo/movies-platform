@@ -22,37 +22,16 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
   useEffect(() => {
     // Проверяем авторизацию только если есть токен, но нет пользователя
     if (token && !user) {
-      console.log('Layout: Token exists but no user, checking auth...');
       checkAuth();
     }
   }, [checkAuth, token, user]);
 
   useEffect(() => {
-    console.log('Layout: Auth state changed:', {
-      isAuthenticated,
-      user: !!user,
-      token: !!token,
-      isLoading,
-      isInitialized,
-    });
-
     // Перенаправляем на логин только если инициализация завершена и нет токена
     if (isInitialized && !token && !isLoading) {
-      console.log('Layout: Initialized and no token, redirecting to login');
       router.push('/auth/login');
     }
   }, [isAuthenticated, token, router, isLoading, isInitialized, user]);
-
-  // Показываем отладочную информацию в development
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Layout render:', {
-      isAuthenticated,
-      user: !!user,
-      token: !!token,
-      isLoading,
-      isInitialized,
-    });
-  }
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
   if (!isInitialized || (token && !user && isLoading)) {
@@ -67,6 +46,9 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
   if (!isAuthenticated || !user || !token) {
     return null;
   }
+
+  //TODO: надо чтоб боди не схлапывался когда там ничего нет или мало контента
+  //TODO: футер мобильной версии срезает часть контента снизу страницы, нужно сделать так, чтобы он не срезал
 
   return (
     <div className={styles.layout}>

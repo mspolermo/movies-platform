@@ -14,6 +14,8 @@ export const FilmDetailPage = () => {
 
   const { loading, error, film } = useFilmDetails(filmId)
 
+  //TODO: сделать внятную страницу не найденного фильма
+
   if (loading) {
     return (
       <Layout>
@@ -25,9 +27,7 @@ export const FilmDetailPage = () => {
   if (error || !film) {
     return (
       <Layout>
-        <div className={styles.container}>
           <div className={styles.error}>{error || 'Фильм не найден'}</div>
-        </div>
       </Layout>
     );
   }

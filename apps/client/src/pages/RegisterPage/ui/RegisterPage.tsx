@@ -8,6 +8,8 @@ import { API_ENDPOINTS } from '@/shared/api/endpoints';
 import { Button, Input } from '@/shared/ui';
 import styles from './RegisterPage.module.scss';
 
+
+//TODO: форму вынести, сделать обертку чтоб форма была по центру экрана общую и для страницы логина
 export const RegisterPage = () => {
   const [formData, setFormData] = useState({
     email: '',
