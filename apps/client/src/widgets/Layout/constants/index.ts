@@ -1,1 +1,5 @@
-export { LAPTOP_SECTIONS, MOBILE_SECTIONS } from './sections'
+export {
+  HEADER_SECTIONS_LAPTOP,
+  FOOTER_SECTIONS_LAPTOP,
+  FOOTER_SECTIONS_MOBILE
+} from './sections'

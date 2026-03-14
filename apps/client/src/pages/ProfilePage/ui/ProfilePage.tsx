@@ -3,9 +3,10 @@
 import { Layout } from '@/widgets/Layout';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import styles from './ProfilePage.module.scss';
+import { Button } from '@/shared/ui';
 
 export const ProfilePage = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   if (!user) {
     return (
@@ -44,6 +45,8 @@ export const ProfilePage = () => {
             </div>
           )}
         </div>
+
+        <Button onClick={() => logout()}>Выйти из профиля</Button>
       </>
     </Layout>
   );

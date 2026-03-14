@@ -1,12 +1,10 @@
 @use '@/shared/styles/mixins/grid' as mixins;
 
-
 .container {
   padding: 20px 0 ;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  min-height: 100vh;
 }
 
 .title {

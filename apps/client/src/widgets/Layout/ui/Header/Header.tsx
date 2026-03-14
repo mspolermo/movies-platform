@@ -1,104 +1,56 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuthStore } from '@/features/auth/api/authStore/store';
-import { Button, Logo } from '@/shared/ui';
-import { HeaderSearch } from './components/HeaderSearch/HeaderSearch';
-import { LoginButton } from './components/LoginButton/LoginButton';
-import { Dropdown } from './components/Dropdown/Dropdown';
+import { Logo } from '@/shared/ui';
+import { SearchButton } from './SearchButton/SearchButton';
+import { LoginButton } from './LoginButton/LoginButton';
+import { Dropdown } from './Dropdown/Dropdown';
 import styles from './Header.module.scss';
+import { HEADER_SECTIONS_LAPTOP } from '../../constants';
+import { useAnimatedDropdown } from '../../lib';
+import cn from 'classnames';
 
 export const Header = () => {
-  const { user, logout, isAuthenticated } = useAuthStore();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [showHeaderBackground, setShowHeaderBackground] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleLogout = () => {
-    logout();
-  };
-
-  const handleDropdownOpen = () => {
-    // Очищаем таймер закрытия если он есть
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsDropdownOpen(true);
-    setIsClosing(false);
-    setShowHeaderBackground(true); // Показываем фон хедера сразу
-  };
-
-  const handleDropdownClose = () => {
-    if (!isClosing) {
-      setIsClosing(true);
-      setShowHeaderBackground(false); // Убираем фон хедера сразу
-      // Удаляем элемент из DOM после завершения анимации
-      timeoutRef.current = setTimeout(() => {
-        setIsDropdownOpen(false);
-        setIsClosing(false);
-      }, 400); // Время анимации закрытия
-    }
-  };
-
-  const handleDropdownMouseEnter = () => {
-    // Отменяем закрытие при наведении на дропдаун
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsDropdownOpen(true);
-    setIsClosing(false);
-    setShowHeaderBackground(true); // Восстанавливаем фон хедера
-  };
-
-  // Очистка таймера при размонтировании
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
-
-  if (!isAuthenticated) {
-    return null;
-  }
+  const {
+    isDropdownOpen,
+    isClosing,
+    isShowHeaderBackground,
+    onDropdownOpen,
+    onDropdownClose,
+    onDropdownMouseEnter
+  } = useAnimatedDropdown();
 
   return (
-    <nav className={styles.navbar}>
-      <div className={styles.container}>
+    <header className={styles.header}>
+      <div className={styles.inner}>
         <div
-          className={`${styles.content} ${showHeaderBackground ? styles.active : ''}`}
+          className={cn(styles.bar, {
+            [styles.barActive]: isShowHeaderBackground
+          })}
         >
-          <div className={styles.brand}>
-            <Link href="/" className={styles.logo}>
-              <Logo />
-            </Link>
-          </div>
+          <Link href="/" className={styles.logo}>
+            <Logo />
+          </Link>
 
-          <div className={styles.menu}>
-          <Link href="/films" className={styles.link}>
-            <button
-              className={styles.link}
-              onMouseEnter={() => handleDropdownOpen()}
-              onMouseLeave={handleDropdownClose}
-            >
-              Фильмы
-            </button>
-            </Link>
-            <Link href="/films?genres=мультфильм" className={styles.link}>
-              Мультфильмы
-            </Link>
-            <Link href="/debug" className={styles.link}>
-              Debug
-            </Link>
-          </div>
+          <nav className={styles.nav} aria-label="Main navigation">
+            <ul className={styles.menu}>
+              {HEADER_SECTIONS_LAPTOP.map(({ label, url, openable }) => (
+                <li key={url}>
+                  <Link
+                    href={url}
+                    className={styles.menuLink}
+                    onMouseEnter={openable ? onDropdownOpen : undefined}
+                    onMouseLeave={openable ? onDropdownClose : undefined}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <div className={styles.actions}>
-            <HeaderSearch />
+            <SearchButton />
             <LoginButton />
           </div>
         </div>
@@ -106,11 +58,11 @@ export const Header = () => {
         {isDropdownOpen && (
           <Dropdown
             isClosing={isClosing}
-            onClose={handleDropdownClose}
-            onMouseEnter={handleDropdownMouseEnter}
+            onClose={onDropdownClose}
+            onMouseEnter={onDropdownMouseEnter}
           />
         )}
       </div>
-    </nav>
+    </header>
   );
 };

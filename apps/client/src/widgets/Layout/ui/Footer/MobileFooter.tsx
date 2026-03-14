@@ -4,7 +4,7 @@ import { SvgIcon } from '@/shared/ui';
 import styles from './styles/MobileFooter.module.scss';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MOBILE_SECTIONS } from '../../constants';
+import { FOOTER_SECTIONS_MOBILE } from '../../constants';
 
 export const MobileFooter = () => {
   const pathname = usePathname();
@@ -13,7 +13,7 @@ export const MobileFooter = () => {
     <footer className={styles.footer}>
       <nav className={styles.bottomBar} aria-label="Mobile navigation">
         <ul className={styles.navList}>
-          {MOBILE_SECTIONS.map((item) => (
+          {FOOTER_SECTIONS_MOBILE.map((item) => (
             <li key={item.label}>
               <Link
                 className={styles.navItem}

@@ -1,8 +1,17 @@
 /**
- * Навигационные ссылки футера для десктопной версии (laptop layout).
+ * Навигационные ссылки хедера для десктопной версии.
+ */
+export const HEADER_SECTIONS_LAPTOP = [
+  { label: 'Фильмы', url: '/films', openable: true },
+  { label: 'Мультфильмы', url: '/films?genres=мультфильм', openable: false  },
+  { label: 'Debug', url: '/debug', openable: false  },
+]
+
+/**
+ * Навигационные ссылки футера для десктопной версии.
  * Используются в колонке "Разделы".
  */
-export const LAPTOP_SECTIONS = [
+export const FOOTER_SECTIONS_LAPTOP = [
   { label: 'Фильмы', url: '/films' },
   { label: 'Жанры', url: '/genres' },
   { label: 'Страны', url: '/countries' },
@@ -14,7 +23,7 @@ export const LAPTOP_SECTIONS = [
  * Элементы нижней панели навигации мобильного футера.
  * Содержат текст, иконку из SvgIcon и URL перехода.
  */
-export const MOBILE_SECTIONS = [
+export const FOOTER_SECTIONS_MOBILE = [
   { label: 'MovieLand', icon: 'home', url: '/' },
   { label: 'Каталог', icon: 'devices', url: '/films'},
   { label: 'Поиск', icon: 'search', url: '/search'},

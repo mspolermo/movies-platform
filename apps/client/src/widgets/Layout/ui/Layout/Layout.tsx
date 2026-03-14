@@ -9,15 +9,16 @@ import styles from './Layout.module.scss';
 import { Loader } from '@/shared/ui';
 import { BackButton } from '@/features/navigateBack';
 
-interface LayoutProps {
+interface TLayoutProps {
   withBackButton?: boolean;
   children: ReactNode;
 }
 
-export const Layout = ({ children, withBackButton }: LayoutProps) => {
+export const Layout = ({ children, withBackButton }: TLayoutProps) => {
+  const router = useRouter();
+
   const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
     useAuthStore();
-  const router = useRouter();
 
   useEffect(() => {
     // Проверяем авторизацию только если есть токен, но нет пользователя
@@ -33,33 +34,30 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
     }
   }, [isAuthenticated, token, router, isLoading, isInitialized, user]);
 
-  // Показываем загрузку если еще не инициализирован или идет загрузка
-  if (!isInitialized || (token && !user && isLoading)) {
-    return (
-      <div className={styles.loadingLayout}>
-        <Loader />
-      </div>
-    );
-  }
-
   // Показываем контент только если авторизован и есть пользователь
   if (!isAuthenticated || !user || !token) {
     return null;
   }
 
-  //TODO: надо чтоб боди не схлапывался когда там ничего нет или мало
+  // Показываем загрузку если еще не инициализирован или идет загрузка
+  if (!isInitialized || (token && !user && isLoading)) {
+    return (
+      <main className={styles.loadingLayout}>
+        <Loader />
+      </main>
+    );
+  }
 
   return (
     <div className={styles.layout}>
       <Header />
-      <div className={styles.headerSpacer} aria-hidden />
-      <div className={styles.body}>
-        <main className={styles.main}>
+      <main className={styles.body}>
+        <div className={styles.main}>
             {withBackButton && <BackButton />}
             {children}
-          </main>
+          </div>
           <Footer />
-      </div>
+      </main>
     </div>
   );
 };

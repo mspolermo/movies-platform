@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { SvgIcon } from '@/shared/ui';
 import styles from './styles/LaptopFooter.module.scss';
-import { LAPTOP_SECTIONS } from '../../constants';
+import { FOOTER_SECTIONS_LAPTOP } from '../../constants';
 import { CURRENT_YEAR } from '@/shared/constants';
 import { usePathname } from 'next/navigation';
 
@@ -12,17 +12,16 @@ export const LaptopFooter = () => {
 
   return (
     <footer className={styles.footer}>
-      <div className={styles.container}>
         
-        {/* Верхняя строка */}
-        <div className={styles.row}>
-          
+      {/* Верхняя строка */}
+      <div className={styles.row}>
+        <div className={styles.columnsWrapper}>
           {/* Разделы */}
           <nav className={styles.column}>
             <h3 className={styles.heading}>Разделы</h3>
 
             <ul className={styles.list}>
-              {LAPTOP_SECTIONS.map(({ label, url }) => (
+              {FOOTER_SECTIONS_LAPTOP.map(({ label, url }) => (
                 <li key={url}>
                   <Link
                     className={styles.link}
@@ -68,18 +67,16 @@ export const LaptopFooter = () => {
             </p>
           </Link>
         </div>
-
-        {/* Нижняя строка */}
-        <div className={styles.row}>
-          <div className={styles.columnWide}>
-            <div className={styles.copyright}>
-              <p>© {CURRENT_YEAR} Онлайн-кинотеатр</p>
-              <p>HBO ® and related service marks are the property of Home Box Office, Inc</p>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      {/* Нижняя строка */}
+      <div className={styles.row}>
+        <div className={styles.copyright}>
+          <p>© {CURRENT_YEAR} Онлайн-кинотеатр</p>
+          <p>HBO ® and related service marks are the property of Home Box Office, Inc</p>
+        </div>
+      </div>
+
     </footer>
   );
 }
