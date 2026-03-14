@@ -1,5 +1,8 @@
 import React from 'react';
 import styles from './SvgIcon.module.scss';
+import { DotsHorizontalIcon } from '@/shared/assets/svg-icons/DotsHorizontalIcon';
+
+//TODO: вынести библиотеку иконок
 
 export interface SvgIconProps {
   name?: string;
@@ -255,6 +258,7 @@ const icons = {
     />
   </svg>
 ),
+'dots-horizontal': DotsHorizontalIcon,
 };
 
 export const SvgIcon: React.FC<SvgIconProps> = ({

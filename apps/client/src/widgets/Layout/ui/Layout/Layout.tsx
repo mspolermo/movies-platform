@@ -47,8 +47,7 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
     return null;
   }
 
-  //TODO: надо чтоб боди не схлапывался когда там ничего нет или мало контента
-  //TODO: футер мобильной версии срезает часть контента снизу страницы, нужно сделать так, чтобы он не срезал
+  //TODO: надо чтоб боди не схлапывался когда там ничего нет или мало
 
   return (
     <div className={styles.layout}>
@@ -59,7 +58,7 @@ export const Layout = ({ children, withBackButton }: LayoutProps) => {
             {withBackButton && <BackButton />}
             {children}
           </main>
-        <Footer />
+          <Footer />
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import { PersonInfo } from "@/entities/person";
 import { ProfessionsList } from "@/entities/profession";
 import { Filmography } from "@/entities/film";
 
+//TODO: добавить адаптив
 export const PersonDetail = ({ personId }: TPersonDetailProps) => {
   const {
     loading,

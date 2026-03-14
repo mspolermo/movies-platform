@@ -1,0 +1,1 @@
+export { LAPTOP_SECTIONS, MOBILE_SECTIONS } from './sections'

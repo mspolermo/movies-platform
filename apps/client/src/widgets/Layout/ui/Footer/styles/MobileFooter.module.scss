@@ -1,0 +1,74 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.footer {
+  display: none;
+
+  @media (max-width: sizes.$bp-tablet) {
+    display: block;
+    height: var(--footer-height-mobile);
+    overflow: hidden;
+  }
+}
+
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  z-index: var(--z-footer);
+
+  display: flex;
+  justify-content: center;
+
+  padding: 0 40px;
+
+  backdrop-filter: blur(8px);
+  background: var(--color-background-elements);
+}
+
+.navList {
+  flex: 1 0 100%;
+  max-width: 600px;
+
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 10px;
+
+  border: none;
+  background: none;
+
+  cursor: pointer;
+  color: var(--color-input-text);
+
+  &[aria-current='page'] {
+    color: var(--color-red-active);
+  }
+}
+
+.label {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 500;
+
+  max-width: 60px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

@@ -1,3 +1,5 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
 .navbar {
   position: fixed;
   top: 0;
@@ -73,7 +75,7 @@
   }
 }
 
-@media (max-width: 1160px) {
+@media (max-width: sizes.$bp-tablet) {
   .navbar {
     height: 0;
     display: none;
