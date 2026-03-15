@@ -2,86 +2,116 @@ import { TGenreBased, TCountryBased } from '@common/types';
 import apiClient from '@/shared/api/client';
 import { API_ENDPOINTS } from '@/shared/api/endpoints';
 
+/**
+ * Элемент кеша для любого типа данных.
+ *
+ * data    — сохранённые данные
+ * loaded  — флаг что запрос уже был выполнен
+ * promise — текущий выполняющийся запрос (для дедупликации)
+ */
 interface CacheEntry<T> {
   data: T;
   loaded: boolean;
   promise?: Promise<T>;
 }
 
+/**
+ * Общий in-memory кеш для данных dropdown.
+ * Используется между рендерами и вызовами хука.
+ */
 const cache = {
   genres: { data: [] as TGenreBased[], loaded: false } as CacheEntry<TGenreBased[]>,
   countries: { data: [] as TCountryBased[], loaded: false } as CacheEntry<TCountryBased[]>,
   years: { data: [] as number[], loaded: false } as CacheEntry<number[]>,
 };
 
+/**
+ * Универсальная функция загрузки данных с кешированием.
+ *
+ * Возможности:
+ * - предотвращает повторные запросы
+ * - переиспользует текущий Promise
+ * - сохраняет результат в память
+ */
+async function fetchWithCache<T>(
+  entry: CacheEntry<T>,
+  request: () => Promise<T>
+): Promise<T> {
+  // Если данные уже загружены — возвращаем кеш
+  if (entry.loaded) {
+    return entry.data;
+  }
+
+  // Если запрос уже выполняется — возвращаем тот же Promise
+  if (entry.promise) {
+    return entry.promise;
+  }
+
+  entry.promise = request()
+    .then((data) => {
+      entry.data = data;
+      entry.loaded = true;
+      return entry.data;
+    })
+    .catch((err) => {
+      console.error('Dropdown cache fetch error:', err);
+
+      // Помечаем как загруженное, чтобы не делать бесконечные ретраи
+      entry.loaded = true;
+
+      return entry.data;
+    });
+
+  return entry.promise;
+}
+
+/**
+ * Кеш-слой для данных dropdown фильтров.
+ */
 export const dropdownCache = {
-  async getGenres(): Promise<TGenreBased[]> {
-    if (cache.genres.loaded) return cache.genres.data;
-    if (cache.genres.promise) return cache.genres.promise;
+  /**
+   * Получить список жанров.
+   */
+  getGenres() {
+    return fetchWithCache(cache.genres, async () => {
+      const res = await apiClient.get(API_ENDPOINTS.GENRES.LIST);
 
-    cache.genres.promise = apiClient
-      .get(API_ENDPOINTS.GENRES.LIST)
-      .then((res) => {
-        cache.genres.data = Array.isArray(res.data) ? res.data : [];
-        cache.genres.loaded = true;
-        return cache.genres.data;
-      })
-      .catch((err) => {
-        console.error('Error fetching genres:', err);
-        cache.genres.data = [];
-        cache.genres.loaded = true;
-        return [];
-      });
-
-    return cache.genres.promise;
+      return Array.isArray(res.data) ? res.data : [];
+    });
   },
 
-  async getCountries(): Promise<TCountryBased[]> {
-    if (cache.countries.loaded) return cache.countries.data;
-    if (cache.countries.promise) return cache.countries.promise;
+  /**
+   * Получить список стран.
+   */
+  getCountries() {
+    return fetchWithCache(cache.countries, async () => {
+      const res = await apiClient.get(API_ENDPOINTS.COUNTRIES.LIST);
 
-    cache.countries.promise = apiClient
-      .get(API_ENDPOINTS.COUNTRIES.LIST)
-      .then((res) => {
-        cache.countries.data = Array.isArray(res.data) ? res.data : [];
-        cache.countries.loaded = true;
-        return cache.countries.data;
-      })
-      .catch((err) => {
-        console.error('Error fetching countries:', err);
-        cache.countries.data = [];
-        cache.countries.loaded = true;
-        return [];
-      });
-
-    return cache.countries.promise;
+      return Array.isArray(res.data) ? res.data : [];
+    });
   },
 
-  async getYears(): Promise<number[]> {
-    if (cache.years.loaded) return cache.years.data;
-    if (cache.years.promise) return cache.years.promise;
+  /**
+   * Получить список годов (10 последних).
+   */
+  getYears() {
+    return fetchWithCache(cache.years, async () => {
+      const res = await apiClient.get(API_ENDPOINTS.FILTERS.ROOT);
 
-    cache.years.promise = apiClient
-      .get(API_ENDPOINTS.FILTERS.ROOT)
-      .then((res) => {
-        const yearsData = res.data?.years || [];
-        cache.years.data = Array.isArray(yearsData)
-          ? [...yearsData].sort((a, b) => b - a).slice(0, 10)
-          : [];
-        cache.years.loaded = true;
-        return cache.years.data;
-      })
-      .catch((err) => {
-        console.error('Error fetching years:', err);
-        cache.years.data = [];
-        cache.years.loaded = true;
-        return [];
-      });
+      const years = res.data?.years ?? [];
 
-    return cache.years.promise;
+      return Array.isArray(years)
+        ? [...years].sort((a, b) => b - a).slice(0, 10)
+        : [];
+    });
   },
 
+  /** Проверка загрузки жанров */
   isGenresLoaded: () => cache.genres.loaded,
+
+  /** Проверка загрузки стран */
   isCountriesLoaded: () => cache.countries.loaded,
+
+  /** Проверка загрузки годов */
   isYearsLoaded: () => cache.years.loaded,
 };

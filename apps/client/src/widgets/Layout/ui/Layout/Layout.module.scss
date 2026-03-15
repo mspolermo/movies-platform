@@ -33,7 +33,7 @@
 
 .main {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--max-layout-width);
   flex: 1;
   margin: 0 auto;
 }

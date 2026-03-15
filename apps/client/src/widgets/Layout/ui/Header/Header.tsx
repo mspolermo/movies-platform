@@ -13,11 +13,8 @@ import cn from 'classnames';
 export const Header = () => {
   const {
     isDropdownOpen,
-    isClosing,
-    isShowHeaderBackground,
     onDropdownOpen,
     onDropdownClose,
-    onDropdownMouseEnter
   } = useAnimatedDropdown();
 
   return (
@@ -25,7 +22,7 @@ export const Header = () => {
       <div className={styles.inner}>
         <div
           className={cn(styles.bar, {
-            [styles.barActive]: isShowHeaderBackground
+            [styles.barActive]: isDropdownOpen
           })}
         >
           <Link href="/" className={styles.logo}>
@@ -55,13 +52,10 @@ export const Header = () => {
           </div>
         </div>
 
-        {isDropdownOpen && (
           <Dropdown
-            isClosing={isClosing}
+            isOpen={isDropdownOpen}
             onClose={onDropdownClose}
-            onMouseEnter={onDropdownMouseEnter}
           />
-        )}
       </div>
     </header>
   );

@@ -8,6 +8,7 @@ import { Footer } from '../Footer';
 import styles from './Layout.module.scss';
 import { Loader } from '@/shared/ui';
 import { BackButton } from '@/features/navigateBack';
+import { useDropdownData } from '../../lib'
 
 interface TLayoutProps {
   withBackButton?: boolean;
@@ -19,6 +20,8 @@ export const Layout = ({ children, withBackButton }: TLayoutProps) => {
 
   const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
     useAuthStore();
+
+    const { isLoading: isDropdownDataLoading } = useDropdownData()
 
   useEffect(() => {
     // Проверяем авторизацию только если есть токен, но нет пользователя
@@ -40,7 +43,7 @@ export const Layout = ({ children, withBackButton }: TLayoutProps) => {
   }
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
-  if (!isInitialized || (token && !user && isLoading)) {
+  if (!isInitialized || isDropdownDataLoading || (token && !user && isLoading)) {
     return (
       <main className={styles.loadingLayout}>
         <Loader />

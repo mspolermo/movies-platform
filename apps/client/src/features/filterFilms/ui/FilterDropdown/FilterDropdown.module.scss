@@ -121,7 +121,7 @@
 .menuWide {
   left: 50%;
   width: calc(100vw - 48px);
-  max-width: 1200px;
+  max-width: var(--max-layout-width);
   transform: translate(-50%, -10px);
 
   &.menuOpen {

@@ -33,7 +33,7 @@
   justify-content: space-between;
   padding: 48px 0;
 
-  max-width: 1200px;
+  max-width: var(--max-layout-width);
   margin: 0 auto;
 }
 
@@ -144,7 +144,7 @@
 }
 
 .copyright {
-  max-width: 1200px;
+  max-width: var(--max-layout-width);
   margin: 0 auto;
   padding: 12px;
   line-height: 22px;

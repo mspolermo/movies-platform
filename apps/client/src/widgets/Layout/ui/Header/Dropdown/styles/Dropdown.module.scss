@@ -2,24 +2,26 @@
   position: absolute;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
+
+  transform: translate(-50%, -8px);
+  opacity: 0;
 
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--max-layout-width);
 
   z-index: var(--z-dropdown);
 
-  opacity: 1;
   transition: opacity .25s ease, transform .25s ease;
+
+  &.open {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 
   &.closing {
     opacity: 0;
-    transform: translateX(-50%) translateY(-8px);
+    transform: translate(-50%, -8px);
   }
-}
-
-.loaderWrapper {
-  height: 330px;
 }
 
 .content {
