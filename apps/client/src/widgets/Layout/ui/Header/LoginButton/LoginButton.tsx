@@ -5,7 +5,8 @@ import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { useAuthStore } from '@/features/auth';
 import styles from './LoginButton.module.scss';
 
-export const LoginButton = () => {
+
+export const LoginButton = ({onOpen}: {onOpen: () => void;}) => {
   const { isAuthenticated } = useAuthStore();
 
   const href = isAuthenticated ? '/profile' : '/auth/login';
@@ -16,6 +17,7 @@ export const LoginButton = () => {
       href={href}
       className={styles.root}
       aria-label={label}
+      onMouseEnter={onOpen}
     >
       <SvgIcon
         name={isAuthenticated ? 'personFull' : 'person'}

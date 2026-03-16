@@ -1,1 +1,1 @@
-export type { TDropdownHeading, TDropdownItem, TDropdownElement} from './types'
+export type { TQickFilterHeading, TQickFilterItem, TQickFilter} from './types'

@@ -1,3 +1,2 @@
-export { useAnimatedDropdown } from './useAnimatedDropdown'
-export { useDropdownList } from './useDropdownList'
+export {  useQuickFiltersList } from './useQuickFiltersList'
 export { useDropdownData } from './useDropdownData'

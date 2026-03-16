@@ -1,13 +1,13 @@
 import { useMemo, useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { TGenreBased, TCountryBased } from '@common/types';
-import { TDropdownElement } from '../../models';
+import { TQickFilter } from '../../models';
 import { useDropdownData } from './useDropdownData';
 
 /**
- * Хук для подготовки списка с данными и экшенами для dropdown.
+ * Хук для подготовки списка быстрых фильтров с данными и экшенами для dropdown.
  */
-export const useDropdownList = (onClose: () => void) => {
+export const useQuickFiltersList = (onClose: () => void) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -74,7 +74,7 @@ export const useDropdownList = (onClose: () => void) => {
     [searchParams, updateQueryParams, isOnFilmsPage, router, onClose]
   );
 
-  const items: TDropdownElement[] = useMemo(
+  const items: TQickFilter[] = useMemo(
     () => [
       { type: 'heading', label: 'Жанры' },
 

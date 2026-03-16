@@ -2,9 +2,9 @@
  * Навигационные ссылки хедера для десктопной версии.
  */
 export const HEADER_SECTIONS_LAPTOP = [
-  { label: 'Фильмы', url: '/films', openable: true },
-  { label: 'Мультфильмы', url: '/films?genres=мультфильм', openable: false  },
-  { label: 'Debug', url: '/debug', openable: false  },
+  { label: 'Фильмы', url: '/films', content: 'qickFiltersList' },
+  { label: 'Разделы', url: 'professions', content: 'chaptersSection'  },
+  { label: 'Debug', url: '/debug' },
 ]
 
 /**
