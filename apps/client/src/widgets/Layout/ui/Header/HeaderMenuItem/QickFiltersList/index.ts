@@ -1,0 +1,1 @@
+export { QickFiltersList } from './QickFiltersList'

@@ -11,3 +11,9 @@ export type TQickFilterItem = {
 };
 
 export type TQickFilter = TQickFilterHeading | TQickFilterItem;
+
+export type THeaderMenuItem = {
+  label: string;
+  url: string;
+  content?: 'qickFiltersList' | 'chaptersSection';
+}

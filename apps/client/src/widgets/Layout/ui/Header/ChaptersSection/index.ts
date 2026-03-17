@@ -1,1 +1,0 @@
-export { ChaptersSection } from './ui'

@@ -1,1 +1,1 @@
-export type { TQickFilterHeading, TQickFilterItem, TQickFilter} from './types'
+export type { TQickFilterHeading, TQickFilterItem, TQickFilter, THeaderMenuItem } from './types'

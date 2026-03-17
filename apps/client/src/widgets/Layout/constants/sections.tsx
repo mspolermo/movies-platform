@@ -1,9 +1,11 @@
+import { THeaderMenuItem } from "../models";
+
 /**
  * Навигационные ссылки хедера для десктопной версии.
  */
-export const HEADER_SECTIONS_LAPTOP = [
+export const HEADER_SECTIONS_LAPTOP: THeaderMenuItem[] = [
   { label: 'Фильмы', url: '/films', content: 'qickFiltersList' },
-  { label: 'Разделы', url: 'professions', content: 'chaptersSection'  },
+  { label: 'Разделы', url: 'professions', content: 'chaptersSection' },
   { label: 'Debug', url: '/debug' },
 ]
 

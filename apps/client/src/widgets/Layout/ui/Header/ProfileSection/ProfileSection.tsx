@@ -2,7 +2,7 @@ import { useAuthStore } from '@/features/auth';
 import styles from './ProfileSection.module.scss';
 import { Button } from '@/shared/ui';
 
-export const ProfileSection = ({onClose}: {onClose: () => void;}) => {
+export const ProfileSection = () => {
   const { user, logout } = useAuthStore();
 
   if (!user) {

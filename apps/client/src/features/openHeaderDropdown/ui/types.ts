@@ -1,6 +1,6 @@
 import { ReactElement, ReactNode } from "react";
 
-type TTriggerProps = {
+type TDropdownActionsProps = {
   /** Открыть dropdown */
   onOpen: () => void;
 
@@ -11,23 +11,17 @@ type TTriggerProps = {
   isOpen: boolean;
 }
 
-type TDropdownChildProps = {
-  /** Функция для закрытия dropdown (прокидывается в children) */
-  onClose: () => void;
-}
-
 export type TDropdownProps = {
   /**
    * Render-prop триггера (обычно кнопка или ссылка).
    * Позволяет контролировать открытие dropdown извне.
    */
-  trigger: (props: TTriggerProps) => ReactNode;
+  trigger: (props: TDropdownActionsProps) => ReactNode;
 
   /**
-   * Контент dropdown.
-   * Внутрь автоматически инжектится `onClose`.
+   * Контент dropdown. С передачей пропов контроллирования состояния dropdown
    */
-  children: ReactElement<TDropdownChildProps>;
+  content: (props: TDropdownActionsProps) => ReactNode;
 
   /**
    * Колбэк, вызывается при изменении состояния открытия dropdown.

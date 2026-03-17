@@ -2,16 +2,16 @@ import { useMemo, useCallback } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { TGenreBased, TCountryBased } from '@common/types';
 import { TQickFilter } from '../../models';
-import { useDropdownData } from './useDropdownData';
+import { useQuickFiltersData } from './useQuickFiltersData';
 
 /**
  * Хук для подготовки списка быстрых фильтров с данными и экшенами для dropdown.
  */
-export const useQuickFiltersList = (onClose: () => void) => {
+export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const state = useDropdownData()
+  const state = useQuickFiltersData()
 
   const isOnFilmsPage = pathname === '/films';
 

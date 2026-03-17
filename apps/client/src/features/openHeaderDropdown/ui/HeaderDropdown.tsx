@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  cloneElement,
   useEffect,
   useRef,
   useState,
@@ -9,7 +8,6 @@ import {
 import cn from 'classnames';
 import styles from './HeaderDropdown.module.scss';
 import { TDropdownProps } from './types';
-
 
 /**
  * UI-компонент с логикой Dropdown для Header.
@@ -19,7 +17,7 @@ import { TDropdownProps } from './types';
  * - задержка закрытия (чтобы избежать случайных закрытий)
  * - возможность закрыть dropdown изнутри через `onClose`
  */
-export const HeaderDropdown = ({ trigger, children, onOpenChange }: TDropdownProps) => {
+export const HeaderDropdown = ({ trigger, content, onOpenChange }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   /** Таймер используется для плавного закрытия */
@@ -79,11 +77,12 @@ export const HeaderDropdown = ({ trigger, children, onOpenChange }: TDropdownPro
         })}
       >
         <div className={styles.content}>
-          {/* 
-            Прокидываем onClose внутрь children,
-            чтобы элементы внутри dropdown могли закрыть его.
-          */}
-          {cloneElement(children, { onClose: handleClose })}
+          {/* Контент дропдауна */}
+          {content({
+            onOpen: handleOpen,
+            onClose: handleClose,
+            isOpen,
+          })}
         </div>
       </div>
     </div>

@@ -5,7 +5,6 @@ import { SvgIcon } from '@/shared/ui/SvgIcon';
 import { useAuthStore } from '@/features/auth';
 import styles from './LoginButton.module.scss';
 
-
 export const LoginButton = ({onOpen}: {onOpen: () => void;}) => {
   const { isAuthenticated } = useAuthStore();
 
