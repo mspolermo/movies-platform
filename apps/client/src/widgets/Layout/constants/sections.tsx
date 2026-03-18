@@ -6,6 +6,7 @@ import { THeaderMenuItem } from "../models";
 export const HEADER_SECTIONS_LAPTOP: THeaderMenuItem[] = [
   { label: 'Фильмы', url: '/films', content: 'qickFiltersList' },
   { label: 'Разделы', url: 'professions', content: 'chaptersSection' },
+  { label: 'Телевидение', url: '/tv' },
   { label: 'Debug', url: '/debug' },
 ]
 
@@ -19,6 +20,7 @@ export const FOOTER_SECTIONS_LAPTOP = [
   { label: 'Страны', url: '/countries' },
   { label: 'Персоны', url: '/persons' },
   { label: 'Профессии', url: '/professions' },
+  { label: 'Телевидение', url: '/tv' },
 ];
 
 /**
@@ -29,6 +31,6 @@ export const FOOTER_SECTIONS_MOBILE = [
   { label: 'MovieLand', icon: 'home', url: '/' },
   { label: 'Каталог', icon: 'devices', url: '/films'},
   { label: 'Поиск', icon: 'search', url: '/search'},
-  { label: 'Жанры', icon: 'tv', url: '/genres'},
+  { label: 'ТВ', icon: 'tv', url: '/tv'},
   { label: 'Страны', icon: 'dots-horizontal', url: '/countries'},
 ];
