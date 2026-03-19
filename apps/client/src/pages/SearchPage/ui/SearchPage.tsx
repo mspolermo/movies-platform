@@ -5,7 +5,7 @@ import { Layout } from '@/widgets/Layout';
 
 export const SearchPage = () => {
   return (
-    <Layout>
+    <Layout title='Поиск'>
       <SearchFilmsAndPersons />
     </Layout>
   );

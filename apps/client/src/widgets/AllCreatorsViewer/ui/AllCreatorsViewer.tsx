@@ -27,8 +27,6 @@ export const AllCreatorsViewer = ({searchParams }: TAllCreatorsViewerProps) => {
 
   return (
     <>
-      <h1 className={styles.title}>Профессии</h1>
-
       {professions.length > 0 && (
         <div className={styles.content}>
           <ProfessionsSlider

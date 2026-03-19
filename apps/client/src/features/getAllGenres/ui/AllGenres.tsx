@@ -13,30 +13,26 @@ export const AllGenres = () => {
     );
   }
 
-  if (error) {
+  if (true) {
     return (
       <div className={styles.error}>{error}</div>
     );
   }
 
   return (
-    <>
-      <h1 className={styles.title}>Жанры</h1>
-
-      <div className={styles.genresGrid}>
-        {genres.map((genre) => (
-          <FilterCardButton
-            key={genre.id}
-            onClick={() => handleGenreClick(genre.nameRu)}
-            ariaLabel={`Открыть фильмы жанра ${genre.nameRu}`}
-          >
-            <h3 className={styles.genreName}>{genre.nameRu}</h3>
-            {genre.nameEn && (
-              <p className={styles.genreDescription}>{genre.nameEn}</p>
-            )}
-          </FilterCardButton>
-        ))}
-      </div>
-    </>
+    <div className={styles.genresGrid}>
+      {genres.map((genre) => (
+        <FilterCardButton
+          key={genre.id}
+          onClick={() => handleGenreClick(genre.nameRu)}
+          ariaLabel={`Открыть фильмы жанра ${genre.nameRu}`}
+        >
+          <h3 className={styles.genreName}>{genre.nameRu}</h3>
+          {genre.nameEn && (
+            <p className={styles.genreDescription}>{genre.nameEn}</p>
+          )}
+        </FilterCardButton>
+      ))}
+    </div>
   );
 }

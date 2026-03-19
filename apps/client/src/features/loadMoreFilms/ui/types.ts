@@ -12,6 +12,5 @@ export interface LoadMoreFilmsProps {
   threshold?: number;
   loadingComponent?: ReactNode;
   endMessage?: ReactNode;
-  className?: string;
   onParamsChange?: (params: SearchFilmsParams) => void;
 }

@@ -10,7 +10,6 @@ export const LoadMoreFilms = ({
   threshold = 200,
   loadingComponent,
   endMessage,
-  className,
   onParamsChange,
 }: LoadMoreFilmsProps) => {
   const { films, loading, error, hasMore, loadMore, updateParams } = useLoadMoreFilms({
@@ -39,7 +38,6 @@ export const LoadMoreFilms = ({
       threshold={threshold}
       loadingComponent={loadingComponent || defaultLoadingComponent}
       endMessage={endMessage || defaultEndMessage}
-      className={className}
     >
       {children(films, loading, error)}
     </LoadMoreSection>

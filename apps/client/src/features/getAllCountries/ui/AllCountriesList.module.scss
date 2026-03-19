@@ -1,34 +1,24 @@
-.title {
-  font-size: 2rem;
-  color: var(--color-heading);
-  padding: 2rem;
-  text-align: center;
-}
-
 .countriesGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
-
 .countryName {
   font-size: 1.1rem;
   color: var(--color-heading);
-  margin: 0;
   font-weight: 500;
 }
 
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--color-text);
-  padding: 2rem;
+.loaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 .error {
   text-align: center;
   color: var(--color-red);
-  padding: 2rem;
   font-size: 1.1rem;
 }

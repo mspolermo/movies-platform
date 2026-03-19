@@ -1,16 +1,5 @@
 @use '@/shared/styles/mixins/grid' as mixins;
 
-.title {
-  font-size: 2rem;
-  color: var(--color-heading);
-  padding: 2rem;
-  text-align: center;
-}
-
-.infiniteScroll {
-  width: 100%;
-}
-
 .personsGrid {
   @include mixins.bigCardsGrid;
 }
@@ -19,12 +8,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  flex: 1;
 }
 
 .error {
   text-align: center;
   color: var(--color-red);
-  padding: 2rem;
   font-size: 1.1rem;
 }

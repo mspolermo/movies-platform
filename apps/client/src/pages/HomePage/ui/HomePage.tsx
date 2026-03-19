@@ -4,8 +4,8 @@ import { Layout } from '@/widgets/Layout';
 
 export const HomePage = () => {
   return (
-    <Layout>
-        <h1>MainPage</h1>
+    <Layout title='MovieLand'>
+        <p>Главная страница</p>
     </Layout>
   );
 };

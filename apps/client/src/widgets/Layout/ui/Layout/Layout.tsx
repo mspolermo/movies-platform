@@ -11,11 +11,12 @@ import { BackButton } from '@/features/navigateBack';
 import { useQuickFiltersData } from '../../lib'
 
 interface TLayoutProps {
+  title?: string;
   withBackButton?: boolean;
   children: ReactNode;
 }
 
-export const Layout = ({ children, withBackButton }: TLayoutProps) => {
+export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
   const router = useRouter();
 
   const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
@@ -57,6 +58,7 @@ export const Layout = ({ children, withBackButton }: TLayoutProps) => {
       <main className={styles.body}>
         <div className={styles.main}>
             {withBackButton && <BackButton />}
+            {title && <h1 className={styles.title}>{title}</h1>}
             {children}
           </div>
           <Footer />

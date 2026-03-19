@@ -7,9 +7,8 @@ export const DebugPage = () => {
   const { user, token, isAuthenticated, isLoading, error } = useAuthStore();
 
   return (
-    <Layout>
-      <div style={{ padding: '2rem', fontFamily: 'monospace' }}>
-        <h1 style={{ color: 'var(--color-heading)' }}>🔍 Debug: Auth State</h1>
+    <Layout title='🔍 Debug: Auth State'>
+      <div style={{fontFamily: 'monospace' }}>
 
         <div style={{ marginBottom: '1rem' }}>
           <h2 style={{ color: 'var(--color-heading)' }}>

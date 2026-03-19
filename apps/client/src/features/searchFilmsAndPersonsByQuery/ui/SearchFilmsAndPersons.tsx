@@ -17,14 +17,15 @@ export const SearchFilmsAndPersons = () => {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Поиск</h1>
-      <Input
-        placeholder="Введите название фильма или персоны..."
-        className={styles.input}
-        value={query}
-        autoFocus
-        onChange={(e) => setQuery(e.target.value)}
-      />
+      <div className={styles.inputWrapper}>
+        <Input
+          placeholder="Введите название фильма или персоны..."
+          value={query}
+          autoFocus
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
 
       {loading && (
         <div className={styles.state}>Поиск...</div>

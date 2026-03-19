@@ -1,123 +1,107 @@
 @use '@/shared/styles/mixins/grid' as mixins;
 
-.header {
-  padding: 0;
+.filtersBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
 
-  .title {
-    font-size: 40px;
-    line-height: 44px;
-    font-weight: 700;
-    margin-top: 25px;
-    text-align: center;
-  }
-
-  .filtersBlock {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 20px;
-    padding: 0;
-
-    @media (max-width: 600px) {
-      display: none;
-    }
-
-    .filtersContainer {
-      width: 100%;
-    }
-
-    .sortingContainer {
-      display: flex;
-      justify-content: flex-end;
-      padding-right: 12px;
-    }
-  }
-
-  .mobileFilters {
+  @media (max-width: 600px) {
     display: none;
+  }
 
-    @media (max-width: 600px) {
-      display: contents;
-      position: relative;
-      color: var(--color-white);
-      font-size: 18px;
-      line-height: 22px;
-      font-weight: 700;
+  .filtersContainer {
+    width: 100%;
+  }
 
-      .mobileHeader {
-        background-color: var(--color-background-elements);
-        padding: 32px 0 12px 20px;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .mobileTitle {
-          flex: 1;
-
-          h1 {
-            font-size: 24px;
-            line-height: 28px;
-            font-weight: 900;
-            margin-bottom: 0;
-          }
-
-          .mobileSubtitle {
-            margin: 8px 0;
-            color: var(--color-input-text);
-            font-size: 15px;
-            line-height: 20px;
-            font-weight: 400;
-          }
-        }
-
-        .mobileControls {
-          .mobileFilterButton {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--color-background-elements);
-            border: 1px solid var(--color-split-line);
-            border-radius: 8px;
-            padding: 12px 16px;
-            color: var(--color-text);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-
-            &:hover {
-              background: var(--color-transparent-white-hover);
-              border-color: var(--color-red);
-            }
-
-            svg {
-              color: var(--color-icon-default);
-            }
-
-            .filterIndicator {
-              position: absolute;
-              top: -2px;
-              right: -2px;
-              width: 10px;
-              height: 10px;
-              background: var(--color-red);
-              border-radius: 50%;
-              box-shadow: 0 2px 8px rgba(234, 0, 61, 0.8);
-            }
-          }
-        }
-      }
-
-      .mobileSorting {
-        margin-top: 24px;
-        padding: 0 8px 0 12px;
-      }
-    }
+  .sortingContainer {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
+.mobileFilters {
+  display: none;
 
+  @media (max-width: 600px) {
+    display: contents;
+    position: relative;
+    color: var(--color-white);
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 700;
+
+    .mobileHeader {
+      background-color: var(--color-background-elements);
+      padding: 32px 0 12px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .mobileTitle {
+        flex: 1;
+
+        h1 {
+          font-size: 24px;
+          line-height: 28px;
+          font-weight: 900;
+          margin-bottom: 0;
+        }
+
+        .mobileSubtitle {
+          margin: 8px 0;
+          color: var(--color-input-text);
+          font-size: 15px;
+          line-height: 20px;
+          font-weight: 400;
+        }
+      }
+
+      .mobileControls {
+        .mobileFilterButton {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          background: var(--color-background-elements);
+          border: 1px solid var(--color-split-line);
+          border-radius: 8px;
+          padding: 12px 16px;
+          color: var(--color-text);
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          position: relative;
+
+          &:hover {
+            background: var(--color-transparent-white-hover);
+            border-color: var(--color-red);
+          }
+
+          svg {
+            color: var(--color-icon-default);
+          }
+
+          .filterIndicator {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: var(--color-red);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(234, 0, 61, 0.8);
+          }
+        }
+      }
+    }
+
+    .mobileSorting {
+      margin-top: 24px;
+      padding: 0 8px 0 12px;
+    }
+  }
+}
 
 
 .filmsGrid {
@@ -130,23 +114,6 @@
   color: var(--color-text);
   font-size: 1.1rem;
   padding: 2rem;
-}
-
-.loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--color-text);
-  padding: 2rem;
-  margin-top: 2rem;
-}
-
-.endMessage {
-  text-align: center;
-  font-size: 1rem;
-  color: var(--color-text);
-  padding: 2rem;
-  margin-top: 2rem;
-  opacity: 0.7;
 }
 
 .error {

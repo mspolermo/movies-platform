@@ -1,35 +1,16 @@
-.filters {
-  margin-top: 20px;
-  padding: 0 12px;
+.content {
+  padding: 16px 10px;
+  background-color: var(--color-background-elements);
+  border-radius: 10px;
+}
 
-  .content {
-    padding: 16px 10px;
-    background-color: var(--color-background-elements);
-    border-radius: 10px;
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+}
 
-    .blocks {
-      display: flex;
-      flex-wrap: wrap;
-      position: relative;
-    }
-
-    .button {
-      display: flex;
-      justify-content: flex-end;
-    }
-  }
-
-  @media (max-width: 880px) {
-    margin: 20px 0;
-  }
-
-  @media (max-width: 600px) {
-    .content {
-      background-color: rgba(0, 0, 0, 0);
-      
-      .button {
-        display: none;
-      }
-    }
-  }
+.button {
+  display: flex;
+  justify-content: flex-end;
 }

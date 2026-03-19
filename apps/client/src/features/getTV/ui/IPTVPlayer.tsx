@@ -135,83 +135,78 @@ export const IPTVPlayer = () => {
   return (
     <div className={styles.container}>
 
-      <h1 className={styles.title}>Телевидение</h1>
-
-      <div className={styles.playerWrapper}>
-
-        {/* Player */}
-        <div className={styles.player}>
-          {/* Не отображается, не видно этого */}
-          {!currentChannel && (
-            <div className={styles.empty}>
-              Выбери канал
-            </div>
-          )}
-    
-          <video
-            ref={videoRef}
-            controls
-            autoPlay
-            className={styles.video}
-          />
-        </div>
-
-        {/* Sidebar */}
-        <div className={styles.sidebar}>
-    
-          <Input
-            placeholder="Поиск каналов"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={styles.search}
-          />
-    
-          <div className={styles.sort}>
-            <Button
-              variant={sort === "popularity" ? "gray" : "default"}
-              size="small"
-              onClick={() => setSort("popularity")}
-            >
-              🔥 Популярные
-            </Button>
-    
-            <Button
-              variant={sort === "name" ? "gray" : "default"}
-              size="small"
-              onClick={() => setSort("name")}
-            >
-              A–Z
-            </Button>
+      {/* Player */}
+      <div className={styles.player}>
+        {/* Не отображается, не видно этого */}
+        {!currentChannel && (
+          <div className={styles.empty}>
+            Выбери канал
           </div>
-    
-          <div className={styles.list}>
-            {!channels.length &&
-              Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className={styles.skeletonItem}>
-                  <Skeleton width={40} height={40} />
-                  <Skeleton width="60%" height={16} />
-                </div>
-              ))}
-    
-            {filtered.map((ch) => (
-              <div
-                key={ch.id}
-                onClick={() => playChannel(ch.id)}
-                className={`${styles.item} ${
-                  currentChannel === ch.id ? styles.active : ""
-                }`}
-              >
+        )}
+  
+        <video
+          ref={videoRef}
+          controls
+          autoPlay
+          className={styles.video}
+        />
+      </div>
+
+      {/* Sidebar */}
+      <div className={styles.sidebar}>
+  
+        <Input
+          placeholder="Поиск каналов"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={styles.search}
+        />
+  
+        <div className={styles.sort}>
+          <Button
+            variant={sort === "popularity" ? "gray" : "default"}
+            size="small"
+            onClick={() => setSort("popularity")}
+          >
+            🔥 Популярные
+          </Button>
+  
+          <Button
+            variant={sort === "name" ? "gray" : "default"}
+            size="small"
+            onClick={() => setSort("name")}
+          >
+            A–Z
+          </Button>
+        </div>
+  
+        <div className={styles.list}>
+          {!channels.length &&
+            Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className={styles.skeletonItem}>
                 <Skeleton width={40} height={40} />
-    
-                <div className={styles.meta}>
-                  <div className={styles.name}>{ch.name}</div>
-                  <div className={styles.sub}>
-                    {getStreams(ch.id).length} стримов
-                  </div>
-                </div>
+                <Skeleton width="60%" height={16} />
               </div>
             ))}
-          </div>
+  
+          {filtered.map((ch) => (
+            <div
+              key={ch.id}
+              onClick={() => playChannel(ch.id)}
+              className={`${styles.item} ${
+                currentChannel === ch.id ? styles.active : ""
+              }`}
+            >
+              <Skeleton width={40} height={40} />
+  
+              <div className={styles.meta}>
+                <div className={styles.name}>{ch.name}</div>
+                <div className={styles.sub}>
+                  {getStreams(ch.id).length} стримов
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

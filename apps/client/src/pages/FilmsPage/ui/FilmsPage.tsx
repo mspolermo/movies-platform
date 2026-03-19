@@ -42,106 +42,96 @@ export const FilmsPage = () => {
   //TODO: мобильные фильтры не работают, разобраться со стилями
 
   return (
-    <Layout>
-        <div className={styles.header}>
-          <h1 className={styles.title}>Фильмы</h1>
-          
-          {/* Desktop filters */}
-          <div className={styles.filtersBlock}>
-            <div className={styles.filtersContainer}>
-              <Filters
-                allFilters={allFilters}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={(filters) => {
-                  updateFilters(filters);
-                  handleFiltersUpdate(filters);
-                }}
-              />
-            </div>
-            <div className={styles.sortingContainer}>
-              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
+    <Layout title='Фильмы'>
+
+      {/* Desktop filters */}
+      <div className={styles.filtersBlock}>
+        <div className={styles.filtersContainer}>
+          <Filters
+            allFilters={allFilters}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={(filters) => {
+              updateFilters(filters);
+              handleFiltersUpdate(filters);
+            }}
+          />
+        </div>
+        <div className={styles.sortingContainer}>
+          <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
+        </div>
+      </div>
+
+      {/* Mobile filters */}
+      <div className={styles.mobileFilters}>
+        <div className={styles.mobileHeader}>
+          <div className={styles.mobileTitle}>
+            <h1>Фильмы</h1>
+            <div className={styles.mobileSubtitle}>
+              {!selectedFilters.genres.length ? 'Все жанры, ' : `${selectedFilters.genres.join(', ')}, `}
+              {!selectedFilters.countries.length ? 'все страны, ' : `${selectedFilters.countries.join(', ')}, `}
+              {!selectedFilters.years ? 'все годы' : selectedFilters.years}
             </div>
           </div>
-
-          {/* Mobile filters */}
-          <div className={styles.mobileFilters}>
-            <div className={styles.mobileHeader}>
-              <div className={styles.mobileTitle}>
-                <h1>Фильмы</h1>
-                <div className={styles.mobileSubtitle}>
-                  {!selectedFilters.genres.length ? 'Все жанры, ' : `${selectedFilters.genres.join(', ')}, `}
-                  {!selectedFilters.countries.length ? 'все страны, ' : `${selectedFilters.countries.join(', ')}, `}
-                  {!selectedFilters.years ? 'все годы' : selectedFilters.years}
-                </div>
-              </div>
-              <div className={styles.mobileControls}>
-                <button 
-                  className={styles.mobileFilterButton}
-                  onClick={() => {/* TODO: открыть модальное окно с фильтрами */}}
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M3 7H21M9 12H21M17 17H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                  </svg>
-                  Фильтры
-                  {!isEmptyFilters && <div className={styles.filterIndicator} />}
-                </button>
-              </div>
-            </div>
-            
-            <div className={styles.mobileSorting}>
-              <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
-            </div>
+          <div className={styles.mobileControls}>
+            <button 
+              className={styles.mobileFilterButton}
+              onClick={() => {/* TODO: открыть модальное окно с фильтрами */}}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 7H21M9 12H21M17 17H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              Фильтры
+              {!isEmptyFilters && <div className={styles.filterIndicator} />}
+            </button>
           </div>
         </div>
+        
+        <div className={styles.mobileSorting}>
+          <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
+        </div>
+      </div>
 
-        <LoadMoreFilms
-          initialParams={currentParams}
-          threshold={200}
-          className={styles.filmsContainer}
-          onParamsChange={handleParamsChange}
-          loadingComponent={
-            <div className={styles.filmsGrid}>
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div key={`skeleton-${index}`} className={styles.filmCard}>
-                  <FilmCardSkeleton showIcons={true} />
-                </div>
-              ))}
-            </div>
+      <LoadMoreFilms
+        initialParams={currentParams}
+        threshold={200}
+        onParamsChange={handleParamsChange}
+        loadingComponent={
+          <div className={styles.filmsGrid}>
+            {Array.from({ length: 8 }).map((_, index) => (
+              <FilmCardSkeleton key={`skeleton-${index}`}  showIcons={true} />
+            ))}
+          </div>
+        }
+      >
+        {(films, loading, error) => {
+          if (error) {
+            return <div className={styles.error}>{error}</div>;
           }
-        >
-          {(films, loading, error) => {
-            if (error) {
-              return <div className={styles.error}>{error}</div>;
-            }
 
-            // Показываем скелетоны во время первой загрузки
-            if (loading && films.length === 0) {
-              return (
-                <div className={styles.filmsGrid}>
-                  {Array.from({ length: 8 }).map((_, index) => (
-                    <div key={`skeleton-${index}`} className={styles.filmCard}>
-                      <FilmCardSkeleton showIcons={true} />
-                    </div>
-                  ))}
-                </div>
-              );
-            }
-
+          // Показываем скелетоны во время первой загрузки
+          if (loading && films.length === 0) {
             return (
               <div className={styles.filmsGrid}>
-                {films && films.length > 0 ? (
-                  films.map((film) => (
-                    <div key={film.id} className={styles.filmCard}>
-                      <FilmCard film={film} showIcons={true} />
-                    </div>
-                  ))
-                ) : (
-                  <div className={styles.noFilms}>Фильмы не найдены</div>
-                )}
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
+                ))}
               </div>
             );
-          }}
-        </LoadMoreFilms>
+          }
+
+          return (
+            <div className={styles.filmsGrid}>
+              {films && films.length > 0 ? (
+                films.map((film) => (
+                  <FilmCard key={film.id} film={film} showIcons={true} />
+                ))
+              ) : (
+                <div className={styles.noFilms}>Фильмы не найдены</div>
+              )}
+            </div>
+          );
+        }}
+      </LoadMoreFilms>
     </Layout>
   );
 };

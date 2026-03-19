@@ -5,7 +5,7 @@ import { AllCountriesList } from '@/features/getAllCountries';
 
 export const CountriesPage = () => {
   return (
-    <Layout>
+    <Layout title='Страны'>
       <AllCountriesList />
     </Layout>
   );

@@ -1,21 +1,12 @@
-.title {
-  font-size: 2rem;
-  color: var(--color-heading);
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
 .genresGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1.5rem;
 }
 
-
 .genreName {
   font-size: 1.1rem;
   color: var(--color-heading);
-  margin: 0;
   font-weight: 500;
 }
 
@@ -23,26 +14,17 @@
   text-align: center;
   font-size: 1.2rem;
   color: var(--color-text);
-  padding: 2rem;
 }
 
 .error {
   text-align: center;
   color: var(--color-red);
-  padding: 2rem;
   font-size: 1.1rem;
 }
 
 .loaderWrapper {
-  min-height: calc(100vh - var(--header-height) - var(--footer-height));
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (max-width: 1160px) {
-  .loaderWrapper {
-    min-height: calc(100vh - var(--footer-height-mobile));
-    padding-bottom: var(--footer-height-mobile);
-  }
+  flex: 1;
 }

@@ -26,21 +26,16 @@ export const AllPersonsList = () => {
   }
 
   return (
-    <>
-      <h1 className={styles.title}>Персоны</h1>
-
-      <LoadMoreSection
-        onLoadMore={loadMore}
-        isLoading={loading}
-        hasMore={hasMore}
-        className={styles.infiniteScroll}
-      >
-        <div className={styles.personsGrid}>
-          {persons.map((person) => (
-            <PersonCard key={person.id} person={person} />
-          ))}
-        </div>
-      </LoadMoreSection>
-    </>
+    <LoadMoreSection
+      onLoadMore={loadMore}
+      isLoading={loading}
+      hasMore={hasMore}
+    >
+      <div className={styles.personsGrid}>
+        {persons.map((person) => (
+          <PersonCard key={person.id} person={person} />
+        ))}
+      </div>
+    </LoadMoreSection>
   );
 }

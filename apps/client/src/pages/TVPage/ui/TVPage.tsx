@@ -3,7 +3,7 @@ import { Layout } from "@/widgets/Layout"
 
 export const TVPage = () => {
   return (
-    <Layout>
+    <Layout title="Телевидение">
       <IPTVPlayer />
     </Layout>
   )

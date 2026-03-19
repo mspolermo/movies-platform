@@ -5,7 +5,7 @@ import { AllPersonsList } from '@/features/getAllPersons';
 
 export const PersonsPage = () => {
   return (
-    <Layout>
+    <Layout title='Персоны'>
       <AllPersonsList />
     </Layout>
   );

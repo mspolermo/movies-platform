@@ -5,7 +5,7 @@ import { AllGenres } from '@/features/getAllGenres';
 
 export const GenresPage = () => {
   return (
-    <Layout>
+    <Layout title='Жанры'>
       <AllGenres />
     </Layout>
   );

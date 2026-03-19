@@ -1,15 +1,8 @@
-.title {
-  font-size: 2rem;
-  color: var(--color-heading);
-  padding: 2rem 0 0 0;
-  text-align: center;
-}
-
 .loaderWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
+  flex: 1;
 }
 
 .error {
@@ -26,12 +19,5 @@
 .emptyState {
   text-align: center;
   color: var(--color-text);
-  padding: 3rem 2rem;
   font-size: 1.1rem;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 0 16px;
-  }
 }

@@ -8,7 +8,7 @@ export const ProfessionsPage = () => {
   const searchParams = useSearchParams();
 
   return (
-    <Layout>
+    <Layout title='Профессии'>
       <AllCreatorsViewer searchParams={searchParams} />
     </Layout>
   );

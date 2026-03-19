@@ -7,7 +7,9 @@ export const AllCountriesList = () => {
 
   if (loading) {
     return (
-      <Loader size="small" />
+      <div className={styles.loaderWrapper}>
+        <Loader size="small" />
+      </div>
     );
   }
 
@@ -18,9 +20,6 @@ export const AllCountriesList = () => {
   }
 
   return (
-    <>
-      <h1 className={styles.title}>Страны</h1>
-
       <div className={styles.countriesGrid}>
         {countries.map((country) => (
           <FilterCardButton
@@ -32,6 +31,5 @@ export const AllCountriesList = () => {
           </FilterCardButton>
         ))}
       </div>
-    </>
   );
 }
