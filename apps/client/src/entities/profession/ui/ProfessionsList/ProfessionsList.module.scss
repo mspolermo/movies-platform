@@ -1,22 +1,18 @@
-.professions {
-  width: 100%;
-}
-
-.content {
-  font-family: 'IvySans', sans-serif;
+.container {
   border-bottom: 1px solid var(--color-split-line);
-  margin-top: 40px;
-  padding-bottom: 20px;
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .header {
   display: flex;
-  margin-bottom: 20px;
   align-items: baseline;
+  gap: 8px;
 }
 
 .title {
-  margin-right: 8px;
   color: var(--color-heading);
   font-size: 24px;
   line-height: 28px;
@@ -36,29 +32,6 @@
   gap: 12px;
 }
 
-.item {
-  padding: 8px 16px;
-  background-color: var(--color-background-elements);
-  border: none;
-  border-radius: 8px;
-  color: var(--color-heading);
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  font-family: inherit;
-
-  &:hover {
-    background-color: var(--color-icon-default-hover);
-    transform: translateY(-2px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-red);
-    outline-offset: 2px;
-  }
-}
 
 @media (max-width: 600px) {
   .header {

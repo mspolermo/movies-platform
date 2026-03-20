@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from 'react';
 import styles from './Card.module.scss';
 import { SvgIcon } from '../SvgIcon';

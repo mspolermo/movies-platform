@@ -1,0 +1,27 @@
+.container {
+  padding: 16px;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.description {
+  margin-top: 12px;
+  font-size: 16px;
+  opacity: 0.7;
+  color: var(--color-red);
+}
+
+.button {
+  margin-top: 20px;
+}

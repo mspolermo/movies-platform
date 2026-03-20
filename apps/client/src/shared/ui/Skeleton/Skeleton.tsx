@@ -12,23 +12,29 @@ export interface SkeletonProps {
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({
-  width = '100%',
-  height = '1rem',
-  borderRadius = '4px',
+  width,
+  height,
+  borderRadius,
   className = '',
   variant = 'rectangular',
   animation = 'pulse',
   children,
 }) => {
   const style: React.CSSProperties = {
-    width: typeof width === 'number' ? `${width}px` : width,
-    height: typeof height === 'number' ? `${height}px` : height,
-    borderRadius:
-      variant === 'circular'
-        ? '50%'
-        : typeof borderRadius === 'number'
-          ? `${borderRadius}px`
-          : borderRadius,
+    ...(width !== undefined && {
+      width: typeof width === 'number' ? `${width}px` : width,
+    }),
+    ...(height !== undefined && {
+      height: typeof height === 'number' ? `${height}px` : height,
+    }),
+    ...(borderRadius !== undefined && {
+      borderRadius:
+        variant === 'circular'
+          ? '50%'
+          : typeof borderRadius === 'number'
+            ? `${borderRadius}px`
+            : borderRadius,
+    }),
   };
 
   const skeletonClasses = [

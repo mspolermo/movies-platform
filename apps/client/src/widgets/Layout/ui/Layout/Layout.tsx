@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 import { Header } from '../Header';
@@ -9,12 +9,7 @@ import styles from './Layout.module.scss';
 import { Loader } from '@/shared/ui';
 import { BackButton } from '@/features/navigateBack';
 import { useQuickFiltersData } from '../../lib'
-
-interface TLayoutProps {
-  title?: string;
-  withBackButton?: boolean;
-  children: ReactNode;
-}
+import { TLayoutProps } from '../types';
 
 export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
   const router = useRouter();

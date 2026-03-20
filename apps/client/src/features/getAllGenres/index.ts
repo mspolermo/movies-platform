@@ -1,1 +1,0 @@
-export { AllGenres } from './ui'

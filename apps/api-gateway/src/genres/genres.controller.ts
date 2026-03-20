@@ -14,20 +14,20 @@ import { ValidationPipe } from "../shared/pipes";
 import { Roles, RolesGuard, JwtAuthGuard } from "../shared/guards";
 
 @Controller("genres")
-@UseGuards(JwtAuthGuard) // Защищаем весь контроллер
+
 @ApiBearerAuth()
 export class GenresController {
   constructor(private readonly genresService: GenresService) {}
 
   @ApiOperation({ summary: "Получение всех жанров" })
   @ApiResponse({ status: 200, description: "Список жанров" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @Get()
   async getAllGenres() {
     return await this.genresService.getAllGenres();
   }
 
   @ApiOperation({ summary: "Изменение жанра" })
+  @UseGuards(JwtAuthGuard) // Защищаем весь контроллер
   @ApiResponse({ status: 200 })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @ApiResponse({ status: 403, description: "Forbidden - Admin only" })

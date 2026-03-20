@@ -1,1 +1,0 @@
-export { useFilmDetails } from './lib'

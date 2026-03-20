@@ -1,33 +1,18 @@
-'use client';
+"use client"
 
 import React from 'react';
-import { useParams } from 'next/navigation';
 import { Layout } from '@/widgets/Layout';
-import styles from './FilmDetailPage.module.scss';
-import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
-import { useFilmDetails } from '@/features/getFilmDetails';
+import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
+import { TFilmDetailPageProps } from './types';
 
-export const FilmDetailPage = () => {
-  const params = useParams();
-  const filmId = Number(params?.id);
 
-  const { loading, error, film } = useFilmDetails(filmId)
 
-  //TODO: сделать внятную страницу не найденного фильма
-
-  if (loading) {
+export const FilmDetailPage = ({ isLoading, film }: TFilmDetailPageProps) => {
+  if (isLoading) {
     return (
       <Layout>
         <FilmDetailSkeleton />
-      </Layout>
-    );
-  }
-
-  if (error || !film) {
-    return (
-      <Layout>
-          <div className={styles.error}>{error || 'Фильм не найден'}</div>
       </Layout>
     );
   }

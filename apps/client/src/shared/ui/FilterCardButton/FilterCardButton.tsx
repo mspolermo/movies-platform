@@ -5,11 +5,16 @@ import styles from './FilterCardButton.module.scss';
 
 interface FilterCardButtonProps {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   ariaLabel?: string;
   className?: string;
 }
 
+/**
+ * Универсальная карточка-кнопка.
+ * Используется для кликабельных элементов с кастомным UI.
+ * Поддерживает управление с клавиатуры (Enter / Space).
+ */
 export const FilterCardButton: React.FC<FilterCardButtonProps> = ({
   children,
   onClick,
@@ -25,7 +30,7 @@ export const FilterCardButton: React.FC<FilterCardButtonProps> = ({
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onClick();
+          onClick?.();
         }
       }}
       aria-label={ariaLabel}

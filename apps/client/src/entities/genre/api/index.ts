@@ -1,0 +1,1 @@
+export { getGenresList } from './getGenresList'

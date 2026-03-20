@@ -2,7 +2,7 @@ import { usePersonDetails } from "../lib"
 import { TPersonDetailProps } from "./types"
 import styles from './PersonDetail.module.scss';
 import { Loader } from "@/shared/ui";
-import { PersonInfo } from "@/entities/person";
+import { PersonInfo, PersonInfoSkeleton } from "@/entities/person";
 import { ProfessionsList } from "@/entities/profession";
 import { Filmography } from "@/entities/film";
 
@@ -22,7 +22,7 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
   if (loading) {
     return (
       <div className={styles.loaderWrapper}>
-        <Loader />
+        <PersonInfoSkeleton />
       </div>
     );
   }
@@ -38,7 +38,7 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <PersonInfo person={person} />
 
       <ProfessionsList professions={person.professions} />
@@ -50,6 +50,6 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
         isLoading={isLoadingMore}
         hasMoreFilms={hasMoreFilms}
       />
-    </>
+    </div>
   );
 }

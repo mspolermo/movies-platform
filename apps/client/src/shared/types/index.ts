@@ -1,3 +1,5 @@
+export type { TPageProps } from './next';
+
 import {
   TGenreBased,
   TCountryBased,
@@ -6,8 +8,6 @@ import {
   TProfessionWithPersons,
   TFilmModel,
 } from '@common/types';
-
-// Основные типы данных
 
 // Используем общий тип Film из @common
 export interface Film extends TFilmBased {

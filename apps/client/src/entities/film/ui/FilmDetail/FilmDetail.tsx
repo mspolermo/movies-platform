@@ -1,3 +1,5 @@
+"use client"
+
 import { TFilmModel } from '@common/types';
 import styles from './FilmDetail.module.scss';
 import { FilmDetailProps } from '../types';

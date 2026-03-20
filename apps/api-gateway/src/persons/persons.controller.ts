@@ -4,14 +4,12 @@ import { PersonsService } from "./persons.service";
 import { JwtAuthGuard } from "../shared/guards";
 
 @Controller("persons")
-@UseGuards(JwtAuthGuard) // Защищаем весь контроллер
 @ApiBearerAuth()
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
   @ApiOperation({ summary: "Получить всех людей" })
   @ApiResponse({ status: 200, description: "Список людей" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @ApiQuery({ name: "page", required: false, description: "Номер страницы", type: Number })
   @ApiQuery({ name: "limit", required: false, description: "Количество элементов на странице", type: Number })
   @Get()
