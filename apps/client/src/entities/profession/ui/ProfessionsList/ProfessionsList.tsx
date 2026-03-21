@@ -21,10 +21,7 @@ export const ProfessionsList = ({ professions }: TProfessionsListProps) => {
 
       <div className={styles.list}>
         {professions.map((profession) => (
-          <ProfessionCard
-            key={profession.id}
-            profession={profession}
-          />
+          <ProfessionCard key={profession.id} profession={profession} />
         ))}
       </div>
     </div>

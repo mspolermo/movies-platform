@@ -1,15 +1,23 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
 .container {
   border-bottom: 1px solid var(--color-split-line);
   padding-bottom: 24px;
+
   display: flex;
   flex-direction: column;
   gap: 16px;
+
 }
 
 .header {
   display: flex;
   align-items: baseline;
   gap: 8px;
+
+  @media (max-width: sizes.$bp-mobile) {
+    gap: 4px;
+  }
 }
 
 .title {
@@ -17,35 +25,42 @@
   font-size: 24px;
   line-height: 28px;
   font-weight: 700;
+
+  @media (max-width: sizes.$bp-tablet) {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  @media (max-width: sizes.$bp-mobile) {
+    font-size: 18px;
+    line-height: 22px;
+  }
 }
 
 .subtitle {
   color: var(--color-input-text);
   font-size: 15px;
   line-height: 20px;
-  font-weight: 400;
+
+  @media (max-width: sizes.$bp-tablet) {
+    font-size: 14px;
+  }
+
+  @media (max-width: sizes.$bp-mobile) {
+    font-size: 13px;
+  }
 }
 
 .list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, max-content));
   gap: 12px;
-}
 
-
-@media (max-width: 600px) {
-  .header {
-    display: flex;
-    flex-direction: column;
+  @media (max-width: sizes.$bp-tablet) {
+    gap: 10px;
   }
 
-  .list {
+  @media (max-width: sizes.$bp-mobile) {
     gap: 8px;
   }
-
-  .item {
-    font-size: 14px;
-    padding: 6px 12px;
-  }
 }
-

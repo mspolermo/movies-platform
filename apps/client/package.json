@@ -10,6 +10,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "format": "prettier --write .",
+    "lint:fix": "prettier \"**/*.{js,ts,jsx,tsx}\" --write && eslint \"**/*.{js,ts,jsx,tsx}\" --fix",
     "type-check": "tsc --noEmit",
     "cc": "node scripts/create-fsd-component.js"
   },
