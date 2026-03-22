@@ -8,14 +8,14 @@ export const QickFiltersList = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <div className={styles.grid}>
-      {items.map((item) =>
+      {items.map((item, id) =>
         item.type === 'heading' ? (
           <h3 key={`heading-${item.label}`} className={styles.heading}>
             {item.label}
           </h3>
         ) : (
           <button
-            key={`${item.label}-${item.key}`}
+            key={`${item.label}-${id}`}
             className={styles.item}
             onClick={item.onClick}
           >

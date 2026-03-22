@@ -1,5 +1,5 @@
 import type { TQickFilter } from '../../models';
-import type { TGenreBased } from '@common/types';
+import type { TGenreQuickFilterItem } from '@common/types';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useMemo, useCallback } from 'react';
@@ -18,7 +18,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const isOnFilmsPage = pathname === '/films';
 
   const genreMap = useMemo(() => {
-    const map = new Map<string, TGenreBased>();
+    const map = new Map<string, TGenreQuickFilterItem>();
     state.genres.forEach((g) => map.set(g.nameEn || g.nameRu, g));
     return map;
   }, [state.genres]);
@@ -80,10 +80,9 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
     () => [
       { type: 'heading', label: 'Жанры' },
 
-      ...state.genres.slice(0, 30).map((g) => ({
+      ...state.genres.map((g) => ({
         type: 'item' as const,
         label: g.nameRu,
-        key: g.id,
         onClick: () =>
           handleFilterClick(
             'genres',
@@ -93,10 +92,9 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
 
       { type: 'heading', label: 'Страны' },
 
-      ...state.countries.slice(0, 20).map((c) => ({
+      ...state.countries.map((c) => ({
         type: 'item' as const,
         label: c.countryName,
-        key: c.id,
         onClick: () => handleFilterClick('countries', c.countryName),
       })),
 

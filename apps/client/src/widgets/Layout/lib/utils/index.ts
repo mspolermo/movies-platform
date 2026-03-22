@@ -1,0 +1,1 @@
+export { getQuickFilters } from './getQuickFilters';

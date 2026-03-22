@@ -1,0 +1,82 @@
+---
+description: Rules for common types (apps/common)
+globs:
+  - "apps/common/**"
+alwaysApply: true
+---
+
+# Layering: `types` vs `dto`
+
+- **`apps/common/types`**: TypeScript-only contracts — API shapes, shared interfaces, type aliases. Safe for frontend and backend.
+- **`apps/common/dto`**: NestJS classes with `class-validator` / `class-transformer`. Used on the **backend only**; do not import DTO classes from the client (bundle and dependency noise).
+- If a request/response shape is needed **without** decorators, define it in `types` (or derive with `Pick`/`Omit` from a base interface shared with the DTO fields — same fields, one structural source of truth).
+
+# JSON / HTTP vs `Date`
+
+- Types that describe data **after `JSON.parse` / typical REST responses** should use **`string` (ISO 8601)** for timestamps, not `Date`, unless the whole stack guarantees deserialization to `Date` objects.
+- Using `Date` in shared types without that guarantee misleads the type checker on the frontend.
+
+# Naming: API vs persistence
+
+- Prefer names that reflect the **API or domain contract** (`…Response`, `…View`, or domain name) for shapes exposed to the client.
+- Reserve **`*Model`** for Sequelize/ORM-oriented or persistence-layer types. If the frontend imports a type, its name should not imply DB-only concerns unless that is intentional and documented.
+
+# Frontend imports
+
+- From `@common/types`, prefer **`import type`** so values are not emitted into the client bundle.
+
+# Reuse and Anti-Duplication (CRITICAL)
+
+- NEVER duplicate the same field set in a new interface when an existing type can be extended.
+- ALWAYS search `/apps/common` before adding a type.
+
+- **`Pick` / `Omit` / `Partial` / intersections (`&`) are reuse, not duplication.** New names for real subsets (list vs detail, public vs internal) are OK if they are built from shared bases.
+
+BAD examples:
+
+- Three interfaces with the **same** fields and the same meaning under different names (`TUser`, `TUserResponse`, `TUserPublic` with identical bodies).
+- Copy-pasting field lists instead of `Pick`/`Omit`.
+
+GOOD:
+
+- One base type (e.g. `TUser`) and `type TUserPreview = Pick<TUser, 'id' | 'name'>` for a narrower view.
+
+- If a new type is truly needed:
+  - It MUST live in `/apps/common`
+  - It MUST have a clearly distinct purpose (different fields or different semantics)
+
+# Type Extension Rules
+
+- Prefer composition over duplication:
+  - Intersections (`&`) or `Pick`, `Omit`, `Partial`, etc.
+
+Examples:
+
+GOOD:
+
+```ts
+type TUserPreview = Pick<TUser, 'id' | 'name'>;
+type TCreateUserRequest = Omit<TUser, 'id'>;
+```
+
+BAD:
+
+```ts
+type TUserPreview = {
+  id: string;
+  name: string;
+}; // duplicates TUser fields by hand
+```
+
+# Refactoring Preference
+
+- If duplicate types are detected: extract a shared base in `apps/common` and replace usages with the unified type or with `Pick`/`Omit` from it.
+
+# Monorepo paths
+
+- Shared code lives under **`apps/common`**. Do not point Nest or TS config at non-existent paths (e.g. stale `libs/common`); keep `@common` path aliases in sync with the real folder.
+
+# Priority
+
+- Reuse (including via utility types) > new parallel types
+- Simplicity > many similar abstractions

@@ -5,15 +5,12 @@ export const API_ENDPOINTS = {
     LOGIN: '/auth/login',
     REGISTRATION: '/auth/registration',
     CHECK_TOKEN: '/auth/checkToken',
-    REFRESH: '/auth/refresh',
   },
 
   // Фильмы
   FILMS: {
     SEARCH: '/films',
     BY_ID: (id: number) => `/films/${id}`,
-    UPDATE: (id: number) => `/films/${id}`,
-    DELETE: (id: number) => `/films/${id}`,
     PROFESSIONS: (id: number) => `/films/${id}/professions`,
     PERSONS_BY_PROFESSION: (id: number) => `/films/${id}/persons-by-profession`,
   },
@@ -21,13 +18,11 @@ export const API_ENDPOINTS = {
   // Жанры
   GENRES: {
     LIST: '/genres',
-    BY_ID: (id: number) => `/genres/${id}`,
   },
 
   // Страны
   COUNTRIES: {
     LIST: '/countries',
-    BY_ID: (id: number) => `/countries/${id}`,
   },
 
   // Персоны
@@ -39,14 +34,7 @@ export const API_ENDPOINTS = {
   // Профессии
   PROFESSIONS: {
     LIST: '/professions',
-    BY_ID: (id: number) => `/professions/${id}`,
     PERSONS: (id: number) => `/professions/${id}/persons`,
-  },
-
-  // Комментарии
-  COMMENTS: {
-    LIST: '/comments',
-    BY_ID: (id: number) => `/comments/${id}`,
   },
 
   // Поиск
@@ -57,8 +45,7 @@ export const API_ENDPOINTS = {
   // Фильтры
   FILTERS: {
     ROOT: '/filters',
-    GENRES: '/filters/genres',
-    COUNTRIES: '/filters/countries',
+    QUICK: '/filters/quick',
   },
 
   // Расширенные операции для персон

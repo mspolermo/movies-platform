@@ -1,8 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { FiltersResult } from "./dto";
-import { TCountryBased, TGenreBased } from "@common/types";
+import {
+  TCountryBased,
+  TGenreBased,
+  TQuickFiltersResponse,
+} from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
+
+const QUICK_FILTERS_MAX_GENRES = 23;
+const QUICK_FILTERS_MAX_COUNTRIES = 25;
+const QUICK_FILTERS_MAX_YEARS = 9;
 
 @Injectable()
 export class FiltersService extends BaseMicroserviceService {
@@ -22,5 +30,28 @@ export class FiltersService extends BaseMicroserviceService {
       countries,
       years,
     };
+  }
+
+  async getQuickFilters(): Promise<TQuickFiltersResponse> {
+    const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
+      this.sendMessage<TGenreBased[]>("getAll.genres", ""),
+      this.sendMessage<TCountryBased[]>("getAll.countries", ""),
+      this.sendMessage<number[]>("getAllFilmYears", ""),
+    ]);
+
+    const genres = genresRaw.slice(0, QUICK_FILTERS_MAX_GENRES).map((
+      { nameRu, nameEn }
+    ) => ({ nameRu, nameEn }));
+
+    const countries = countriesRaw
+      .slice(0, QUICK_FILTERS_MAX_COUNTRIES)
+      .map(({countryName, countryNameEn}) => (
+        { countryName, countryNameEn }));
+
+    const years = [...yearsRaw]
+      .sort((a, b) => b - a)
+      .slice(0, QUICK_FILTERS_MAX_YEARS);
+
+    return { genres, countries, years };
   }
 }

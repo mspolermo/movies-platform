@@ -6,7 +6,6 @@ export type TQickFilterHeading = {
 export type TQickFilterItem = {
   type: 'item';
   label: string | number;
-  key: string | number;
   onClick: () => void;
 };
 

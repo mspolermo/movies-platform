@@ -1,23 +1,10 @@
-import type { TCountryBased, TGenreBased } from '@common/types';
+import type { TQuickFiltersResponse } from '@common/types';
 
 import { useEffect, useState } from 'react';
 
-import apiClient, { API_ENDPOINTS } from '@/shared/api';
+import { getQuickFilters } from '../utils';
 
-//TODO: на сервере нужно написать единый эндпойнт по получению qickFilters и чтоб
-// там было оптимизированно и выдавало нарезанный данные, а не слайсить данные
-// на фронте в хуке useQuickFiltersList
-
-/**
- * Состояние dropdown данных
- */
-interface DropdownData {
-  genres: TGenreBased[];
-  countries: TCountryBased[];
-  years: number[];
-}
-
-interface DropdownState extends DropdownData {
+interface DropdownState extends TQuickFiltersResponse {
   isLoading: boolean;
   isError: boolean;
 }
@@ -34,9 +21,7 @@ type CacheEntry<T> = {
  * In-memory cache между рендерами
  */
 const cache = {
-  genres: { data: null, promise: null } as CacheEntry<TGenreBased[]>,
-  countries: { data: null, promise: null } as CacheEntry<TCountryBased[]>,
-  years: { data: null, promise: null } as CacheEntry<number[]>,
+  quick: { data: null, promise: null } as CacheEntry<TQuickFiltersResponse>,
 };
 
 /**
@@ -67,38 +52,10 @@ async function fetchWithCache<T>(
 }
 
 /**
- * Загрузка жанров
+ * Загрузка данных quick filters одним запросом (BFF агрегирует и режет лимиты).
  */
-function fetchGenres() {
-  return fetchWithCache(cache.genres, async () => {
-    const res = await apiClient.get(API_ENDPOINTS.GENRES.LIST);
-    return Array.isArray(res.data) ? res.data : [];
-  });
-}
-
-/**
- * Загрузка стран
- */
-function fetchCountries() {
-  return fetchWithCache(cache.countries, async () => {
-    const res = await apiClient.get(API_ENDPOINTS.COUNTRIES.LIST);
-    return Array.isArray(res.data) ? res.data : [];
-  });
-}
-
-/**
- * Загрузка годов
- */
-function fetchYears() {
-  return fetchWithCache(cache.years, async () => {
-    const res = await apiClient.get(API_ENDPOINTS.FILTERS.ROOT);
-
-    const years = res.data?.years ?? [];
-
-    return Array.isArray(years)
-      ? [...years].sort((a, b) => b - a).slice(0, 10)
-      : [];
-  });
+function fetchQuickFilters() {
+  return fetchWithCache(cache.quick, () => getQuickFilters());
 }
 
 /**
@@ -107,7 +64,6 @@ function fetchYears() {
  * Особенности:
  * - in-memory кеш
  * - дедупликация запросов
- * - параллельная загрузка
  * - защита от setState после unmount
  */
 export function useQuickFiltersData(): DropdownState {
@@ -124,11 +80,7 @@ export function useQuickFiltersData(): DropdownState {
 
     async function load() {
       try {
-        const [genres, countries, years] = await Promise.all([
-          fetchGenres(),
-          fetchCountries(),
-          fetchYears(),
-        ]);
+        const { genres, countries, years } = await fetchQuickFilters();
 
         if (ignore) return;
 

@@ -1,17 +1,24 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { FiltersService } from "./filters.service";
-import { JwtAuthGuard } from "../shared/guards";
+import { Public } from "../shared/guards";
 
 @Controller("filters")
-@UseGuards(JwtAuthGuard) // Защищаем весь контроллер
 @ApiBearerAuth()
 export class FiltersController {
   constructor(private readonly filtersService: FiltersService) {}
 
-  @ApiOperation({ summary: "Фильтры для поиска" })
+  @Public()
+  @ApiOperation({ summary: "Быстрые фильтры (dropdown Header): урезанный payload" })
+  @ApiResponse({ status: 200, description: "Жанры, страны и годы для quick filters" })
+  @Get("quick")
+  async getQuickFilters() {
+    return await this.filtersService.getQuickFilters();
+  }
+
+  @Public()
+  @ApiOperation({ summary: "Фильтры для поиска (полные списки)" })
   @ApiResponse({ status: 200, description: "Доступные фильтры" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @Get()
   async getFilters() {
     return await this.filtersService.getFilters();
