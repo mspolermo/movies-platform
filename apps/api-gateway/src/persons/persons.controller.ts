@@ -1,10 +1,8 @@
-import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
+import { Controller, Get, Param, Query } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { PersonsService } from "./persons.service";
-import { JwtAuthGuard } from "../shared/guards";
 
 @Controller("persons")
-@ApiBearerAuth()
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
@@ -31,7 +29,6 @@ export class PersonsController {
 
   @ApiOperation({ summary: "Получить человека по ID" })
   @ApiResponse({ status: 200, description: "Информация о человеке" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @ApiQuery({ name: "filmsLimit", required: false, description: "Количество фильмов в ответе", type: Number })
   @ApiQuery({ name: "filmsOffset", required: false, description: "Смещение по фильмам", type: Number })
   @Get("/:id")
@@ -53,7 +50,6 @@ export class PersonsController {
 
   @ApiOperation({ summary: "Поиск людей по имени и профессии" })
   @ApiResponse({ status: 200, description: "Список найденных людей" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @ApiQuery({ name: "name", required: false, description: "Имя человека" })
   @ApiQuery({ name: "professionId", required: false, description: "ID профессии" })
   @Get("search/find")

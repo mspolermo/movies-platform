@@ -1,19 +1,44 @@
+'use client';
+
 import type { TQickFilter } from '../../models';
 import type { TGenreQuickFilterItem } from '@common/types';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useMemo, useCallback } from 'react';
+import { useContext } from 'react';
 
-import { useQuickFiltersData } from './useQuickFiltersData';
+import { QuickFiltersContext } from '../../models';
 
 /**
  * Хук для подготовки списка быстрых фильтров с данными и экшенами для dropdown.
+ * Данные берутся из контекста `QuickFiltersContext`.
  */
 export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const state = useQuickFiltersData();
+  const ctx = useContext(QuickFiltersContext);
+  
+  const state = ctx ? 
+    {
+      genres: ctx.genres,
+      countries: ctx.countries,
+      years: ctx.years,
+      isLoading: false,
+      isError: false,
+    }
+  :
+    {
+      genres: [],
+      countries: [],
+      years: [],
+      isLoading: false,
+      isError: true,
+    }
+
+
+
+
 
   const isOnFilmsPage = pathname === '/films';
 

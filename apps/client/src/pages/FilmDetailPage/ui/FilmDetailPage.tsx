@@ -6,20 +6,20 @@ import React from 'react';
 
 import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const FilmDetailPage = ({ isLoading, film }: TFilmDetailPageProps) => {
   if (isLoading) {
     return (
-      <Layout>
+      <Page>
         <FilmDetailSkeleton />
-      </Layout>
+      </Page>
     );
   }
 
   return (
-    <Layout>
+    <Page>
       <FilmDetail creatorsViewer={<FilmCreatorsViewer />} film={film} />
-    </Layout>
+    </Page>
   );
 };

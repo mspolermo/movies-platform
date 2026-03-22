@@ -4,3 +4,5 @@ export type {
   TQickFilter,
   THeaderMenuItem,
 } from './types';
+
+export { QuickFiltersProvider, QuickFiltersContext } from './context';

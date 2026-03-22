@@ -3,57 +3,45 @@
 import type { FormEvent, ChangeEvent } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Button, Input } from '@/shared/ui';
 
 import styles from './LoginForm.module.scss';
-import { useAuthStore } from '../api';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, isLoading, error, clearError } = useAuthStore();
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    clearError();
+    setInfo(null);
+    setIsLoading(true);
 
-    console.info('LoginForm: Submitting form with:', { email, password });
-
-    try {
-      await login({ email, password });
-      console.info('LoginForm: Login successful, redirecting to /films');
-      router.push('/films');
-    } catch (error) {
-      console.error('LoginForm: Login failed:', error);
-    }
+    // Демо: данные не отправляются на сервер
+    await new Promise((r) => setTimeout(r, 400));
+    setIsLoading(false);
+    setInfo(
+      'Вход через API отключён на клиенте. Данные не передаются на сервер.'
+    );
   };
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Вход в систему</h1>
 
-      <div className={styles.testInfo}>
-        <h3>Тестовые данные:</h3>
-        <p>
-          <strong>Email:</strong> user@example.com
-        </p>
-        <p>
-          <strong>Password:</strong> password123
-        </p>
-        <p>
-          <em>Или создайте нового пользователя через регистрацию</em>
-        </p>
-      </div>
+      <p className={styles.testInfo}>
+        Форма демонстрационная: запросы авторизации к бэкенду не выполняются.
+      </p>
+
+      {info && <div className={styles.testInfo}>{info}</div>}
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input
           required
           disabled={isLoading}
-          error={error ? 'Проверьте правильность email и пароля' : undefined}
           label="Email"
           placeholder="user@example.com"
           type="email"
@@ -67,7 +55,7 @@ export const LoginForm = () => {
           required
           disabled={isLoading}
           label="Пароль"
-          placeholder="password123"
+          placeholder="••••••••"
           type="password"
           value={password}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>

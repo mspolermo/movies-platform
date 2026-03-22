@@ -1,6 +1,10 @@
 import { LoginForm } from '@/features/auth';
+import { Page } from '@/widgets/Layout';
 
-//TODO: сделать обертку чтоб форма была по центру экрана общую и для страницы регистрации
 export const LoginPage = () => {
-  return <LoginForm />;
+  return (
+    <Page title="Авторизация">
+      <LoginForm />
+    </Page>
+  );
 };

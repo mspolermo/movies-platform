@@ -1,12 +1,5 @@
 // API эндпойнты
 export const API_ENDPOINTS = {
-  // Аутентификация
-  AUTH: {
-    LOGIN: '/auth/login',
-    REGISTRATION: '/auth/registration',
-    CHECK_TOKEN: '/auth/checkToken',
-  },
-
   // Фильмы
   FILMS: {
     SEARCH: '/films',

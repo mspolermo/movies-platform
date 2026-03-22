@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { Filters, SortFilter, useFilters } from '@/features/filterFilms';
 import { LoadMoreFilms } from '@/features/loadMoreFilms';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 import styles from './FilmsPage.module.scss';
 
@@ -45,7 +45,7 @@ export const FilmsPage = () => {
   //TODO: мобильные фильтры не работают, разобраться со стилями
 
   return (
-    <Layout title="Фильмы">
+    <Page title="Фильмы">
       {/* Desktop filters */}
       <div className={styles.filtersBlock}>
         <div className={styles.filtersContainer}>
@@ -148,6 +148,6 @@ export const FilmsPage = () => {
           );
         }}
       </LoadMoreFilms>
-    </Layout>
+    </Page>
   );
 };

@@ -1,10 +1,8 @@
-import { Controller, Get, UseGuards } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { Controller, Get } from "@nestjs/common";
+import { ApiOperation, ApiResponse } from "@nestjs/swagger";
 import { CountriesService } from "./countries.service";
-import { JwtAuthGuard } from "../shared/guards";
 
 @Controller("countries")
-@ApiBearerAuth()
 export class CountriesController {
   constructor(private readonly countriesService: CountriesService) {}
 

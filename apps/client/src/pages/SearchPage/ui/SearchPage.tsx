@@ -1,12 +1,12 @@
 'use client';
 
 import { SearchFilmsAndPersons } from '@/features/searchFilmsAndPersonsByQuery';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const SearchPage = () => {
   return (
-    <Layout title="Поиск">
+    <Page title="Поиск">
       <SearchFilmsAndPersons />
-    </Layout>
+    </Page>
   );
 };

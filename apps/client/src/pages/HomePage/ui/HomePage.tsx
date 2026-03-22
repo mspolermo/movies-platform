@@ -1,11 +1,11 @@
 'use client';
 
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const HomePage = () => {
   return (
-    <Layout title="MovieLand">
+    <Page title="MovieLand">
       <p>Главная страница</p>
-    </Layout>
+    </Page>
   );
 };

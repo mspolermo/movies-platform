@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { ProfessionsService } from './professions.service';
-import { JwtAuthGuard } from '../shared/guards';
+import { JwtAuthGuard, Public } from '../shared/guards';
 
 @Controller('professions')
 @UseGuards(JwtAuthGuard)
@@ -9,17 +9,17 @@ import { JwtAuthGuard } from '../shared/guards';
 export class ProfessionsController {
   constructor(private readonly professionsService: ProfessionsService) {}
 
+  @Public()
   @ApiOperation({ summary: 'Получить все профессии' })
   @ApiResponse({ status: 200, description: 'Список профессий' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
   async getAllProfessions() {
     return await this.professionsService.getAllProfessions();
   }
 
+  @Public()
   @ApiOperation({ summary: 'Получить персон по профессии с пагинацией' })
   @ApiResponse({ status: 200, description: 'Список персон профессии' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiParam({ name: 'profession', description: 'ID профессии', type: Number })
   @ApiQuery({ name: 'page', required: false, description: 'Номер страницы', type: Number })
   @ApiQuery({ name: 'limit', required: false, description: 'Количество элементов на странице', type: Number })

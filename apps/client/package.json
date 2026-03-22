@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start:build": "next start",
     "lint": "eslint \"**/*.{js,ts,jsx,tsx}\" --max-warnings 0",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -21,8 +21,7 @@
     "hls.js": "^1.6.15",
     "next": "14.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "zustand": "^4.5.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",

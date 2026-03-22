@@ -3,15 +3,15 @@
 import { useParams } from 'next/navigation';
 
 import { PersonDetail } from '@/features/getPersonWithProffesionsFilmography';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const PersonDetailPage = () => {
   const params = useParams();
   const personId = Number(params?.id);
 
   return (
-    <Layout withBackButton>
+    <Page withBackButton>
       <PersonDetail personId={personId} />
-    </Layout>
+    </Page>
   );
 };

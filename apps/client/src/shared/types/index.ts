@@ -4,7 +4,6 @@ import type {
   TGenreBased,
   TCountryBased,
   TFilmBased,
-  TRoleBased,
   TProfessionWithPersons,
   TFilmModel,
 } from '@common/types';
@@ -20,20 +19,6 @@ export interface Film extends TFilmBased {
 export interface ApiResponse<T> {
   data: T;
   message?: string;
-}
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  email: string;
-  userId: number;
-  role: TRoleBased[];
-  token: {
-    token: string;
-  };
 }
 
 export interface SearchParams {

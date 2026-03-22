@@ -1,7 +1,7 @@
 import type { TErrorPageProps } from './types';
 
 import { Button } from '@/shared/ui';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 import styles from './ErrorPage.module.scss';
 
@@ -16,7 +16,7 @@ export const ErrorPage = ({
   console.warn(error);
 
   return (
-    <Layout title="Произошла ошибка">
+    <Page title="Произошла ошибка">
       <div className={styles.container}>
         <h1 className={styles.title}>500</h1>
 
@@ -28,6 +28,6 @@ export const ErrorPage = ({
           </Button>
         )}
       </div>
-    </Layout>
+    </Page>
   );
 };

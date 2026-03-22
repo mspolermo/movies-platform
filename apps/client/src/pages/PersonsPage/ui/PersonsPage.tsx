@@ -1,12 +1,12 @@
 'use client';
 
 import { AllPersonsList } from '@/features/getAllPersons';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const PersonsPage = () => {
   return (
-    <Layout title="Персоны">
+    <Page title="Персоны">
       <AllPersonsList />
-    </Layout>
+    </Page>
   );
 };

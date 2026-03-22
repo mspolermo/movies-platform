@@ -1,10 +1,10 @@
 import { IPTVPlayer } from '@/features/getTV';
-import { Layout } from '@/widgets/Layout';
+import { Page } from '@/widgets/Layout';
 
 export const TVPage = () => {
   return (
-    <Layout title="Телевидение">
+    <Page title="Телевидение">
       <IPTVPlayer />
-    </Layout>
+    </Page>
   );
 };
