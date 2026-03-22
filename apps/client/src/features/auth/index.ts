@@ -1,2 +1,2 @@
-export { LoginForm } from './ui/LoginForm';
-export { useAuthStore } from './api/authStore/store';
+export { LoginForm, AuthInitializer } from './ui';
+export { useAuthStore } from './api';

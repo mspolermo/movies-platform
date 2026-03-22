@@ -1,5 +1,5 @@
-import { TGenreBased } from "@common/types"
+import type { TGenreBased } from '@common/types';
 
 export type TGenreCardProps = {
-  genre: TGenreBased
-}
+  genre: TGenreBased;
+};

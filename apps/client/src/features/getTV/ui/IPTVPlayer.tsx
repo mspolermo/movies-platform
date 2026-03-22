@@ -1,9 +1,11 @@
-"use client"
+'use client';
 
-import React, { useEffect, useRef, useState } from "react";
-import Hls from "hls.js";
+import Hls from 'hls.js';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import { Input, Button, Skeleton } from '@/shared/ui';
+
 import styles from './IPTVPlayer.module.scss';
-import { Input, Button, Skeleton } from "@/shared/ui";
 
 type Channel = {
   id: string;
@@ -16,7 +18,7 @@ type Stream = {
   url: string;
 };
 
-type SortType = "name" | "popularity";
+type SortType = 'name' | 'popularity';
 
 //TODO: это прототип. нужно вынести на бек в отдельный микросервис
 // с проверкой живой ли стрим и перебитием корсов
@@ -28,8 +30,8 @@ export const IPTVPlayer = () => {
   const [channels, setChannels] = useState<Channel[]>([]);
   const [streams, setStreams] = useState<Stream[]>([]);
   const [filtered, setFiltered] = useState<Channel[]>([]);
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<SortType>("popularity");
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<SortType>('popularity');
 
   const [currentChannel, setCurrentChannel] = useState<string | null>(null);
   const [currentStreamIndex, setCurrentStreamIndex] = useState(0);
@@ -38,8 +40,8 @@ export const IPTVPlayer = () => {
   useEffect(() => {
     async function load() {
       const [channelsRes, streamsRes] = await Promise.all([
-        fetch("https://iptv-org.github.io/api/channels.json"),
-        fetch("https://iptv-org.github.io/api/streams.json"),
+        fetch('https://iptv-org.github.io/api/channels.json'),
+        fetch('https://iptv-org.github.io/api/streams.json'),
       ]);
 
       const channelsData = await channelsRes.json();
@@ -49,7 +51,7 @@ export const IPTVPlayer = () => {
 
       const ruChannels = channelsData.filter(
         (ch: Channel) =>
-          ch.country === "RU" &&
+          ch.country === 'RU' &&
           streamsData.some((s: Stream) => s.channel === ch.id)
       );
 
@@ -60,29 +62,27 @@ export const IPTVPlayer = () => {
   }, []);
 
   // получить стримы канала
-  function getStreams(channelId: string) {
-    return streams.filter((s) => s.channel === channelId);
-  }
+  const getStreams = useCallback(
+    (channelId: string) => streams.filter((s) => s.channel === channelId),
+    [streams]
+  );
 
   // фильтр + сортировка
   useEffect(() => {
-    let list = channels.filter((ch) =>
+    const list = channels.filter((ch) =>
       ch.name.toLowerCase().includes(search.toLowerCase())
     );
 
-    if (sort === "name") {
+    if (sort === 'name') {
       list.sort((a, b) => a.name.localeCompare(b.name));
     }
 
-    if (sort === "popularity") {
-      list.sort(
-        (a, b) =>
-          getStreams(b.id).length - getStreams(a.id).length
-      );
+    if (sort === 'popularity') {
+      list.sort((a, b) => getStreams(b.id).length - getStreams(a.id).length);
     }
 
     setFiltered(list.slice(0, 100));
-  }, [search, channels, sort]);
+  }, [search, channels, sort, getStreams]);
 
   function playStream(url: string) {
     if (!videoRef.current) return;
@@ -119,7 +119,7 @@ export const IPTVPlayer = () => {
       setCurrentStreamIndex(nextIndex);
       playStream(list[nextIndex].url);
     } else {
-      console.warn("Все стримы умерли 💀");
+      console.warn('Все стримы умерли 💀');
     }
   }
 
@@ -134,71 +134,60 @@ export const IPTVPlayer = () => {
 
   return (
     <div className={styles.container}>
-
       {/* Player */}
       <div className={styles.player}>
         {/* Не отображается, не видно этого */}
-        {!currentChannel && (
-          <div className={styles.empty}>
-            Выбери канал
-          </div>
-        )}
-  
-        <video
-          ref={videoRef}
-          controls
-          autoPlay
-          className={styles.video}
-        />
+        {!currentChannel && <div className={styles.empty}>Выбери канал</div>}
+
+        <video ref={videoRef} autoPlay controls className={styles.video} />
       </div>
 
       {/* Sidebar */}
       <div className={styles.sidebar}>
-  
         <Input
+          className={styles.search}
           placeholder="Поиск каналов"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className={styles.search}
         />
-  
+
         <div className={styles.sort}>
           <Button
-            variant={sort === "popularity" ? "gray" : "default"}
             size="small"
-            onClick={() => setSort("popularity")}
+            variant={sort === 'popularity' ? 'gray' : 'default'}
+            onClick={() => setSort('popularity')}
           >
             🔥 Популярные
           </Button>
-  
+
           <Button
-            variant={sort === "name" ? "gray" : "default"}
             size="small"
-            onClick={() => setSort("name")}
+            variant={sort === 'name' ? 'gray' : 'default'}
+            onClick={() => setSort('name')}
           >
             A–Z
           </Button>
         </div>
-  
+
         <div className={styles.list}>
           {!channels.length &&
             Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className={styles.skeletonItem}>
-                <Skeleton width={40} height={40} />
-                <Skeleton width="60%" height={16} />
+                <Skeleton height={40} width={40} />
+                <Skeleton height={16} width="60%" />
               </div>
             ))}
-  
+
           {filtered.map((ch) => (
             <div
               key={ch.id}
-              onClick={() => playChannel(ch.id)}
               className={`${styles.item} ${
-                currentChannel === ch.id ? styles.active : ""
+                currentChannel === ch.id ? styles.active : ''
               }`}
+              onClick={() => playChannel(ch.id)}
             >
-              <Skeleton width={40} height={40} />
-  
+              <Skeleton height={40} width={40} />
+
               <div className={styles.meta}>
                 <div className={styles.name}>{ch.name}</div>
                 <div className={styles.sub}>
@@ -211,4 +200,4 @@ export const IPTVPlayer = () => {
       </div>
     </div>
   );
-}
+};

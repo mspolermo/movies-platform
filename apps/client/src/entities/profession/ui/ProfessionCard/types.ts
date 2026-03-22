@@ -1,5 +1,5 @@
-import { TProfessionBased } from "@common/types"
+import type { TProfessionBased } from '@common/types';
 
 export type TProfessionCardProps = {
-  profession: TProfessionBased
-}
+  profession: TProfessionBased;
+};

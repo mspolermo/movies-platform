@@ -1,13 +1,17 @@
+import type { TAllPersonsByProfessionProps } from './types';
+
 import { PersonCard } from '@/entities/person';
-import { LoadMoreSection, Loader } from '@/shared/ui';
+import { LoadMoreSection } from '@/shared/ui';
+
 import styles from './AllPersonsByProfession.module.scss';
-import { TAllPersonsByProfessionProps } from './types';
 import { useProfessionPersons } from '../lib';
 
 /**
  * UI сетка больших карточек персон по выбранной професии (с логикой загрузки)
  */
-export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProfessionProps) => {
+export const AllPersonsByProfession = ({
+  activeProfessionId,
+}: TAllPersonsByProfessionProps) => {
   const {
     persons,
     loading: personsLoading,
@@ -20,25 +24,21 @@ export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProf
     initialLimit: 20,
   });
 
-  if (!activeProfessionId) return null
+  if (!activeProfessionId) return null;
 
   return (
     <div className={styles.personsSection}>
-      {personsError && (
-        <div className={styles.error}>{personsError}</div>
-      )}
+      {personsError && <div className={styles.error}>{personsError}</div>}
 
       {persons.length === 0 && !personsLoading && (
-        <div className={styles.emptyState}>
-          Нет персон в этой профессии
-        </div>
+        <div className={styles.emptyState}>Нет персон в этой профессии</div>
       )}
 
       <LoadMoreSection
-        onLoadMore={loadMore}
-        isLoading={personsLoading}
-        hasMore={hasMore}
         className={styles.infiniteScroll}
+        hasMore={hasMore}
+        isLoading={personsLoading}
+        onLoadMore={loadMore}
       >
         <div className={styles.personsGrid}>
           {persons.map((person) => (
@@ -47,5 +47,5 @@ export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProf
         </div>
       </LoadMoreSection>
     </div>
-  )
-}
+  );
+};

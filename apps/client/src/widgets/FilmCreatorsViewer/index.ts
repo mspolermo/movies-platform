@@ -1,1 +1,1 @@
-export { FilmCreatorsViewer } from './ui'
+export { FilmCreatorsViewer } from './ui';

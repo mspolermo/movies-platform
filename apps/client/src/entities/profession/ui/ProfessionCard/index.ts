@@ -1,1 +1,1 @@
-export { ProfessionCard } from './ProfessionCard'
+export { ProfessionCard } from './ProfessionCard';

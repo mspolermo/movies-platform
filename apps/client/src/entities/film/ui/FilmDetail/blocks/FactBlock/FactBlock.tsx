@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import type { FactBlockProps } from '../../types';
+
+import React, { useState } from 'react';
+
 import styles from './FactBlock.module.scss';
-import { TFactBased } from '@common/types';
-import { FactBlockProps } from '../../types';
 
 export const FactBlock = ({ fact, isCartoon }: FactBlockProps) => {
   const [isExpanded, setIsExpanded] = useState(false);

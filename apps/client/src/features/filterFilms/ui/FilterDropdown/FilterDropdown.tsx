@@ -1,5 +1,8 @@
-import { useCallback } from 'react';
+import type { ReactNode } from 'react';
+
 import cn from 'classnames';
+import { useCallback } from 'react';
+
 import styles from './FilterDropdown.module.scss';
 
 interface FilterDropdownProps {
@@ -8,7 +11,7 @@ interface FilterDropdownProps {
   activeBlock: string[];
   blockName: string;
   setActiveBlock: (activeBlockName: string[]) => void;
-  children: React.ReactNode;
+  children: ReactNode;
   isWideMenu?: boolean;
 }
 
@@ -53,13 +56,13 @@ export const FilterDropdown = ({
               [styles.arrowOpen]: isOpen,
             })}
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
               <path
                 d="M4 6L8 10L12 6"
                 stroke="currentColor"
-                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth="2"
               />
             </svg>
           </div>

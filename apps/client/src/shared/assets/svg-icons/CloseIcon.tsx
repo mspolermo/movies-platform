@@ -1,11 +1,11 @@
-import React from 'react';
+import type { SVGProps } from 'react';
 
-export const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+export const CloseIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
     strokeWidth="1"
+    viewBox="0 0 24 24"
     {...props}
   >
     <path d="M18 6L6 18" />

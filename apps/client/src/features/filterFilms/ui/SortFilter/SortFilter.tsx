@@ -1,7 +1,11 @@
+import type { SortOption } from '../../types';
+
 import React, { useState } from 'react';
-import { SortOption, SORT_OPTIONS } from '../../types/filters';
-import { SvgIcon } from '@/shared/ui/SvgIcon/SvgIcon';
+
+import { SvgIcon } from '@/shared/ui';
+
 import styles from './SortFilter.module.scss';
+import { SORT_OPTIONS } from '../../types';
 
 interface SortFilterProps {
   sortValue: SortOption;
@@ -15,10 +19,7 @@ const sortLabels: Record<SortOption, string> = {
   alphabet: 'По алфавиту',
 };
 
-export const SortFilter = ({
-  sortValue,
-  setSortValue,
-}: SortFilterProps) => {
+export const SortFilter = ({ sortValue, setSortValue }: SortFilterProps) => {
   const [active, setActive] = useState(false);
 
   const handleOptionClick = (option: SortOption) => {
@@ -30,18 +31,13 @@ export const SortFilter = ({
     <div className={styles.sortFilter}>
       <div className={styles.content}>
         <div className={styles.block}>
-          <div
-            className={styles.select}
-            onClick={() => setActive(v => !v)}
-          >
+          <div className={styles.select} onClick={() => setActive((v) => !v)}>
             <div className={styles.active}>
               <div className={styles.icon}>
                 <SvgIcon name="sort" size={16} />
               </div>
 
-              <div className={styles.title}>
-                {sortLabels[sortValue]}
-              </div>
+              <div className={styles.title}>{sortLabels[sortValue]}</div>
 
               <div
                 className={`${styles.arrow} ${
@@ -63,7 +59,7 @@ export const SortFilter = ({
               <div className={styles.value}>
                 <div className={styles.subtitle}>Сортировка</div>
 
-                {SORT_OPTIONS.map(option => (
+                {SORT_OPTIONS.map((option) => (
                   <div
                     key={option}
                     className={`${styles.option} ${

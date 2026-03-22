@@ -1,1 +1,1 @@
-export { QickFiltersList } from './QickFiltersList'
+export { QickFiltersList } from './QickFiltersList';

@@ -1,6 +1,6 @@
-import { TFilmWithProfessions } from '@common/types';
-import { ReactNode } from 'react';
+import type { TFilmWithProfessions } from '@common/types';
 
+import type { MouseEvent, ReactNode } from 'react';
 export interface FilmCardProps {
   film: TFilmWithProfessions;
   showIcons?: boolean;
@@ -18,13 +18,13 @@ export interface FilmCardPreviewProps {
 export interface IconsBlockProps {
   isFavorite: boolean;
   notLike: boolean;
-  handleFavoritesClick: (e: React.MouseEvent) => void;
-  handleSimilarClick: (e: React.MouseEvent) => void;
-  handleGradeClick: (e: React.MouseEvent) => void;
-  handleNotLikeClick: (e: React.MouseEvent) => void;
+  handleFavoritesClick: (e: MouseEvent) => void;
+  handleSimilarClick: (e: MouseEvent) => void;
+  handleGradeClick: (e: MouseEvent) => void;
+  handleNotLikeClick: (e: MouseEvent) => void;
 }
 
 export interface FilmDetailProps {
   film: TFilmWithProfessions;
-  creatorsViewer: ReactNode
+  creatorsViewer: ReactNode;
 }

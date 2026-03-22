@@ -1,8 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { Layout } from '@/widgets/Layout';
+
 import { PersonDetail } from '@/features/getPersonWithProffesionsFilmography';
+import { Layout } from '@/widgets/Layout';
 
 export const PersonDetailPage = () => {
   const params = useParams();
@@ -10,7 +11,7 @@ export const PersonDetailPage = () => {
 
   return (
     <Layout withBackButton>
-      <PersonDetail personId={personId}/>
+      <PersonDetail personId={personId} />
     </Layout>
   );
 };

@@ -1,1 +1,1 @@
-export { ProfessionsPage as default } from './ui/ProfessionsPage';
+export { ProfessionsPage } from './ui';

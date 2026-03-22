@@ -1,4 +1,5 @@
 import React from 'react';
+
 import styles from './Skeleton.module.scss';
 
 export interface SkeletonProps {
@@ -11,7 +12,7 @@ export interface SkeletonProps {
   children?: React.ReactNode;
 }
 
-export const Skeleton: React.FC<SkeletonProps> = ({
+export const Skeleton = ({
   width,
   height,
   borderRadius,
@@ -19,7 +20,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   variant = 'rectangular',
   animation = 'pulse',
   children,
-}) => {
+}: SkeletonProps) => {
   const style: React.CSSProperties = {
     ...(width !== undefined && {
       width: typeof width === 'number' ? `${width}px` : width,
@@ -55,6 +56,6 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   }
 
   return (
-    <div className={skeletonClasses} style={style} aria-label="Загрузка..." />
+    <div aria-label="Загрузка..." className={skeletonClasses} style={style} />
   );
 };

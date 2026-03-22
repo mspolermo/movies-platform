@@ -34,7 +34,7 @@ export const DEFAULT_ACTIVE_FILTERS: ActiveFilters = {
   rating: 0,
   grade: 0,
   producer: '',
-  actor: ''
+  actor: '',
 };
 
 export const DEFAULT_ALL_FILTERS: AllFilters = {
@@ -44,8 +44,12 @@ export const DEFAULT_ALL_FILTERS: AllFilters = {
   rating: 0,
   grade: 0,
   producer: '',
-  actor: ''
+  actor: '',
 };
 
-export const SORT_OPTIONS: SortOption[] = ['popularity', 'rating', 'novelty', 'alphabet'];
-
+export const SORT_OPTIONS: SortOption[] = [
+  'popularity',
+  'rating',
+  'novelty',
+  'alphabet',
+];

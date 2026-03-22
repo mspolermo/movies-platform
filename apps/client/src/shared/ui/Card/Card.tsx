@@ -1,9 +1,10 @@
-"use client"
+'use client';
 
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
+
 import styles from './Card.module.scss';
 import { SvgIcon } from '../SvgIcon';
-import Image from 'next/image';
 
 interface CardProps {
   type?: 'small' | 'big';
@@ -13,13 +14,13 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export const Card: React.FC<CardProps> = ({
+export const Card = ({
   type = 'small',
   title,
   photoUrl,
   role,
   onClick,
-}) => {
+}: CardProps) => {
   const [cardClass, setCardClass] = useState(styles.card);
   const [imgClass, setImgClass] = useState(styles.card__img);
   const [bodyClass, setBodyClass] = useState(styles.card__body);
@@ -73,7 +74,7 @@ export const Card: React.FC<CardProps> = ({
     if (!photoUrl || imageError) {
       return (
         <div className={styles.imageError}>
-          <SvgIcon name="image-icon" size={24} color="var(--color-text)" />
+          <SvgIcon color="var(--color-text)" name="image-icon" size={24} />
         </div>
       );
     }
@@ -82,17 +83,17 @@ export const Card: React.FC<CardProps> = ({
       <>
         <div className={imgClass} style={{ position: 'relative' }}>
           <Image
-            src={photoUrl}
-            alt={title ?? ''}
             fill
+            alt={title ?? ''}
             sizes="(max-width: 768px) 100vw, 300px"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
+            src={photoUrl}
             style={{
               objectFit: 'cover',
               opacity: imageLoading ? 0 : 1,
               transition: 'opacity 0.3s ease',
             }}
+            onError={handleImageError}
+            onLoad={handleImageLoad}
           />
         </div>
         {imageLoading && <div className={styles.skeleton}></div>}

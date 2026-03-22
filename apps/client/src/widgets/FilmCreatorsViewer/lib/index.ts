@@ -1,1 +1,1 @@
-export { useFilmCreatorViewer } from './hooks'
+export { useFilmCreatorViewer } from './hooks';

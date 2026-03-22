@@ -1,11 +1,12 @@
-import {
+import type {
   TCountryBased,
   TGenreBased,
   TFilmBased,
   TFactBased,
   TProfessionWithPersons,
 } from '@common/types';
-import { ReactNode } from 'react';
+
+import type { ReactNode } from 'react';
 
 export interface CardsBlockProps {
   professions?: TProfessionWithPersons[];
@@ -47,5 +48,5 @@ export interface FactBlockProps {
 }
 
 export interface TCreatorsViewerBlockProps {
-  creatorsViewer: ReactNode
+  creatorsViewer: ReactNode;
 }

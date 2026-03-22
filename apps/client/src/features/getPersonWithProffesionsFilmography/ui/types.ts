@@ -1,3 +1,3 @@
 export interface TPersonDetailProps {
-  personId: number
+  personId: number;
 }

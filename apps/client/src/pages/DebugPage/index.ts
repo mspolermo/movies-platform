@@ -1,1 +1,1 @@
-export { DebugPage as default } from './ui/DebugPage';
+export { DebugPage } from './ui';

@@ -1,4 +1,4 @@
-import { LoginForm } from '@/features/auth/ui/LoginForm';
+import { LoginForm } from '@/features/auth';
 
 //TODO: сделать обертку чтоб форма была по центру экрана общую и для страницы регистрации
 export const LoginPage = () => {

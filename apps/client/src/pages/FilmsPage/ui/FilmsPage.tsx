@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { Layout } from '@/widgets/Layout';
+import type { SortOption } from '@/features/filterFilms';
+import type { SearchFilmsParams } from '@/shared/types';
+
+import { useMemo } from 'react';
+
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
-import { LoadMoreFilms } from '@/features/loadMoreFilms/ui/LoadMoreFilms';
 import { Filters, SortFilter, useFilters } from '@/features/filterFilms';
-import { SortOption } from '@/features/filterFilms/types/filters';
+import { LoadMoreFilms } from '@/features/loadMoreFilms';
+import { Layout } from '@/widgets/Layout';
+
 import styles from './FilmsPage.module.scss';
-import { SearchFilmsParams } from '@/shared/types';
 
 export const FilmsPage = () => {
   const {
@@ -17,7 +20,7 @@ export const FilmsPage = () => {
     isEmptyFilters,
     setSortValue,
     updateFilters,
-    buildFilterParams
+    buildFilterParams,
   } = useFilters();
 
   // Вычисляем параметры на основе selectedFilters и sortValue
@@ -25,7 +28,7 @@ export const FilmsPage = () => {
     return buildFilterParams(selectedFilters, 1, 20, sortValue);
   }, [selectedFilters, sortValue, buildFilterParams]);
 
-  const handleParamsChange = (params: SearchFilmsParams) => {
+  const handleParamsChange = (_params: SearchFilmsParams) => {
     // Параметры обновляются автоматически через useMemo
   };
 
@@ -42,8 +45,7 @@ export const FilmsPage = () => {
   //TODO: мобильные фильтры не работают, разобраться со стилями
 
   return (
-    <Layout title='Фильмы'>
-
+    <Layout title="Фильмы">
       {/* Desktop filters */}
       <div className={styles.filtersBlock}>
         <div className={styles.filtersContainer}>
@@ -57,7 +59,7 @@ export const FilmsPage = () => {
           />
         </div>
         <div className={styles.sortingContainer}>
-          <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
+          <SortFilter setSortValue={handleSortChange} sortValue={sortValue} />
         </div>
       </div>
 
@@ -67,41 +69,52 @@ export const FilmsPage = () => {
           <div className={styles.mobileTitle}>
             <h1>Фильмы</h1>
             <div className={styles.mobileSubtitle}>
-              {!selectedFilters.genres.length ? 'Все жанры, ' : `${selectedFilters.genres.join(', ')}, `}
-              {!selectedFilters.countries.length ? 'все страны, ' : `${selectedFilters.countries.join(', ')}, `}
+              {!selectedFilters.genres.length
+                ? 'Все жанры, '
+                : `${selectedFilters.genres.join(', ')}, `}
+              {!selectedFilters.countries.length
+                ? 'все страны, '
+                : `${selectedFilters.countries.join(', ')}, `}
               {!selectedFilters.years ? 'все годы' : selectedFilters.years}
             </div>
           </div>
           <div className={styles.mobileControls}>
-            <button 
+            <button
               className={styles.mobileFilterButton}
-              onClick={() => {/* TODO: открыть модальное окно с фильтрами */}}
+              onClick={() => {
+                /* TODO: открыть модальное окно с фильтрами */
+              }}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M3 7H21M9 12H21M17 17H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
+                <path
+                  d="M3 7H21M9 12H21M17 17H21"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="2"
+                />
               </svg>
               Фильтры
               {!isEmptyFilters && <div className={styles.filterIndicator} />}
             </button>
           </div>
         </div>
-        
+
         <div className={styles.mobileSorting}>
-          <SortFilter sortValue={sortValue} setSortValue={handleSortChange} />
+          <SortFilter setSortValue={handleSortChange} sortValue={sortValue} />
         </div>
       </div>
 
       <LoadMoreFilms
         initialParams={currentParams}
-        threshold={200}
-        onParamsChange={handleParamsChange}
         loadingComponent={
           <div className={styles.filmsGrid}>
             {Array.from({ length: 8 }).map((_, index) => (
-              <FilmCardSkeleton key={`skeleton-${index}`}  showIcons={true} />
+              <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
             ))}
           </div>
         }
+        threshold={200}
+        onParamsChange={handleParamsChange}
       >
         {(films, loading, error) => {
           if (error) {
@@ -113,7 +126,10 @@ export const FilmsPage = () => {
             return (
               <div className={styles.filmsGrid}>
                 {Array.from({ length: 8 }).map((_, index) => (
-                  <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
+                  <FilmCardSkeleton
+                    key={`skeleton-${index}`}
+                    showIcons={true}
+                  />
                 ))}
               </div>
             );

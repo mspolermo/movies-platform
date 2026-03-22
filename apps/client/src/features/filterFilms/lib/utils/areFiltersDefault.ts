@@ -1,4 +1,6 @@
-import { ActiveFilters, DEFAULT_ACTIVE_FILTERS } from '../../types';
+import type { ActiveFilters } from '../../types';
+
+import { DEFAULT_ACTIVE_FILTERS } from '../../types';
 
 /**
  * Проверяет, отличаются ли текущие фильтры от дефолтных

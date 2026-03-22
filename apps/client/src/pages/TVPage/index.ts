@@ -1,1 +1,1 @@
-export { TVPage } from './ui/TVPage'
+export { TVPage } from './ui';

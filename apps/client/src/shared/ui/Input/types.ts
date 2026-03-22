@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ReactNode } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
 export type InputVariant = 'default' | 'search' | 'email';
 export type InputSize = 'small' | 'medium' | 'large';

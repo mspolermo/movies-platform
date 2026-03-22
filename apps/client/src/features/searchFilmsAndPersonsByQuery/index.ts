@@ -1,1 +1,1 @@
-export { SearchFilmsAndPersons } from './ui'
+export { SearchFilmsAndPersons } from './ui';

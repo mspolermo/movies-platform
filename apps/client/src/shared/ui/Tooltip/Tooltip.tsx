@@ -1,6 +1,9 @@
 'use client';
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+
 import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
@@ -12,20 +15,20 @@ interface TooltipProps {
   className?: string;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({
+export const Tooltip = ({
   content,
   children,
   position = 'top',
   delay = 300,
   disabled = false,
   className = '',
-}) => {
+}: TooltipProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   const showTooltip = () => {
     if (disabled) return;
@@ -51,7 +54,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }, 150); // Время анимации исчезновения
   };
 
-  const updatePosition = () => {
+  const updatePosition = useCallback(() => {
     if (!triggerRef.current || !tooltipRef.current) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
@@ -107,7 +110,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
 
     setTooltipPosition({ top, left });
-  };
+  }, [position]);
 
   useEffect(() => {
     if (isVisible) {
@@ -124,7 +127,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         window.removeEventListener('resize', handleResize);
       };
     }
-  }, [isVisible, position]);
+  }, [isVisible, updatePosition]);
 
   useEffect(() => {
     return () => {
@@ -154,11 +157,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     <>
       <div
         ref={triggerRef}
+        style={{ display: 'inline-block' }}
+        onBlur={hideTooltip}
+        onFocus={showTooltip}
         onMouseEnter={showTooltip}
         onMouseLeave={hideTooltip}
-        onFocus={showTooltip}
-        onBlur={hideTooltip}
-        style={{ display: 'inline-block' }}
       >
         {children}
       </div>

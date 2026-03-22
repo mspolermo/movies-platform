@@ -1,16 +1,19 @@
-import apiClient from "@/shared/api/client";
-import { API_ENDPOINTS } from "@/shared/api/endpoints";
-import { TPersonFullWithPagination } from "@common/types";
+import type { TPersonFullWithPagination } from '@common/types';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 interface PersonFilmsParams {
   filmsLimit?: number;
   filmsOffset?: number;
 }
 
-/** 
+/**
  * Получить персону по ID
-*/ 
-export const getPersonById = async (id: number, params: PersonFilmsParams = {}): Promise<TPersonFullWithPagination> => {
+ */
+export const getPersonById = async (
+  id: number,
+  params: PersonFilmsParams = {}
+): Promise<TPersonFullWithPagination> => {
   const queryParams: Record<string, number> = {};
   if (typeof params.filmsLimit === 'number') {
     queryParams.filmsLimit = params.filmsLimit;
@@ -23,4 +26,4 @@ export const getPersonById = async (id: number, params: PersonFilmsParams = {}):
     params: queryParams,
   });
   return response.data;
-}
+};

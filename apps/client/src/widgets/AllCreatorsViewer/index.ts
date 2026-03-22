@@ -1,1 +1,1 @@
-export { AllCreatorsViewer } from './ui'
+export { AllCreatorsViewer } from './ui';

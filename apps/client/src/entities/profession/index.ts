@@ -1,2 +1,2 @@
-export { getAllProfessions, getFilmProfessions } from './api'
-export { ProfessionsSlider, ProfessionsList } from './ui'
+export { getAllProfessions, getFilmProfessions } from './api';
+export { ProfessionsSlider, ProfessionsList } from './ui';

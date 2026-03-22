@@ -1,1 +1,1 @@
-export { usePersonDetails } from './usePersonDetails'
+export { usePersonDetails } from './usePersonDetails';

@@ -1,1 +1,1 @@
-export { useAllCreatorsView } from './hooks'
+export { useAllCreatorsView } from './hooks';

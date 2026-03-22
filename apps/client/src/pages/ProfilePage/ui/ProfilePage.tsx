@@ -1,9 +1,10 @@
 'use client';
 
-import { Layout } from '@/widgets/Layout';
-import { useAuthStore } from '@/features/auth/api/authStore/store';
-import styles from './ProfilePage.module.scss';
+import { useAuthStore } from '@/features/auth';
 import { Button } from '@/shared/ui';
+import { Layout } from '@/widgets/Layout';
+
+import styles from './ProfilePage.module.scss';
 
 export const ProfilePage = () => {
   const { user, logout } = useAuthStore();
@@ -17,7 +18,7 @@ export const ProfilePage = () => {
   }
 
   return (
-    <Layout title='Профиль пользователя'>
+    <Layout title="Профиль пользователя">
       <div className={styles.profileCard}>
         <div className={styles.profileHeader}>
           <div className={styles.avatar}>

@@ -1,15 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import type { TLayoutProps } from '../types';
+
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/features/auth/api/authStore/store';
-import { Header } from '../Header';
-import { Footer } from '../Footer';
-import styles from './Layout.module.scss';
-import { Loader } from '@/shared/ui';
+import { useEffect } from 'react';
+
+import { useAuthStore } from '@/features/auth';
 import { BackButton } from '@/features/navigateBack';
-import { useQuickFiltersData } from '../../lib'
-import { TLayoutProps } from '../types';
+import { Loader } from '@/shared/ui';
+
+import { useQuickFiltersData } from '../../lib';
+import { Footer } from '../Footer';
+import { Header } from '../Header';
+import styles from './Layout.module.scss';
 
 export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
   const router = useRouter();
@@ -17,7 +20,7 @@ export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
   const { isAuthenticated, checkAuth, user, token, isLoading, isInitialized } =
     useAuthStore();
 
-  const { isLoading: isQuickFiltersLoading } = useQuickFiltersData()
+  const { isLoading: isQuickFiltersLoading } = useQuickFiltersData();
 
   useEffect(() => {
     // Проверяем авторизацию только если есть токен, но нет пользователя
@@ -39,7 +42,11 @@ export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
   }
 
   // Показываем загрузку если еще не инициализирован или идет загрузка
-  if (!isInitialized || isQuickFiltersLoading || (token && !user && isLoading)) {
+  if (
+    !isInitialized ||
+    isQuickFiltersLoading ||
+    (token && !user && isLoading)
+  ) {
     return (
       <main className={styles.loadingLayout}>
         <Loader />
@@ -52,11 +59,11 @@ export const Layout = ({ children, withBackButton, title }: TLayoutProps) => {
       <Header />
       <main className={styles.body}>
         <div className={styles.main}>
-            {withBackButton && <BackButton />}
-            {title && <h1 className={styles.title}>{title}</h1>}
-            {children}
-          </div>
-          <Footer />
+          {withBackButton && <BackButton />}
+          {title && <h1 className={styles.title}>{title}</h1>}
+          {children}
+        </div>
+        <Footer />
       </main>
     </div>
   );

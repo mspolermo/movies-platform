@@ -48,7 +48,9 @@
   color: var(--color-text);
   cursor: pointer;
 
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);

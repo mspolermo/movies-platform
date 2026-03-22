@@ -1,10 +1,10 @@
-import apiClient from "@/shared/api/client";
-import { API_ENDPOINTS } from "@/shared/api/endpoints";
-import { useEffect, useState } from "react";
-import { TSearchResultProps } from "../../model";
+import type { TSearchResultProps } from '../../model';
+
+import { useEffect, useState } from 'react';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 export const useSearchByQuery = (query: string) => {
-
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<TSearchResultProps>({
     films: [],
@@ -48,8 +48,8 @@ export const useSearchByQuery = (query: string) => {
     }
   };
 
-    return {
-      loading,
-      results
-    }
-}
+  return {
+    loading,
+    results,
+  };
+};

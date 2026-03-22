@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import type { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+
+import axios from 'axios';
+
+//TODO: разобраться с этим импортом в shared, пересмотреть всю логику работы с authStore
+// eslint-disable-next-line import/no-internal-modules, boundaries/element-types
 import { useAuthStore } from '@/features/auth/api/authStore/store';
 
 // Создание axios инстанса

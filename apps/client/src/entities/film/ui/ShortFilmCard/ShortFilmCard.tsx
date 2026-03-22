@@ -1,7 +1,9 @@
-import React from 'react';
+import type { TFilmBased } from '@common/types';
+
 import { useRouter } from 'next/navigation';
-import { Button } from '@/shared/ui/Button';
-import { TFilmBased } from '@common/types';
+
+import { Button } from '@/shared/ui';
+
 import styles from './ShortFilmCard.module.scss';
 import { formatRating } from '../../lib';
 
@@ -9,7 +11,7 @@ interface ShortFilmCardProps {
   film: TFilmBased;
 }
 
-export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
+export const ShortFilmCard = ({ film }: ShortFilmCardProps) => {
   const router = useRouter();
 
   const handleFilmClick = () => {
@@ -25,7 +27,8 @@ export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
       <div className={styles.desktop}>
         <div className={styles.movie}>
           <div className={styles.poster}>
-            <img src={posterUrl} alt={film.filmNameRu} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- внешние URL постеров */}
+            <img alt={film.filmNameRu} src={posterUrl} />
           </div>
           <div className={styles.specification}>
             <div className={styles.year}>{film.year || '—'}</div>
@@ -41,7 +44,8 @@ export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
       {/* Mobile версия */}
       <div className={styles.mobile}>
         <div className={styles.poster}>
-          <img src={posterUrl} alt={film.filmNameRu} />
+          {/* eslint-disable-next-line @next/next/no-img-element -- внешние URL постеров */}
+          <img alt={film.filmNameRu} src={posterUrl} />
         </div>
 
         <div className={styles.info}>
@@ -49,7 +53,7 @@ export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
           <div className={styles.name}>{film.filmNameRu}</div>
           <div className={styles.rating}>{rating}</div>
           <div className={styles.button}>
-            <Button onClick={handleFilmClick} size="large">
+            <Button size="large" onClick={handleFilmClick}>
               К фильму
             </Button>
           </div>
@@ -58,4 +62,3 @@ export const ShortFilmCard: React.FC<ShortFilmCardProps> = ({ film }) => {
     </div>
   );
 };
-

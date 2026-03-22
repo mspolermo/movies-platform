@@ -1,2 +1,1 @@
 export { useProfessionPersons } from './useProfessionPersons';
-

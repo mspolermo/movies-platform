@@ -1,1 +1,1 @@
-export { CountriesPage as default } from './ui/CountriesPage';
+export { CountriesPage } from './ui';

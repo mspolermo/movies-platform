@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 
 /**
  * Скрипт генерации React-компонента
@@ -11,8 +13,8 @@
  *  - shared/ui — путь внутри src (необязательно)
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 /**
  * Делает первую букву строки заглавной
@@ -22,27 +24,24 @@ function capitalize(str) {
 }
 
 const rawName = process.argv[2];
-const targetPath = process.argv[3] || "";
+const targetPath = process.argv[3] || '';
 
 if (!rawName) {
-  console.error("Укажи имя компонента");
+  console.error('Укажи имя компонента');
   process.exit(1);
 }
 
 const name = capitalize(rawName);
 
-const baseDir = path.resolve(
-  process.cwd(),
-  `src/${targetPath}/${name}`
-);
+const baseDir = path.resolve(process.cwd(), `src/${targetPath}/${name}`);
 
-const uiDir = path.join(baseDir, "ui");
+const uiDir = path.join(baseDir, 'ui');
 
 fs.mkdirSync(uiDir, { recursive: true });
 
 // main index.ts
 fs.writeFileSync(
-  path.join(baseDir, "index.ts"),
+  path.join(baseDir, 'index.ts'),
   `export { ${name} } from "./ui";\n`
 );
 
@@ -79,8 +78,8 @@ fs.writeFileSync(
 
 // ui index.ts
 fs.writeFileSync(
-  path.join(uiDir, "index.ts"),
+  path.join(uiDir, 'index.ts'),
   `export { ${name} } from "./${name}";\n`
 );
 
-console.log(`✅ Компонент ${name} создан в ${baseDir}`);
+console.info(`✅ Компонент ${name} создан в ${baseDir}`);

@@ -1,1 +1,1 @@
-export { useQuickFiltersList, useQuickFiltersData } from './hooks'
+export { useQuickFiltersList, useQuickFiltersData } from './hooks';

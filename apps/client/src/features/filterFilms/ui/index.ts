@@ -1,2 +1,2 @@
-export { Filters } from './Filters/Filters';
-export { SortFilter } from './SortFilter/SortFilter';
+export { Filters } from './Filters';
+export { SortFilter } from './SortFilter';

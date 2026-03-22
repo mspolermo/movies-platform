@@ -1,28 +1,33 @@
-import { getAllProfessions } from "@/entities/profession";
-import { TProfessionBased } from "@common/types";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { TAllCreatorsViewerProps } from "../../ui/types";
+import type { TAllCreatorsViewerProps } from '../../models';
+import type { TProfessionBased } from '@common/types';
 
-interface TUseAllCreatorsViewProps extends TAllCreatorsViewerProps {}
+import { isAxiosError } from 'axios';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { getAllProfessions } from '@/entities/profession';
 
 /**
  * Хук для загрузки списка всех профессий и управления активной профессией
- * в режиме "All Creators Viewer".  
- * 
+ * в режиме "All Creators Viewer".
+ *
  * Позволяет:
- * - загружать все профессии с сервера  
+ * - загружать все профессии с сервера
  * - автоматически определять активную профессию на основе query-параметра `profession`
  * - синхронизировать изменение профессии с URL-параметрами
  * - обрабатывать состояния загрузки и ошибок
  */
-export const useAllCreatorsView = ({searchParams}: TUseAllCreatorsViewProps) => {
+export const useAllCreatorsView = ({
+  searchParams,
+}: TAllCreatorsViewerProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [professions, setProfessions] = useState<TProfessionBased[]>([]);
-  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(null);
+  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const fetchProfessions = async () => {
@@ -30,10 +35,10 @@ export const useAllCreatorsView = ({searchParams}: TUseAllCreatorsViewProps) => 
         const data = await getAllProfessions();
         setProfessions(data);
         setError(null);
-        
+
         // Проверяем query-параметр profession
         const professionParam = searchParams?.get('profession');
-        
+
         if (professionParam && data.length > 0) {
           // Ищем профессию по названию (без учета регистра)
           const foundProfession = data.find(
@@ -49,8 +54,19 @@ export const useAllCreatorsView = ({searchParams}: TUseAllCreatorsViewProps) => 
           // Автоматически выбираем первую профессию, если нет query-параметра
           setActiveProfessionId(data[0].id);
         }
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Ошибка загрузки профессий');
+      } catch (err: unknown) {
+        const fallback = 'Ошибка загрузки профессий';
+        const msg =
+          isAxiosError(err) &&
+          err.response?.data &&
+          typeof err.response.data === 'object' &&
+          err.response.data !== null &&
+          'message' in err.response.data &&
+          typeof (err.response.data as { message: unknown }).message ===
+            'string'
+            ? (err.response.data as { message: string }).message
+            : fallback;
+        setError(msg);
       } finally {
         setLoading(false);
       }
@@ -62,7 +78,7 @@ export const useAllCreatorsView = ({searchParams}: TUseAllCreatorsViewProps) => 
 
   const handleProfessionChange = (professionId: number) => {
     setActiveProfessionId(professionId);
-    
+
     // Обновляем query-параметр в URL
     const profession = professions.find((p) => p.id === professionId);
     if (profession) {
@@ -77,6 +93,6 @@ export const useAllCreatorsView = ({searchParams}: TUseAllCreatorsViewProps) => 
     activeProfessionId,
     loading,
     error,
-    handleProfessionChange
-  }
-}
+    handleProfessionChange,
+  };
+};

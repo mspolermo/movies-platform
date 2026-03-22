@@ -1,7 +1,9 @@
-import { useMemo, useCallback } from 'react';
+import type { TQickFilter } from '../../models';
+import type { TGenreBased } from '@common/types';
+
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { TGenreBased, TCountryBased } from '@common/types';
-import { TQickFilter } from '../../models';
+import { useMemo, useCallback } from 'react';
+
 import { useQuickFiltersData } from './useQuickFiltersData';
 
 /**
@@ -11,7 +13,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const state = useQuickFiltersData()
+  const state = useQuickFiltersData();
 
   const isOnFilmsPage = pathname === '/films';
 

@@ -1,9 +1,11 @@
+import type { LoginRequest, LoginResponse } from '@/shared/types';
+import type { TUserBased } from '@common/types';
+
+import { isAxiosError } from 'axios';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { LoginRequest, LoginResponse } from '@/shared/types';
-import apiClient from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
-import { TUserBased } from '@common/types';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 interface AuthState {
   user: TUserBased | null;
@@ -38,14 +40,14 @@ export const useAuthStore = create<AuthStore>()(
       login: async (credentials: LoginRequest) => {
         set({ isLoading: true, error: null });
         try {
-          console.log('Auth store: Attempting login with:', credentials);
+          console.info('Auth store: Attempting login with:', credentials);
 
           const response = await apiClient.post<LoginResponse>(
             API_ENDPOINTS.AUTH.LOGIN,
             credentials
           );
 
-          console.log('Auth store: Login response:', response.data);
+          console.info('Auth store: Login response:', response.data);
 
           const { token, email, userId, role } = response.data;
 
@@ -56,8 +58,8 @@ export const useAuthStore = create<AuthStore>()(
             roles: role,
           };
 
-          console.log('Auth store: Created user object:', user);
-          console.log('Auth store: Token:', token.token);
+          console.info('Auth store: Created user object:', user);
+          console.info('Auth store: Token:', token.token);
 
           const newState = {
             user,
@@ -68,29 +70,39 @@ export const useAuthStore = create<AuthStore>()(
             error: null,
           };
 
-          console.log('Auth store: Setting new state:', newState);
+          console.info('Auth store: Setting new state:', newState);
           set(newState);
 
           // Проверяем, что состояние действительно обновилось
           setTimeout(() => {
             const currentState = get();
-            console.log(
+            console.info(
               'Auth store: Current state after update:',
               currentState
             );
           }, 100);
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Auth store: Login error:', error);
+          const loginError =
+            isAxiosError(error) &&
+            error.response?.data &&
+            typeof error.response.data === 'object' &&
+            error.response.data !== null &&
+            'message' in error.response.data &&
+            typeof (error.response.data as { message: unknown }).message ===
+              'string'
+              ? (error.response.data as { message: string }).message
+              : 'Ошибка входа';
           set({
             isLoading: false,
-            error: error.response?.data?.message || 'Ошибка входа',
+            error: loginError,
           });
           throw error;
         }
       },
 
       logout: () => {
-        console.log('Auth store: Logging out');
+        console.info('Auth store: Logging out');
         set({
           user: null,
           token: null,
@@ -103,21 +115,21 @@ export const useAuthStore = create<AuthStore>()(
 
       checkAuth: async () => {
         const { token } = get();
-        console.log('Auth store: checkAuth called, token exists:', !!token);
+        console.info('Auth store: checkAuth called, token exists:', !!token);
 
         if (!token) {
-          console.log('Auth store: No token, skipping checkAuth');
+          console.info('Auth store: No token, skipping checkAuth');
           return;
         }
 
         set({ isLoading: true, error: null });
 
         try {
-          console.log('Auth store: Checking token validity...');
+          console.info('Auth store: Checking token validity...');
           const response = await apiClient.get(API_ENDPOINTS.AUTH.CHECK_TOKEN);
           const user = response.data;
 
-          console.log('Auth store: Token is valid, user data:', user);
+          console.info('Auth store: Token is valid, user data:', user);
 
           set({
             user,
@@ -126,11 +138,11 @@ export const useAuthStore = create<AuthStore>()(
             isInitialized: true,
             error: null,
           });
-        } catch (error: any) {
+        } catch (error: unknown) {
           console.error('Auth store: Token check failed:', error);
 
-          if (error.response?.status === 401) {
-            console.log('Auth store: Token invalid, logging out');
+          if (isAxiosError(error) && error.response?.status === 401) {
+            console.info('Auth store: Token invalid, logging out');
             get().logout();
           } else {
             set({
@@ -155,11 +167,11 @@ export const useAuthStore = create<AuthStore>()(
         isInitialized: state.isInitialized,
       }),
       onRehydrateStorage: () => (state) => {
-        console.log('Auth store: Rehydrated state:', state);
+        console.info('Auth store: Rehydrated state:', state);
 
         // Если нет токена, помечаем как инициализированный
         if (!state || !state.token) {
-          console.log(
+          console.info(
             'Auth store: No token found after rehydration, marking as initialized'
           );
           if (state) {
@@ -168,12 +180,12 @@ export const useAuthStore = create<AuthStore>()(
           return;
         }
 
-        console.log(
+        console.info(
           'Auth store: Token found after rehydration, checking auth...'
         );
         // Увеличиваем задержку для корректной инициализации
         setTimeout(() => {
-          console.log('Auth store: Calling checkAuth after rehydration delay');
+          console.info('Auth store: Calling checkAuth after rehydration delay');
           state.checkAuth();
         }, 500);
       },

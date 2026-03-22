@@ -1,5 +1,5 @@
-import { TProfessionBased } from "@common/types";
+import type { TProfessionBased } from '@common/types';
 
 export interface TProfessionsListProps {
-  professions?: TProfessionBased[]
+  professions?: TProfessionBased[];
 }

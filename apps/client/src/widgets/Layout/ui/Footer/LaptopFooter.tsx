@@ -1,18 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+import { CURRENT_YEAR } from '@/shared/constants';
 import { SvgIcon } from '@/shared/ui';
+
 import styles from './styles/LaptopFooter.module.scss';
 import { FOOTER_SECTIONS_LAPTOP } from '../../constants';
-import { CURRENT_YEAR } from '@/shared/constants';
-import { usePathname } from 'next/navigation';
 
 export const LaptopFooter = () => {
   const pathname = usePathname();
 
   return (
     <footer className={styles.footer}>
-        
       {/* Верхняя строка */}
       <div className={styles.row}>
         <div className={styles.columnsWrapper}>
@@ -24,10 +25,10 @@ export const LaptopFooter = () => {
               {FOOTER_SECTIONS_LAPTOP.map(({ label, url }) => (
                 <li key={url}>
                   <Link
+                    aria-current={pathname === url ? 'page' : undefined}
+                    aria-label={label}
                     className={styles.link}
                     href={url}
-                    aria-label={label}
-                    aria-current={pathname === url ? 'page' : undefined}
                   >
                     {label}
                   </Link>
@@ -35,10 +36,7 @@ export const LaptopFooter = () => {
               ))}
             </ul>
 
-            <Link
-              className={styles.brand}
-              href={'/'}
-            >
+            <Link className={styles.brand} href={'/'}>
               MovieLand Platform
             </Link>
           </nav>
@@ -47,19 +45,15 @@ export const LaptopFooter = () => {
           <div className={styles.column}>
             <h3 className={styles.heading}>Поддержка</h3>
 
-            <p className={styles.text}>
-              Мы всегда готовы вам помочь.
-            </p>
+            <p className={styles.text}>Мы всегда готовы вам помочь.</p>
 
-            <p className={styles.text}>
-              Обращайтесь в любое время!
-            </p>
+            <p className={styles.text}>Обращайтесь в любое время!</p>
           </div>
 
           {/* CTA */}
-          <Link href="/" className={styles.column}>
+          <Link className={styles.column} href="/">
             <div className={styles.bigButton}>
-              <SvgIcon name="mute" size={56} aria-hidden/>
+              <SvgIcon aria-hidden name="mute" size={56} />
             </div>
 
             <p className={styles.ctaText}>
@@ -73,10 +67,12 @@ export const LaptopFooter = () => {
       <div className={styles.row}>
         <div className={styles.copyright}>
           <p>© {CURRENT_YEAR} Онлайн-кинотеатр</p>
-          <p>HBO ® and related service marks are the property of Home Box Office, Inc</p>
+          <p>
+            HBO ® and related service marks are the property of Home Box
+            Office, Inc
+          </p>
         </div>
       </div>
-
     </footer>
   );
-}
+};

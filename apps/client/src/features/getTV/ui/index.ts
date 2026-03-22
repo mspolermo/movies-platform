@@ -1,1 +1,1 @@
-export { IPTVPlayer } from './IPTVPlayer'
+export { IPTVPlayer } from './IPTVPlayer';

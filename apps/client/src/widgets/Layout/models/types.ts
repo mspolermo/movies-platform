@@ -16,4 +16,4 @@ export type THeaderMenuItem = {
   label: string;
   url: string;
   content?: 'qickFiltersList' | 'chaptersSection';
-}
+};

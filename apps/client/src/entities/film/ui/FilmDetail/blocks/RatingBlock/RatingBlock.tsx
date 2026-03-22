@@ -1,7 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
+import type { RatingBlockProps } from '../../types';
+
+import React, { useEffect, useState } from 'react';
+
 import { Button } from '@/shared/ui';
+
 import styles from './RatingBlock.module.scss';
-import { RatingBlockProps } from '../../types';
 
 export const RatingBlock = ({
   ratingKp,
@@ -57,7 +60,7 @@ export const RatingBlock = ({
         </div>
       </div>
       <div className={styles.btn}>
-        <Button variant="outline" size="small">
+        <Button size="small" variant="outline">
           Оценить
         </Button>
       </div>

@@ -1,2 +1,1 @@
-export {
-   LoadMoreFilms } from './LoadMoreFilms';
+export { LoadMoreFilms } from './LoadMoreFilms';

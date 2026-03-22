@@ -1,11 +1,11 @@
-import { TGenreBased } from "@common/types";
+import type { TGenreBased } from '@common/types';
 
 export type TGenresPageProps =
-| {
-    isLoading: true;
-    genresList?: never;
-  }
-| {
-    isLoading?: false;
-    genresList: TGenreBased[];
-  };
+  | {
+      isLoading: true;
+      genresList?: never;
+    }
+  | {
+      isLoading?: false;
+      genresList: TGenreBased[];
+    };

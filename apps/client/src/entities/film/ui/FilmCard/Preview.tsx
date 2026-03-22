@@ -1,9 +1,12 @@
-import { useState, useCallback } from 'react';
-import { Skeleton, SvgIcon } from '@/shared/ui';
-import { ImageIcon } from '@/shared/assets/svg-icons';
-import styles from './FilmCard.module.scss';
-import { FilmCardPreviewProps } from '../types';
+import type { FilmCardPreviewProps } from '../types';
+
 import Image from 'next/image';
+import { useState, useCallback } from 'react';
+
+import { ImageIcon } from '@/shared/assets';
+import { Skeleton, SvgIcon } from '@/shared/ui';
+
+import styles from './FilmCard.module.scss';
 
 export const Preview = ({ film }: FilmCardPreviewProps) => {
   const { smallPictureUrl, bigPictureUrl, filmNameRu, filmNameEn } = film;
@@ -27,7 +30,7 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
     return (
       <div className={styles.imagePlaceholder}>
         <div className={styles.placeholderIcon}>
-          <SvgIcon icon={ImageIcon} size={48} data-variant="image" />
+          <SvgIcon data-variant="image" icon={ImageIcon} size={48} />
         </div>
         <div className={styles.placeholderText}>Нет изображения</div>
       </div>
@@ -37,27 +40,27 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
       <Image
-        src={posterUrl}
-        alt={`Постер фильма ${filmTitle}`}
         fill
-        onLoad={handleImageLoad}
-        onError={handleImageError}
+        alt={`Постер фильма ${filmTitle}`}
+        priority={false}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        src={posterUrl}
         style={{
           objectFit: 'cover',
           opacity: imageLoading ? 0 : 1,
           transition: 'opacity 0.3s ease',
         }}
-        priority={false}
+        onError={handleImageError}
+        onLoad={handleImageLoad}
       />
       {imageLoading && (
         <Skeleton
-          width="100%"
-          height="100%"
-          borderRadius="8px"
-          variant="rectangular"
           animation="pulse"
+          borderRadius="8px"
           className={styles.imageSkeleton}
+          height="100%"
+          variant="rectangular"
+          width="100%"
         />
       )}
     </div>

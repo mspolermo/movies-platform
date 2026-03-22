@@ -1,5 +1,8 @@
+import type { TPersonBased, PaginatedPersonsResponse } from '@common/types';
+
+import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { TPersonBased, PaginatedPersonsResponse } from '@common/types';
+
 import { getAllPersonsPaginated } from '@/entities/person';
 
 interface UsePersonsInfiniteScrollOptions {
@@ -38,7 +41,10 @@ export const usePersonsInfiniteScroll = ({
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse = await getAllPersonsPaginated(page, limit);
+        const response: PaginatedPersonsResponse = await getAllPersonsPaginated(
+          page,
+          limit
+        );
 
         if (reset) {
           setPersons(response.items);
@@ -48,8 +54,19 @@ export const usePersonsInfiniteScroll = ({
 
         setHasMore(response.hasMore);
         setCurrentPage(page);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Ошибка загрузки персон');
+      } catch (err: unknown) {
+        const fallback = 'Ошибка загрузки персон';
+        const msg =
+          isAxiosError(err) &&
+          err.response?.data &&
+          typeof err.response.data === 'object' &&
+          err.response.data !== null &&
+          'message' in err.response.data &&
+          typeof (err.response.data as { message: unknown }).message ===
+            'string'
+            ? (err.response.data as { message: string }).message
+            : fallback;
+        setError(msg);
       } finally {
         setLoading(false);
         isLoadingRef.current = false;
@@ -85,4 +102,3 @@ export const usePersonsInfiniteScroll = ({
     reset,
   };
 };
-

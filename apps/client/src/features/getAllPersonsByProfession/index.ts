@@ -1,1 +1,1 @@
-export { AllPersonsByProfession } from './ui'
+export { AllPersonsByProfession } from './ui';

@@ -1,2 +1,2 @@
-export { getCountriesList } from './api'
-export { CountryCard } from './ui'
+export { getCountriesList } from './api';
+export { CountryCard } from './ui';

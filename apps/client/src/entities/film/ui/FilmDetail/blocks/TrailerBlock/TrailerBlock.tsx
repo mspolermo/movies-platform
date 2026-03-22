@@ -1,8 +1,11 @@
+import type { TrailerBlockProps } from '../../types';
+
 import React, { useState, useEffect } from 'react';
-import styles from './TrailerBlock.module.scss';
+
+import { ImageIcon } from '@/shared/assets';
 import { SvgIcon, Skeleton } from '@/shared/ui';
-import { ImageIcon } from '@/shared/assets/svg-icons';
-import { TrailerBlockProps } from '../../types';
+
+import styles from './TrailerBlock.module.scss';
 
 export const TrailerBlock = ({
   trailerUrl,
@@ -52,12 +55,12 @@ export const TrailerBlock = ({
         {/* Скелетон пока загружается */}
         {videoLoading && (
           <Skeleton
-            width="100%"
-            height="100%"
-            borderRadius="8px"
-            variant="rectangular"
             animation="pulse"
+            borderRadius="8px"
             className={styles.videoSkeleton}
+            height="100%"
+            variant="rectangular"
+            width="100%"
           />
         )}
 
@@ -65,7 +68,7 @@ export const TrailerBlock = ({
         {(!trailerUrl || videoError) && !videoLoading && (
           <div className={styles.videoPlaceholder}>
             <div className={styles.placeholderIcon}>
-              <SvgIcon icon={ImageIcon} size={48} data-variant="image" />
+              <SvgIcon data-variant="image" icon={ImageIcon} size={48} />
             </div>
             <div className={styles.placeholderText}>Нет трейлера</div>
           </div>
@@ -74,16 +77,16 @@ export const TrailerBlock = ({
         {/* iframe - всегда рендерим для событий, но скрываем */}
         {trailerUrl && (
           <iframe
-            src={trailerUrl}
-            title={`Трейлер ${filmName}`}
-            className={styles.trailerIframe}
             allowFullScreen
-            onLoad={handleVideoLoad}
-            onError={handleVideoError}
+            className={styles.trailerIframe}
+            src={trailerUrl}
             style={{
               opacity: videoLoading || videoError ? 0 : 1,
               transition: 'opacity 0.3s ease',
             }}
+            title={`Трейлер ${filmName}`}
+            onError={handleVideoError}
+            onLoad={handleVideoLoad}
           />
         )}
       </div>

@@ -1,4 +1,4 @@
-import { TProfessionBased } from '@common/types';
+import type { TProfessionBased } from '@common/types';
 
 export interface TProfessionsTabsProps {
   professions: TProfessionBased[];

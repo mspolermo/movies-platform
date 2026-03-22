@@ -1,1 +1,1 @@
-export { HeaderMenuItem }from './HeaderMenuItem'
+export { HeaderMenuItem } from './HeaderMenuItem';

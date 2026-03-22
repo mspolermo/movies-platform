@@ -1,13 +1,11 @@
 'use client';
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import type { TDropdownProps } from './types';
+
 import cn from 'classnames';
+import { useEffect, useRef, useState } from 'react';
+
 import styles from './HeaderDropdown.module.scss';
-import { TDropdownProps } from './types';
 
 /**
  * UI-компонент с логикой Dropdown для Header.
@@ -17,7 +15,11 @@ import { TDropdownProps } from './types';
  * - задержка закрытия (чтобы избежать случайных закрытий)
  * - возможность закрыть dropdown изнутри через `onClose`
  */
-export const HeaderDropdown = ({ trigger, content, onOpenChange }: TDropdownProps) => {
+export const HeaderDropdown = ({
+  trigger,
+  content,
+  onOpenChange,
+}: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   /** Таймер используется для плавного закрытия */
@@ -60,8 +62,8 @@ export const HeaderDropdown = ({ trigger, content, onOpenChange }: TDropdownProp
   return (
     <div
       className={styles.container}
-      onMouseLeave={handleClose}
       onMouseEnter={cancelClose}
+      onMouseLeave={handleClose}
     >
       {/* Триггер (ссылка / кнопка меню) */}
       {trigger({

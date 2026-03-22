@@ -3,7 +3,7 @@ export {
   FilmCardSkeleton,
   FilmDetail,
   FilmDetailSkeleton,
-  Filmography
+  Filmography,
 } from './ui';
 export { checkIsCartoon } from './lib';
-export { getFilmById, searchFilms } from './api'
+export { getFilmById, searchFilms } from './api';

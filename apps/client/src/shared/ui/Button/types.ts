@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, MouseEvent } from 'react';
 
 export type ButtonVariant =
   | 'default' // Основной стиль (как в старом проекте)
@@ -25,5 +25,5 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /** Дополнительный CSS класс */
   className?: string;
   /** Обработчик клика */
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }

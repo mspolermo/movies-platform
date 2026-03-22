@@ -1,10 +1,11 @@
-import { usePersonDetails } from "../lib"
-import { TPersonDetailProps } from "./types"
+import type { TPersonDetailProps } from './types';
+
+import { Filmography } from '@/entities/film';
+import { PersonInfo, PersonInfoSkeleton } from '@/entities/person';
+import { ProfessionsList } from '@/entities/profession';
+
+import { usePersonDetails } from '../lib';
 import styles from './PersonDetail.module.scss';
-import { Loader } from "@/shared/ui";
-import { PersonInfo, PersonInfoSkeleton } from "@/entities/person";
-import { ProfessionsList } from "@/entities/profession";
-import { Filmography } from "@/entities/film";
 
 //TODO: добавить адаптив
 export const PersonDetail = ({ personId }: TPersonDetailProps) => {
@@ -16,8 +17,8 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
     films,
     handleLoadMore,
     isLoadingMore,
-    hasMoreFilms
-  } = usePersonDetails(personId)
+    hasMoreFilms,
+  } = usePersonDetails(personId);
 
   if (loading) {
     return (
@@ -44,12 +45,12 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
       <ProfessionsList professions={person.professions} />
 
       <Filmography
-        filmsTotal={filmsTotal}
         films={films}
-        onLoadMore={handleLoadMore}
-        isLoading={isLoadingMore}
+        filmsTotal={filmsTotal}
         hasMoreFilms={hasMoreFilms}
+        isLoading={isLoadingMore}
+        onLoadMore={handleLoadMore}
       />
     </div>
   );
-}
+};

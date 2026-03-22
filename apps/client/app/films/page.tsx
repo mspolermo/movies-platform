@@ -1,4 +1,4 @@
-import FilmsPage from '@/pages/FilmsPage';
+import { FilmsPage } from '@/pages/FilmsPage';
 
 export default function FilmsPageRoute() {
   return <FilmsPage />;

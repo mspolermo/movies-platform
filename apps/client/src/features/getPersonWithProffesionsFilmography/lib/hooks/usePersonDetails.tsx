@@ -1,6 +1,8 @@
-import { getPersonById } from "@/entities/person";
-import { TFilmBased, TPersonFullWithPagination } from "@common/types";
-import { useCallback, useEffect, useState } from "react";
+import type { TFilmBased, TPersonFullWithPagination } from '@common/types';
+
+import { useCallback, useEffect, useState } from 'react';
+
+import { getPersonById } from '@/entities/person';
 
 const FILMS_PAGE_SIZE = 10;
 
@@ -84,7 +86,7 @@ export const usePersonDetails = (personId: number) => {
     }
   }, [films.length, filmsTotal, hasMoreFilms, isLoadingMore, person]);
 
-  return { 
+  return {
     loading,
     error,
     person,
@@ -92,6 +94,6 @@ export const usePersonDetails = (personId: number) => {
     films,
     handleLoadMore,
     isLoadingMore,
-    hasMoreFilms
-  }
-}
+    hasMoreFilms,
+  };
+};

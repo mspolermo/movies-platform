@@ -13,8 +13,8 @@
   border-radius: 8px;
 
   transition:
-    color .25s ease,
-    background .25s ease;
+    color 0.25s ease,
+    background 0.25s ease;
 
   &:hover {
     color: var(--color-active);

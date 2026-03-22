@@ -1,6 +1,7 @@
-import { ReactNode } from 'react';
-import { TFilmBased } from '@common/types';
-import { SearchFilmsParams } from '@/shared/types';
+import type { SearchFilmsParams } from '@/shared/types';
+import type { TFilmBased } from '@common/types';
+
+import type { ReactNode } from 'react';
 
 export interface LoadMoreFilmsProps {
   children: (

@@ -1,8 +1,10 @@
+import type { LoadMoreFilmsProps } from './types';
+
 import { useEffect } from 'react';
+
 import { LoadMoreSection, Loader } from '@/shared/ui';
 
 import { useLoadMoreFilms } from '../lib';
-import { LoadMoreFilmsProps } from './types';
 
 export const LoadMoreFilms = ({
   children,
@@ -12,10 +14,11 @@ export const LoadMoreFilms = ({
   endMessage,
   onParamsChange,
 }: LoadMoreFilmsProps) => {
-  const { films, loading, error, hasMore, loadMore, updateParams } = useLoadMoreFilms({
-    initialParams,
-    threshold,
-  });
+  const { films, loading, error, hasMore, loadMore, updateParams } =
+    useLoadMoreFilms({
+      initialParams,
+      threshold,
+    });
 
   useEffect(() => {
     updateParams(initialParams);
@@ -32,12 +35,12 @@ export const LoadMoreFilms = ({
 
   return (
     <LoadMoreSection
-      onLoadMore={loadMore}
-      isLoading={loading}
-      hasMore={hasMore}
-      threshold={threshold}
-      loadingComponent={loadingComponent || defaultLoadingComponent}
       endMessage={endMessage || defaultEndMessage}
+      hasMore={hasMore}
+      isLoading={loading}
+      loadingComponent={loadingComponent || defaultLoadingComponent}
+      threshold={threshold}
+      onLoadMore={loadMore}
     >
       {children(films, loading, error)}
     </LoadMoreSection>

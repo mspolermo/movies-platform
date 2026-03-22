@@ -1,5 +1,6 @@
-import React from 'react';
 import cn from 'classnames';
+import React from 'react';
+
 import styles from './YearFilter.module.scss';
 
 interface YearFilterProps {
@@ -21,7 +22,7 @@ export const YearFilter = ({
     <div className={styles.yearFilter}>
       {/* Desktop */}
       <div className={styles.content}>
-        {values.map(year => {
+        {values.map((year) => {
           const isActive = selectValue === year;
 
           return (
@@ -48,17 +49,17 @@ export const YearFilter = ({
       {/* Mobile */}
       <div className={styles.mobile}>
         <div className={styles.scroll}>
-          {values.map(year => {
+          {values.map((year) => {
             const isActive = selectValue === year;
 
             return (
               <button
                 key={year}
-                type="button"
                 className={cn(
                   styles.mobileButton,
                   isActive && styles.mobileButtonActive
                 )}
+                type="button"
                 onClick={() => onChange(isActive ? null : year)}
               >
                 {year}

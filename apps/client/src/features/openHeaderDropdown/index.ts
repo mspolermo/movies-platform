@@ -1,1 +1,1 @@
-export { HeaderDropdown } from './ui'
+export { HeaderDropdown } from './ui';

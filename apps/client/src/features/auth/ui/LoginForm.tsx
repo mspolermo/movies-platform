@@ -1,11 +1,15 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import type { FormEvent, ChangeEvent } from 'react';
+
 import Link from 'next/link';
-import { useAuthStore } from '../api/authStore/store';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
 import { Button, Input } from '@/shared/ui';
+
 import styles from './LoginForm.module.scss';
+import { useAuthStore } from '../api';
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -13,15 +17,15 @@ export const LoginForm = () => {
   const { login, isLoading, error, clearError } = useAuthStore();
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     clearError();
 
-    console.log('LoginForm: Submitting form with:', { email, password });
+    console.info('LoginForm: Submitting form with:', { email, password });
 
     try {
       await login({ email, password });
-      console.log('LoginForm: Login successful, redirecting to /films');
+      console.info('LoginForm: Login successful, redirecting to /films');
       router.push('/films');
     } catch (error) {
       console.error('LoginForm: Login failed:', error);
@@ -45,37 +49,37 @@ export const LoginForm = () => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Input
-          label="Email"
-          type="email"
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
           required
           disabled={isLoading}
-          placeholder="user@example.com"
           error={error ? 'Проверьте правильность email и пароля' : undefined}
+          label="Email"
+          placeholder="user@example.com"
+          type="email"
+          value={email}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
         />
 
         <Input
-          label="Пароль"
-          type="password"
-          value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
           required
           disabled={isLoading}
+          label="Пароль"
           placeholder="password123"
+          type="password"
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
         />
 
         <Button
-          type="submit"
-          variant="red"
           disabled={isLoading}
           loading={isLoading}
+          type="submit"
+          variant="red"
         >
           {isLoading ? 'Вход...' : 'Войти'}
         </Button>
@@ -84,7 +88,7 @@ export const LoginForm = () => {
       <div className={styles.registerLink}>
         <p>
           Нет аккаунта?{' '}
-          <Link href="/auth/register" className={styles.link}>
+          <Link className={styles.link} href="/auth/register">
             Зарегистрироваться
           </Link>
         </p>

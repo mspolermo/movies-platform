@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import type { FilmCardProps } from '../types';
+
 import { useRouter } from 'next/navigation';
-import { FilmCardSkeleton } from './FilmCardSkeleton';
+import React, { useState, useCallback } from 'react';
+
 import styles from './FilmCard.module.scss';
-import { Preview } from './Preview';
-import { FilmCardProps } from '../types';
+import { FilmCardSkeleton } from './FilmCardSkeleton';
 import { IconsBlock } from './IconsBlock';
+import { Preview } from './Preview';
 import { formatRating } from '../../lib';
 
 export const FilmCard = ({
@@ -42,12 +44,15 @@ export const FilmCard = ({
     // TODO: Implement similar films functionality
   }, []);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      handleCardClick();
-    }
-  }, [handleCardClick]);
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleCardClick();
+      }
+    },
+    [handleCardClick]
+  );
 
   const formatDuration = useCallback((minutes?: number) => {
     if (!minutes) return '';
@@ -69,13 +74,13 @@ export const FilmCard = ({
   }
 
   return (
-    <article 
-      className={styles.card} 
+    <article
+      aria-label={`Открыть информацию о фильме ${filmTitle}`}
+      className={styles.card}
+      role="button"
+      tabIndex={0}
       onClick={handleCardClick}
       onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="button"
-      aria-label={`Открыть информацию о фильме ${filmTitle}`}
     >
       <div className={styles.container}>
         <div className={styles.content}>
@@ -83,18 +88,18 @@ export const FilmCard = ({
             <div className={styles.imageContainer}>
               <Preview film={film} />
               <div className={styles.imageBackground} />
-              
+
               {showIcons && (
                 <div className={styles.overlay}>
                   <div className={styles.overlayContent}>
                     <div className={styles.iconsContainer}>
                       <IconsBlock
-                        notLike={notLike}
-                        isFavorite={isFavorite}
                         handleFavoritesClick={handleFavoritesClick}
-                        handleSimilarClick={handleSimilarClick}
                         handleGradeClick={handleGradeClick}
                         handleNotLikeClick={handleNotLikeClick}
+                        handleSimilarClick={handleSimilarClick}
+                        isFavorite={isFavorite}
+                        notLike={notLike}
                       />
                     </div>
 

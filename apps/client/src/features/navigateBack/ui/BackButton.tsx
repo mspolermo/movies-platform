@@ -1,30 +1,28 @@
 'use client';
 
-import { SvgIcon } from '@/shared/ui';
-import { BackArrowIcon } from '@/shared/assets/svg-icons';
-import styles from './BackButton.module.scss';
 import { useRouter } from 'next/navigation';
+
+import { BackArrowIcon } from '@/shared/assets';
+import { SvgIcon } from '@/shared/ui';
+
+import styles from './BackButton.module.scss';
 
 export const BackButton = () => {
   const router = useRouter();
-  
+
   const handleBackClick = () => {
     router.back();
   };
 
   return (
     <button
-    type="button"
-    className={styles.backButton}
-    onClick={handleBackClick}
-    aria-label="Вернуться назад"
-  >
-    <SvgIcon
-      icon={BackArrowIcon}
-      size={40}
-      className={styles.backIcon}
-    />
-    <span className={styles.backText}>Назад</span>
-  </button>
-  )
-}
+      aria-label="Вернуться назад"
+      className={styles.backButton}
+      type="button"
+      onClick={handleBackClick}
+    >
+      <SvgIcon className={styles.backIcon} icon={BackArrowIcon} size={40} />
+      <span className={styles.backText}>Назад</span>
+    </button>
+  );
+};

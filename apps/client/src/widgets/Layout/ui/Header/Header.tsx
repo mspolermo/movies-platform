@@ -1,18 +1,18 @@
 'use client';
 
+import cn from 'classnames';
 import Link from 'next/link';
 import { useState } from 'react';
-import cn from 'classnames';
 
 import { HeaderDropdown } from '@/features/openHeaderDropdown';
 import { Logo } from '@/shared/ui';
 
 import styles from './Header.module.scss';
+import { HeaderMenuItem } from './HeaderMenuItem';
+import { LoginButton } from './LoginButton';
 import { ProfileSection } from './ProfileSection';
 import { SearchButton } from './SearchButton';
-import { LoginButton } from './LoginButton';
 import { HEADER_SECTIONS_LAPTOP } from '../../constants';
-import { HeaderMenuItem } from './HeaderMenuItem';
 
 /**
  * Основной хедер приложения.
@@ -53,11 +53,11 @@ export const Header = () => {
             [styles.barActive]: openDropdownCount > 0,
           })}
         >
-          <Link href="/" className={styles.logo}>
+          <Link className={styles.logo} href="/">
             <Logo />
           </Link>
 
-          <nav className={styles.nav} aria-label="Main navigation">
+          <nav aria-label="Main navigation" className={styles.nav}>
             <ul className={styles.menu}>
               {HEADER_SECTIONS_LAPTOP.map((item, i) => (
                 <li key={`${item.label}-${i}`} className={styles.item}>
@@ -75,11 +75,9 @@ export const Header = () => {
 
             {/* Dropdown профиля */}
             <HeaderDropdown
-              onOpenChange={handleDropdownOpenChange}
-              trigger={({ onOpen }) => (
-                <LoginButton onOpen={onOpen} />
-              )}
               content={() => <ProfileSection />}
+              trigger={({ onOpen }) => <LoginButton onOpen={onOpen} />}
+              onOpenChange={handleDropdownOpenChange}
             />
           </div>
         </div>

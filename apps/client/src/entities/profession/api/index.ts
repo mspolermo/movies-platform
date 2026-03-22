@@ -1,2 +1,2 @@
-export { getAllProfessions } from './getAllProfessions'
-export { getFilmProfessions } from './getFilmProfessions'
+export { getAllProfessions } from './getAllProfessions';
+export { getFilmProfessions } from './getFilmProfessions';

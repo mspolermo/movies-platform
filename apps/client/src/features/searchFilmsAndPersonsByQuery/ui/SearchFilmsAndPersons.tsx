@@ -1,35 +1,33 @@
-import { PersonCard } from "@/entities/person"
-import { useSearchByQuery } from "../lib"
-import { Input } from "@/shared/ui"
+import { useState } from 'react';
+
+import { FilmCard } from '@/entities/film';
+import { PersonCard } from '@/entities/person';
+import { Input } from '@/shared/ui';
+
+import { useSearchByQuery } from '../lib';
 import styles from './SearchFilmsAndPersons.module.scss';
-import { useState } from "react";
-import { FilmCard } from "@/entities/film";
 
 //TODO: убрать контейнер
 
 export const SearchFilmsAndPersons = () => {
   const [query, setQuery] = useState('');
-  
-  const { loading, results } = useSearchByQuery(query)
 
-  const hasResults =
-  results.films.length > 0 || results.persons.length > 0;
+  const { loading, results } = useSearchByQuery(query);
+
+  const hasResults = results.films.length > 0 || results.persons.length > 0;
 
   return (
     <div className={styles.container}>
       <div className={styles.inputWrapper}>
         <Input
+          autoFocus
           placeholder="Введите название фильма или персоны..."
           value={query}
-          autoFocus
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
 
-
-      {loading && (
-        <div className={styles.state}>Поиск...</div>
-      )}
+      {loading && <div className={styles.state}>Поиск...</div>}
 
       {!loading && !hasResults && query.trim().length > 0 && (
         <div className={styles.state}>
@@ -45,7 +43,7 @@ export const SearchFilmsAndPersons = () => {
               <div className={styles.filmsGrid}>
                 {results.films.map((film) => (
                   <div key={`film-${film.id}`} className={styles.filmCard}>
-                    <FilmCard film={film} showIcons />
+                    <FilmCard showIcons film={film} />
                   </div>
                 ))}
               </div>
@@ -70,5 +68,5 @@ export const SearchFilmsAndPersons = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
 export type { TPageProps } from './next';
 
-import {
+import type {
   TGenreBased,
   TCountryBased,
   TFilmBased,
@@ -44,7 +44,6 @@ export interface SearchParams {
   country?: number;
   year?: number;
 }
-
 
 export interface SearchFilmsParams {
   page?: number;

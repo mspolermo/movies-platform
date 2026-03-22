@@ -1,1 +1,1 @@
-export { getProfessionsWord } from './getProfessionsWord'
+export { getProfessionsWord } from './getProfessionsWord';

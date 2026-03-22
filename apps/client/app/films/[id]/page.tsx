@@ -1,8 +1,9 @@
+import type { TPageProps } from '@/shared/types';
+
 import { notFound } from 'next/navigation';
 
 import { getFilmById } from '@/entities/film';
 import { FilmDetailPage } from '@/pages/FilmDetailPage';
-import { TPageProps } from '@/shared/types';
 
 export default async function FilmPage({
   params: { id },
@@ -19,5 +20,5 @@ export default async function FilmPage({
     notFound();
   }
 
-  return <FilmDetailPage film={film}/>;
+  return <FilmDetailPage film={film} />;
 }

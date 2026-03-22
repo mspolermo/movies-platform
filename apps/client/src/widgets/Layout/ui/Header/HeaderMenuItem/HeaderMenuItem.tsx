@@ -1,64 +1,57 @@
-import Link from "next/link"
+import type { THeaderMenuItem } from '../../../models';
 
-import { HeaderDropdown } from "@/features/openHeaderDropdown"
+import Link from 'next/link';
 
-import { THeaderMenuItem } from "../../../models"
+import { HeaderDropdown } from '@/features/openHeaderDropdown';
+
+import { ChaptersSection } from './ChaptersSection';
 import styles from './HeaderMenuItem.module.scss';
-import { QickFiltersList } from "./QickFiltersList";
-import { ChaptersSection } from "./ChaptersSection";
+import { QickFiltersList } from './QickFiltersList';
 
 type THeaderMenuItemProps = {
-  item: THeaderMenuItem,
-  onDropdownOpenChange: (isOpen: boolean) => void
-}
+  item: THeaderMenuItem;
+  onDropdownOpenChange: (isOpen: boolean) => void;
+};
 
 /**
  * Рендерит пункт меню хедера.
  * Если у пункта есть dropdown-контент — подключает HeaderDropdown.
  */
-export const HeaderMenuItem = ({item, onDropdownOpenChange}: THeaderMenuItemProps) => {
-  const {label, url, content} = item
+export const HeaderMenuItem = ({
+  item,
+  onDropdownOpenChange,
+}: THeaderMenuItemProps) => {
+  const { label, url, content } = item;
 
-  if (content === 'qickFiltersList') return (
-    <HeaderDropdown
-      onOpenChange={onDropdownOpenChange}
-      trigger={({ onOpen }) => (
-        <Link
-          href={url}
-          className={styles.menuLink}
-          onMouseEnter={onOpen}
-        >
-          {label}
-        </Link>
-      )}
-      content={({ onClose }) => (
-        <QickFiltersList onClose={onClose} />
-      )}
-    />
-  )
+  if (content === 'qickFiltersList')
+    return (
+      <HeaderDropdown
+        content={({ onClose }) => <QickFiltersList onClose={onClose} />}
+        trigger={({ onOpen }) => (
+          <Link className={styles.menuLink} href={url} onMouseEnter={onOpen}>
+            {label}
+          </Link>
+        )}
+        onOpenChange={onDropdownOpenChange}
+      />
+    );
 
-  if (content === 'chaptersSection') return (
-    <HeaderDropdown
-    onOpenChange={onDropdownOpenChange}
-    trigger={({ onOpen }) => (
-      <Link
-        href={url}
-        className={styles.menuLink}
-        onMouseEnter={onOpen}
-      >
-        {label}
-      </Link>
-    )}
-    content={() => <ChaptersSection/>}
-  />
-  )
-  
+  if (content === 'chaptersSection')
+    return (
+      <HeaderDropdown
+        content={() => <ChaptersSection />}
+        trigger={({ onOpen }) => (
+          <Link className={styles.menuLink} href={url} onMouseEnter={onOpen}>
+            {label}
+          </Link>
+        )}
+        onOpenChange={onDropdownOpenChange}
+      />
+    );
+
   return (
-    <Link
-      href={url}
-      className={styles.menuLink}
-    >
+    <Link className={styles.menuLink} href={url}>
       {label}
     </Link>
-  )
-}
+  );
+};

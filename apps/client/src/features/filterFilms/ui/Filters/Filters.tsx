@@ -1,14 +1,16 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import type { ActiveFilters, AllFilters } from '../../types';
+
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
-import { ActiveFilters, AllFilters, DEFAULT_ACTIVE_FILTERS } from '../../types/filters';
-import { FilterDropdown } from '../FilterDropdown/FilterDropdown';
-import { FilterCheckboxList } from '../FilterCheckboxList/FilterCheckboxList';
-import { YearFilter } from '../YearFilter/YearFilter';
-import { RangeFilter } from '../RangeFilter/RangeFilter';
-import { PersonSearchFilter } from '../PersonSearchFilter/PersonSearchFilter';
-import { ResetFiltersButton } from '../ResetFiltersButton/ResetFiltersButton';
+import { useState, useCallback, useEffect, useRef } from 'react';
+
 import styles from './Filters.module.scss';
-import { parseFiltersFromURL } from '../../lib/utils';
+import { parseFiltersFromURL } from '../../lib';
+import { FilterCheckboxList } from '../FilterCheckboxList';
+import { FilterDropdown } from '../FilterDropdown';
+import { PersonSearchFilter } from '../PersonSearchFilter';
+import { RangeFilter } from '../RangeFilter';
+import { ResetFiltersButton } from '../ResetFiltersButton';
+import { YearFilter } from '../YearFilter';
 
 interface FiltersProps {
   allFilters: AllFilters;
@@ -18,9 +20,8 @@ interface FiltersProps {
 
 const firstCharUp = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
-const languageFilters = (selectedValues: string[], allValues: { nameRu: string; nameEn: string }[]) => {
-  return selectedValues.map(value => {
-    const item = allValues.find(item => item.nameRu === value);
+const languageFilters = (selectedValues: string[]) => {
+  return selectedValues.map((value) => {
     return firstCharUp(value);
   });
 };
@@ -28,7 +29,7 @@ const languageFilters = (selectedValues: string[], allValues: { nameRu: string; 
 export const Filters = ({
   allFilters,
   selectedFilters,
-  setSelectedFilters
+  setSelectedFilters,
 }: FiltersProps) => {
   const [activeBlock, setActiveBlock] = useState<string[]>([]);
   const filtersRef = useRef<HTMLDivElement>(null);
@@ -39,42 +40,47 @@ export const Filters = ({
   const isUpdatingFromURL = useRef(false);
 
   // Функция для обновления URL с фильтрами
-  const updateURL = useCallback((filters: ActiveFilters) => {
-    const params = new URLSearchParams();
-    
-    if (filters.genres.length > 0) {
-      params.set('genres', filters.genres.join(','));
-    }
-    
-    if (filters.countries.length > 0) {
-      params.set('countries', filters.countries.join(','));
-    }
-    
-    if (filters.years) {
-      params.set('year', String(filters.years));
-    }
-    
-    if (filters.rating > 0) {
-      params.set('rating', String(filters.rating));
-    }
-    
-    if (filters.grade > 0) {
-      params.set('grade', String(filters.grade));
-    }
-    
-    if (filters.producer) {
-      params.set('producer', filters.producer);
-    }
-    
-    if (filters.actor) {
-      params.set('actor', filters.actor);
-    }
-    
-    const currentPath = pathname || window.location.pathname;
-    const newUrl = params.toString() ? `${currentPath}?${params.toString()}` : currentPath;
-    isUpdatingFromURL.current = true;
-    router.replace(newUrl, { scroll: false });
-  }, [router, pathname]);
+  const updateURL = useCallback(
+    (filters: ActiveFilters) => {
+      const params = new URLSearchParams();
+
+      if (filters.genres.length > 0) {
+        params.set('genres', filters.genres.join(','));
+      }
+
+      if (filters.countries.length > 0) {
+        params.set('countries', filters.countries.join(','));
+      }
+
+      if (filters.years) {
+        params.set('year', String(filters.years));
+      }
+
+      if (filters.rating > 0) {
+        params.set('rating', String(filters.rating));
+      }
+
+      if (filters.grade > 0) {
+        params.set('grade', String(filters.grade));
+      }
+
+      if (filters.producer) {
+        params.set('producer', filters.producer);
+      }
+
+      if (filters.actor) {
+        params.set('actor', filters.actor);
+      }
+
+      const currentPath = pathname || window.location.pathname;
+      const newUrl = params.toString()
+        ? `${currentPath}?${params.toString()}`
+        : currentPath;
+      isUpdatingFromURL.current = true;
+      router.replace(newUrl, { scroll: false });
+    },
+    [router, pathname]
+  );
 
   // Фильтры из URL теперь инициализируются в useFilters, здесь только синхронизация URL при изменении фильтров
   useEffect(() => {
@@ -89,11 +95,11 @@ export const Filters = ({
       }
       return;
     }
-    
+
     const urlFilters = parseFiltersFromURL(searchParams);
     const currentFiltersStr = JSON.stringify(selectedFilters);
     const urlFiltersStr = JSON.stringify(urlFilters);
-    
+
     // Обновляем фильтры только если они отличаются от текущих
     if (currentFiltersStr !== urlFiltersStr) {
       setSelectedFilters(urlFilters);
@@ -103,7 +109,10 @@ export const Filters = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
+      if (
+        filtersRef.current &&
+        !filtersRef.current.contains(event.target as Node)
+      ) {
         setActiveBlock([]);
       }
     };
@@ -118,66 +127,94 @@ export const Filters = ({
   }, [activeBlock]);
 
   // Обертка для setSelectedFilters с обновлением URL
-  const setSelectedFiltersWithURL = useCallback((filters: ActiveFilters) => {
-    setSelectedFilters(filters);
-    updateURL(filters);
-  }, [setSelectedFilters, updateURL]);
+  const setSelectedFiltersWithURL = useCallback(
+    (filters: ActiveFilters) => {
+      setSelectedFilters(filters);
+      updateURL(filters);
+    },
+    [setSelectedFilters, updateURL]
+  );
 
-  const updateFilters = useCallback((updates: Partial<ActiveFilters>) => {
-    const newFilters = { ...selectedFilters, ...updates };
-    setSelectedFiltersWithURL(newFilters);
-  }, [selectedFilters, setSelectedFiltersWithURL]);
+  const updateFilters = useCallback(
+    (updates: Partial<ActiveFilters>) => {
+      const newFilters = { ...selectedFilters, ...updates };
+      setSelectedFiltersWithURL(newFilters);
+    },
+    [selectedFilters, setSelectedFiltersWithURL]
+  );
 
-  const selectedGenres = useCallback((genre: string) => {
-    const arrGenres = selectedFilters.genres;
-    if (arrGenres.includes(genre)) {
-      updateFilters({ genres: arrGenres.filter(g => g !== genre) });
-    } else {
-      updateFilters({ genres: [...arrGenres, genre] });
-    }
-  }, [selectedFilters.genres, updateFilters]);
+  const selectedGenres = useCallback(
+    (genre: string) => {
+      const arrGenres = selectedFilters.genres;
+      if (arrGenres.includes(genre)) {
+        updateFilters({ genres: arrGenres.filter((g) => g !== genre) });
+      } else {
+        updateFilters({ genres: [...arrGenres, genre] });
+      }
+    },
+    [selectedFilters.genres, updateFilters]
+  );
 
-  const selectedCountries = useCallback((country: string) => {
-    const arrCountries = selectedFilters.countries;
-    if (arrCountries.includes(country)) {
-      updateFilters({ countries: arrCountries.filter(c => c !== country) });
-    } else {
-      updateFilters({ countries: [...arrCountries, country] });
-    }
-  }, [selectedFilters.countries, updateFilters]);
+  const selectedCountries = useCallback(
+    (country: string) => {
+      const arrCountries = selectedFilters.countries;
+      if (arrCountries.includes(country)) {
+        updateFilters({ countries: arrCountries.filter((c) => c !== country) });
+      } else {
+        updateFilters({ countries: [...arrCountries, country] });
+      }
+    },
+    [selectedFilters.countries, updateFilters]
+  );
 
-  const selectedYears = useCallback((year: number | null) => {
-    updateFilters({ years: year });
-  }, [updateFilters]);
+  const selectedYears = useCallback(
+    (year: number | null) => {
+      updateFilters({ years: year });
+    },
+    [updateFilters]
+  );
 
-  const selectedProducer = useCallback((producer: string) => {
-    updateFilters({ producer });
-  }, [updateFilters]);
+  const selectedProducer = useCallback(
+    (producer: string) => {
+      updateFilters({ producer });
+    },
+    [updateFilters]
+  );
 
-  const selectedActor = useCallback((actor: string) => {
-    updateFilters({ actor });
-  }, [updateFilters]);
+  const selectedActor = useCallback(
+    (actor: string) => {
+      updateFilters({ actor });
+    },
+    [updateFilters]
+  );
 
-  const selectedRating = useCallback((rating: number) => {
-    updateFilters({ rating });
-  }, [updateFilters]);
+  const selectedRating = useCallback(
+    (rating: number) => {
+      updateFilters({ rating });
+    },
+    [updateFilters]
+  );
 
-  const selectedGrade = useCallback((grade: number) => {
-    updateFilters({ grade });
-  }, [updateFilters]);
+  const selectedGrade = useCallback(
+    (grade: number) => {
+      updateFilters({ grade });
+    },
+    [updateFilters]
+  );
 
   return (
-    <div className={styles.filters} ref={filtersRef}>
+    <div ref={filtersRef} className={styles.filters}>
       <div className={styles.content}>
         <div className={styles.blocks}>
-
           <FilterDropdown
-            filterName="Жанры"
-            selectedFiltersBy={languageFilters(selectedFilters.genres, allFilters.genres).join(', ')}
             activeBlock={activeBlock}
             blockName="genre"
-            setActiveBlock={setActiveBlock}
+            filterName="Жанры"
             isWideMenu={true}
+            selectedFiltersBy={languageFilters(selectedFilters.genres).join(
+              ', '
+            )}
+            setActiveBlock={setActiveBlock}
           >
             <FilterCheckboxList
               allValues={allFilters.genres}
@@ -187,12 +224,14 @@ export const Filters = ({
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Страны"
-            selectedFiltersBy={languageFilters(selectedFilters.countries, allFilters.countries).join(', ')}
             activeBlock={activeBlock}
             blockName="country"
-            setActiveBlock={setActiveBlock}
+            filterName="Страны"
             isWideMenu={true}
+            selectedFiltersBy={languageFilters(selectedFilters.countries).join(
+              ', '
+            )}
+            setActiveBlock={setActiveBlock}
           >
             <FilterCheckboxList
               allValues={allFilters.countries}
@@ -202,10 +241,12 @@ export const Filters = ({
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Год"
-            selectedFiltersBy={selectedFilters.years ? String(selectedFilters.years) : ''}
             activeBlock={activeBlock}
             blockName="years"
+            filterName="Год"
+            selectedFiltersBy={
+              selectedFilters.years ? String(selectedFilters.years) : ''
+            }
             setActiveBlock={setActiveBlock}
           >
             <YearFilter
@@ -220,58 +261,62 @@ export const Filters = ({
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Рейтинг"
-            selectedFiltersBy={selectedFilters.rating === 0 ? '' : selectedFilters.rating}
             activeBlock={activeBlock}
             blockName="rating"
+            filterName="Рейтинг"
+            selectedFiltersBy={
+              selectedFilters.rating === 0 ? '' : selectedFilters.rating
+            }
             setActiveBlock={setActiveBlock}
           >
             <RangeFilter
-              handleChangeFilter={selectedRating}
               blockName="rating"
+              handleChangeFilter={selectedRating}
               initialValue={selectedFilters.rating}
             />
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Оценки"
-            selectedFiltersBy={selectedFilters.grade === 0 ? '' : selectedFilters.grade}
             activeBlock={activeBlock}
             blockName="grade"
+            filterName="Оценки"
+            selectedFiltersBy={
+              selectedFilters.grade === 0 ? '' : selectedFilters.grade
+            }
             setActiveBlock={setActiveBlock}
           >
             <RangeFilter
-              handleChangeFilter={selectedGrade}
               blockName="grade"
+              handleChangeFilter={selectedGrade}
               initialValue={selectedFilters.grade}
             />
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Режиссер"
-            selectedFiltersBy={selectedFilters.producer}
             activeBlock={activeBlock}
             blockName="producer"
+            filterName="Режиссер"
+            selectedFiltersBy={selectedFilters.producer}
             setActiveBlock={setActiveBlock}
           >
             <PersonSearchFilter
-              onChangeFilter={selectedProducer}
               professionId={2}
               setActiveBlock={setActiveBlock}
+              onChangeFilter={selectedProducer}
             />
           </FilterDropdown>
 
           <FilterDropdown
-            filterName="Актер"
-            selectedFiltersBy={selectedFilters.actor}
             activeBlock={activeBlock}
             blockName="actor"
+            filterName="Актер"
+            selectedFiltersBy={selectedFilters.actor}
             setActiveBlock={setActiveBlock}
           >
             <PersonSearchFilter
-              onChangeFilter={selectedActor}
               professionId={1}
               setActiveBlock={setActiveBlock}
+              onChangeFilter={selectedActor}
             />
           </FilterDropdown>
         </div>

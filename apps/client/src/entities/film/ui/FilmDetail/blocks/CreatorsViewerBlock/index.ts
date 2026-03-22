@@ -1,1 +1,1 @@
-export { CreatorsViewerBlock } from './CreatorsViewerBlock'
+export { CreatorsViewerBlock } from './CreatorsViewerBlock';

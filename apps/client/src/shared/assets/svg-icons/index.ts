@@ -6,3 +6,4 @@ export { StarIcon } from './StarIcon';
 export { CloseIcon } from './CloseIcon';
 export { ImageIcon } from './ImageIcon';
 export { BackArrowIcon } from './BackArrowIcon';
+export { DotsHorizontalIcon } from './DotsHorizontalIcon';

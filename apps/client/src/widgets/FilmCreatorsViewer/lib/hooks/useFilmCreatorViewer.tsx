@@ -1,11 +1,13 @@
-import { getFilmProfessions } from "@/entities/profession";
-import { TProfessionBased } from "@common/types";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import type { TProfessionBased } from '@common/types';
+
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+import { getFilmProfessions } from '@/entities/profession';
 
 /**
  * Хук для получения и управления списком профессий, связанных с фильмом.
- * 
+ *
  * Выполняет загрузку профессий по `filmId`, автоматически выставляет первую
  * профессию активной и предоставляет удобные данные и методы для работы
  * с "просмотрщиком создателей" (creator viewer).
@@ -14,11 +16,17 @@ import { useEffect, useState } from "react";
 export const useFilmCreatorViewer = () => {
   const params = useParams();
   const filmId = Number(params?.id);
-  const [filmProfessions, setFilmProfessions] = useState<TProfessionBased[]>([]);
+  const [filmProfessions, setFilmProfessions] = useState<TProfessionBased[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
-  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(null);
+  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
+    null
+  );
 
-  const activeProfessionName = filmProfessions.find((profession) => profession.id === activeProfessionId)?.name ?? null
+  const activeProfessionName =
+    filmProfessions.find((profession) => profession.id === activeProfessionId)
+      ?.name ?? null;
 
   useEffect(() => {
     const fetchProfessions = async () => {
@@ -28,7 +36,7 @@ export const useFilmCreatorViewer = () => {
         setLoading(true);
         const data = await getFilmProfessions(filmId);
         setFilmProfessions(data);
-        
+
         // Автоматически выбираем первую профессию, если есть
         if (data.length > 0) {
           setActiveProfessionId((prev) => prev || data[0].id);
@@ -53,6 +61,6 @@ export const useFilmCreatorViewer = () => {
     activeProfessionId,
     filmId,
     activeProfessionName,
-    handleProfessionChange
-  }
-}
+    handleProfessionChange,
+  };
+};

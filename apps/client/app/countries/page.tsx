@@ -1,6 +1,7 @@
-import { getCountriesList } from '@/entities/country';
-import CountriesPage from '@/pages/CountriesPage';
 import { notFound } from 'next/navigation';
+
+import { getCountriesList } from '@/entities/country';
+import { CountriesPage } from '@/pages/CountriesPage';
 
 export default async function CountriesPageRoute() {
   const countriesList = await getCountriesList();
@@ -9,5 +10,5 @@ export default async function CountriesPageRoute() {
     notFound();
   }
 
-  return <CountriesPage countriesList={countriesList}/>;
+  return <CountriesPage countriesList={countriesList} />;
 }

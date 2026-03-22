@@ -1,12 +1,14 @@
 import type { TNotFoundPageProps } from './types';
-import styles from "./NotFoundPage.module.scss";
+
 import { Layout } from '@/widgets/Layout';
+
+import styles from './NotFoundPage.module.scss';
 
 /**
  * Cтраница 404
  */
 export const NotFoundPage = ({
-  description = 'К сожалению, по вашему запросу ничего не найдено'
+  description = 'К сожалению, по вашему запросу ничего не найдено',
 }: TNotFoundPageProps) => {
   return (
     <Layout title="Страница не найдена">
@@ -15,5 +17,5 @@ export const NotFoundPage = ({
         <p className={styles.description}>{description}</p>
       </div>
     </Layout>
-);
+  );
 };

@@ -1,7 +1,10 @@
+import type { DescriptionBlockProps } from '../../types';
+
 import React, { useState, useEffect } from 'react';
-import styles from './DescriptionBlock.module.scss';
+
 import { QualityTag } from '@/shared/ui';
-import { DescriptionBlockProps } from '../../types';
+
+import styles from './DescriptionBlock.module.scss';
 
 export const DescriptionBlock = ({
   description,

@@ -1,2 +1,1 @@
 export { ProfessionsSlider } from './ProfessionsSlider';
-

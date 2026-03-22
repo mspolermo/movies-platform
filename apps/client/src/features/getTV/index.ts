@@ -1,1 +1,1 @@
-export { IPTVPlayer } from './ui'
+export { IPTVPlayer } from './ui';

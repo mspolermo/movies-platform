@@ -2,8 +2,9 @@
 
 import { TABLET_BREAKPOINT } from '@/shared/constants';
 import { useMediaQuery } from '@/shared/lib';
-import { MobileFooter } from './MobileFooter';
+
 import { LaptopFooter } from './LaptopFooter';
+import { MobileFooter } from './MobileFooter';
 
 const MOBILE_QUERY = `(max-width: ${TABLET_BREAKPOINT}px)`;
 

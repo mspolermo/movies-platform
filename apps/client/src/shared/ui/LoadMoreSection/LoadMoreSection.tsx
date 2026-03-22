@@ -1,6 +1,8 @@
-import { ReactNode } from 'react';
-import styles from './LoadMoreSection.module.scss';
+import type { ReactNode } from 'react';
+
 import { Loader } from '@/shared/ui';
+
+import styles from './LoadMoreSection.module.scss';
 
 export interface LoadMoreSectionProps {
   children: ReactNode;
@@ -18,7 +20,7 @@ export const LoadMoreSection = ({
   onLoadMore,
   isLoading,
   hasMore,
-  threshold = 200, // сохраняем проп для обратной совместимости
+  threshold: _threshold = 200, // сохраняем проп для обратной совместимости (IntersectionObserver позже)
   loadingComponent,
   endMessage,
   className,
@@ -43,7 +45,7 @@ export const LoadMoreSection = ({
         </div>
       )}
 
-      {!hasMore && !isLoading && (endMessage)}
+      {!hasMore && !isLoading && endMessage}
     </div>
   );
 };

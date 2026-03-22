@@ -1,15 +1,16 @@
+import type { TProfessionCardProps } from './types';
 
+import Link from 'next/link';
 
-import { FilterCardButton, Loader } from "@/shared/ui";
-import { TProfessionCardProps } from "./types";
+import { FilterCardButton } from '@/shared/ui';
+
 import styles from './ProfessionCard.module.scss';
-import Link from "next/link";
 
 /**
  * Карточка профессии.
  */
 export const ProfessionCard = ({ profession }: TProfessionCardProps) => {
-const { name } = profession;
+  const { name } = profession;
 
   return (
     <Link href={`/professions?profession=${name}`}>
@@ -20,5 +21,5 @@ const { name } = profession;
         <h3 className={styles.name}>{name}</h3>
       </FilterCardButton>
     </Link>
-  )
-}
+  );
+};

@@ -1,7 +1,10 @@
+import type { FilterItem } from '../../types';
+
 import cn from 'classnames';
-import { FilterItem } from '../../types/filters';
-import styles from './FilterCheckboxList.module.scss';
+
 import { capitalizeFirst } from '@/shared/lib';
+
+import styles from './FilterCheckboxList.module.scss';
 
 interface FilterCheckboxListProps {
   allValues: FilterItem[];
@@ -28,10 +31,10 @@ export const FilterCheckboxList = ({
               return (
                 <button
                   key={nameRu}
-                  type="button"
                   className={cn(styles.item, {
                     [styles.itemActive]: active,
                   })}
+                  type="button"
                   onClick={() => onChange(nameRu)}
                 >
                   <span className={styles.label}>
@@ -43,13 +46,13 @@ export const FilterCheckboxList = ({
                       [styles.checkmarkVisible]: active,
                     })}
                   >
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
                       <path
                         d="M13.5 4.5L6 12L2.5 8.5"
                         stroke="currentColor"
-                        strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        strokeWidth="2"
                       />
                     </svg>
                   </span>
@@ -69,10 +72,10 @@ export const FilterCheckboxList = ({
             return (
               <button
                 key={nameRu}
-                type="button"
                 className={cn(styles.chip, {
                   [styles.chipActive]: active,
                 })}
+                type="button"
                 onClick={() => onChange(nameRu)}
               >
                 {capitalizeFirst(nameRu)}

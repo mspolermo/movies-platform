@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import type { SummaryBlockProps } from '../../types';
+import type { TGenreBased } from '@common/types';
+
 import { useRouter } from 'next/navigation';
-import styles from './SummaryBlock.module.scss';
-import { TCountryBased, TGenreBased } from '@common/types';
+
 import { SvgIcon, QualityTag } from '@/shared/ui';
-import { SummaryBlockProps } from '../../types';
-import { checkIsCartoon } from '../../../../lib';
+
+import styles from './SummaryBlock.module.scss';
 
 export const SummaryBlock = ({
   filmNameRu,
@@ -19,7 +20,7 @@ export const SummaryBlock = ({
 
   const filmName = filmNameRu ?? filmNameEn ?? '';
 
-  const getType = (genres: TGenreBased[]) => {
+  const getType = () => {
     return isCartoon ? 'Мультфильм' : 'Фильм';
   };
 
@@ -29,7 +30,7 @@ export const SummaryBlock = ({
     return `${hours}ч. ${mins} мин.`;
   };
 
-  const type = getType(genres);
+  const type = getType();
   const country = countries[0]?.countryName || '';
   const length = movieLength ? formatDuration(movieLength) : '';
 
@@ -79,9 +80,9 @@ export const SummaryBlock = ({
           >
             <SvgIcon
               className={styles.svg}
+              color="var(--color-text)"
               name="circle-filled"
               size={4}
-              color="var(--color-text)"
             />
             {genre.nameRu}
           </span>
@@ -92,31 +93,31 @@ export const SummaryBlock = ({
         <QualityTag quality="FullHD" />
         <SvgIcon
           className={styles.svg}
+          color="var(--color-text)"
           name="volume-down"
           size={22}
-          color="var(--color-text)"
         />
         <p className={styles.text}>Рус</p>
         <SvgIcon
           className={styles.svg}
+          color="var(--color-text)"
           name="circle-filled"
           size={4}
-          color="var(--color-text)"
         />
         <p className={styles.text}>Eng</p>
         <SvgIcon
           className={styles.svg}
+          color="var(--color-text)"
           name="keyboard"
           size={18}
-          color="var(--color-text)"
           strokeWidth={2}
         />
         <p className={styles.text}>Рус</p>
         <SvgIcon
           className={styles.svg}
+          color="var(--color-text)"
           name="circle-filled"
           size={4}
-          color="var(--color-text)"
         />
         <p className={styles.text}>Eng</p>
       </div>

@@ -1,14 +1,17 @@
+import type { TProfessionBased } from '@common/types';
+
+import type { RefObject, MouseEvent } from 'react';
+
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { TProfessionBased } from '@common/types';
 
 type UseScrollArrowsResult = {
-  containerRef: React.RefObject<HTMLDivElement>;
-  tabsRef: React.RefObject<HTMLDivElement>;
+  containerRef: RefObject<HTMLDivElement>;
+  tabsRef: RefObject<HTMLDivElement>;
   showLeft: boolean;
   showRight: boolean;
   hoverLeft: boolean;
   hoverRight: boolean;
-  onMouseMove: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseMove: (e: MouseEvent<HTMLDivElement>) => void;
   onMouseLeave: () => void;
   scrollLeft: () => void;
   scrollRight: () => void;
@@ -64,7 +67,9 @@ export const useScrollArrows = (
       const tolerance = 1;
 
       setShowLeft(canScroll && scrollLeft > tolerance);
-      setShowRight(canScroll && scrollLeft < scrollWidth - clientWidth - tolerance);
+      setShowRight(
+        canScroll && scrollLeft < scrollWidth - clientWidth - tolerance
+      );
     });
   }, []);
 
@@ -89,8 +94,10 @@ export const useScrollArrows = (
     return () => observer.disconnect();
   }, [professions, updateScrollState]);
 
-  const scrollLeft = () => tabsRef.current?.scrollBy({ left: -200, behavior: 'smooth' });
-  const scrollRight = () => tabsRef.current?.scrollBy({ left: 200, behavior: 'smooth' });
+  const scrollLeft = () =>
+    tabsRef.current?.scrollBy({ left: -200, behavior: 'smooth' });
+  const scrollRight = () =>
+    tabsRef.current?.scrollBy({ left: 200, behavior: 'smooth' });
 
   const scrollToActive = () => {
     const el = tabsRef.current;
@@ -113,12 +120,15 @@ export const useScrollArrows = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeProfessionId, professions]);
 
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const cEl = containerRef.current;
     if (!cEl) return;
 
     // on touch devices we not rely on hover zones
-    if (typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0)) {
+    if (
+      typeof window !== 'undefined' &&
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    ) {
       setHoverLeft(false);
       setHoverRight(false);
       return;

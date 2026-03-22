@@ -1,10 +1,11 @@
-import { useCallback } from 'react';
-import cn from 'classnames';
+import type { ActiveFilters } from '../../types';
 
-import { ActiveFilters, DEFAULT_ACTIVE_FILTERS } from '../../types';
-import { areFiltersDefault } from '../../lib';
+import cn from 'classnames';
+import { useCallback } from 'react';
 
 import styles from './ResetFiltersButton.module.scss';
+import { areFiltersDefault } from '../../lib';
+import { DEFAULT_ACTIVE_FILTERS } from '../../types';
 
 interface ResetFiltersButtonProps {
   selectedFilters: ActiveFilters;
@@ -25,18 +26,18 @@ export const ResetFiltersButton = ({
     <div className={styles.root}>
       {/* Desktop */}
       <button
-        type="button"
         className={cn(styles.button, styles.desktop)}
-        onClick={handleReset}
         disabled={isDisabled}
+        type="button"
+        onClick={handleReset}
       >
         <span className={styles.icon}>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <svg fill="none" height="20" viewBox="0 0 20 20" width="20">
             <path
               d="M15 5L5 15M5 5L15 15"
               stroke="currentColor"
-              strokeWidth="2"
               strokeLinecap="round"
+              strokeWidth="2"
             />
           </svg>
         </span>
@@ -46,10 +47,10 @@ export const ResetFiltersButton = ({
 
       {/* Mobile */}
       <button
-        type="button"
         className={cn(styles.button, styles.mobile)}
-        onClick={handleReset}
         disabled={isDisabled}
+        type="button"
+        onClick={handleReset}
       >
         Сбросить фильтры
       </button>

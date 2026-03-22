@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
+
 import styles from './PersonSearchFilter.module.scss';
-import { usePersonSearch } from '../../lib/hooks/usePersonSearch';
+import { usePersonSearch } from '../../lib';
 
 //TODO: Нужно добавить сброс фильтра по крестику в input
 interface PersonSearchFilterProps {
@@ -33,9 +34,9 @@ export const PersonSearchFilter = ({
   return (
     <div className={styles.root}>
       <input
-        type="text"
         className={styles.input}
         placeholder="Введите имя…"
+        type="text"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
@@ -45,8 +46,8 @@ export const PersonSearchFilter = ({
           {results.map((person) => (
             <button
               key={person.id}
-              type="button"
               className={styles.resultItem}
+              type="button"
               onClick={() => handleSelectPerson(person.nameRu)}
             >
               {person.nameRu}

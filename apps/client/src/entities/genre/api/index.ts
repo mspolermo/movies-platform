@@ -1,1 +1,1 @@
-export { getGenresList } from './getGenresList'
+export { getGenresList } from './getGenresList';

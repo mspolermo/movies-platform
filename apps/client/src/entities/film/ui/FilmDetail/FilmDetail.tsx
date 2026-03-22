@@ -1,8 +1,7 @@
-"use client"
+'use client';
 
-import { TFilmModel } from '@common/types';
-import styles from './FilmDetail.module.scss';
-import { FilmDetailProps } from '../types';
+import type { FilmDetailProps } from '../types';
+
 import {
   AdditionalInfoBlock,
   DescriptionBlock,
@@ -12,8 +11,9 @@ import {
   SloganBlock,
   SummaryBlock,
   TrailerBlock,
-  CreatorsViewerBlock
+  CreatorsViewerBlock,
 } from './blocks';
+import styles from './FilmDetail.module.scss';
 import { checkIsCartoon } from '../../lib';
 
 export const FilmDetail = (props: FilmDetailProps) => {
@@ -26,35 +26,35 @@ export const FilmDetail = (props: FilmDetailProps) => {
         <div className={styles.posterSection}>
           <PosterPreviewBlock
             bigPictureUrl={film.bigPictureUrl}
-            smallPictureUrl={film.smallPictureUrl}
-            filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
+            filmNameRu={film.filmNameRu}
+            smallPictureUrl={film.smallPictureUrl}
           />
           <SloganBlock slogan={film.slogan} />
 
           <RatingBlock
+            filmNameEn={film.filmNameEn}
+            filmNameRu={film.filmNameRu}
             ratingKp={film.ratingKp}
             votesKp={film.votesKp}
-            filmNameRu={film.filmNameRu}
-            filmNameEn={film.filmNameEn}
           />
         </div>
 
         <div className={styles.infoSection}>
           <SummaryBlock
-            filmNameRu={film.filmNameRu}
-            filmNameEn={film.filmNameEn}
-            year={film.year}
-            genres={film.genres}
-            movieLength={film.movieLength}
             countries={film.countries}
+            filmNameEn={film.filmNameEn}
+            filmNameRu={film.filmNameRu}
+            genres={film.genres}
             isCartoon={isCartoon}
+            movieLength={film.movieLength}
+            year={film.year}
           />
 
           <DescriptionBlock
             description={film.description || ''}
-            filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
+            filmNameRu={film.filmNameRu}
           />
 
           <FactBlock fact={film.fact} isCartoon={isCartoon} />
@@ -64,9 +64,9 @@ export const FilmDetail = (props: FilmDetailProps) => {
           <AdditionalInfoBlock />
 
           <TrailerBlock
-            trailerUrl={film.trailerUrl}
-            filmNameRu={film.filmNameRu}
             filmNameEn={film.filmNameEn}
+            filmNameRu={film.filmNameRu}
+            trailerUrl={film.trailerUrl}
           />
         </div>
       </div>

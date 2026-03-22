@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import styles from './FilterCardButton.module.scss';
 
 interface FilterCardButtonProps {
@@ -15,28 +16,27 @@ interface FilterCardButtonProps {
  * Используется для кликабельных элементов с кастомным UI.
  * Поддерживает управление с клавиатуры (Enter / Space).
  */
-export const FilterCardButton: React.FC<FilterCardButtonProps> = ({
+export const FilterCardButton = ({
   children,
   onClick,
   ariaLabel,
   className = '',
-}) => {
+}: FilterCardButtonProps) => {
   return (
     <div
+      aria-label={ariaLabel}
       className={`${styles.card} ${className}`}
-      onClick={onClick}
       role="button"
       tabIndex={0}
+      onClick={onClick}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onClick?.();
         }
       }}
-      aria-label={ariaLabel}
     >
       {children}
     </div>
   );
 };
-

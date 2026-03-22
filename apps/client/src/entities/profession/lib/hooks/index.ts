@@ -1,1 +1,1 @@
-export { useScrollArrows } from './useScrollArrows'
+export { useScrollArrows } from './useScrollArrows';

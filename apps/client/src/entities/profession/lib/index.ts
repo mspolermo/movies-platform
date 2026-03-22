@@ -1,2 +1,2 @@
-export { getProfessionsWord } from './utils'
-export { useScrollArrows } from './hooks'
+export { getProfessionsWord } from './utils';
+export { useScrollArrows } from './hooks';

@@ -62,8 +62,7 @@ export const API_ENDPOINTS = {
   },
 
   // Расширенные операции для персон
-  PERSONS_EX:
-    {
-      SEARCH_FIND: '/persons/search/find',
-    },
+  PERSONS_EX: {
+    SEARCH_FIND: '/persons/search/find',
+  },
 } as const;

@@ -1,2 +1,1 @@
 export { FilmPersonsByProfession } from './FilmPersonsByProfession';
-

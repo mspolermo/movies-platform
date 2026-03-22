@@ -1,6 +1,7 @@
-import { getGenresList } from '@/entities/genre';
-import GenresPage from '@/pages/GenresPage';
 import { notFound } from 'next/navigation';
+
+import { getGenresList } from '@/entities/genre';
+import { GenresPage } from '@/pages/GenresPage';
 
 export default async function GenresPageRoute() {
   const genresList = await getGenresList();
@@ -9,5 +10,5 @@ export default async function GenresPageRoute() {
     notFound();
   }
 
-  return <GenresPage genresList={genresList}/>;
+  return <GenresPage genresList={genresList} />;
 }

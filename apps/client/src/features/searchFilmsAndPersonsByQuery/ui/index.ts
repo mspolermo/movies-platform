@@ -1,1 +1,1 @@
-export { SearchFilmsAndPersons } from './SearchFilmsAndPersons'
+export { SearchFilmsAndPersons } from './SearchFilmsAndPersons';

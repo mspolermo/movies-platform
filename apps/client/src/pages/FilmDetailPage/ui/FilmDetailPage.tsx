@@ -1,12 +1,12 @@
-"use client"
+'use client';
+
+import type { TFilmDetailPageProps } from './types';
 
 import React from 'react';
-import { Layout } from '@/widgets/Layout';
-import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
+
 import { FilmDetail, FilmDetailSkeleton } from '@/entities/film';
-import { TFilmDetailPageProps } from './types';
-
-
+import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
+import { Layout } from '@/widgets/Layout';
 
 export const FilmDetailPage = ({ isLoading, film }: TFilmDetailPageProps) => {
   if (isLoading) {
@@ -19,10 +19,7 @@ export const FilmDetailPage = ({ isLoading, film }: TFilmDetailPageProps) => {
 
   return (
     <Layout>
-      <FilmDetail
-        film={film}
-        creatorsViewer={<FilmCreatorsViewer professions={film.professions} />}
-      />
+      <FilmDetail creatorsViewer={<FilmCreatorsViewer />} film={film} />
     </Layout>
   );
 };

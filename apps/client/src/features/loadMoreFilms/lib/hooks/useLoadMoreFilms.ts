@@ -1,7 +1,10 @@
+import type { FilmsResponse, SearchFilmsParams } from '@/shared/types';
+import type { TFilmBased } from '@common/types';
+
+import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { TFilmBased } from '@common/types';
+
 import { searchFilms } from '@/entities/film';
-import { FilmsResponse, SearchFilmsParams } from '@/shared/types';
 
 interface UseLoadMoreFilmsOptions {
   initialParams?: SearchFilmsParams;
@@ -10,7 +13,7 @@ interface UseLoadMoreFilmsOptions {
 
 export const useLoadMoreFilms = ({
   initialParams = {},
-  threshold = 200,
+  threshold: _threshold = 200,
 }: UseLoadMoreFilmsOptions = {}) => {
   const [films, setFilms] = useState<TFilmBased[]>([]);
   const [loading, setLoading] = useState(false);
@@ -46,8 +49,23 @@ export const useLoadMoreFilms = ({
 
         setHasMore(response.hasMore);
         setCurrentPage(page);
-      } catch (err: any) {
-        setError(err.response?.data?.message || 'Ошибка загрузки фильмов');
+      } catch (err: unknown) {
+        const fallback = 'Ошибка загрузки фильмов';
+        const message = isAxiosError(err)
+          ? (() => {
+              const data = err.response?.data;
+              if (
+                data &&
+                typeof data === 'object' &&
+                'message' in data &&
+                typeof (data as { message: unknown }).message === 'string'
+              ) {
+                return (data as { message: string }).message;
+              }
+              return fallback;
+            })()
+          : fallback;
+        setError(message);
       } finally {
         setLoading(false);
         isLoadingRef.current = false;

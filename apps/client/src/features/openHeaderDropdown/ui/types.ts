@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 type TDropdownActionsProps = {
   /** Открыть dropdown */
@@ -9,7 +9,7 @@ type TDropdownActionsProps = {
 
   /** Текущее состояние dropdown */
   isOpen: boolean;
-}
+};
 
 export type TDropdownProps = {
   /**
@@ -27,4 +27,4 @@ export type TDropdownProps = {
    * Колбэк, вызывается при изменении состояния открытия dropdown.
    */
   onOpenChange?: (isOpen: boolean) => void;
-}
+};

@@ -1,1 +1,1 @@
-export { useSearchByQuery } from './hooks'
+export { useSearchByQuery } from './hooks';

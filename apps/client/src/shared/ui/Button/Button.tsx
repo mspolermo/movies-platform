@@ -1,5 +1,7 @@
+import type { ButtonProps } from './types';
+
 import React, { forwardRef } from 'react';
-import { ButtonProps } from './types';
+
 import styles from './Button.module.scss';
 
 /**
@@ -41,9 +43,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        type={type}
         className={buttonClasses}
         disabled={disabled || loading}
+        type={type}
         onClick={handleClick}
         {...props}
       >

@@ -1,6 +1,8 @@
 import React from 'react';
-import styles from './AdditionalInfoBlock.module.scss';
+
 import { QualityTag } from '@/shared/ui';
+
+import styles from './AdditionalInfoBlock.module.scss';
 
 export const AdditionalInfoBlock = () => {
   return (

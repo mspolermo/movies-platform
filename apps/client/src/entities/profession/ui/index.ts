@@ -1,2 +1,2 @@
-export {  ProfessionsSlider } from './ProfessionsSlider';
-export { ProfessionsList } from './ProfessionsList'
+export { ProfessionsSlider } from './ProfessionsSlider';
+export { ProfessionsList } from './ProfessionsList';

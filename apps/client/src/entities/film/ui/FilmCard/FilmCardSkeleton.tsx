@@ -1,7 +1,10 @@
+import type { FilmCardSkeletonProps } from '../types';
+
 import React from 'react';
+
 import { Skeleton } from '@/shared/ui';
+
 import styles from './FilmCard.module.scss';
-import { FilmCardSkeletonProps } from '../types';
 
 export const FilmCardSkeleton = ({
   showIcons = false,
@@ -13,13 +16,13 @@ export const FilmCardSkeleton = ({
           <div className={styles.poster}>
             <div className={styles.imageContainer}>
               <Skeleton
-                width="100%"
-                height="100%"
-                borderRadius="8px"
-                variant="rectangular"
                 animation="pulse"
+                borderRadius="8px"
+                height="100%"
+                variant="rectangular"
+                width="100%"
               />
-              
+
               {showIcons && (
                 <div className={styles.overlay}>
                   <div className={styles.overlayContent}>
@@ -27,11 +30,11 @@ export const FilmCardSkeleton = ({
                       {Array.from({ length: 4 }).map((_, index) => (
                         <Skeleton
                           key={index}
-                          width="32px"
-                          height="32px"
-                          borderRadius="4px"
-                          variant="rectangular"
                           animation="pulse"
+                          borderRadius="4px"
+                          height="32px"
+                          variant="rectangular"
+                          width="32px"
                         />
                       ))}
                     </div>
@@ -39,29 +42,29 @@ export const FilmCardSkeleton = ({
                     <div className={styles.filmInfo}>
                       <div className={styles.rating}>
                         <Skeleton
-                          width="40px"
-                          height="28px"
-                          borderRadius="4px"
-                          variant="rectangular"
                           animation="pulse"
+                          borderRadius="4px"
+                          height="28px"
+                          variant="rectangular"
+                          width="40px"
                         />
                       </div>
                       <div className={styles.filmDetails}>
                         <Skeleton
-                          width="80px"
-                          height="16px"
-                          borderRadius="4px"
-                          variant="rectangular"
                           animation="pulse"
+                          borderRadius="4px"
+                          height="16px"
+                          variant="rectangular"
+                          width="80px"
                         />
                       </div>
                       <div className={styles.duration}>
                         <Skeleton
-                          width="60px"
-                          height="16px"
-                          borderRadius="4px"
-                          variant="rectangular"
                           animation="pulse"
+                          borderRadius="4px"
+                          height="16px"
+                          variant="rectangular"
+                          width="60px"
                         />
                       </div>
                     </div>
@@ -74,11 +77,11 @@ export const FilmCardSkeleton = ({
 
         <h3 className={styles.title}>
           <Skeleton
-            width="150px"
-            height="20px"
-            borderRadius="4px"
-            variant="rectangular"
             animation="pulse"
+            borderRadius="4px"
+            height="20px"
+            variant="rectangular"
+            width="150px"
           />
         </h3>
       </div>

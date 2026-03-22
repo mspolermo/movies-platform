@@ -1,7 +1,10 @@
+import type { SloganBlockProps } from '../../types';
+
 import React from 'react';
-import styles from './SloganBlock.module.scss';
+
 import { SvgIcon } from '@/shared/ui';
-import { SloganBlockProps } from '../../types';
+
+import styles from './SloganBlock.module.scss';
 
 export const SloganBlock = ({ slogan }: SloganBlockProps) => {
   if (!slogan) return null;
@@ -9,14 +12,14 @@ export const SloganBlock = ({ slogan }: SloganBlockProps) => {
   return (
     <div className={styles.sloganBlock}>
       <SvgIcon
-        name="quote-open"
         className={`${styles.quote} ${styles.quoteOpen}`}
+        name="quote-open"
         size={12}
       />
       <p className={styles.text}>{slogan}</p>
       <SvgIcon
-        name="quote-close"
         className={`${styles.quote} ${styles.quoteClose}`}
+        name="quote-close"
         size={12}
       />
     </div>

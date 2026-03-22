@@ -1,4 +1,4 @@
-import PersonsPage from '@/pages/PersonsPage';
+import { PersonsPage } from '@/pages/PersonsPage';
 
 export default function PersonsPageRoute() {
   return <PersonsPage />;

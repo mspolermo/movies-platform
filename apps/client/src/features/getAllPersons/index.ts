@@ -1,2 +1,1 @@
-export { AllPersonsList } from './ui'
-
+export { AllPersonsList } from './ui';

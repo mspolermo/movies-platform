@@ -1,1 +1,1 @@
-export { useSearchByQuery } from './useSearchByQuery'
+export { useSearchByQuery } from './useSearchByQuery';

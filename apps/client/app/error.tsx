@@ -9,5 +9,5 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  return <ErrorPage error={error} onRetry={reset}/>
+  return <ErrorPage error={error} onRetry={reset} />;
 }

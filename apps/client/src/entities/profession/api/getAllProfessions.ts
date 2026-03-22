@@ -1,6 +1,6 @@
-import apiClient from "@/shared/api/client";
-import { API_ENDPOINTS } from "@/shared/api/endpoints";
-import { TProfessionBased } from "@common/types";
+import type { TProfessionBased } from '@common/types';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 /**
  * Получить все существующие профессии

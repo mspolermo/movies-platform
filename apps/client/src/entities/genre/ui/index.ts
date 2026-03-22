@@ -1,1 +1,1 @@
-export { GenreCard } from './GenreCard'
+export { GenreCard } from './GenreCard';

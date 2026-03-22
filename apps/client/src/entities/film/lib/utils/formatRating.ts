@@ -8,11 +8,9 @@ export const formatRating = (
   rating?: number,
   onlyNumber: boolean = false
 ): string => {
-
   if (typeof rating !== 'number' || rating <= 0) {
     return 'Нет оценок';
   }
-
 
   const formatted = rating.toFixed(1).replace('.', ',');
 

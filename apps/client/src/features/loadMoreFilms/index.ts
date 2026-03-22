@@ -1,1 +1,1 @@
-export { LoadMoreFilms as FilmsInfiniteScroll } from './ui';
+export { LoadMoreFilms } from './ui';

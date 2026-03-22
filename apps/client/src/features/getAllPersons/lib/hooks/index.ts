@@ -1,2 +1,1 @@
 export { usePersonsInfiniteScroll } from './usePersonsInfiniteScroll';
-

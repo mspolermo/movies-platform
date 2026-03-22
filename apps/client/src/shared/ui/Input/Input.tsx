@@ -1,7 +1,9 @@
-"use client"
+'use client';
+
+import type { InputProps } from './types';
 
 import React, { forwardRef, useState, useId } from 'react';
-import { InputProps } from './types';
+
 import styles from './Input.module.scss';
 
 /**
@@ -83,7 +85,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={styles.inputWrapper}>
         <div className={inputClasses}>
           {label && (
-            <label htmlFor={inputId} className={labelClasses}>
+            <label className={labelClasses} htmlFor={inputId}>
               {label}
               {required && <span className={styles.input__required}>*</span>}
             </label>
@@ -95,13 +97,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
           <input
             ref={ref}
-            id={inputId}
             className={styles.input__field}
-            placeholder={isFocused || hasValue ? '' : placeholder}
             disabled={disabled}
-            onFocus={handleFocus}
+            id={inputId}
+            placeholder={isFocused || hasValue ? '' : placeholder}
             onBlur={handleBlur}
             onChange={handleChange}
+            onFocus={handleFocus}
             {...props}
           />
 
@@ -111,10 +113,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
           {clearable && hasValue && !disabled && (
             <button
-              type="button"
               className={styles.input__clear}
-              onClick={handleClear}
               tabIndex={-1}
+              type="button"
+              onClick={handleClear}
             >
               ×
             </button>

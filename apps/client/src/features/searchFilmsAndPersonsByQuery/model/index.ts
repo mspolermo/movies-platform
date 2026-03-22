@@ -1,1 +1,1 @@
-export type { TSearchResultProps } from './types'
+export type { TSearchResultProps } from './types';

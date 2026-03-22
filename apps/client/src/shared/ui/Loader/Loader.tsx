@@ -1,4 +1,5 @@
 import React from 'react';
+
 import classes from './Loader.module.scss';
 
 export interface LoaderProps {
@@ -10,17 +11,17 @@ export interface LoaderProps {
   'aria-label'?: string;
 }
 
-const Loader: React.FC<LoaderProps> = ({
+const Loader = ({
   size = 'medium',
   className = '',
   'aria-label': ariaLabel = 'Загрузка...',
-}) => {
+}: LoaderProps) => {
   const loaderClasses = [classes.loader, classes[`loader--${size}`], className]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <div className={loaderClasses} role="status" aria-label={ariaLabel}>
+    <div aria-label={ariaLabel} className={loaderClasses} role="status">
       <div className={classes.loader__spinner}>
         <div className={classes.loader__ring}></div>
         <div className={classes.loader__ring}></div>

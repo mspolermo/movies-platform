@@ -1,15 +1,14 @@
 'use client';
 
-import { useAuthStore } from '@/features/auth/api/authStore/store';
+import { useAuthStore } from '@/features/auth';
 import { Layout } from '@/widgets/Layout';
 
 export const DebugPage = () => {
   const { user, token, isAuthenticated, isLoading, error } = useAuthStore();
 
   return (
-    <Layout title='🔍 Debug: Auth State'>
-      <div style={{fontFamily: 'monospace' }}>
-
+    <Layout title="🔍 Debug: Auth State">
+      <div style={{ fontFamily: 'monospace' }}>
         <div style={{ marginBottom: '1rem' }}>
           <h2 style={{ color: 'var(--color-heading)' }}>
             Состояние аутентификации:
@@ -96,7 +95,6 @@ export const DebugPage = () => {
         </div>
 
         <button
-          onClick={() => window.location.reload()}
           style={{
             padding: '0.5rem 1rem',
             background: 'var(--color-red)',
@@ -105,6 +103,7 @@ export const DebugPage = () => {
             borderRadius: '4px',
             cursor: 'pointer',
           }}
+          onClick={() => window.location.reload()}
         >
           Обновить страницу
         </button>

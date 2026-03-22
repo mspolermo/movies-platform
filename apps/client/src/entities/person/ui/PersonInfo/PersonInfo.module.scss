@@ -25,7 +25,9 @@
   flex-shrink: 0;
 
   box-shadow: 0 12px 32px var(--color-transparent-black-gradient);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 
   &:hover {
     transform: scale(1.02);

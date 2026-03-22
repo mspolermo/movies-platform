@@ -1,1 +1,1 @@
-export {  ShortFilmCard } from './ShortFilmCard';
+export { ShortFilmCard } from './ShortFilmCard';

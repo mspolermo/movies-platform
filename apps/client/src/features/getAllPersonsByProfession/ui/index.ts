@@ -1,1 +1,1 @@
-export { AllPersonsByProfession } from './AllPersonsByProfession'
+export { AllPersonsByProfession } from './AllPersonsByProfession';

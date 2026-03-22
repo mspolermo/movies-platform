@@ -1,6 +1,6 @@
-import apiClient from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
-import { FilmsResponse, SearchFilmsParams } from '@/shared/types';
+import type { FilmsResponse, SearchFilmsParams } from '@/shared/types';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 export const searchFilms =
   // Поиск фильмов
@@ -25,4 +25,4 @@ export const searchFilms =
       perPage,
       hasMore: films.length === perPage, // Если получили полную страницу, возможно есть еще
     };
-  }
+  };

@@ -1,9 +1,9 @@
-import React from 'react';
 import { Skeleton } from '@/shared/ui';
+
 import styles from '../FilmDetail.module.scss';
 import skeletonStyles from './FilmDetailSkeleton.module.scss';
 
-export const FilmDetailSkeleton: React.FC = () => {
+export const FilmDetailSkeleton = () => {
   return (
     <div className={styles.container}>
       <div
@@ -12,65 +12,65 @@ export const FilmDetailSkeleton: React.FC = () => {
         <div className={styles.posterSection}>
           {/* Постер */}
           <Skeleton
-            width="100%"
-            height="400px"
-            borderRadius="8px"
-            variant="rectangular"
             animation="pulse"
+            borderRadius="8px"
             className={skeletonStyles.posterSkeleton}
+            height="400px"
+            variant="rectangular"
+            width="100%"
           />
 
           {/* Слоган */}
           <div className={skeletonStyles.sloganSkeleton}>
             <Skeleton
-              width="100%"
-              height="16px"
-              borderRadius="4px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="4px"
+              height="16px"
+              variant="rectangular"
+              width="100%"
             />
           </div>
 
           {/* Рейтинг блок */}
           <div className={skeletonStyles.ratingSkeleton}>
             <Skeleton
-              width="64px"
-              height="64px"
-              borderRadius="8px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="8px"
               className={skeletonStyles.ratingCircle}
+              height="64px"
+              variant="rectangular"
+              width="64px"
             />
             <div className={skeletonStyles.ratingInfo}>
               <Skeleton
-                width="80px"
+                animation="pulse"
+                borderRadius="4px"
                 height="16px"
-                borderRadius="4px"
                 variant="rectangular"
-                animation="pulse"
+                width="80px"
               />
               <Skeleton
+                animation="pulse"
+                borderRadius="4px"
+                height="14px"
+                variant="rectangular"
                 width="60px"
-                height="14px"
-                borderRadius="4px"
-                variant="rectangular"
-                animation="pulse"
               />
               <Skeleton
-                width="100px"
-                height="14px"
-                borderRadius="4px"
-                variant="rectangular"
                 animation="pulse"
+                borderRadius="4px"
+                height="14px"
+                variant="rectangular"
+                width="100px"
               />
             </div>
             <Skeleton
-              width="80px"
-              height="26px"
-              borderRadius="6px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="6px"
               className={skeletonStyles.ratingButton}
+              height="26px"
+              variant="rectangular"
+              width="80px"
             />
           </div>
         </div>
@@ -79,59 +79,59 @@ export const FilmDetailSkeleton: React.FC = () => {
           {/* Заголовок и основная информация */}
           <div className={skeletonStyles.summarySkeleton}>
             <Skeleton
-              width="70%"
-              height="32px"
-              borderRadius="4px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="4px"
               className={skeletonStyles.titleSkeleton}
+              height="32px"
+              variant="rectangular"
+              width="70%"
             />
 
             <div className={skeletonStyles.metaInfo}>
               <Skeleton
+                animation="pulse"
+                borderRadius="4px"
+                height="18px"
+                variant="rectangular"
                 width="120px"
-                height="18px"
-                borderRadius="4px"
-                variant="rectangular"
-                animation="pulse"
               />
               <Skeleton
+                animation="pulse"
+                borderRadius="4px"
+                height="18px"
+                variant="rectangular"
                 width="80px"
-                height="18px"
-                borderRadius="4px"
-                variant="rectangular"
-                animation="pulse"
               />
               <Skeleton
-                width="100px"
-                height="18px"
-                borderRadius="4px"
-                variant="rectangular"
                 animation="pulse"
+                borderRadius="4px"
+                height="18px"
+                variant="rectangular"
+                width="100px"
               />
             </div>
 
             <div className={skeletonStyles.additionalInfo}>
               <Skeleton
-                width="60px"
+                animation="pulse"
+                borderRadius="4px"
                 height="24px"
-                borderRadius="4px"
                 variant="rectangular"
-                animation="pulse"
+                width="60px"
               />
               <Skeleton
-                width="40px"
-                height="18px"
-                borderRadius="4px"
-                variant="rectangular"
                 animation="pulse"
+                borderRadius="4px"
+                height="18px"
+                variant="rectangular"
+                width="40px"
               />
               <Skeleton
-                width="40px"
-                height="18px"
-                borderRadius="4px"
-                variant="rectangular"
                 animation="pulse"
+                borderRadius="4px"
+                height="18px"
+                variant="rectangular"
+                width="40px"
               />
             </div>
           </div>
@@ -139,30 +139,30 @@ export const FilmDetailSkeleton: React.FC = () => {
           {/* Описание */}
           <div className={skeletonStyles.descriptionSkeleton}>
             <Skeleton
-              width="100%"
-              height="120px"
-              borderRadius="4px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="4px"
               className={skeletonStyles.descriptionText}
+              height="120px"
+              variant="rectangular"
+              width="100%"
             />
             <Skeleton
-              width="100px"
-              height="20px"
-              borderRadius="4px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="4px"
               className={skeletonStyles.readMoreButton}
+              height="20px"
+              variant="rectangular"
+              width="100px"
             />
           </div>
 
           <Skeleton
-            width="180px"
-            height="20px"
-            borderRadius="4px"
-            variant="rectangular"
             animation="pulse"
+            borderRadius="4px"
             className={skeletonStyles.readMoreButton}
+            height="20px"
+            variant="rectangular"
+            width="180px"
           />
 
           {/* Карточки актеров */}
@@ -170,20 +170,20 @@ export const FilmDetailSkeleton: React.FC = () => {
             {Array.from({ length: 5 }).map((_, index) => (
               <div key={index} className={skeletonStyles.cardSkeleton}>
                 <Skeleton
-                  width="70px"
-                  height="70px"
-                  borderRadius="8px"
-                  variant="rectangular"
                   animation="pulse"
+                  borderRadius="8px"
                   className={skeletonStyles.cardImage}
+                  height="70px"
+                  variant="rectangular"
+                  width="70px"
                 />
                 <Skeleton
-                  width="80%"
-                  height="14px"
-                  borderRadius="4px"
-                  variant="rectangular"
                   animation="pulse"
+                  borderRadius="4px"
                   className={skeletonStyles.cardTitle}
+                  height="14px"
+                  variant="rectangular"
+                  width="80%"
                 />
               </div>
             ))}
@@ -192,20 +192,20 @@ export const FilmDetailSkeleton: React.FC = () => {
           {/* Трейлер */}
           <div className={skeletonStyles.trailerSkeleton}>
             <Skeleton
-              width="80px"
-              height="18px"
-              borderRadius="4px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="4px"
               className={skeletonStyles.trailerTitleSkeleton}
+              height="18px"
+              variant="rectangular"
+              width="80px"
             />
             <Skeleton
-              width="100%"
-              height="auto"
-              borderRadius="8px"
-              variant="rectangular"
               animation="pulse"
+              borderRadius="8px"
               className={skeletonStyles.trailerVideoSkeleton}
+              height="auto"
+              variant="rectangular"
+              width="100%"
             />
           </div>
         </div>

@@ -1,1 +1,1 @@
-export { usePersonDetails } from './hooks'
+export { usePersonDetails } from './hooks';

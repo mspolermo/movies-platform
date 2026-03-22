@@ -1,20 +1,23 @@
+import type { TFilmBased } from '@common/types';
+
 import React from 'react';
-import styles from './Filmography.module.scss';
+
 import { LoadMoreSection } from '@/shared/ui';
-import { ShortFilmCard } from '../ShortFilmCard';
-import { TFilmBased } from '@common/types';
+
+import styles from './Filmography.module.scss';
 import { getFilmsWord } from '../../lib';
+import { ShortFilmCard } from '../ShortFilmCard';
 
 interface FilmographyProps {
-  films: TFilmBased[]
+  films: TFilmBased[];
   filmsTotal: number;
   hasMoreFilms: boolean;
   isLoading: boolean;
-  onLoadMore: () => Promise<void>
+  onLoadMore: () => Promise<void>;
 }
 
 export const Filmography = (props: FilmographyProps) => {
-  const { films, filmsTotal, onLoadMore, isLoading, hasMoreFilms } = props
+  const { films, filmsTotal, onLoadMore, isLoading, hasMoreFilms } = props;
   return (
     <section className={styles.container}>
       <div className={styles.filmography}>
@@ -35,10 +38,10 @@ export const Filmography = (props: FilmographyProps) => {
       </div>
 
       <LoadMoreSection
-        onLoadMore={onLoadMore}
-        isLoading={isLoading}
-        hasMore={hasMoreFilms}
         className={styles.filmsScroll}
+        hasMore={hasMoreFilms}
+        isLoading={isLoading}
+        onLoadMore={onLoadMore}
       >
         <ul className={styles.filmsList}>
           {films.map((film) => (
@@ -51,4 +54,3 @@ export const Filmography = (props: FilmographyProps) => {
     </section>
   );
 };
-

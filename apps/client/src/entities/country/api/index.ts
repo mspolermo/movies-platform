@@ -1,1 +1,1 @@
-export { getCountriesList } from './getCountriesList'
+export { getCountriesList } from './getCountriesList';

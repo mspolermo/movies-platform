@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { TCountryBased, TGenreBased } from "@common/types";
+import type { TCountryBased, TGenreBased } from '@common/types';
 
-import apiClient from "@/shared/api/client";
-import { API_ENDPOINTS } from "@/shared/api/endpoints";
+import { useEffect, useState } from 'react';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 //TODO: на сервере нужно написать единый эндпойнт по получению qickFilters и чтоб
 // там было оптимизированно и выдавало нарезанный данные, а не слайсить данные
@@ -140,7 +140,7 @@ export function useQuickFiltersData(): DropdownState {
           isError: false,
         });
       } catch (e) {
-        console.error("Dropdown data load error:", e);
+        console.error('Dropdown data load error:', e);
 
         if (ignore) return;
 

@@ -29,11 +29,11 @@
   align-items: center;
   justify-content: space-between;
 
-  transition: background-color .3s ease;
+  transition: background-color 0.3s ease;
 
   &Active {
     background: var(--color-modal-overlay);
-    
+
     border-left: 1px solid var(--color-split-line);
     border-right: 1px solid var(--color-split-line);
     border-top: 1px solid var(--color-split-line);
@@ -76,8 +76,6 @@
   align-items: center;
   justify-content: center;
 }
-
-
 
 .actions {
   display: flex;

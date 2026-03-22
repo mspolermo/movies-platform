@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
+
 import { LoadMoreSection } from '@/shared/ui';
 import { Card } from '@/shared/ui';
-import { useFilmPersonsByProfession } from '../../lib';
+
 import styles from './FilmPersonsByProfession.module.scss';
+import { useFilmPersonsByProfession } from '../../lib';
 
 interface TFilmPersonsByProfessionProps {
   filmId: number;
@@ -17,12 +19,13 @@ export const FilmPersonsByProfession = ({
   professionName,
 }: TFilmPersonsByProfessionProps) => {
   const router = useRouter();
-  const { persons, loading, error, hasMore, loadMore } = useFilmPersonsByProfession({
-    filmId,
-    professionName,
-    initialPage: 1,
-    initialLimit: 14,
-  });
+  const { persons, loading, error, hasMore, loadMore } =
+    useFilmPersonsByProfession({
+      filmId,
+      professionName,
+      initialPage: 1,
+      initialLimit: 14,
+    });
 
   const handlePersonClick = (personId: number) => {
     router.push(`/persons/${personId}`);
@@ -37,27 +40,23 @@ export const FilmPersonsByProfession = ({
   }
 
   if (persons.length === 0 && !loading) {
-    return (
-      <div className={styles.emptyState}>
-        Нет персон в этой профессии
-      </div>
-    );
+    return <div className={styles.emptyState}>Нет персон в этой профессии</div>;
   }
 
   return (
     <LoadMoreSection
-      onLoadMore={loadMore}
-      isLoading={loading}
-      hasMore={hasMore}
       className={styles.infiniteScroll}
+      hasMore={hasMore}
+      isLoading={loading}
+      onLoadMore={loadMore}
     >
       <div className={styles.personsList}>
         {persons.map((person) => (
           <Card
             key={person.id}
-            type="small"
-            title={person.nameRu || person.nameEn}
             photoUrl={person.photoUrl}
+            title={person.nameRu || person.nameEn}
+            type="small"
             onClick={() => handlePersonClick(person.id)}
           />
         ))}
@@ -65,4 +64,3 @@ export const FilmPersonsByProfession = ({
     </LoadMoreSection>
   );
 };
-

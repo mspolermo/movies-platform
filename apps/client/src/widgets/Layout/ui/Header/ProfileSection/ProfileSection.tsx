@@ -1,16 +1,17 @@
 import { useAuthStore } from '@/features/auth';
-import styles from './ProfileSection.module.scss';
 import { Button } from '@/shared/ui';
+
+import styles from './ProfileSection.module.scss';
 
 export const ProfileSection = () => {
   const { user, logout } = useAuthStore();
 
   if (!user) {
     return (
-        <div className={styles.error}>Вы не автроризированы! Войдите на сайт</div>
+      <div className={styles.error}>Вы не автроризированы! Войдите на сайт</div>
     );
   }
-  
+
   return (
     <div className={styles.container}>
       <div className={styles.profileCard}>

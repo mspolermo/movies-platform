@@ -1,11 +1,8 @@
-import { searchPersonsByNameAndProfession } from '@/entities/person';
-import { TPersonModel } from '@common/types';
+import type { TPersonModel } from '@common/types';
+
 import { useEffect, useState } from 'react';
 
-interface UsePersonSearchParams {
-  professionId: number;
-  name: string;
-}
+import { searchPersonsByNameAndProfession } from '@/entities/person';
 
 export const usePersonSearch = ({
   professionId,

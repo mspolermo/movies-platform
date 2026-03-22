@@ -1,1 +1,1 @@
-export { HeaderDropdown } from './HeaderDropdown'
+export { HeaderDropdown } from './HeaderDropdown';

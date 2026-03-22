@@ -1,13 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import apiClient from '@/shared/api/client';
-import { API_ENDPOINTS } from '@/shared/api/endpoints';
-import { Button, Input } from '@/shared/ui';
-import styles from './RegisterPage.module.scss';
+import type { FormEvent, ChangeEvent } from 'react';
 
+import { isAxiosError } from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
+import { Button, Input } from '@/shared/ui';
+
+import styles from './RegisterPage.module.scss';
 
 //TODO: форму вынести, сделать обертку чтоб форма была по центру экрана общую и для страницы логина
 export const RegisterPage = () => {
@@ -21,7 +24,7 @@ export const RegisterPage = () => {
   const [success, setSuccess] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -32,14 +35,24 @@ export const RegisterPage = () => {
       setTimeout(() => {
         router.push('/auth/login');
       }, 2000);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Ошибка регистрации');
+    } catch (err: unknown) {
+      const fallback = 'Ошибка регистрации';
+      const message =
+        isAxiosError(err) &&
+        err.response?.data &&
+        typeof err.response.data === 'object' &&
+        err.response.data !== null &&
+        'message' in err.response.data &&
+        typeof (err.response.data as { message: unknown }).message === 'string'
+          ? (err.response.data as { message: string }).message
+          : fallback;
+      setError(message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -61,43 +74,45 @@ export const RegisterPage = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Регистрация</h1>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
+      {error && <div className={styles.error}>{error}</div>}
+
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Input
+          required
+          disabled={loading}
           label="Имя"
           name="name"
           type="text"
           value={formData.name}
           onChange={handleChange}
-          required
-          disabled={loading}
         />
 
         <Input
+          required
+          disabled={loading}
           label="Email"
           name="email"
           type="email"
           value={formData.email}
           onChange={handleChange}
-          required
-          disabled={loading}
         />
 
         <Input
+          required
+          disabled={loading}
           label="Пароль"
+          minLength={6}
           name="password"
           type="password"
           value={formData.password}
           onChange={handleChange}
-          required
-          disabled={loading}
-          minLength={6}
         />
 
         <Button
-          type="submit"
-          variant="red"
           disabled={loading}
           loading={loading}
+          type="submit"
+          variant="red"
         >
           {loading ? 'Регистрация...' : 'Зарегистрироваться'}
         </Button>
@@ -106,7 +121,7 @@ export const RegisterPage = () => {
       <div className={styles.loginLink}>
         <p>
           Уже есть аккаунт?{' '}
-          <Link href="/auth/login" className={styles.link}>
+          <Link className={styles.link} href="/auth/login">
             Войти
           </Link>
         </p>

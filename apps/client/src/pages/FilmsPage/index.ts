@@ -1,1 +1,1 @@
-export { FilmsPage as default } from './ui/FilmsPage';
+export { FilmsPage } from './ui';

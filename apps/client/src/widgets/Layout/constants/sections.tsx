@@ -1,4 +1,4 @@
-import { THeaderMenuItem } from "../models";
+import type { THeaderMenuItem } from '../models';
 
 /**
  * Навигационные ссылки хедера для десктопной версии.
@@ -8,7 +8,7 @@ export const HEADER_SECTIONS_LAPTOP: THeaderMenuItem[] = [
   { label: 'Разделы', url: 'professions', content: 'chaptersSection' },
   { label: 'Телевидение', url: '/tv' },
   { label: 'Debug', url: '/debug' },
-]
+];
 
 /**
  * Навигационные ссылки футера для десктопной версии.
@@ -29,8 +29,8 @@ export const FOOTER_SECTIONS_LAPTOP = [
  */
 export const FOOTER_SECTIONS_MOBILE = [
   { label: 'MovieLand', icon: 'home', url: '/' },
-  { label: 'Каталог', icon: 'devices', url: '/films'},
-  { label: 'Поиск', icon: 'search', url: '/search'},
-  { label: 'ТВ', icon: 'tv', url: '/tv'},
-  { label: 'Страны', icon: 'dots-horizontal', url: '/countries'},
+  { label: 'Каталог', icon: 'devices', url: '/films' },
+  { label: 'Поиск', icon: 'search', url: '/search' },
+  { label: 'ТВ', icon: 'tv', url: '/tv' },
+  { label: 'Страны', icon: 'dots-horizontal', url: '/countries' },
 ];

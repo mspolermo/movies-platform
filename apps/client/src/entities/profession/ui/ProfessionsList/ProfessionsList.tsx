@@ -1,13 +1,15 @@
 'use client';
 
+import type { TProfessionsListProps } from './types';
+
 import React from 'react';
+
 import styles from './ProfessionsList.module.scss';
 import { getProfessionsWord } from '../../lib';
-import { TProfessionsListProps } from './types';
-import { ProfessionCard } from '../ProfessionCard'
+import { ProfessionCard } from '../ProfessionCard';
 
 export const ProfessionsList = ({ professions }: TProfessionsListProps) => {
-  if (!professions || professions.length === 0) return null
+  if (!professions || professions.length === 0) return null;
   const professionsCount = professions.length;
 
   return (

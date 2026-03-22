@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect } from 'react';
 import cn from 'classnames';
+import React, { useEffect } from 'react';
+
 import styles from './Overlay.module.scss';
 
 interface OverlayProps {
@@ -14,7 +15,7 @@ interface OverlayProps {
   closeOnBackdrop?: boolean;
 }
 
-export const Overlay: React.FC<OverlayProps> = ({
+export const Overlay = ({
   isOpen,
   onClose,
   children,
@@ -22,7 +23,7 @@ export const Overlay: React.FC<OverlayProps> = ({
   contentClassName,
   closeOnEsc = true,
   closeOnBackdrop = true,
-}) => {
+}: OverlayProps) => {
   // Закрытие по Escape
   useEffect(() => {
     if (!isOpen || !closeOnEsc) return;
@@ -66,8 +67,8 @@ export const Overlay: React.FC<OverlayProps> = ({
   return (
     <div
       className={cn(styles.overlay, className)}
-      onClick={closeOnBackdrop ? onClose : undefined}
       role="presentation"
+      onClick={closeOnBackdrop ? onClose : undefined}
     >
       <div
         className={cn(styles.content, contentClassName)}

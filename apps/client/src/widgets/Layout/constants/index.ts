@@ -1,5 +1,5 @@
 export {
   HEADER_SECTIONS_LAPTOP,
   FOOTER_SECTIONS_LAPTOP,
-  FOOTER_SECTIONS_MOBILE
-} from './sections'
+  FOOTER_SECTIONS_MOBILE,
+} from './sections';

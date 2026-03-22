@@ -1,1 +1,1 @@
-export { useAllCreatorsView } from './useAllCreatorsView'
+export { useAllCreatorsView } from './useAllCreatorsView';

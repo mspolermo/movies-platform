@@ -10,27 +10,27 @@ interface LogoProps {
 export const Logo = ({ className, onClick }: LogoProps) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="132"
+      className={`${styles.logoSvg} ${className || ''}`}
+      fill="none"
       height="41"
       viewBox="0 0 140 50"
-      fill="none"
-      className={`${styles.logoSvg} ${className || ''}`}
+      width="132"
+      xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
     >
       <g>
         <title>Layer 1</title>
         <g>
           <path
+            className={styles.clapperboardTop}
             d="m54.77278,5.83502l-50.7706,12.4694l2.13374,6.71156l0.71552,-0.18293l0.9082,-0.21111l1.48603,-0.18293l41.74542,-6.0648l3.7817,-12.5392l-0.00001,0.00001zm-45.98704,15.5315l-0.16575,-1.1275l2.89463,-0.7096l0.16425,1.417l-2.89313,0.4201zm4.61931,-0.6714l-0.15381,-1.5918l5.21064,-1.2782l0.0866,2.1229l-5.14343,0.7471zm13.59063,-1.9736l-6.7457,0.9797l-0.0522,-2.3014l6.9465,-1.7036l-0.1486,3.0253zm9.9382,-1.444l-8.2673,1.201l0.2143,-3.20835l8.6809,-2.12887l-0.6279,4.13622zm11.3373,-1.6473l-9.6992,1.4095l0.7287,-4.32525l10.4227,-2.55644l-1.4522,5.47219z"
             fill="var(--color-purple)"
-            className={styles.clapperboardTop}
             style={{ transition: 'fill 0.3s ease' }}
           />
           <path
+            className={styles.clapperboardBottom}
             d="m6.06933,24.83999l43.00823,-0.25l-7.72867,24.17059l-26.74877,0.72393l-8.53079,-24.64452z"
             fill="var(--color-purple)"
-            className={styles.clapperboardBottom}
             style={{ transition: 'fill 0.3s ease' }}
           />
         </g>
@@ -81,8 +81,8 @@ export const Logo = ({ className, onClick }: LogoProps) => {
             style={{ transition: 'fill 0.3s ease' }}
           />
           <path
-            fill="var(--color-purple)"
             d="m122.66894,6.83326l-0.001,2.56395l-7.168,1.04118l0,-2.56395l7.169,-1.04118z"
+            fill="var(--color-purple)"
             style={{ transition: 'fill 0.3s ease' }}
           />
         </g>

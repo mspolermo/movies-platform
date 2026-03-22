@@ -1,2 +1,2 @@
-export { useFilters } from './hooks';
-export { areFiltersDefault } from './utils';
+export { useFilters, usePersonSearch } from './hooks';
+export { areFiltersDefault, parseFiltersFromURL } from './utils';
