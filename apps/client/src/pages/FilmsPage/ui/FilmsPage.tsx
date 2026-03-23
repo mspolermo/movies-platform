@@ -1,7 +1,7 @@
 'use client';
 
 import type { SortOption } from '@/features/filterFilms';
-import type { SearchFilmsParams } from '@/shared/types';
+import type { TSearchFilmsParams } from '@common/types';
 
 import { useMemo } from 'react';
 
@@ -28,7 +28,7 @@ export const FilmsPage = () => {
     return buildFilterParams(selectedFilters, 1, 20, sortValue);
   }, [selectedFilters, sortValue, buildFilterParams]);
 
-  const handleParamsChange = (_params: SearchFilmsParams) => {
+  const handleParamsChange = (_params: TSearchFilmsParams) => {
     // Параметры обновляются автоматически через useMemo
   };
 

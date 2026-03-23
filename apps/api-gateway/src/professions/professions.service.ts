@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TProfessionBased, PaginatedPersonsResponse } from '@common/types';
+import { TPaginatedPersonsResponse, TProfessionBased } from '@common/types';
 import { BaseMicroserviceService } from '../shared/services';
 
 @Injectable()
@@ -17,8 +17,8 @@ export class ProfessionsService extends BaseMicroserviceService {
     professionId: number,
     page?: number,
     limit?: number
-  ): Promise<PaginatedPersonsResponse> {
-    return this.sendMessage<PaginatedPersonsResponse>('getPersonsByProfessionId', {
+  ): Promise<TPaginatedPersonsResponse> {
+    return this.sendMessage<TPaginatedPersonsResponse>('getPersonsByProfessionId', {
       professionId,
       page,
       limit,

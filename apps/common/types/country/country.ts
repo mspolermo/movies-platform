@@ -1,17 +1,13 @@
 import { TFilmBased } from "../film";
 
-export interface TCountryBased {
+/** Доменная сущность страны с полями, которые реально хранятся в таблице. */
+export interface TCountryEntity {
   id: number;
   countryName: string;
   countryNameEn: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-// Тип для создания страны
-export interface TCountryCreationAtt extends Pick<TCountryBased, "countryName" | "countryNameEn"> {}
-
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TCountryModel extends TCountryBased {
-  films?: TFilmBased[]; // Связи Sequelize
+/** Sequelize-тип страны с опционально загруженными связями. */
+export interface TCountryModel extends TCountryEntity {
+  films?: TFilmBased[];
 }

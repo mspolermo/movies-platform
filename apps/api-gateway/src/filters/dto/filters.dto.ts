@@ -1,7 +1,1 @@
-import { TCountryBased, TGenreBased } from "@common/types";
-
-export interface FiltersResult {
-  genres: TGenreBased[];
-  countries: TCountryBased[];
-  years: number[];
-}
+export type { TFiltersResponse as TFiltersResult } from "@common/types";

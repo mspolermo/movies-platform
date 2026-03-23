@@ -1,6 +1,7 @@
 import type { THeaderMenuItem } from '../../../models';
 
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { HeaderDropdown } from '@/features/openHeaderDropdown';
 
@@ -26,7 +27,11 @@ export const HeaderMenuItem = ({
   if (content === 'qickFiltersList')
     return (
       <HeaderDropdown
-        content={({ onClose }) => <QickFiltersList onClose={onClose} />}
+        content={({ onClose }) => (
+          <Suspense fallback={null}>
+            <QickFiltersList onClose={onClose} />
+          </Suspense>
+        )}
         trigger={({ onOpen }) => (
           <Link className={styles.menuLink} href={url} onMouseEnter={onOpen}>
             {label}

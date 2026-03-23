@@ -1,4 +1,4 @@
-import type { TFilmWithProfessions } from '@common/types';
+import type { TFilmDetailsResponse } from '@common/types';
 
 export type TFilmDetailPageProps =
   | {
@@ -7,5 +7,5 @@ export type TFilmDetailPageProps =
     }
   | {
       isLoading?: false;
-      film: TFilmWithProfessions;
+      film: TFilmDetailsResponse;
     };

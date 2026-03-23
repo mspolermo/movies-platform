@@ -3,10 +3,19 @@ import {
   IsOptional,
   IsArray,
   IsString,
+  IsIn,
   Min,
   Max,
 } from "class-validator";
 import { Transform } from "class-transformer";
+import type { TFilmSortBy } from "@common/types";
+
+const FILM_SORT_BY_VALUES: readonly TFilmSortBy[] = [
+  "rating",
+  "novelty",
+  "alphabet",
+  "popularity",
+];
 
 export class SearchFilmsDto {
   @IsOptional()
@@ -33,7 +42,7 @@ export class SearchFilmsDto {
   @IsString({ each: true })
   @Transform(({ value }) => {
     if (typeof value === "string") {
-      return value.split(",").map((v) => v.trim());
+      return value.split(",").map((item) => item.trim()).filter(Boolean);
     }
     return value;
   })
@@ -44,7 +53,7 @@ export class SearchFilmsDto {
   @IsString({ each: true })
   @Transform(({ value }) => {
     if (typeof value === "string") {
-      return value.split(",").map((v) => v.trim());
+      return value.split(",").map((item) => item.trim()).filter(Boolean);
     }
     return value;
   })
@@ -55,7 +64,7 @@ export class SearchFilmsDto {
   @IsString({ each: true })
   @Transform(({ value }) => {
     if (typeof value === "string") {
-      return value.split(",").map((v) => v.trim());
+      return value.split(",").map((item) => item.trim()).filter(Boolean);
     }
     return value;
   })
@@ -82,7 +91,8 @@ export class SearchFilmsDto {
 
   @IsOptional()
   @IsString()
-  sortBy?: string;
+  @IsIn(FILM_SORT_BY_VALUES)
+  sortBy?: TFilmSortBy;
 
   @IsOptional()
   @IsNumber()

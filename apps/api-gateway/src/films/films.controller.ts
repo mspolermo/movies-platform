@@ -24,6 +24,7 @@ export class FilmsController {
   @Public()
   @ApiOperation({ summary: "Получение фильма по id" })
   @ApiResponse({ status: 200, description: "Информация о фильме" })
+  @ApiResponse({ status: 404, description: "Фильм не найден" })
   @Get("/:id")
   async getFilmById(@Param("id") id: number) {
     return await this.filmsService.getFilmById(id);

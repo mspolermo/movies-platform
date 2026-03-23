@@ -1,6 +1,6 @@
-import type { TFilmBased, TPersonBased } from '@common/types';
+import type { TFilmCardResponse, TPersonListItemResponse } from '@common/types';
 
 export interface TSearchResultProps {
-  films: TFilmBased[];
-  persons: TPersonBased[];
+  films: TFilmCardResponse[];
+  persons: TPersonListItemResponse[];
 }

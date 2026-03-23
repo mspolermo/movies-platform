@@ -1,9 +1,9 @@
 // Общие типы для Film
 
 import { TCommentBased } from "../comment";
-import { TCountryBased } from "../country";
-import { TFactBased } from "../fact";
-import { TGenreBased } from "../genre";
+import { TCountryEntity } from "../country";
+import { TFactEntity } from "../fact";
+import { TGenreEntity } from "../genre";
 import { TPersonBased } from "../person";
 import { TProfessionWithPersons } from "../profession";
 
@@ -42,9 +42,9 @@ export interface TFilmCreationAtt extends Pick<TFilmBased, "filmNameRu"> {}
 // Тип для Sequelize модели (расширяет базовый интерфейс)
 export interface TFilmModel extends TFilmBased {
   persons?: TPersonBased[]; // Связи Sequelize
-  countries?: TCountryBased[]; // Связи Sequelize
-  genres?: TGenreBased[]; // Связи Sequelize
-  fact?: TFactBased; // Связи Sequelize
+  countries?: TCountryEntity[]; // Связи Sequelize
+  genres?: TGenreEntity[]; // Связи Sequelize
+  fact?: TFactEntity; // Связи Sequelize
   comments?: TCommentBased[]; // Связи Sequelize
 }
 

@@ -1,6 +1,10 @@
-import type { TGenreBased } from '@common/types';
+import type { TFilmDetailsResponse } from '@common/types';
 
-export const checkIsCartoon = (genres: TGenreBased[]): boolean => {
+export const checkIsCartoon = (
+  genres: TFilmDetailsResponse['genres']
+): boolean => {
+  if (!genres) return false;
+
   return genres.some((g) => {
     const ru = g.nameRu?.toLowerCase() || '';
     const en = g.nameEn?.toLowerCase() || '';

@@ -1,18 +1,13 @@
 import { TFilmBased } from "../film";
 
-// Полный базовый тип для жанра
-export interface TGenreBased {
+/** Доменная сущность жанра с полями, которые реально хранятся в таблице. */
+export interface TGenreEntity {
   id: number;
   nameRu: string;
   nameEn: string;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-// Тип для создания жанра
-export interface TGenreCreationAtt extends Pick<TGenreBased, "nameRu" | "nameEn"> {}
-
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TGenreModel extends TGenreBased {
-  films?: TFilmBased[]; // Связи Sequelize
+/** Sequelize-тип жанра с опционально загруженными связями. */
+export interface TGenreModel extends TGenreEntity {
+  films?: TFilmBased[];
 }

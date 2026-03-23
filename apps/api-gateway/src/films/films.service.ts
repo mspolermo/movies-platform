@@ -1,8 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { FilmFilters } from "./interfaces";
+import { TFilmFilters } from "./interfaces";
 import { UpdateFilmDto } from "@common/dto";
-import { TFilmBased, TProfessionBased, PaginatedPersonsResponse } from "@common/types";
+import {
+  TFilmDetailsResponse,
+  TFilmFiltersListPayload,
+  TFilmsResponse,
+  TPaginatedPersonsResponse,
+  TFilmBased,
+  TProfessionBased,
+} from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -11,8 +18,17 @@ export class FilmsService extends BaseMicroserviceService {
     super(configService, "Films Service");
   }
 
-  async getFilmById(id: number): Promise<TFilmBased> {
-    return this.sendMessage("getFilmById", id);
+  async getFilmById(id: number): Promise<TFilmDetailsResponse> {
+    const film = await this.sendMessage<TFilmDetailsResponse | null>(
+      "getFilmById",
+      id
+    );
+
+    if (!film) {
+      throw new NotFoundException(`Film with id ${id} not found`);
+    }
+
+    return film;
   }
 
   async updateFilm(id: number, dto: UpdateFilmDto): Promise<TFilmBased> {
@@ -23,8 +39,21 @@ export class FilmsService extends BaseMicroserviceService {
     return this.sendMessage("deleteFilmById", id);
   }
 
-  async searchFilms(filters: FilmFilters): Promise<TFilmBased[]> {
-    return this.sendMessage("filters", filters);
+  async searchFilms(filters: TFilmFilters): Promise<TFilmsResponse> {
+    const { films, total } = await this.sendMessage<TFilmFiltersListPayload>(
+      "filters",
+      filters
+    );
+    const page = filters.page || 1;
+    const perPage = filters.perPage || 20;
+
+    return {
+      films,
+      total,
+      page,
+      perPage,
+      hasMore: page * perPage < total,
+    };
   }
 
   async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
@@ -36,7 +65,7 @@ export class FilmsService extends BaseMicroserviceService {
     professionName: string,
     page?: number,
     limit?: number
-  ): Promise<PaginatedPersonsResponse> {
+  ): Promise<TPaginatedPersonsResponse> {
     return this.sendMessage("getFilmPersonsByProfession", {
       filmId,
       professionName,

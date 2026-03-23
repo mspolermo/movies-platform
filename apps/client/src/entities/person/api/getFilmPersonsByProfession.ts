@@ -1,4 +1,4 @@
-import type { PaginatedPersonsResponse } from '@common/types';
+import type { TPaginatedPersonsResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -10,7 +10,7 @@ export const getFilmPersonsByProfession = async (
   professionName: string,
   page: number = 1,
   limit: number = 20
-): Promise<PaginatedPersonsResponse> => {
+): Promise<TPaginatedPersonsResponse> => {
   const response = await apiClient.get(
     API_ENDPOINTS.FILMS.PERSONS_BY_PROFESSION(filmId),
     {

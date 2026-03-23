@@ -75,19 +75,6 @@
     text-overflow: ellipsis;
   }
 
-  .professions {
-    position: absolute;
-    left: 12px;
-    bottom: 12px;
-    font-size: 13px;
-    line-height: 18px;
-    font-weight: 500;
-    color: var(--color-white);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
   &:hover {
     .poster {
       transform: scale(1);
@@ -99,10 +86,6 @@
 
     .imageContainer img {
       filter: brightness(40%);
-    }
-
-    .professions {
-      opacity: 1;
     }
   }
 
@@ -133,8 +116,7 @@
       line-height: 16px;
     }
 
-    .nameEn,
-    .professions {
+    .nameEn {
       font-size: 11px;
       line-height: 14px;
     }
@@ -150,8 +132,7 @@
       line-height: 22px;
     }
 
-    .nameEn,
-    .professions {
+    .nameEn {
       font-size: 15px;
       line-height: 20px;
     }

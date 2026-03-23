@@ -26,8 +26,8 @@ export const CountriesPage = ({
   return (
     <Page title="Страны">
       <div className={styles.countriesGrid}>
-        {countriesList.map((country) => (
-          <CountryCard key={country.id} country={country} />
+        {countriesList.map((country, id) => (
+          <CountryCard key={`${country.countryName}-${id}`} country={country} />
         ))}
       </div>
     </Page>

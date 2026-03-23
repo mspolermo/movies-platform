@@ -1,4 +1,4 @@
-import type { TPersonModel } from '@common/types';
+import type { TPersonListItemResponse } from '@common/types';
 
 import { useEffect, useState } from 'react';
 
@@ -11,7 +11,7 @@ export const usePersonSearch = ({
   professionId: number;
   name: string;
 }) => {
-  const [results, setResults] = useState<TPersonModel[]>([]);
+  const [results, setResults] = useState<TPersonListItemResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

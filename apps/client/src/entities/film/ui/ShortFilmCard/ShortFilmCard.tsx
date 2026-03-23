@@ -1,4 +1,4 @@
-import type { TFilmBased } from '@common/types';
+import type { TPersonFilmographyItemResponse } from '@common/types';
 
 import { useRouter } from 'next/navigation';
 
@@ -8,7 +8,7 @@ import styles from './ShortFilmCard.module.scss';
 import { formatRating } from '../../lib';
 
 interface ShortFilmCardProps {
-  film: TFilmBased;
+  film: TPersonFilmographyItemResponse;
 }
 
 export const ShortFilmCard = ({ film }: ShortFilmCardProps) => {

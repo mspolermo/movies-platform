@@ -1,17 +1,16 @@
-import type { SearchFilmsParams } from '@/shared/types';
-import type { TFilmBased } from '@common/types';
+import type { TFilmCardResponse, TSearchFilmsParams } from '@common/types';
 
 import type { ReactNode } from 'react';
 
 export interface LoadMoreFilmsProps {
   children: (
-    films: TFilmBased[],
+    films: TFilmCardResponse[],
     loading: boolean,
     error: string | null
   ) => ReactNode;
-  initialParams?: SearchFilmsParams;
+  initialParams?: TSearchFilmsParams;
   threshold?: number;
   loadingComponent?: ReactNode;
   endMessage?: ReactNode;
-  onParamsChange?: (params: SearchFilmsParams) => void;
+  onParamsChange?: (params: TSearchFilmsParams) => void;
 }

@@ -1,5 +1,11 @@
+import { Suspense } from 'react';
+
 import { FilmsPage } from '@/pages/FilmsPage';
 
 export default function FilmsPageRoute() {
-  return <FilmsPage />;
+  return (
+    <Suspense fallback={null}>
+      <FilmsPage />
+    </Suspense>
+  );
 }

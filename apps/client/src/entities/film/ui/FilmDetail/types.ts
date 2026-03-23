@@ -1,49 +1,46 @@
-import type {
-  TCountryBased,
-  TGenreBased,
-  TFilmBased,
-  TFactBased,
-  TProfessionWithPersons,
-} from '@common/types';
+import type { TFilmDetailsResponse } from '@common/types';
 
 import type { ReactNode } from 'react';
 
-export interface CardsBlockProps {
-  professions?: TProfessionWithPersons[];
-}
-
 export interface DescriptionBlockProps
-  extends Pick<TFilmBased, 'description' | 'filmNameRu' | 'filmNameEn'> {}
+  extends Pick<
+    TFilmDetailsResponse,
+    'description' | 'filmNameRu' | 'filmNameEn'
+  > {}
 
 export interface PosterPreviewBlockProps
   extends Pick<
-    TFilmBased,
+    TFilmDetailsResponse,
     'bigPictureUrl' | 'smallPictureUrl' | 'filmNameRu' | 'filmNameEn'
   > {}
 
 export interface RatingBlockProps
   extends Pick<
-    TFilmBased,
+    TFilmDetailsResponse,
     'ratingKp' | 'votesKp' | 'filmNameRu' | 'filmNameEn'
   > {}
 
-export interface SloganBlockProps extends Pick<TFilmBased, 'slogan'> {}
+export interface SloganBlockProps
+  extends Pick<TFilmDetailsResponse, 'slogan'> {}
 
 export interface SummaryBlockProps
   extends Pick<
-    TFilmBased,
+    TFilmDetailsResponse,
     'filmNameRu' | 'filmNameEn' | 'year' | 'movieLength'
   > {
-  genres?: TGenreBased[];
-  countries?: TCountryBased[];
+  genres?: TFilmDetailsResponse['genres'];
   isCartoon: boolean;
+  countries?: TFilmDetailsResponse['countries'];
 }
 
 export interface TrailerBlockProps
-  extends Pick<TFilmBased, 'trailerUrl' | 'filmNameRu' | 'filmNameEn'> {}
+  extends Pick<
+    TFilmDetailsResponse,
+    'trailerUrl' | 'filmNameRu' | 'filmNameEn'
+  > {}
 
 export interface FactBlockProps {
-  fact?: TFactBased;
+  fact?: TFilmDetailsResponse['fact'];
   isCartoon: boolean;
 }
 

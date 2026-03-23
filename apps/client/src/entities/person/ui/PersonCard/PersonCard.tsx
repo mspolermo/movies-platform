@@ -1,13 +1,13 @@
 'use client';
 
-import type { TPersonBased, TPersonModel } from '@common/types';
+import type { TPersonListItemResponse } from '@common/types';
 
 import { useRouter } from 'next/navigation';
 
 import styles from './PersonCard.module.scss';
 
 interface PersonCardProps {
-  person: TPersonBased;
+  person: TPersonListItemResponse;
 }
 
 export const PersonCard = ({ person }: PersonCardProps) => {
@@ -20,10 +20,6 @@ export const PersonCard = ({ person }: PersonCardProps) => {
   const nameRu = person.nameRu || 'Без имени';
   const nameEn = person.nameEn;
   const photoSrc = person.photoUrl || '/images/poster-placeholder.png';
-  const professionsList =
-    ((person as TPersonModel).professions ?? []).map((p) => p.name) || [];
-  const professionsToShow = professionsList.slice(0, 2);
-  const remainingCount = professionsList.length - professionsToShow.length;
 
   return (
     <article
@@ -45,12 +41,6 @@ export const PersonCard = ({ person }: PersonCardProps) => {
             <div className={styles.imageContainer}>
               {/* eslint-disable-next-line @next/next/no-img-element -- внешние URL фото */}
               <img alt={nameRu} loading="lazy" src={photoSrc} />
-              {professionsToShow.length > 0 && (
-                <div className={styles.professions}>
-                  <span>{professionsToShow.join(', ')}</span>
-                  {remainingCount > 0 && <span>+{remainingCount}</span>}
-                </div>
-              )}
             </div>
           </div>
         </div>

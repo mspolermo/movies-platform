@@ -1,4 +1,7 @@
-import type { TPersonBased, PaginatedPersonsResponse } from '@common/types';
+import type {
+  TPaginatedPersonsResponse,
+  TPersonListItemResponse,
+} from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -11,7 +14,7 @@ interface UsePersonsInfiniteScrollOptions {
 }
 
 interface UsePersonsInfiniteScrollReturn {
-  persons: TPersonBased[];
+  persons: TPersonListItemResponse[];
   loading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -23,7 +26,7 @@ export const usePersonsInfiniteScroll = ({
   initialPage = 1,
   initialLimit = 20,
 }: UsePersonsInfiniteScrollOptions = {}): UsePersonsInfiniteScrollReturn => {
-  const [persons, setPersons] = useState<TPersonBased[]>([]);
+  const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -41,10 +44,8 @@ export const usePersonsInfiniteScroll = ({
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse = await getAllPersonsPaginated(
-          page,
-          limit
-        );
+        const response: TPaginatedPersonsResponse =
+          await getAllPersonsPaginated(page, limit);
 
         if (reset) {
           setPersons(response.items);

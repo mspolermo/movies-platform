@@ -8,10 +8,32 @@ import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import { AuthResponse, RegistrationResponse, ServiceError } from "./interfaces";
+import { ServiceError } from "./interfaces";
+import {
+  TAuthResponse,
+  TAuthorizedUserResponse,
+  TCheckTokenResponse,
+  TRefreshTokenResponse,
+  TRegistrationResponse,
+  TRoleResponse,
+  TUserBased,
+} from "@common/types";
 import { RabbitMQConfig } from "../config";
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
-import { TUserBased } from "@common/types";
+
+const mapRoles = (roles?: TUserBased["roles"]): TRoleResponse[] =>
+  (roles ?? []).map(({ id, value, description }) => ({
+    id,
+    value,
+    description,
+  }));
+
+const mapAuthorizedUser = (user: TUserBased): TAuthorizedUserResponse => ({
+  id: user.id,
+  email: user.email,
+  name: user.name,
+  roles: mapRoles(user.roles),
+});
 
 
 
@@ -30,12 +52,16 @@ export class AuthService implements OnModuleInit {
     await RabbitMQConfig.connectWithRetry(this.clientUsers, "Auth Service");
   }
 
-  async registrationUser(dto: CreateUserDto): Promise<RegistrationResponse> {
+  async registrationUser(dto: CreateUserDto): Promise<TRegistrationResponse> {
     try {
       const { user, token } = await firstValueFrom(
         this.clientUsers.send("registration", dto)
       );
-      return { User: user, role: user.roles, token: token };
+      return {
+        user: mapAuthorizedUser(user),
+        role: mapRoles(user.roles),
+        token,
+      };
     } catch (error: unknown) {
       console.error("❌ Ошибка регистрации:", error);
 
@@ -66,12 +92,16 @@ export class AuthService implements OnModuleInit {
 
   async outRegistrationUser(
     dto: OauthCreateUserDto
-  ): Promise<RegistrationResponse> {
+  ): Promise<TRegistrationResponse> {
     try {
       const { user, token } = await firstValueFrom(
         this.clientUsers.send("outRegistration", dto)
       );
-      return { User: user, role: user.roles, token: token };
+      return {
+        user: mapAuthorizedUser(user),
+        role: mapRoles(user.roles),
+        token,
+      };
     } catch (error: unknown) {
       console.error("❌ Ошибка OAuth регистрации:", error);
 
@@ -91,7 +121,7 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async loginUser(dto: AuthDto): Promise<AuthResponse> {
+  async loginUser(dto: AuthDto): Promise<TAuthResponse> {
     try {
       const { user, token } = await firstValueFrom(
         this.clientUsers.send("login", dto)
@@ -99,8 +129,8 @@ export class AuthService implements OnModuleInit {
       return {
         email: user.email,
         userId: user.id,
-        role: user.roles,
-        token: token,
+        role: mapRoles(user.roles),
+        token,
       };
     } catch (error) {
       console.error("❌ Ошибка входа:", error);
@@ -126,11 +156,14 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async checkToken(user: TUserBased): Promise<TUserBased> {
-    return user;
+  async checkToken(user: TUserBased): Promise<TCheckTokenResponse> {
+    return {
+      id: user.id,
+      email: user.email,
+    };
   }
 
-  async refreshToken(user: TUserBased): Promise<{ token: string }> {
+  async refreshToken(user: TUserBased): Promise<TRefreshTokenResponse> {
     try {
       // Генерируем новый токен только с необходимыми данными
       const payload = {

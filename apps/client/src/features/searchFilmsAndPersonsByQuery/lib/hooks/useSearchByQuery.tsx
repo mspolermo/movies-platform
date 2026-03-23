@@ -1,4 +1,5 @@
 import type { TSearchResultProps } from '../../model';
+import type { TSearchResultResponse } from '@common/types';
 
 import { useEffect, useState } from 'react';
 
@@ -29,7 +30,7 @@ export const useSearchByQuery = (query: string) => {
       setLoading(true);
       const params = new URLSearchParams();
       params.append('name', currentQuery);
-      const { data } = await apiClient.get(
+      const { data } = await apiClient.get<TSearchResultResponse>(
         `${API_ENDPOINTS.SEARCH.GLOBAL}?${params.toString()}`
       );
 

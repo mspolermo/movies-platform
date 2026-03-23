@@ -1,4 +1,7 @@
-import type { TFilmBased, TPersonFullWithPagination } from '@common/types';
+import type {
+  TPersonDetailsResponse,
+  TPersonFilmographyItemResponse,
+} from '@common/types';
 
 import { useCallback, useEffect, useState } from 'react';
 
@@ -7,10 +10,10 @@ import { getPersonById } from '@/entities/person';
 const FILMS_PAGE_SIZE = 10;
 
 export const usePersonDetails = (personId: number) => {
-  const [person, setPerson] = useState<TPersonFullWithPagination | null>(null);
+  const [person, setPerson] = useState<TPersonDetailsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [films, setFilms] = useState<TFilmBased[]>([]);
+  const [films, setFilms] = useState<TPersonFilmographyItemResponse[]>([]);
   const [filmsTotal, setFilmsTotal] = useState(0);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [hasMoreFilms, setHasMoreFilms] = useState(false);

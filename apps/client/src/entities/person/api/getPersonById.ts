@@ -1,4 +1,4 @@
-import type { TPersonFullWithPagination } from '@common/types';
+import type { TPersonDetailsResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -13,7 +13,7 @@ interface PersonFilmsParams {
 export const getPersonById = async (
   id: number,
   params: PersonFilmsParams = {}
-): Promise<TPersonFullWithPagination> => {
+): Promise<TPersonDetailsResponse> => {
   const queryParams: Record<string, number> = {};
   if (typeof params.filmsLimit === 'number') {
     queryParams.filmsLimit = params.filmsLimit;

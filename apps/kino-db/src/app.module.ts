@@ -5,7 +5,6 @@ import { GenresModule } from "./genres/genres.module";
 import { CountriesModule } from "./countries/countries.module";
 import { ProfessionsModule } from "./professions/professions.module";
 import { PersonsModule } from "./persons/persons.module";
-import { FactsModule } from "./facts/facts.module";
 import { FilmsModule } from "./films/films.module";
 import { Fact } from "./facts/facts.model";
 import { Film } from "./films/films.model";
@@ -53,7 +52,6 @@ import { Person } from "./persons/persons.model";
     CountriesModule,
     ProfessionsModule,
     PersonsModule,
-    FactsModule,
     FilmsModule,
     CommentsModule,
   ],

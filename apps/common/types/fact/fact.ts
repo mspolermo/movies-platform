@@ -2,21 +2,17 @@
 
 import { TFilmBased } from "../film";
 
-export interface TFactBased {
+/** Доменная сущность факта с полями, которые реально хранятся в таблице. */
+export interface TFactEntity {
   id: number;
   value: string;
   type: string;
   spoiler: boolean;
   filmId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-// Тип для создания факта
-export interface TFactCreationAtt extends Pick<TFactBased, "value" | "type" | "spoiler" | "filmId"> {}
-
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TFactModel extends TFactBased {
-  film?: TFilmBased; // Связи Sequelize
+/** Sequelize-тип факта с опционально загруженной связью фильма. */
+export interface TFactModel extends TFactEntity {
+  film?: TFilmBased;
 }
 

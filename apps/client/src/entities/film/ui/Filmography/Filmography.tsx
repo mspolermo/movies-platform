@@ -1,4 +1,4 @@
-import type { TFilmBased } from '@common/types';
+import type { TPersonFilmographyItemResponse } from '@common/types';
 
 import React from 'react';
 
@@ -9,7 +9,7 @@ import { getFilmsWord } from '../../lib';
 import { ShortFilmCard } from '../ShortFilmCard';
 
 interface FilmographyProps {
-  films: TFilmBased[];
+  films: TPersonFilmographyItemResponse[];
   filmsTotal: number;
   hasMoreFilms: boolean;
   isLoading: boolean;

@@ -1,5 +1,5 @@
 import type { ActiveFilters, AllFilters, SortOption } from '../../types';
-import type { SearchFilmsParams } from '@/shared/types';
+import type { TFiltersResponse, TSearchFilmsParams } from '@common/types';
 
 import { useSearchParams } from 'next/navigation';
 import { useState, useEffect, useCallback } from 'react';
@@ -29,18 +29,18 @@ export const useFilters = () => {
     try {
       setLoading(true);
 
-      const { data } = await apiClient.get(API_ENDPOINTS.FILTERS.ROOT);
+      const { data } = await apiClient.get<TFiltersResponse>(
+        API_ENDPOINTS.FILTERS.ROOT
+      );
 
       const filters: AllFilters = {
         ...DEFAULT_ALL_FILTERS,
         genres: data.genres || [],
         countries:
-          data.countries?.map(
-            (item: { countryName: string; countryNameEn?: string | null }) => ({
-              nameRu: item.countryName,
-              nameEn: item.countryNameEn ?? '',
-            })
-          ) || [],
+          data.countries?.map((item) => ({
+            nameRu: item.countryName,
+            nameEn: item.countryNameEn ?? '',
+          })) || [],
         years: data.years?.reverse() || [],
       };
 
@@ -71,7 +71,7 @@ export const useFilters = () => {
       page: number = 1,
       limit: number = 35,
       sort: SortOption = sortValue
-    ): SearchFilmsParams => {
+    ): TSearchFilmsParams => {
       const persons: string[] = [];
       if (filters.producer) persons.push(filters.producer);
       if (filters.actor) persons.push(filters.actor);
@@ -85,7 +85,7 @@ export const useFilters = () => {
             : filters.years;
       }
 
-      const params: SearchFilmsParams = {
+      const params: TSearchFilmsParams = {
         perPage: limit,
         page,
         genres: filters.genres.length > 0 ? filters.genres : undefined,

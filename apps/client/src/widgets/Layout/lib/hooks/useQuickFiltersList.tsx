@@ -1,7 +1,7 @@
 'use client';
 
 import type { TQickFilter } from '../../models';
-import type { TGenreQuickFilterItem } from '@common/types';
+import type { TGenreListItemResponse } from '@common/types';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useMemo, useCallback } from 'react';
@@ -18,32 +18,27 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const ctx = useContext(QuickFiltersContext);
-  
-  const state = ctx ? 
-    {
-      genres: ctx.genres,
-      countries: ctx.countries,
-      years: ctx.years,
-      isLoading: false,
-      isError: false,
-    }
-  :
-    {
-      genres: [],
-      countries: [],
-      years: [],
-      isLoading: false,
-      isError: true,
-    }
 
-
-
-
+  const state = ctx
+    ? {
+        genres: ctx.genres,
+        countries: ctx.countries,
+        years: ctx.years,
+        isLoading: false,
+        isError: false,
+      }
+    : {
+        genres: [],
+        countries: [],
+        years: [],
+        isLoading: false,
+        isError: true,
+      };
 
   const isOnFilmsPage = pathname === '/films';
 
   const genreMap = useMemo(() => {
-    const map = new Map<string, TGenreQuickFilterItem>();
+    const map = new Map<string, TGenreListItemResponse>();
     state.genres.forEach((g) => map.set(g.nameEn || g.nameRu, g));
     return map;
   }, [state.genres]);

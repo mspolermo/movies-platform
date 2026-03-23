@@ -1,5 +1,5 @@
-import type { TGenreBased } from '@common/types';
+import type { TGenreListItemResponse } from '@common/types';
 
 export type TGenreCardProps = {
-  genre: TGenreBased;
+  genre: TGenreListItemResponse;
 };

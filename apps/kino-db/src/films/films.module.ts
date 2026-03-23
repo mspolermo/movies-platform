@@ -10,11 +10,9 @@ import { Fact } from "../facts/facts.model";
 import { FilmGenre } from "./filmGenre";
 import { Country } from "../countries/countries.model";
 import { Genre } from "../genres/genres.model";
-import { FactsModule } from "../facts/facts.module";
 import { PersonsModule } from "../persons/persons.module";
 import { CountriesModule } from "../countries/countries.module";
 import { GenresModule } from "../genres/genres.module";
-import { FactsService } from "../facts/facts.service";
 import { PersonsService } from "../persons/persons.service";
 import { CountriesService } from "../countries/countries.service";
 import { GenresService } from "../genres/genres.service";
@@ -37,7 +35,6 @@ import { Comment } from "../comments/comments.model";
       Profession,
       Comment,
     ]),
-    FactsModule,
     PersonsModule,
     CountriesModule,
     GenresModule,
@@ -46,7 +43,6 @@ import { Comment } from "../comments/comments.model";
   controllers: [FilmsController],
   providers: [
     FilmsService,
-    FactsService,
     PersonsService,
     CountriesService,
     GenresService,

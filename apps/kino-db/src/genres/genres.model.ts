@@ -8,10 +8,10 @@ import {
 import { Film } from "../films/films.model";
 import { FilmGenre } from "../films/filmGenre";
 import { ApiProperty } from "@nestjs/swagger";
-import { TGenreCreationAtt, TGenreModel } from "@common/types";
+import { TGenreEntity, TGenreModel } from "@common/types";
 
 @Table({ tableName: "Genre", timestamps: false })
-export class Genre extends Model<TGenreModel, TGenreCreationAtt> {
+export class Genre extends Model<TGenreModel, Pick<TGenreEntity, "nameRu" | "nameEn">> {
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,

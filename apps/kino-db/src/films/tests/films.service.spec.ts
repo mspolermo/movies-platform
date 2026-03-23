@@ -11,6 +11,17 @@ import { Profession } from "../../professions/professions.model";
 
 describe("FilmsService", () => {
   let service: FilmsService;
+  const expectedFilmCard = {
+    id: 1,
+    filmNameRu: "string",
+    filmNameEn: "string",
+    bigPictureUrl: "string",
+    smallPictureUrl: "string",
+    ratingKp: 1,
+    year: 1,
+    premiereCountry: "string",
+    movieLength: 1,
+  };
 
   const mockFilm = {
     id: 1,
@@ -39,7 +50,7 @@ describe("FilmsService", () => {
     premiereWorldDate: new Date("2023-05-10T16:34:56.833Z"),
     createdAt: new Date("2023-05-10T16:34:56.833Z"),
     persons: [],
-    countries: [],
+    countries: [{ countryName: "США", countryNameEn: "USA" }],
     genres: [
       { id: 1, nameRu: "Драма", nameEn: "Drama" },
       { id: 2, nameRu: "Комедия", nameEn: "Comedy" }
@@ -55,6 +66,9 @@ describe("FilmsService", () => {
 
   const mockFilmsRepository = {
     findAll: jest.fn().mockResolvedValue(mockFilm),
+    findAndCountAll: jest
+      .fn()
+      .mockResolvedValue({ rows: [mockFilm], count: 1 }),
     findByPk: jest.fn().mockResolvedValue(mockFilm.id),
     update: jest
       .fn()
@@ -192,13 +206,25 @@ describe("FilmsService", () => {
       const result = await service.searchFilmsByName(name);
 
       expect(mockFilmsRepository.findAll).toHaveBeenCalledWith({
+        attributes: [
+          "id",
+          "filmNameRu",
+          "filmNameEn",
+          "bigPictureUrl",
+          "smallPictureUrl",
+          "ratingKp",
+          "year",
+          "premiereCountry",
+          "movieLength",
+        ],
         where: {
           [Op.or]: [
-            { filmNameRu: { [Op.like]: `%${name}%` } },
-            { filmNameEn: { [Op.like]: `%${name}%` } },
+            { filmNameRu: { [Op.iLike]: `%${name}%` } },
+            { filmNameEn: { [Op.iLike]: `%${name}%` } },
           ],
         },
         limit: 10,
+        order: [["votesKp", "DESC"]],
       });
       expect(result).toEqual([mockFilm]);
     });
@@ -232,7 +258,9 @@ describe("FilmsService", () => {
       const mockSortBy = "rating";
       const mockYear = 2022;
 
-      jest.spyOn(mockFilmsRepository, "findAll").mockResolvedValue([mockFilm]);
+      jest
+        .spyOn(mockFilmsRepository, "findAndCountAll")
+        .mockResolvedValue({ rows: [mockFilm], count: 1 });
 
       const result = await service.filmFilters(
         mockPage,
@@ -246,20 +274,43 @@ describe("FilmsService", () => {
         mockYear
       );
 
-      expect(mockFilmsRepository.findAll).toHaveBeenCalledWith({
+      expect(mockFilmsRepository.findAndCountAll).toHaveBeenCalledWith({
+        attributes: [
+          "id",
+          "filmNameRu",
+          "filmNameEn",
+          "bigPictureUrl",
+          "smallPictureUrl",
+          "ratingKp",
+          "year",
+          "premiereCountry",
+          "movieLength",
+        ],
         include: [
           {
             model: Genre,
+            as: "genres",
+            attributes: [],
+            through: { attributes: [] },
+            required: true,
             where: {
               [Op.or]: [{ nameRu: mockGenres }, { nameEn: mockGenres }],
             },
           },
           {
             model: Country,
+            as: "countries",
+            attributes: [],
+            through: { attributes: [] },
+            required: true,
             where: { countryName: mockCountries },
           },
           {
             model: Person,
+            as: "persons",
+            attributes: [],
+            through: { attributes: [] },
+            required: true,
             where: {
               [Op.or]: [{ nameRu: mockPersons }, { nameEn: mockPersons }],
             },
@@ -273,53 +324,126 @@ describe("FilmsService", () => {
         limit: mockPerPage,
         offset: (mockPage - 1) * mockPerPage,
         order: [["ratingKp", "DESC"]],
+        distinct: true,
+        col: "id",
       });
-      expect(result).toEqual([mockFilm]);
+      expect(result).toEqual({ films: [expectedFilmCard], total: 1 });
+    });
+
+    it("should include popularity sort field in attributes without leaking it to response", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findAndCountAll")
+        .mockResolvedValue({ rows: [mockFilm], count: 1 });
+
+      const result = await service.filmFilters(1, 20, ["Biography"], undefined, undefined, 0, 0, "popularity");
+
+      expect(mockFilmsRepository.findAndCountAll).toHaveBeenCalledWith({
+        attributes: [
+          "id",
+          "filmNameRu",
+          "filmNameEn",
+          "bigPictureUrl",
+          "smallPictureUrl",
+          "ratingKp",
+          "year",
+          "premiereCountry",
+          "movieLength",
+          "votesKp",
+        ],
+        include: [
+          {
+            model: Genre,
+            as: "genres",
+            attributes: [],
+            through: { attributes: [] },
+            required: true,
+            where: {
+              [Op.or]: [{ nameRu: ["Biography"] }, { nameEn: ["Biography"] }],
+            },
+          },
+        ],
+        where: {
+          ratingKp: { [Op.gte]: 0 },
+          votesKp: { [Op.gte]: 0 },
+        },
+        limit: 20,
+        offset: 0,
+        order: [["votesKp", "DESC"]],
+        distinct: true,
+        col: "id",
+      });
+      expect(result).toEqual({ films: [expectedFilmCard], total: 1 });
     });
   });
 
   describe("getFilmById", () => {
-    it("should return the film with the specified ID and similar films", async () => {
-      jest.spyOn(mockFilmsRepository, "findByPk").mockResolvedValue(mockFilm);
+    it("should return FilmDetailsResponse", async () => {
+      const filmDetailsResponse = {
+        id: mockFilm.id,
+        trailerUrl: mockFilm.trailerUrl,
+        ratingKp: mockFilm.ratingKp,
+        votesKp: mockFilm.votesKp,
+        movieLength: mockFilm.movieLength,
+        filmNameRu: mockFilm.filmNameRu,
+        filmNameEn: mockFilm.filmNameEn,
+        description: mockFilm.description,
+        slogan: mockFilm.slogan,
+        bigPictureUrl: mockFilm.bigPictureUrl,
+        smallPictureUrl: mockFilm.smallPictureUrl,
+        year: mockFilm.year,
+        countries: mockFilm.countries,
+        genres: mockFilm.genres.map(({ nameRu, nameEn }) => ({ nameRu, nameEn })),
+        fact: {
+          value: "fact-value",
+          spoiler: false,
+        },
+      };
+      const filmRow = {
+        ...filmDetailsResponse,
+        toJSON: () => filmDetailsResponse,
+      };
       jest
-        .spyOn(service, "findFilmsByGenre")
-        .mockResolvedValue([mockFilm as unknown as Film]);
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue(filmRow as unknown as Film);
 
       const result = await service.getFilmById(mockFilm.id);
 
       expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(mockFilm.id, {
+        attributes: [
+          "id",
+          "trailerUrl",
+          "ratingKp",
+          "votesKp",
+          "movieLength",
+          "filmNameRu",
+          "filmNameEn",
+          "description",
+          "slogan",
+          "bigPictureUrl",
+          "smallPictureUrl",
+          "year",
+        ],
         include: [
-          {
-            model: Person,
-            as: "persons",
-            include: [
-              {
-                model: Profession,
-                as: "professions",
-              },
-            ],
-          },
           {
             model: Country,
             as: "countries",
+            attributes: ["countryName", "countryNameEn"],
+            through: { attributes: [] },
           },
           {
             model: Genre,
             as: "genres",
+            attributes: ["nameRu", "nameEn"],
+            through: { attributes: [] },
           },
           {
             model: Fact,
             as: "fact",
+            attributes: ["value", "spoiler"],
           },
         ],
       });
-      expect(service.findFilmsByGenre).toHaveBeenCalledWith(
-        mockFilm.genres.map((g) => g.nameRu)
-      );
-      expect(result).toEqual({
-        film: mockFilm,
-        similarFilms: [mockFilm],
-      });
+      expect(result).toEqual(filmDetailsResponse);
     });
   });
 });

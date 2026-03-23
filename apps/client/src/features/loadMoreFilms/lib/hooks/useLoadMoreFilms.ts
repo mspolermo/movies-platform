@@ -1,5 +1,8 @@
-import type { FilmsResponse, SearchFilmsParams } from '@/shared/types';
-import type { TFilmBased } from '@common/types';
+import type {
+  TFilmCardResponse,
+  TFilmsResponse,
+  TSearchFilmsParams,
+} from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -7,7 +10,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { searchFilms } from '@/entities/film';
 
 interface UseLoadMoreFilmsOptions {
-  initialParams?: SearchFilmsParams;
+  initialParams?: TSearchFilmsParams;
   threshold?: number;
 }
 
@@ -15,12 +18,12 @@ export const useLoadMoreFilms = ({
   initialParams = {},
   threshold: _threshold = 200,
 }: UseLoadMoreFilmsOptions = {}) => {
-  const [films, setFilms] = useState<TFilmBased[]>([]);
+  const [films, setFilms] = useState<TFilmCardResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [params, setParams] = useState<SearchFilmsParams>(initialParams);
+  const [params, setParams] = useState<TSearchFilmsParams>(initialParams);
 
   const isLoadingRef = useRef(false);
 
@@ -33,13 +36,13 @@ export const useLoadMoreFilms = ({
       setError(null);
 
       try {
-        const searchParams: SearchFilmsParams = {
+        const searchParams: TSearchFilmsParams = {
           ...params,
           page,
           perPage: params.perPage ?? 20,
         };
 
-        const response: FilmsResponse = await searchFilms(searchParams);
+        const response: TFilmsResponse = await searchFilms(searchParams);
 
         if (reset) {
           setFilms(response.films);
@@ -87,7 +90,7 @@ export const useLoadMoreFilms = ({
     loadFilms(1, true);
   }, [loadFilms]);
 
-  const updateParams = useCallback((newParams: SearchFilmsParams) => {
+  const updateParams = useCallback((newParams: TSearchFilmsParams) => {
     setParams(newParams);
   }, []);
 

@@ -1,4 +1,4 @@
-import type { TFilmWithProfessions } from '@common/types';
+import type { TFilmDetailsResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -7,8 +7,9 @@ import apiClient, { API_ENDPOINTS } from '@/shared/api';
  */
 export const getFilmById = async (
   id: number
-): Promise<TFilmWithProfessions> => {
-  const response = await apiClient.get(API_ENDPOINTS.FILMS.BY_ID(id));
-  // API возвращает объект с полем film, извлекаем его
-  return response.data.film || response.data;
+): Promise<TFilmDetailsResponse> => {
+  const response = await apiClient.get<TFilmDetailsResponse>(
+    API_ENDPOINTS.FILMS.BY_ID(id)
+  );
+  return response.data;
 };

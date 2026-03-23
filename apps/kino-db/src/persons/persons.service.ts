@@ -2,7 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Person } from "./persons.model";
 import { ProfessionsService } from "../professions/professions.service";
-import { TProfessionModel, TProfessionBased, TPersonFullWithPagination, PaginatedPersonsResponse } from "@common/types";
+import {
+  TPaginatedPersonsResponse,
+  TPersonDetailsResponse,
+  TPersonListItemResponse,
+} from "@common/types";
+import {
+  TProfessionModel,
+  TProfessionBased,
+} from "@common/types";
 import { Profession } from "../professions/professions.model";
 import { Op } from "sequelize";
 
@@ -13,11 +21,12 @@ export class PersonsService {
     private professionService: ProfessionsService
   ) {}
 
-  async getAllPersons(): Promise<Person[]> {
+  async getAllPersons(): Promise<TPersonListItemResponse[]> {
     const persons = await this.personRepository.findAll({
       include: [
         {
           model: Profession,
+          attributes: [],
           through: { attributes: [] },
         },
       ],
@@ -27,7 +36,10 @@ export class PersonsService {
     return persons;
   }
 
-  async getAllPersonsPaginated(page: number = 1, limit: number = 20): Promise<PaginatedPersonsResponse> {
+  async getAllPersonsPaginated(
+    page: number = 1,
+    limit: number = 20
+  ): Promise<TPaginatedPersonsResponse> {
     const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
     const normalizedPage = page > 0 ? page : 1;
     const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
@@ -38,6 +50,7 @@ export class PersonsService {
           {
             model: Profession,
             through: { attributes: [] },
+            attributes: [],
           },
         ],
         attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
@@ -60,7 +73,7 @@ export class PersonsService {
   async getPersonById(
     id: number,
     options?: { filmsLimit?: number; filmsOffset?: number }
-  ): Promise<TPersonFullWithPagination | null> {
+  ): Promise<TPersonDetailsResponse | null> {
     const filmsLimitRaw = options?.filmsLimit ?? 10;
     const filmsOffsetRaw = options?.filmsOffset ?? 0;
     const filmsLimit = filmsLimitRaw > 0 ? filmsLimitRaw : 10;
@@ -71,6 +84,7 @@ export class PersonsService {
       include: [
         {
           model: Profession,
+          attributes: ["id", "name"],
           through: { attributes: [] },
         },
       ],
@@ -101,21 +115,30 @@ export class PersonsService {
   async findPersonsByNameAndProfession(
     personName?: string,
     professionId?: number
-  ): Promise<Person[]> {
-    const include: any[] = [
+  ): Promise<TPersonListItemResponse[]> {
+    const include: Array<{
+      model: typeof Profession;
+      through: { attributes: [] };
+      attributes?: string[];
+      where?: { id: number };
+      required?: boolean;
+    }> = [
       {
         model: Profession,
         through: { attributes: [] },
+        attributes: [],
       },
     ];
 
     // Добавляем условие для профессии только если professionId передан
     if (professionId) {
       include[0].where = { id: professionId };
+      include[0].required = true;
     }
 
     const persons = await this.personRepository.findAll({
       include,
+      attributes: ["id", "photoUrl", "nameRu", "nameEn"],
       where: personName
         ? {
             [Op.or]: [
@@ -141,7 +164,7 @@ export class PersonsService {
     professionId: number,
     page: number = 1,
     limit: number = 20
-  ): Promise<PaginatedPersonsResponse> {
+  ): Promise<TPaginatedPersonsResponse> {
     const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
     const normalizedPage = page > 0 ? page : 1;
     const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
@@ -153,6 +176,8 @@ export class PersonsService {
             model: Profession,
             through: { attributes: [] },
             where: { id: professionId },
+            attributes: [],
+            required: true,
           },
         ],
         attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
@@ -166,6 +191,8 @@ export class PersonsService {
             model: Profession,
             through: { attributes: [] },
             where: { id: professionId },
+            attributes: [],
+            required: true,
           },
         ],
       }),

@@ -1,5 +1,4 @@
 // Общие типы для Person
-
 import { TFilmBased } from "../film";
 import { TProfessionBased } from "../profession";
 
@@ -19,15 +18,4 @@ export interface TPersonCreationAtt extends Pick<TPersonBased, "nameRu" | "nameE
 export interface TPersonModel extends TPersonBased {
   professions?: TProfessionBased[]; // Связи Sequelize
   films?: TFilmBased[]; // Связи Sequelize
-}
-
-export interface TPersonFullWithPagination extends TPersonModel {
-  filmsTotal?: number; // Общее количество фильмов (для пагинации)
-}
-
-// Тип для ответа с пагинацией персон
-export interface PaginatedPersonsResponse {
-  items: TPersonBased[];
-  total: number;
-  hasMore: boolean;
 }

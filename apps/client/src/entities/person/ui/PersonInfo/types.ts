@@ -1,5 +1,5 @@
-import type { TPersonModel } from '@common/types';
+import type { TPersonDetailsResponse } from '@common/types';
 
 export interface TPersonInfoProps {
-  person: TPersonModel;
+  person: TPersonDetailsResponse;
 }

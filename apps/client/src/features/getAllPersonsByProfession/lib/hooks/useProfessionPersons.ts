@@ -1,4 +1,7 @@
-import type { TPersonBased, PaginatedPersonsResponse } from '@common/types';
+import type {
+  TPaginatedPersonsResponse,
+  TPersonListItemResponse,
+} from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -12,7 +15,7 @@ interface UseProfessionPersonsOptions {
 }
 
 interface UseProfessionPersonsReturn {
-  persons: TPersonBased[];
+  persons: TPersonListItemResponse[];
   loading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -34,7 +37,7 @@ export const useProfessionPersons = ({
   initialPage = 1,
   initialLimit = 20,
 }: UseProfessionPersonsOptions): UseProfessionPersonsReturn => {
-  const [persons, setPersons] = useState<TPersonBased[]>([]);
+  const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -52,11 +55,8 @@ export const useProfessionPersons = ({
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse = await getPersonsByProfession(
-          professionId,
-          page,
-          limit
-        );
+        const response: TPaginatedPersonsResponse =
+          await getPersonsByProfession(professionId, page, limit);
 
         if (reset) {
           setPersons(response.items);

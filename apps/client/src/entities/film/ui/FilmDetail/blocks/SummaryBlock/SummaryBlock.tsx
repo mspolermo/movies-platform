@@ -1,5 +1,4 @@
 import type { SummaryBlockProps } from '../../types';
-import type { TGenreBased } from '@common/types';
 
 import { useRouter } from 'next/navigation';
 
@@ -46,8 +45,8 @@ export const SummaryBlock = ({
     }
   };
 
-  const handleGenreClick = (genre: TGenreBased) => {
-    router.push(`/films?genres=${genre.nameEn}`);
+  const handleGenreClick = (genre: string) => {
+    router.push(`/films?genres=${genre}`);
   };
 
   return (
@@ -72,11 +71,11 @@ export const SummaryBlock = ({
           {country}
         </span>
 
-        {genres.map((genre) => (
+        {genres.map((genre, id) => (
           <span
-            key={genre.id}
+            key={`${genre.nameEn}-${id}`}
             className={`${styles.link} ${styles.genreLink}`}
-            onClick={() => handleGenreClick(genre)}
+            onClick={() => handleGenreClick(genre.nameEn)}
           >
             <SvgIcon
               className={styles.svg}

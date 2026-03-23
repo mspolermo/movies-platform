@@ -1,4 +1,4 @@
-import type { TCountryBased } from '@common/types';
+import type { TCountryListResponse } from '@common/types';
 
 export type TCountriesPageProps =
   | {
@@ -7,5 +7,5 @@ export type TCountriesPageProps =
     }
   | {
       isLoading?: false;
-      countriesList: TCountryBased[];
+      countriesList: TCountryListResponse;
     };

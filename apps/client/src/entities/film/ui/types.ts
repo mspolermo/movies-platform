@@ -1,8 +1,8 @@
-import type { TFilmWithProfessions } from '@common/types';
+import type { TFilmCardResponse, TFilmDetailsResponse } from '@common/types';
 
 import type { MouseEvent, ReactNode } from 'react';
 export interface FilmCardProps {
-  film: TFilmWithProfessions;
+  film: TFilmCardResponse;
   showIcons?: boolean;
   isLoading?: boolean;
 }
@@ -12,7 +12,7 @@ export interface FilmCardSkeletonProps {
 }
 
 export interface FilmCardPreviewProps {
-  film: TFilmWithProfessions;
+  film: TFilmCardResponse;
 }
 
 export interface IconsBlockProps {
@@ -25,6 +25,6 @@ export interface IconsBlockProps {
 }
 
 export interface FilmDetailProps {
-  film: TFilmWithProfessions;
+  film: TFilmDetailsResponse;
   creatorsViewer: ReactNode;
 }

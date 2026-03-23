@@ -1,4 +1,7 @@
-import type { TPersonBased, PaginatedPersonsResponse } from '@common/types';
+import type {
+  TPaginatedPersonsResponse,
+  TPersonListItemResponse,
+} from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -15,7 +18,7 @@ interface UseFilmPersonsByProfessionOptions {
 const DEFAULT_LIMIT = 14;
 
 interface UseFilmPersonsByProfessionReturn {
-  persons: TPersonBased[];
+  persons: TPersonListItemResponse[];
   loading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -38,7 +41,7 @@ export const useFilmPersonsByProfession = ({
   initialPage = 1,
   initialLimit = DEFAULT_LIMIT,
 }: UseFilmPersonsByProfessionOptions): UseFilmPersonsByProfessionReturn => {
-  const [persons, setPersons] = useState<TPersonBased[]>([]);
+  const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -56,7 +59,7 @@ export const useFilmPersonsByProfession = ({
       setError(null);
 
       try {
-        const response: PaginatedPersonsResponse =
+        const response: TPaginatedPersonsResponse =
           await getFilmPersonsByProfession(filmId, professionName, page, limit);
 
         if (reset) {

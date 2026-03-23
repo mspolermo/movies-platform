@@ -23,8 +23,8 @@ export const GenresPage = ({ isLoading, genresList }: TGenresPageProps) => {
   return (
     <Page title="Жанры">
       <div className={styles.genresGrid}>
-        {genresList.map((genre) => (
-          <GenreCard key={genre.id} genre={genre} />
+        {genresList.map((genre, id) => (
+          <GenreCard key={`${genre.nameRu}-${id}`} genre={genre} />
         ))}
       </div>
     </Page>
