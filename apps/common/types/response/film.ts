@@ -1,4 +1,3 @@
-import type { TCountryEntity } from "../country";
 import type { TFilmBased } from "../film";
 import { TCountryListItemResponse } from "./country";
 import type { TFilmFactResponse } from "./fact";
@@ -62,5 +61,5 @@ export type TFilmDetailsResponse = Pick<
 > & {
   countries?: TCountryListItemResponse[];
   genres?: TGenreListItemResponse[];
-  fact?: TFilmFactResponse;
+  facts?: TFilmFactResponse[];
 };

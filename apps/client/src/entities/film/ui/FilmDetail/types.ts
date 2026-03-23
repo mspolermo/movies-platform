@@ -40,7 +40,7 @@ export interface TrailerBlockProps
   > {}
 
 export interface FactBlockProps {
-  fact?: TFilmDetailsResponse['fact'];
+  facts?: TFilmDetailsResponse['facts'];
   isCartoon: boolean;
 }
 

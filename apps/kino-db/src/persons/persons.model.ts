@@ -25,15 +25,15 @@ export class Person extends Model<TPersonModel, TPersonCreationAtt> {
   id!: number;
 
   @ApiProperty({ description: "url фотографии" })
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT })
   photoUrl!: string;
 
   @ApiProperty({ example: "Энди", description: "Имя на русском" })
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT })
   nameRu!: string;
 
   @ApiProperty({ example: "Andy", description: "Имя на английском" })
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT })
   nameEn!: string;
 
   @BelongsToMany(() => Profession, () => PersonProfession)

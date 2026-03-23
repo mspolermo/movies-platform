@@ -3,7 +3,6 @@ import {
   Column,
   DataType,
   HasMany,
-  HasOne,
   Model,
   Table,
 } from "sequelize-typescript";
@@ -30,11 +29,11 @@ export class Film extends Model<TFilmModel, TFilmCreationAtt> {
   id!: number;
 
   @ApiProperty({ example: "имя", description: "Имя трейлера" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   trailerName!: string;
 
   @ApiProperty({ example: "url", description: "url трейлера" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   trailerUrl!: string;
 
   @ApiProperty({ example: "8.4", description: "рейтинг кинопоиска" })
@@ -74,35 +73,35 @@ export class Film extends Model<TFilmModel, TFilmCreationAtt> {
   movieLength!: number;
 
   @ApiProperty({ example: "eng", description: "язык оригинала фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   originalFilmLanguage!: string;
 
   @ApiProperty({ example: "имя", description: "Имя фильма русское" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT, allowNull: false })
   filmNameRu!: string;
 
   @ApiProperty({ example: "name", description: "Имя фильма английское" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   filmNameEn!: string;
 
   @ApiProperty({ example: "описание", description: "описание фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   description!: string;
 
   @ApiProperty({ example: "1.10.2020", description: "дата приемьеры фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   premiereCountry!: string;
 
   @ApiProperty({ example: "слоган", description: "слоган фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   slogan!: string;
 
   @ApiProperty({ example: "url", description: "url картинки фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   bigPictureUrl!: string;
 
   @ApiProperty({ example: "url", description: "url картинки фильма" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   smallPictureUrl!: string;
 
   @ApiProperty({ example: "2022", description: "год создания фильма" })
@@ -117,10 +116,14 @@ export class Film extends Model<TFilmModel, TFilmCreationAtt> {
   @Column({ type: DataType.INTEGER })
   top250!: number;
 
-  @Column({ type: DataType.DATE })
+  @Column({ type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any })
   premiereWorldDate!: Date;
 
-  @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
+  @Column({
+    type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any,
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   createdAt!: Date;
 
   @BelongsToMany(() => Person, () => FilmPerson)
@@ -132,8 +135,8 @@ export class Film extends Model<TFilmModel, TFilmCreationAtt> {
   @BelongsToMany(() => Genre, () => FilmGenre)
   genres!: Genre[];
 
-  @HasOne(() => Fact)
-  fact!: Fact;
+  @HasMany(() => Fact)
+  facts!: Fact[];
 
   @HasMany(() => Comment)
   comments!: Comment;

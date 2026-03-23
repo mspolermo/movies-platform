@@ -2,7 +2,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { FilmsController } from "../films.controller";
 import { FilmsService } from "../films.service";
 import { Film } from "../films.model";
-import { Fact } from "../../facts/facts.model";
 import { UpdateFilmDto } from "@common/dto";
 import { HttpStatus } from "@nestjs/common";
 
@@ -39,7 +38,7 @@ describe("FilmsController", () => {
     persons: [],
     countries: [],
     genres: [],
-    fact: Fact,
+    facts: [],
     comments: [],
   };
 

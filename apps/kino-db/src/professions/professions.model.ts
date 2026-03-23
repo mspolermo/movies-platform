@@ -19,7 +19,7 @@ export class Profession extends Model<TProfessionBased, TProfessionCreationAtt> 
   })
   id!: number;
 
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT, unique: true, allowNull: false })
   name!: string;
 
   @BelongsToMany(() => Person, () => PersonProfession)

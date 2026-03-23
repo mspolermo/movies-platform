@@ -55,7 +55,7 @@ describe("FilmsService", () => {
       { id: 1, nameRu: "Драма", nameEn: "Drama" },
       { id: 2, nameRu: "Комедия", nameEn: "Comedy" }
     ],
-    fact: Fact,
+    facts: [],
     comments: [],
   };
 
@@ -393,10 +393,18 @@ describe("FilmsService", () => {
         year: mockFilm.year,
         countries: mockFilm.countries,
         genres: mockFilm.genres.map(({ nameRu, nameEn }) => ({ nameRu, nameEn })),
-        fact: {
-          value: "fact-value",
-          spoiler: false,
-        },
+        facts: [
+          {
+            type: "FACT",
+            value: "fact-value",
+            spoiler: false,
+          },
+          {
+            type: "BLOOPER",
+            value: "blooper-value",
+            spoiler: true,
+          },
+        ],
       };
       const filmRow = {
         ...filmDetailsResponse,
@@ -438,8 +446,10 @@ describe("FilmsService", () => {
           },
           {
             model: Fact,
-            as: "fact",
-            attributes: ["value", "spoiler"],
+            as: "facts",
+            attributes: ["type", "value", "spoiler"],
+            separate: true,
+            order: [["id", "ASC"]],
           },
         ],
       });

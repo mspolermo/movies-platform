@@ -22,11 +22,11 @@ export class Genre extends Model<TGenreModel, Pick<TGenreEntity, "nameRu" | "nam
   id!: number;
 
   @ApiProperty({ example: "драма", description: "Имя жанра на русском" })
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT, unique: true, allowNull: false })
   nameRu!: string;
 
   @ApiProperty({ example: "drama", description: "Имя жанра нв английском" })
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT })
   nameEn!: string;
 
   @BelongsToMany(() => Film, () => FilmGenre)

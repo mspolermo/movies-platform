@@ -22,10 +22,10 @@ export class Country extends Model<
   })
   id!: number;
 
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT, unique: true, allowNull: false })
   countryName!: string;
 
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT })
   countryNameEn!: string;
 
   @BelongsToMany(() => Film, () => FilmCountry)

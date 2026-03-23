@@ -22,15 +22,15 @@ export class Comment extends Model<TCommentBased, TCommentCreationAtt> implement
   id!: number;
 
   @ApiProperty({ example: "Заголовок", description: "Заголовок комента" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT })
   header!: string;
 
   @ApiProperty({ example: "Текст", description: "Текст комента" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT, allowNull: false })
   value!: string;
 
   @ApiProperty({ example: "1", description: "id user который написал комент" })
-  @Column({ type: DataType.INTEGER })
+  @Column({ type: DataType.INTEGER, allowNull: false })
   authorId!: number;
 
   @ApiProperty({
@@ -41,15 +41,19 @@ export class Comment extends Model<TCommentBased, TCommentCreationAtt> implement
   parentId!: number;
 
   @ApiProperty({ description: "дата создания комента" })
-  @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
+  @Column({
+    type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any,
+    defaultValue: DataType.NOW,
+    allowNull: false,
+  })
   createdAt!: Date;
 
   @ApiProperty({ description: "никнейм юзера" })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.TEXT, allowNull: false })
   nickName!: string;
 
   @ForeignKey(() => Film)
-  @Column
+  @Column({ allowNull: false })
   filmId!: number;
 
   @BelongsTo(() => Film)

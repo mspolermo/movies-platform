@@ -57,7 +57,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
             filmNameRu={film.filmNameRu}
           />
 
-          <FactBlock fact={film.fact} isCartoon={isCartoon} />
+          <FactBlock facts={film.facts} isCartoon={isCartoon} />
 
           <CreatorsViewerBlock creatorsViewer={creatorsViewer} />
 

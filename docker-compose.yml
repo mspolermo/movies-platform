@@ -105,6 +105,28 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  kino-db-seed:
+    image: postgres:15
+    command: >
+      sh /seed/run-dev-seed.sh
+    depends_on:
+      db:
+        condition: service_healthy
+      kino-db:
+        condition: service_started
+    volumes:
+      - ./devops/kino-db/seed:/seed:ro
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB_KINO}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+    networks:
+      - default
+    restart: "no"
   pgadmin:
     image: dpage/pgadmin4
     ports:
@@ -145,8 +167,6 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_KINO}
     ports:
       - 5432:5432 
-    volumes:   
-      - ./devops/kino-db/final-kino-initial-data-dump.sql:/docker-entrypoint-initdb.d/final-kino-initial-data-dump.sql
     networks:
       - default
     restart: unless-stopped

@@ -44,7 +44,7 @@ export interface TFilmModel extends TFilmBased {
   persons?: TPersonBased[]; // Связи Sequelize
   countries?: TCountryEntity[]; // Связи Sequelize
   genres?: TGenreEntity[]; // Связи Sequelize
-  fact?: TFactEntity; // Связи Sequelize
+  facts?: TFactEntity[]; // Связи Sequelize
   comments?: TCommentBased[]; // Связи Sequelize
 }
 

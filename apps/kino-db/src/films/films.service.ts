@@ -81,8 +81,10 @@ export class FilmsService {
         },
         {
           model: Fact,
-          as: "fact",
-          attributes: ['value', 'spoiler'],
+          as: "facts",
+          attributes: ["type", "value", "spoiler"],
+          separate: true,
+          order: [["id", "ASC"]],
         },
       ],
     });

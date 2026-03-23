@@ -22,17 +22,17 @@ export class Fact extends Model<
   })
   id!: number;
 
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT, allowNull: false })
   value!: string;
 
-  @Column({ type: DataType.STRING, unique: true })
+  @Column({ type: DataType.TEXT, allowNull: false })
   type!: string;
 
-  @Column({ type: DataType.BOOLEAN, unique: true })
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
   spoiler!: boolean;
 
   @ForeignKey(() => Film)
-  @Column
+  @Column({ allowNull: false })
   filmId!: number;
 
   @BelongsTo(() => Film)
