@@ -1,7 +1,9 @@
+import type { TGenreItemResponse } from "@common/types";
+
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+
 import { Genre } from "./genres.model";
-import { TGenreItemResponse } from "@common/types";
 
 @Injectable()
 export class GenresService {

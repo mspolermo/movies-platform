@@ -1,13 +1,17 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { Person } from "./persons.model";
-import {
+import type {
   TPaginatedPersonsResponse,
   TPersonDetailsResponse,
   TPersonListItemResponse,
 } from "@common/types";
-import { Profession } from "../professions/professions.model";
+
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
+
+import { Profession } from "../professions/professions.model";
+
+import { Person } from "./persons.model";
+
 
 @Injectable()
 export class PersonsService {

@@ -1,12 +1,18 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { TFilmFilters } from "./interfaces";
-import {
+import type {
+  TGetFilmPersonsByProfessionRequest,
+  TGetFilmProfessionsRequest,
+  TSearchFilmsParams,
   TFilmDetailsResponse,
   TFilmsResponse,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from "@common/types";
+
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+
+import { kinoDbRpc } from "@common/messaging";
+
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -17,7 +23,7 @@ export class FilmsService extends BaseMicroserviceService {
 
   async getFilmById(id: number): Promise<TFilmDetailsResponse> {
     const film = await this.sendMessage<TFilmDetailsResponse | null>(
-      "getFilmById",
+      kinoDbRpc.films.getById,
       id
     );
 
@@ -28,28 +34,28 @@ export class FilmsService extends BaseMicroserviceService {
     return film;
   }
 
-  async searchFilms(filters: TFilmFilters): Promise<TFilmsResponse> {
+  async searchFilms(filters: TSearchFilmsParams): Promise<TFilmsResponse> {
     return this.sendMessage<TFilmsResponse>(
-      "filters",
+      kinoDbRpc.films.filters,
       filters
     );
   }
 
-  async getFilmProfessions(filmId: number): Promise<TProfessionItemResponse[]> {
-    return this.sendMessage("getFilmProfessions", filmId);
+  async getFilmProfessions(params: TGetFilmProfessionsRequest): Promise<TProfessionItemResponse[]> {
+    return this.sendMessage<TProfessionItemResponse[]>(
+      kinoDbRpc.films.getFilmProfessions,
+      params.filmId
+    );
   }
 
   async getFilmPersonsByProfession(
-    filmId: number,
-    professionName: string,
-    page?: number,
-    limit?: number
+    request: TGetFilmPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage("getFilmPersonsByProfession", {
-      filmId,
-      professionName,
-      page,
-      limit,
+    return this.sendMessage(kinoDbRpc.films.getFilmPersonsByProfession, {
+      filmId: request.filmId,
+      professionName: request.profession,
+      page: request.page,
+      limit: request.limit,
     });
   }
 }

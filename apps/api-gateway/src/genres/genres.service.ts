@@ -1,6 +1,10 @@
+import type { TGenreItemResponse } from "@common/types";
+
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TGenreItemResponse } from "@common/types";
+
+import { kinoDbRpc } from "@common/messaging";
+
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -10,6 +14,6 @@ export class GenresService extends BaseMicroserviceService {
   }
 
   async getAllGenres(): Promise<TGenreItemResponse[]> {
-    return this.sendMessage("getAll.genres", "");
+    return this.sendMessage(kinoDbRpc.genres.getAll, "");
   }
 }

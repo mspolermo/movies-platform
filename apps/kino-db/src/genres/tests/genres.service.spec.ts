@@ -1,7 +1,8 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { GenresService } from "../genres.service";
 import { getModelToken } from "@nestjs/sequelize";
+import { Test, TestingModule } from "@nestjs/testing";
+
 import { Genre } from "../genres.model";
+import { GenresService } from "../genres.service";
 
 describe("GenresService", () => {
   let service: GenresService;

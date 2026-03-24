@@ -5,21 +5,21 @@ export type TAuthorizedUserResponse = TUserBriefResponse & {
   roles: TRoleResponse[];
 };
 
-export interface TAuthResponse {
+export type TAuthResponse = {
   email: string;
   userId: number;
   role: TRoleResponse[];
   token: string;
-}
+};
 
-export interface TRegistrationResponse {
+export type TRegistrationResponse = {
   user: TAuthorizedUserResponse;
   role: TRoleResponse[];
   token: string;
-}
+};
 
 export type TCheckTokenResponse = TUserTokenPayloadResponse;
 
-export interface TRefreshTokenResponse {
+export type TRefreshTokenResponse = {
   token: string;
-}
+};

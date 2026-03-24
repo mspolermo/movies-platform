@@ -5,7 +5,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { Country } from "../countries/countries.model";
+
 import { Film } from "./films.model";
 
 @Table({

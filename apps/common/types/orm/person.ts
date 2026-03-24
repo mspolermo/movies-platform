@@ -1,11 +1,11 @@
 // Общие типы для Person
 import { TFilmEntity, TPersonEntity, TProfessionEntity } from "../entity";
 
-// Тип для создания персоны
-export interface TPersonCreationAtt extends Pick<TPersonEntity, "nameRu" | "nameEn"> {}
+/** Атрибуты для Sequelize.create персоны. */
+export type TPersonCreationAtt = Pick<TPersonEntity, "nameRu" | "nameEn">;
 
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TPersonOrmModel extends TPersonEntity {
+/** Sequelize-тип персоны с опционально загруженными связями. */
+export type TPersonOrmModel = TPersonEntity & {
   professions?: TProfessionEntity[]; // Связи Sequelize
   films?: TFilmEntity[]; // Связи Sequelize
-}
+};

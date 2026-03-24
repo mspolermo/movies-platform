@@ -7,6 +7,7 @@ import {
 } from "sequelize-typescript";
 
 import { Profession } from "../professions/professions.model";
+
 import { Person } from "./persons.model";
 
 @Table({

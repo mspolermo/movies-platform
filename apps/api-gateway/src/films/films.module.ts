@@ -1,7 +1,9 @@
 import { Module } from "@nestjs/common";
+
+import { JwtConfigModule } from "../jwt";
+
 import { FilmsController } from "./films.controller";
 import { FilmsService } from "./films.service";
-import { JwtConfigModule } from "../jwt";
 
 @Module({
   imports: [JwtConfigModule],

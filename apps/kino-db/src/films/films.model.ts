@@ -1,3 +1,6 @@
+import type { TFilmOrmModel, TFilmCreationAtt } from "@common/types/orm";
+
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsToMany,
   Column,
@@ -6,16 +9,17 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Person } from "../persons/persons.model";
+
+import { Comment } from "../comments/comments.model";
 import { Country } from "../countries/countries.model";
 import { Fact } from "../facts/facts.model";
-import { FilmPerson } from "./filmPerson";
-import { FilmCountry } from "./filmCountry";
 import { Genre } from "../genres/genres.model";
+import { Person } from "../persons/persons.model";
+
+import { FilmCountry } from "./filmCountry";
 import { FilmGenre } from "./filmGenre";
-import { Comment } from "../comments/comments.model";
-import { ApiProperty } from "@nestjs/swagger";
-import { TFilmOrmModel, TFilmCreationAtt } from "@common/types";
+import { FilmPerson } from "./filmPerson";
+
 
 @Table({ tableName: "Film", timestamps: false })
 export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
@@ -116,10 +120,12 @@ export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
   @Column({ type: DataType.INTEGER })
   top250!: number;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PG literal не в типах Sequelize
   @Column({ type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any })
   premiereWorldDate!: Date;
 
   @Column({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PG literal не в типах Sequelize
     type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any,
     defaultValue: DataType.NOW,
     allowNull: false,

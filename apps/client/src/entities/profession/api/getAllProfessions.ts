@@ -9,6 +9,8 @@ import apiClient, { API_ENDPOINTS } from '@/shared/api';
 export const getAllProfessions = async (): Promise<
   TProfessionItemResponse[]
 > => {
-  const response = await apiClient.get(API_ENDPOINTS.PROFESSIONS.LIST);
+  const response = await apiClient.get<TProfessionItemResponse[]>(
+    API_ENDPOINTS.PROFESSIONS.LIST
+  );
   return Array.isArray(response.data) ? response.data : [];
 };

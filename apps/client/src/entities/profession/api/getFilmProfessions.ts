@@ -1,14 +1,16 @@
-import type { TProfessionItemResponse } from '@common/types';
+import type {
+  TGetFilmProfessionsRequest,
+  TProfessionItemResponse,
+} from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
-/**  Получить профессии фильма
- * @param filmId - ID фильма
- * @returns Массив профессий
- */
+/** Получить профессии фильма */
 export const getFilmProfessions = async (
-  filmId: number
+  params: TGetFilmProfessionsRequest
 ): Promise<TProfessionItemResponse[]> => {
-  const response = await apiClient.get(API_ENDPOINTS.FILMS.PROFESSIONS(filmId));
+  const response = await apiClient.get<TProfessionItemResponse[]>(
+    API_ENDPOINTS.FILMS.PROFESSIONS(params.filmId)
+  );
   return Array.isArray(response.data) ? response.data : [];
 };

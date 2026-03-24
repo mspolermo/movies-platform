@@ -2,7 +2,7 @@
 export type TFilmSortBy = "rating" | "novelty" | "alphabet" | "popularity";
 
 /** Query-параметры для поиска и фильтрации фильмов. */
-export interface TSearchFilmsParams {
+export type TSearchFilmsParams = {
   page?: number;
   perPage?: number;
   year?: number;
@@ -12,4 +12,17 @@ export interface TSearchFilmsParams {
   minRatingKp?: number;
   minVotesKp?: number;
   sortBy?: TFilmSortBy;
-}
+};
+
+/** Параметры запроса профессий фильма. */
+export type TGetFilmProfessionsRequest = {
+  filmId: number;
+};
+
+/** Параметры запроса персон фильма по профессии с пагинацией. */
+export type TGetFilmPersonsByProfessionRequest = {
+  filmId: number;
+  profession: string;
+  page?: number;
+  limit?: number;
+};

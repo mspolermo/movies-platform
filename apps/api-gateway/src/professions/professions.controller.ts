@@ -1,8 +1,15 @@
+import type {
+  TGetPersonsByProfessionRequest,
+  TPaginatedPersonsResponse,
+  TProfessionItemResponse,
+} from '@common/types';
+
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
-import { ProfessionsService } from './professions.service';
+
 import { JwtAuthGuard, Public } from '../shared/guards';
-import type { TGetPersonsByProfessionRequest } from '@common/types';
+
+import { ProfessionsService } from './professions.service';
 
 @Controller('professions')
 @UseGuards(JwtAuthGuard)
@@ -14,7 +21,7 @@ export class ProfessionsController {
   @ApiOperation({ summary: 'Получить все профессии' })
   @ApiResponse({ status: 200, description: 'Список профессий' })
   @Get()
-  async getAllProfessions() {
+  async getAllProfessions(): Promise<TProfessionItemResponse[]> {
     return await this.professionsService.getAllProfessions();
   }
 
@@ -29,7 +36,7 @@ export class ProfessionsController {
     @Param('profession') professionId: string,
     @Query('page') page?: string,
     @Query('limit') limit?: string
-  ) {
+  ): Promise<TPaginatedPersonsResponse> {
     const parsedProfessionId = Number(professionId);
     const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
     const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;

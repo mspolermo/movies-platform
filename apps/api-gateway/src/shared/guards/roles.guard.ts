@@ -7,10 +7,12 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { ROLES_KEY } from "./roles-auth.decorator";
+
+import { UserRolesService } from "../../user-roles";
 import { ACCESS_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
-import { UserRolesService } from "../../user-roles";
+
+import { ROLES_KEY } from "./roles-auth.decorator";
 
 interface ErrorWithMessage {
   message: string;

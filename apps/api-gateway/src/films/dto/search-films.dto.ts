@@ -1,3 +1,6 @@
+import type { TFilmSortBy } from "@common/types";
+
+import { Transform } from "class-transformer";
 import {
   IsNumber,
   IsOptional,
@@ -7,8 +10,6 @@ import {
   Min,
   Max,
 } from "class-validator";
-import { Transform } from "class-transformer";
-import type { TFilmSortBy } from "@common/types";
 
 const FILM_SORT_BY_VALUES: readonly TFilmSortBy[] = [
   "rating",

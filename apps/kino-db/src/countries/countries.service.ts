@@ -1,7 +1,9 @@
+import type { TCountryItemResponse } from "@common/types";
+
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
+
 import { Country } from "./countries.model";
-import { TCountryItemResponse } from "@common/types";
 
 @Injectable()
 export class CountriesService {

@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
-import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
+
 import { getJwtConfig } from "../config";
 import { JwtAuthGuard, RolesGuard } from "../shared/guards";
 import { UserRolesService } from "../user-roles";

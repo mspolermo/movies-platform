@@ -1,82 +1,70 @@
 ---
-description: Rules for common types (apps/common)
+description: Как устроен apps/common (types, dto, импорты фронт/бек)
 globs:
   - "apps/common/**"
 alwaysApply: true
 ---
 
-# Layering: `types` vs `dto`
+# Где что лежит
 
-- **`apps/common/types`**: TypeScript-only contracts — API shapes, shared interfaces, type aliases. Safe for frontend and backend.
-- **`apps/common/dto`**: NestJS classes with `class-validator` / `class-transformer`. Used on the **backend only**; do not import DTO classes from the client (bundle and dependency noise).
-- If a request/response shape is needed **without** decorators, define it in `types` (or derive with `Pick`/`Omit` from a base interface shared with the DTO fields — same fields, one structural source of truth).
+- **`apps/common/types`** — только TypeScript-типы (контракты API, домен, ORM-обёртки). Без декораторов, без рантайма.
+- **`apps/common/dto`** — NestJS-классы (`class-validator`, Swagger и т.д.). **Только бэкенд**; клиент не импортирует.
+
+# Структура `apps/common/types`
+
+| Папка | Назначение |
+|-------|------------|
+| **`entity/`** | Доменные сущности «как в таблице»: `T*Entity` — поля хранения, общая база для `response` и `orm`. |
+| **`response/`** | Публичные формы ответов HTTP: `T*Response`, `T*ItemResponse`, списки, деревья. Строятся через **`Pick` / `Omit` / `&`** от `T*Entity` и других response-типов. |
+| **`request/`** | Параметры запросов: query/body, сортировки, union-литералы (`TFilmSortBy`), типы вроде `TSearchFilmsParams`, `TGet…Request`. |
+| **`orm/`** | Бэкенд-only: `T*CreationAtt` (атрибуты для `create`), `T*OrmModel` (`T*Entity` + опциональные связи Sequelize). |
+
+Внутри `types` файлы **`entity` и `response` связаны**: response не дублирует поля сущности — выводится из `../entity`.
+
+# Публичный barrel (`types/index.ts`)
+
+- Наружу реэкспортируются **только** `request` и `response`.
+- **`entity/` и `orm/` в barrel не попадают** — это намеренно (см. комментарий в `types/index.ts`).
+- Импорт ORM-типов на бэке: `import type { … } from '@common/types/orm'` (или относительные пути внутри `apps/common/types`).
+- Типы из `entity` снаружи монорепы **не импортируют** — клиент опирается на `T*Response` / `request`.
+
+# Кто как импортирует
+
+**Клиент (`apps/client`)**
+
+- Только **`@common/types`** → фактически `request` + `response`.
+- Всегда **`import type { … } from '@common/types'`** — без побочных импортов значений в бандл.
+
+**Бэкенд (api-gateway, kino-db, auth-users и т.д.)**
+
+- **`@common/types`** — контроллеры/сервисы: request/response для контракта с клиентом и между сервисами.
+- **`@common/types/orm`** — Sequelize-модели, маппинг в ответы, DTO, связанные с персистентностью.
+- **`@common/dto`** — валидация входа, Swagger; при совпадении полей с `types` держать одну структурную правду (часто база в `types`, DTO дублирует поля декораторами — без второго параллельного «интерфейса с тем же смыслом» в `types`, если можно `Pick`/общий тип).
+
+# Именование
+
+- Префикс **`T`** у всех публичных типов (`TFilmEntity`, `TFilmDetailsResponse`).
+- **`T*Entity`** — домен/таблица; не использовать как «публичный API для фронта» — для этого `T*Response`.
+- **`T*OrmModel`**, **`T*CreationAtt`** — только слой persistence / create.
+- Ответы API: **`…Response`**, узкие списки: **`…ItemResponse`**, **`…ListItemResponse`** и т.п.
+- Запросы: **`TSearch…Params`**, **`TGet…Request`**, JWT/контекст: например **`TJwtUserRequest`**.
 
 # JSON / HTTP vs `Date`
 
-- Types that describe data **after `JSON.parse` / typical REST responses** should use **`string` (ISO 8601)** for timestamps, not `Date`, unless the whole stack guarantees deserialization to `Date` objects.
-- Using `Date` in shared types without that guarantee misleads the type checker on the frontend.
+- Типы для **тела ответа после `JSON.parse`** — временные метки как **`string` (ISO 8601)**, не `Date`, если нет гарантии десериализации в `Date` на клиенте.
+- В **`T*Entity`** для полей БД/Sequelize допустимы **`Date`**, где так заведено в модели (например `premiereWorldDate`). Не смешивать семантику: API-форма в `response` — под JSON.
 
-# Naming: API vs persistence
+# DRY и расширение
 
-- Prefer names that reflect the **API or domain contract** (`…Response`, `…View`, or domain name) for shapes exposed to the client.
-- Reserve **`*Model`** for Sequelize/ORM-oriented or persistence-layer types. If the frontend imports a type, its name should not imply DB-only concerns unless that is intentional and documented.
+- **Не копировать** наборы полей — искать в `apps/common` и строить **`Pick` / `Omit` / `Partial` / `&`** от `T*Entity` или существующих типов.
+- Новый тип с **той же семантикой** = расширение существующего, не третья копия интерфейса.
 
-# Frontend imports
+# Алиасы путей
 
-- From `@common/types`, prefer **`import type`** so values are not emitted into the client bundle.
+- Общий код — **`apps/common`**. Алиасы **`@common` / `@common/*`** в `tsconfig.json` должны указывать на реальную папку (не устаревшие `libs/common`).
 
-# Reuse and Anti-Duplication (CRITICAL)
+# Приоритет при сомнениях
 
-- NEVER duplicate the same field set in a new interface when an existing type can be extended.
-- ALWAYS search `/apps/common` before adding a type.
-
-- **`Pick` / `Omit` / `Partial` / intersections (`&`) are reuse, not duplication.** New names for real subsets (list vs detail, public vs internal) are OK if they are built from shared bases.
-
-BAD examples:
-
-- Three interfaces with the **same** fields and the same meaning under different names (`TUser`, `TUserResponse`, `TUserPublic` with identical bodies).
-- Copy-pasting field lists instead of `Pick`/`Omit`.
-
-GOOD:
-
-- One base type (e.g. `TUser`) and `type TUserPreview = Pick<TUser, 'id' | 'name'>` for a narrower view.
-
-- If a new type is truly needed:
-  - It MUST live in `/apps/common`
-  - It MUST have a clearly distinct purpose (different fields or different semantics)
-
-# Type Extension Rules
-
-- Prefer composition over duplication:
-  - Intersections (`&`) or `Pick`, `Omit`, `Partial`, etc.
-
-Examples:
-
-GOOD:
-
-```ts
-type TUserPreview = Pick<TUser, 'id' | 'name'>;
-type TCreateUserRequest = Omit<TUser, 'id'>;
-```
-
-BAD:
-
-```ts
-type TUserPreview = {
-  id: string;
-  name: string;
-}; // duplicates TUser fields by hand
-```
-
-# Refactoring Preference
-
-- If duplicate types are detected: extract a shared base in `apps/common` and replace usages with the unified type or with `Pick`/`Omit` from it.
-
-# Monorepo paths
-
-- Shared code lives under **`apps/common`**. Do not point Nest or TS config at non-existent paths (e.g. stale `libs/common`); keep `@common` path aliases in sync with the real folder.
-
-# Priority
-
-- Reuse (including via utility types) > new parallel types
-- Simplicity > many similar abstractions
+1. Один источник полей для сущности (`T*Entity` → response/orm).
+2. Публичный API монорепы для фронта — только то, что выходит из barrel `@common/types`.
+3. Проще один `Pick`, чем новый почти такой же интерфейс.

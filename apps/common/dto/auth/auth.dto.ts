@@ -1,5 +1,5 @@
-import { IsEmail, IsString, Length, MinLength, IsOptional } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail, IsString, Length, MinLength, IsOptional } from "class-validator";
 
 /**
  * Базовый DTO для аутентификации

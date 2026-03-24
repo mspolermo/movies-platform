@@ -1,11 +1,12 @@
+import type { TCommentResponse } from "@common/types";
+
 import { Test, TestingModule } from "@nestjs/testing";
+
 import { CommentsController } from "../comments.controller";
 import { CommentsService } from "../comments.service";
-import { TCommentResponse } from "@common/types";
 
 describe("GenresController", () => {
   let controller: CommentsController;
-  let service: CommentsService;
 
   const commentsBased = [
     {
@@ -63,7 +64,6 @@ describe("GenresController", () => {
     }).compile();
 
     controller = module.get<CommentsController>(CommentsController);
-    service = module.get<CommentsService>(CommentsService);
   });
 
   afterEach(() => {

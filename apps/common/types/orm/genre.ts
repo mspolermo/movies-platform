@@ -1,9 +1,9 @@
 import { TFilmEntity, TGenreEntity } from "../entity";
 
-// Тип для создания жанра
-export interface TGenreCreationAtt extends Pick<TGenreEntity, "nameRu" | "nameEn"> {}
+/** Атрибуты для Sequelize.create жанра. */
+export type TGenreCreationAtt = Pick<TGenreEntity, "nameRu" | "nameEn">;
 
 /** Sequelize-тип жанра с опционально загруженными связями. */
-export interface TGenreOrmModel extends TGenreEntity {
+export type TGenreOrmModel = TGenreEntity & {
   films?: TFilmEntity[];
-}
+};

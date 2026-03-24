@@ -1,3 +1,11 @@
+import type {
+  TFilmDetailsResponse,
+  TFilmsResponse,
+  TGetFilmPersonsByProfessionRequest,
+  TPaginatedPersonsResponse,
+  TProfessionItemResponse,
+} from "@common/types";
+
 import {
   Controller,
   Get,
@@ -7,9 +15,11 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
-import { FilmsService } from "./films.service";
-import { SearchFilmsDto } from "./dto";
+
 import { JwtAuthGuard, Public } from "../shared/guards";
+
+import { SearchFilmsDto } from "./dto";
+import { FilmsService } from "./films.service";
 
 @Controller("films")
 @UseGuards(JwtAuthGuard) // Защищаем весь контроллер
@@ -22,7 +32,7 @@ export class FilmsController {
   @ApiResponse({ status: 200, description: "Информация о фильме" })
   @ApiResponse({ status: 404, description: "Фильм не найден" })
   @Get("/:id")
-  async getFilmById(@Param("id") id: number) {
+  async getFilmById(@Param("id") id: number): Promise<TFilmDetailsResponse> {
     return await this.filmsService.getFilmById(id);
   }
 
@@ -32,7 +42,7 @@ export class FilmsController {
   @Get()
   async searchFilms(
     @Query(new ValidationPipe({ transform: true })) query: SearchFilmsDto
-  ) {
+  ): Promise<TFilmsResponse> {
     return await this.filmsService.searchFilms(query);
   }
 
@@ -40,8 +50,8 @@ export class FilmsController {
   @ApiOperation({ summary: "Получить профессии фильма" })
   @ApiResponse({ status: 200, description: "Список профессий фильма" })
   @Get("/:id/professions")
-  async getFilmProfessions(@Param("id") id: number) {
-    return await this.filmsService.getFilmProfessions(id);
+  async getFilmProfessions(@Param("id") id: number): Promise<TProfessionItemResponse[]> {
+    return await this.filmsService.getFilmProfessions({ filmId: id });
   }
 
   @Public()
@@ -56,15 +66,13 @@ export class FilmsController {
     @Query("profession") profession: string,
     @Query("page") page?: string,
     @Query("limit") limit?: string
-  ) {
-    const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
-    const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
-
-    return await this.filmsService.getFilmPersonsByProfession(
+  ): Promise<TPaginatedPersonsResponse> {
+    const request: TGetFilmPersonsByProfessionRequest = {
       filmId,
       profession,
-      parsedPage,
-      parsedLimit
-    );
+      page: page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined,
+      limit: limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined,
+    };
+    return await this.filmsService.getFilmPersonsByProfession(request);
   }
 }

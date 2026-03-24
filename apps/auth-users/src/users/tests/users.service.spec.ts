@@ -1,15 +1,16 @@
-import { UsersService } from "../users.service";
-import { Test, TestingModule } from "@nestjs/testing";
-import { getModelToken } from "@nestjs/sequelize";
-import { User } from "../users.model";
-import { RolesService } from "../../roles/roles.service";
-import { JwtService } from "@nestjs/jwt";
 import {
   HttpException,
   HttpStatus,
   UnauthorizedException,
 } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { getModelToken } from "@nestjs/sequelize";
+import { Test, TestingModule } from "@nestjs/testing";
 import * as bcrypt from "bcryptjs";
+
+import { RolesService } from "../../roles/roles.service";
+import { User } from "../users.model";
+import { UsersService } from "../users.service";
 
 jest.mock("bcryptjs");
 

@@ -1,13 +1,4 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { Person } from "../persons/persons.model";
-import { Film } from "./films.model";
-import { Country } from "../countries/countries.model";
-import { Genre } from "../genres/genres.model";
-import { Profession } from "../professions/professions.model";
-import { Fact } from "../facts/facts.model";
-import { Op, Sequelize } from "sequelize";
-import {
+import type {
   TFilmDetailsResponse,
   TFilmSortBy,
   TFilmsResponse,
@@ -15,6 +6,19 @@ import {
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from "@common/types";
+
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/sequelize";
+import { Op, Sequelize } from "sequelize";
+
+import { Country } from "../countries/countries.model";
+import { Fact } from "../facts/facts.model";
+import { Genre } from "../genres/genres.model";
+import { Person } from "../persons/persons.model";
+import { Profession } from "../professions/professions.model";
+
+import { Film } from "./films.model";
+
 
 const FILM_CARD_ATTRIBUTES = [
   "id",

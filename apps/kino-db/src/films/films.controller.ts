@@ -1,18 +1,22 @@
+import type { TFilmSortBy } from "@common/types";
+
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
+
+import { kinoDbRpc } from "@common/messaging";
+
 import { FilmsService } from "./films.service";
-import type { TFilmSortBy } from "@common/types";
 
 @Controller("films")
 export class FilmsController {
   constructor(private readonly filmService: FilmsService) {}
 
-  @MessagePattern("getFilmById")
+  @MessagePattern(kinoDbRpc.films.getById)
   async getFilmById(@Payload() id: number) {
     return await this.filmService.getFilmById(id);
   }
 
-  @MessagePattern("filters")
+  @MessagePattern(kinoDbRpc.films.filters)
   async filters(
     @Payload()
     data: {
@@ -51,22 +55,22 @@ export class FilmsController {
     );
   }
 
-  @MessagePattern("getAllFilmYears")
+  @MessagePattern(kinoDbRpc.films.getAllFilmYears)
   async getAllFilmYears() {
     return await this.filmService.getAllFilmYears();
   }
 
-  @MessagePattern("searchFilmsByName")
+  @MessagePattern(kinoDbRpc.films.searchFilmsByName)
   async searchFilmsByName(@Payload() name: string) {
     return await this.filmService.searchFilmsByName(name);
   }
 
-  @MessagePattern("getFilmProfessions")
+  @MessagePattern(kinoDbRpc.films.getFilmProfessions)
   async getFilmProfessions(@Payload() filmId: number) {
     return await this.filmService.getFilmProfessions(filmId);
   }
 
-  @MessagePattern("getFilmPersonsByProfession")
+  @MessagePattern(kinoDbRpc.films.getFilmPersonsByProfession)
   async getFilmPersonsByProfession(
     @Payload() data: { filmId: number; professionName: string; page?: number; limit?: number }
   ) {

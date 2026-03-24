@@ -1,6 +1,4 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import {
+import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
   TGetPersonsRequest,
@@ -8,6 +6,12 @@ import {
   TPersonDetailsResponse,
   TPersonListItemResponse,
 } from "@common/types";
+
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+
+import { kinoDbRpc } from "@common/messaging";
+
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -19,18 +23,18 @@ export class PersonsService extends BaseMicroserviceService {
   async getAllPersonsPaginated(
     params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage("getAllPersonsPaginated", params);
+    return this.sendMessage(kinoDbRpc.persons.getAllPaginated, params);
   }
 
   async getPersonById(
     request: TGetPersonByIdRequest
   ): Promise<TPersonDetailsResponse> {
-    return this.sendMessage("getPersonById", request);
+    return this.sendMessage(kinoDbRpc.persons.getById, request);
   }
 
   async findPersonsByNameAndProfession(
     request: TFindPersonsByNameAndProfessionRequest
   ): Promise<TPersonListItemResponse[]> {
-    return this.sendMessage("findPersonsByNameAndProfession", request);
+    return this.sendMessage(kinoDbRpc.persons.findByNameAndProfession, request);
   }
 }

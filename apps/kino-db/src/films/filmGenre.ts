@@ -5,8 +5,10 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Film } from "./films.model";
+
 import { Genre } from "../genres/genres.model";
+
+import { Film } from "./films.model";
 
 @Table({
   tableName: "_FilmToGenre",

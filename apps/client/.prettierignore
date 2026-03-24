@@ -1,0 +1,12 @@
+# Next.js / tooling output
+.next/
+out/
+build/
+dist/
+
+node_modules/
+coverage/
+.vercel/
+.turbo/
+
+*.tsbuildinfo

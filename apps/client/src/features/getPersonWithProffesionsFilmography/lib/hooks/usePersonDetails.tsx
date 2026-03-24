@@ -23,7 +23,8 @@ export const usePersonDetails = (personId: number) => {
       try {
         setLoading(true);
         setError(null);
-        const personData = await getPersonById(personId, {
+        const personData = await getPersonById({
+          id: personId,
           filmsLimit: FILMS_PAGE_SIZE,
           filmsOffset: 0,
         });
@@ -56,7 +57,8 @@ export const usePersonDetails = (personId: number) => {
 
     try {
       setIsLoadingMore(true);
-      const nextData = await getPersonById(person.id, {
+      const nextData = await getPersonById({
+        id: person.id,
         filmsLimit: FILMS_PAGE_SIZE,
         filmsOffset: films.length,
       });

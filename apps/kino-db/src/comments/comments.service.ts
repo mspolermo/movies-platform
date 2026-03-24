@@ -1,8 +1,11 @@
+import type { TCommentResponse, TCommentsTreeResponse } from "@common/types";
+
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Comment } from "./comments.model";
-import { TCommentResponse, TCommentsTreeResponse } from "@common/types";
+
 import { CommentDTO } from "@common/dto";
+
+import { Comment } from "./comments.model";
 
 @Injectable()
 export class CommentsService {

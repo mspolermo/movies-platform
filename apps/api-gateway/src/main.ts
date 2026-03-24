@@ -1,10 +1,12 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
-import { SwaggerModule } from "@nestjs/swagger";
+import { INestApplication } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { NestFactory } from "@nestjs/core";
+import { SwaggerModule } from "@nestjs/swagger";
+
+import { AppModule } from "./app.module";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
 import { GlobalExceptionFilter } from "./shared/filters";
-import { INestApplication } from "@nestjs/common";
+
 
 let app: INestApplication | null = null;
 

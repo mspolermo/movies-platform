@@ -18,13 +18,13 @@ export type TFilmListItemResponse = Pick<
 >;
 
 /** Ответ API для пагинированного списка фильмов. */
-export interface TFilmsResponse {
+export type TFilmsResponse = {
   films: TFilmListItemResponse[];
   total: number;
   page: number;
   perPage: number;
   hasMore: boolean;
-}
+};
 
 /** Ответ API для детальной информации о фильме. */
 export type TFilmDetailsResponse = Pick<

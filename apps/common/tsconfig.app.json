@@ -4,6 +4,6 @@
     "declaration": false,
     "outDir": "../../dist/apps/common"
   },
-  "include": ["dto/**/*", "types/**/*"],
+  "include": ["dto/**/*", "types/**/*", "messaging/**/*"],
   "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
 }

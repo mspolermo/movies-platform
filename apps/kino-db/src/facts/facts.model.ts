@@ -1,3 +1,5 @@
+import type { TFactCreationAtt, TFactOrmModel } from "@common/types/orm";
+
 import {
   BelongsTo,
   Column,
@@ -6,8 +8,8 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { Film } from "../films/films.model";
-import { TFactCreationAtt, TFactOrmModel } from "@common/types";
 
 @Table({ tableName: "Fact", timestamps: false })
 export class Fact extends Model<TFactOrmModel, TFactCreationAtt> {

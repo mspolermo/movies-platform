@@ -1,10 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
+
 import { PersonsController } from "../persons.controller";
 import { PersonsService } from "../persons.service";
 
 describe("PersonsController", () => {
   let controller: PersonsController;
-  let service: PersonsService;
 
   const mockPerson = {
     id: 1,
@@ -49,7 +49,6 @@ describe("PersonsController", () => {
     }).compile();
 
     controller = module.get<PersonsController>(PersonsController);
-    service = module.get<PersonsService>(PersonsService);
   });
 
   afterEach(() => {

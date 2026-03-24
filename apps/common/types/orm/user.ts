@@ -1,9 +1,9 @@
 import type { TRoleEntity, TUserEntity } from "../entity";
 
-// Тип для создания пользователя
+/** Атрибуты для Sequelize.create пользователя. */
 export type TUserCreationAtt = Pick<TUserEntity, "email" | "password" | "name">;
 
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TUserOrmModel extends TUserEntity {
+/** Sequelize-тип пользователя с опционально загруженными связями. */
+export type TUserOrmModel = TUserEntity & {
   roles?: TRoleEntity[]; // Связи Sequelize с ролями
-}
+};

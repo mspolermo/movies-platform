@@ -6,6 +6,7 @@ import {
 } from "@nestjs/common";
 import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
+
 import { ValidationException } from "../exceptions/validation.exception";
 
 @Injectable()

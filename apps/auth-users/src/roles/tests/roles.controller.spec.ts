@@ -1,10 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
+
 import { RolesController } from "../roles.controller";
 import { RolesService } from "../roles.service";
 
 describe("RolesController", () => {
   let controller: RolesController;
-  let service: RolesService;
 
   const mockRole = { id: 1, value: "ADMIN" };
   const mockRoleDto = { value: "ADMIN" };
@@ -26,7 +26,6 @@ describe("RolesController", () => {
     }).compile();
 
     controller = module.get<RolesController>(RolesController);
-    service = module.get<RolesService>(RolesService);
   });
 
   afterEach(() => {

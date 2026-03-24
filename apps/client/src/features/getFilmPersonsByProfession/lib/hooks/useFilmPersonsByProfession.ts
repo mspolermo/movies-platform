@@ -60,7 +60,12 @@ export const useFilmPersonsByProfession = ({
 
       try {
         const response: TPaginatedPersonsResponse =
-          await getFilmPersonsByProfession(filmId, professionName, page, limit);
+          await getFilmPersonsByProfession({
+            filmId,
+            profession: professionName,
+            page,
+            limit,
+          });
 
         if (reset) {
           setPersons(response.items);

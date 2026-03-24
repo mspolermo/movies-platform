@@ -1,5 +1,5 @@
 /** Доменная сущность фильма с полями, которые реально хранятся в таблице. */
-export interface TFilmEntity {
+export type TFilmEntity = {
   id: number;
   trailerName?: string;
   trailerUrl?: string;
@@ -24,4 +24,4 @@ export interface TFilmEntity {
   top10?: number;
   top250?: number;
   premiereWorldDate?: Date;
-}
+};

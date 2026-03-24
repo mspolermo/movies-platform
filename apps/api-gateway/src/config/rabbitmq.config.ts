@@ -1,9 +1,9 @@
+import { ConfigService } from "@nestjs/config";
 import {
   ClientProxy,
   ClientProxyFactory,
   Transport,
 } from "@nestjs/microservices";
-import { ConfigService } from "@nestjs/config";
 
 export class RabbitMQConfig {
   /**

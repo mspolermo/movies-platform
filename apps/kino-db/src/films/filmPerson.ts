@@ -5,8 +5,10 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Film } from "./films.model";
+
 import { Person } from "../persons/persons.model";
+
+import { Film } from "./films.model";
 
 @Table({
   tableName: "_FilmToPerson",

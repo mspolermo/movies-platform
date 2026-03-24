@@ -1,6 +1,8 @@
+import type { TProfessionItemResponse } from "@common/types";
+
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { TProfessionItemResponse } from "@common/types";
+
 import { Profession } from "./professions.model";
 
 @Injectable()

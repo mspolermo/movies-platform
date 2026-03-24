@@ -1,7 +1,10 @@
+import type { TCountryItemResponse } from "@common/types";
+
 import { Injectable, Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
-import { TCountryItemResponse } from "@common/types";
+
+import { kinoDbRpc } from "@common/messaging";
 
 @Injectable()
 export class CountriesService {
@@ -10,6 +13,8 @@ export class CountriesService {
   ) {}
 
   async getAllCountries(): Promise<TCountryItemResponse[]> {
-    return await firstValueFrom(this.filmsClient.send("getAll.countries", {}));
+    return await firstValueFrom(
+      this.filmsClient.send(kinoDbRpc.countries.getAll, {})
+    );
   }
 }

@@ -1,8 +1,10 @@
 import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ClientsModule, Transport } from "@nestjs/microservices";
+
 import { CountriesController } from "./countries.controller";
 import { CountriesService } from "./countries.service";
-import { ClientsModule, Transport } from "@nestjs/microservices";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+
 
 @Module({
   imports: [

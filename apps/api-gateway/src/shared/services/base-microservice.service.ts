@@ -1,7 +1,8 @@
 import { Injectable, OnModuleInit } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
-import { ConfigService } from "@nestjs/config";
+
 import { RabbitMQConfig } from "../../config";
 
 /**
@@ -34,7 +35,7 @@ export abstract class BaseMicroserviceService implements OnModuleInit {
    * @param data - данные для отправки
    * @returns Promise с результатом
    */
-  protected async sendMessage<T>(pattern: string, data: any): Promise<T> {
+  protected async sendMessage<T>(pattern: string, data: unknown): Promise<T> {
     return await firstValueFrom(this.clientData.send(pattern, data));
   }
 

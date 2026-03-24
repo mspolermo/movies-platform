@@ -1,18 +1,18 @@
 /** Параметры пагинации списка персон. */
-export interface TGetPersonsRequest {
+export type TGetPersonsRequest = {
   page?: number;
   limit?: number;
-}
+};
 
 /** Параметры запроса персоны с частичной фильмографией. */
-export interface TGetPersonByIdRequest {
+export type TGetPersonByIdRequest = {
   id: number;
   filmsLimit?: number;
   filmsOffset?: number;
-}
+};
 
 /** Параметры поиска персон по имени и профессии. */
-export interface TFindPersonsByNameAndProfessionRequest {
+export type TFindPersonsByNameAndProfessionRequest = {
   name?: string;
   professionId?: number;
-}
+};

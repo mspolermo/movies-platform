@@ -1,11 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { TFiltersResult } from "./dto";
-import {
+import type {
+  TFiltersResponse,
   TCountryItemResponse,
   TGenreItemResponse,
   TQuickFiltersResponse,
 } from "@common/types";
+
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+
+import { kinoDbRpc } from "@common/messaging";
+
 import { BaseMicroserviceService } from "../shared/services";
 
 const QUICK_FILTERS_MAX_GENRES = 23;
@@ -18,11 +22,11 @@ export class FiltersService extends BaseMicroserviceService {
     super(configService, "Filters Service");
   }
 
-  async getFilters(): Promise<TFiltersResult> {
+  async getFilters(): Promise<TFiltersResponse> {
     const [genres, countries, years] = await Promise.all([
-      this.sendMessage<TGenreItemResponse[]>("getAll.genres", ""),
-      this.sendMessage<TCountryItemResponse[]>("getAll.countries", ""),
-      this.sendMessage<number[]>("getAllFilmYears", ""),
+      this.sendMessage<TGenreItemResponse[]>(kinoDbRpc.genres.getAll, ""),
+      this.sendMessage<TCountryItemResponse[]>(kinoDbRpc.countries.getAll, ""),
+      this.sendMessage<number[]>(kinoDbRpc.films.getAllFilmYears, ""),
     ]);
 
     return {
@@ -34,9 +38,9 @@ export class FiltersService extends BaseMicroserviceService {
 
   async getQuickFilters(): Promise<TQuickFiltersResponse> {
     const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
-      this.sendMessage<TGenreItemResponse[]>("getAll.genres", ""),
-      this.sendMessage<TCountryItemResponse[]>("getAll.countries", ""),
-      this.sendMessage<number[]>("getAllFilmYears", ""),
+      this.sendMessage<TGenreItemResponse[]>(kinoDbRpc.genres.getAll, ""),
+      this.sendMessage<TCountryItemResponse[]>(kinoDbRpc.countries.getAll, ""),
+      this.sendMessage<number[]>(kinoDbRpc.films.getAllFilmYears, ""),
     ]);
 
     const genres = genresRaw.slice(0, QUICK_FILTERS_MAX_GENRES).map((

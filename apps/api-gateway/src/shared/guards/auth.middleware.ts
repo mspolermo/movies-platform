@@ -7,13 +7,14 @@ import {
   NestInterceptor,
 } from "@nestjs/common";
 import { map, Observable } from "rxjs";
+
 import { ACCESS_NO_ROGHTS_ERROR } from "../constants/errors.constants";
 
 @Injectable()
 //предназначенный для перехвата запросов и проверки,
 // имеет ли пользователь права на выполнение действия.
 export class SelfOrAdminInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     // Получаем объект запроса из ExecutionContext.
     const request = context.switchToHttp().getRequest();
     // Получаем объект пользователя из запроса.

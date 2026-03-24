@@ -1,13 +1,13 @@
-import { Test, TestingModule } from "@nestjs/testing";
-import { FilmsService } from "../films.service";
 import { getModelToken } from "@nestjs/sequelize";
-import { Film } from "../films.model";
-import { Fact } from "../../facts/facts.model";
+import { Test, TestingModule } from "@nestjs/testing";
 import { Op, Sequelize } from "sequelize";
-import { Genre } from "../../genres/genres.model";
+
 import { Country } from "../../countries/countries.model";
+import { Fact } from "../../facts/facts.model";
+import { Genre } from "../../genres/genres.model";
 import { Person } from "../../persons/persons.model";
-import { Profession } from "../../professions/professions.model";
+import { Film } from "../films.model";
+import { FilmsService } from "../films.service";
 
 describe("FilmsService", () => {
   let service: FilmsService;

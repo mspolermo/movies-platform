@@ -1,12 +1,9 @@
 {
   "eslint.enable": true,
   "eslint.useFlatConfig": true,
-  "eslint.nodePath": "${workspaceFolder}/apps/client/node_modules",
   "eslint.workingDirectories": [
-    {
-      "directory": "./apps/client",
-      "changeProcessCWD": true
-    }
+    { "directory": "./apps/client", "changeProcessCWD": true },
+    { "directory": ".", "changeProcessCWD": true }
   ],
   "eslint.validate": [
     "javascript",

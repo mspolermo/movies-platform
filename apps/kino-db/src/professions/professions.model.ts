@@ -1,3 +1,5 @@
+import type { TProfessionCreationAtt, TProfessionOrmModel } from "@common/types/orm";
+
 import {
   BelongsToMany,
   Column,
@@ -5,9 +7,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { PersonProfession } from "../persons/personProfession";
 import { Person } from "../persons/persons.model";
-import { TProfessionCreationAtt, TProfessionOrmModel } from "@common/types";
 
 @Table({ tableName: "Profession", timestamps: false })
 export class Profession extends Model<TProfessionOrmModel, TProfessionCreationAtt> {

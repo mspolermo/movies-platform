@@ -1,6 +1,6 @@
 /** Параметры выборки персон по профессии. */
-export interface TGetPersonsByProfessionRequest {
+export type TGetPersonsByProfessionRequest = {
   professionId: number;
   page?: number;
   limit?: number;
-}
+};

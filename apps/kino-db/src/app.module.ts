@@ -1,24 +1,25 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
-import { GenresModule } from "./genres/genres.module";
-import { CountriesModule } from "./countries/countries.module";
-import { ProfessionsModule } from "./professions/professions.module";
-import { PersonsModule } from "./persons/persons.module";
-import { FilmsModule } from "./films/films.module";
-import { Fact } from "./facts/facts.model";
-import { Film } from "./films/films.model";
-import { Profession } from "./professions/professions.model";
-import { FilmGenre } from "./films/filmGenre";
-import { FilmCountry } from "./films/filmCountry";
-import { FilmPerson } from "./films/filmPerson";
-import { PersonProfession } from "./persons/personProfession";
-import { CommentsModule } from "./comments/comments.module";
+
 import { Comment } from "./comments/comments.model";
-import { HealthController } from "./health.controller";
-import { Genre } from "./genres/genres.model";
+import { CommentsModule } from "./comments/comments.module";
 import { Country } from "./countries/countries.model";
+import { CountriesModule } from "./countries/countries.module";
+import { Fact } from "./facts/facts.model";
+import { FilmCountry } from "./films/filmCountry";
+import { FilmGenre } from "./films/filmGenre";
+import { FilmPerson } from "./films/filmPerson";
+import { Film } from "./films/films.model";
+import { FilmsModule } from "./films/films.module";
+import { Genre } from "./genres/genres.model";
+import { GenresModule } from "./genres/genres.module";
+import { HealthController } from "./health.controller";
+import { PersonProfession } from "./persons/personProfession";
 import { Person } from "./persons/persons.model";
+import { PersonsModule } from "./persons/persons.module";
+import { Profession } from "./professions/professions.model";
+import { ProfessionsModule } from "./professions/professions.module";
 
 @Module({
   imports: [

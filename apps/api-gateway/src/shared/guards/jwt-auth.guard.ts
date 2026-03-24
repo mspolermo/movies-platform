@@ -1,3 +1,5 @@
+import type { TJwtUserRequest } from "@common/types";
+
 import {
   CanActivate,
   ExecutionContext,
@@ -5,11 +7,12 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { Observable } from "rxjs";
 import { JwtService } from "@nestjs/jwt";
+import { Observable } from "rxjs";
+
 import { AUTH_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
-import type { TJwtUserRequest } from "@common/types";
+
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
 interface JWTError extends Error {

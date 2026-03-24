@@ -13,7 +13,7 @@ export const getPersonsByProfession = async (
 ): Promise<TPaginatedPersonsResponse> => {
   const { professionId } = request;
 
-  const response = await apiClient.get(
+  const response = await apiClient.get<TPaginatedPersonsResponse>(
     API_ENDPOINTS.PROFESSIONS.PERSONS(professionId),
     {
       params: request,

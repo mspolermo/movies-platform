@@ -1,6 +1,3 @@
-import { Controller } from "@nestjs/common";
-import { MessagePattern, Payload } from "@nestjs/microservices";
-import { PersonsService } from "./persons.service";
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
@@ -8,11 +5,18 @@ import type {
   TGetPersonsRequest,
 } from "@common/types";
 
+import { Controller } from "@nestjs/common";
+import { MessagePattern, Payload } from "@nestjs/microservices";
+
+import { kinoDbRpc } from "@common/messaging";
+
+import { PersonsService } from "./persons.service";
+
 @Controller("persons")
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
-  @MessagePattern("getAllPersonsPaginated")
+  @MessagePattern(kinoDbRpc.persons.getAllPaginated)
   async getAllPersonsPaginated(
     @Payload() data: TGetPersonsRequest
   ) {
@@ -20,7 +24,7 @@ export class PersonsController {
     return await this.personsService.getAllPersonsPaginated(page, limit);
   }
 
-  @MessagePattern("getPersonsByProfessionId")
+  @MessagePattern(kinoDbRpc.persons.getByProfessionId)
   async getPersonsByProfessionId(
     @Payload() data: TGetPersonsByProfessionRequest
   ) {
@@ -28,13 +32,13 @@ export class PersonsController {
     return await this.personsService.getPersonsByProfessionId(professionId, page, limit);
   }
 
-  @MessagePattern("getPersonById")
+  @MessagePattern(kinoDbRpc.persons.getById)
   async getPersonById(@Payload() data: TGetPersonByIdRequest) {
     const { id, filmsLimit, filmsOffset } = data;
     return await this.personsService.getPersonById(id, { filmsLimit, filmsOffset });
   }
 
-  @MessagePattern("findPersonsByNameAndProfession")
+  @MessagePattern(kinoDbRpc.persons.findByNameAndProfession)
   async findPersonsByNameAndProfession(
     @Payload() data: TFindPersonsByNameAndProfessionRequest
   ) {
@@ -42,7 +46,7 @@ export class PersonsController {
     return await this.personsService.findPersonsByNameAndProfession(name, professionId);
   }
 
-  @MessagePattern("searchPersonsByName")
+  @MessagePattern(kinoDbRpc.persons.searchByName)
   async searchPersonsByName(@Payload() name: string) {
     return await this.personsService.findPersonsByNameAndProfession(name);
   }

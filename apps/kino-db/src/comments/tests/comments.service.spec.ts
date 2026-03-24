@@ -1,8 +1,11 @@
-import { Test, TestingModule } from "@nestjs/testing";
+import type { TCommentResponse } from "@common/types";
+
 import { getModelToken } from "@nestjs/sequelize";
-import { CommentsService } from "../comments.service";
+import { Test, TestingModule } from "@nestjs/testing";
+
 import { Comment } from "../comments.model";
-import { TCommentResponse } from "@common/types";
+import { CommentsService } from "../comments.service";
+
 
 describe("CommentsService", () => {
   let service: CommentsService;

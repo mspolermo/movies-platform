@@ -1,7 +1,11 @@
+import type { TSearchResultResponse } from "@common/types";
+
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { SearchService } from "./search.service";
+
 import { JwtAuthGuard, Public } from "../shared/guards";
+
+import { SearchService } from "./search.service";
 
 @Controller("search")
 @UseGuards(JwtAuthGuard)
@@ -13,7 +17,7 @@ export class SearchController {
   @ApiOperation({ summary: "Поиск по части имени" })
   @ApiResponse({ status: 200, description: "Результаты поиска" })
   @Get()
-  async search(@Query("name") name?: string) {
+  async search(@Query("name") name?: string): Promise<TSearchResultResponse> {
     console.log("🔍 Поисковый запрос:", {
       name,
       nameLength: name?.length,

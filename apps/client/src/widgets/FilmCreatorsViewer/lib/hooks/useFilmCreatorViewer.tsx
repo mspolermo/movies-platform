@@ -34,7 +34,7 @@ export const useFilmCreatorViewer = () => {
 
       try {
         setLoading(true);
-        const data = await getFilmProfessions(filmId);
+        const data = await getFilmProfessions({ filmId });
         setFilmProfessions(data);
 
         // Автоматически выбираем первую профессию, если есть

@@ -1,7 +1,9 @@
-import { UsersController } from "../users.controller";
-import { Test, TestingModule } from "@nestjs/testing";
-import { UsersService } from "../users.service";
 import { HttpException, HttpStatus } from "@nestjs/common";
+import { Test, TestingModule } from "@nestjs/testing";
+
+import { UsersController } from "../users.controller";
+import { UsersService } from "../users.service";
+
 
 jest.mock(
   "@common/dto",

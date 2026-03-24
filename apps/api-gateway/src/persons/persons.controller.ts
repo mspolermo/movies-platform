@@ -1,10 +1,15 @@
-import { Controller, Get, Param, Query } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
-import { PersonsService } from "./persons.service";
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
+  TPaginatedPersonsResponse,
+  TPersonDetailsResponse,
+  TPersonListItemResponse,
 } from "@common/types";
+
+import { Controller, Get, Param, Query } from "@nestjs/common";
+import { ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
+
+import { PersonsService } from "./persons.service";
 
 @Controller("persons")
 export class PersonsController {
@@ -18,7 +23,7 @@ export class PersonsController {
   async getAllPersonsPaginated(
     @Query("page") page?: string,
     @Query("limit") limit?: string
-  ) {
+  ): Promise<TPaginatedPersonsResponse> {
     const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
     const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
     return await this.personsService.getAllPersonsPaginated({
@@ -36,7 +41,7 @@ export class PersonsController {
     @Param("id") id: number,
     @Query("filmsLimit") filmsLimit?: string,
     @Query("filmsOffset") filmsOffset?: string
-  ) {
+  ): Promise<TPersonDetailsResponse> {
     const parsedLimit =
       filmsLimit !== undefined && !isNaN(Number(filmsLimit)) ? Number(filmsLimit) : undefined;
     const parsedOffset =
@@ -59,7 +64,7 @@ export class PersonsController {
   async findPersonsByNameAndProfession(
     @Query("name") name?: string,
     @Query("professionId") professionId?: number
-  ) {
+  ): Promise<TPersonListItemResponse[]> {
     const request: TFindPersonsByNameAndProfessionRequest = {
       name,
       professionId,

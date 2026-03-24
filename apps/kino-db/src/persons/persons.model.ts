@@ -1,3 +1,6 @@
+import type { TPersonCreationAtt, TPersonOrmModel } from "@common/types/orm";
+
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsToMany,
   Column,
@@ -5,13 +8,13 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Profession } from "../professions/professions.model";
-import { PersonProfession } from "./personProfession";
-import { Film } from "../films/films.model";
-import { FilmPerson } from "../films/filmPerson";
-import { ApiProperty } from "@nestjs/swagger";
 
-import { TPersonCreationAtt, TPersonOrmModel } from "@common/types";
+import { FilmPerson } from "../films/filmPerson";
+import { Film } from "../films/films.model";
+import { Profession } from "../professions/professions.model";
+
+import { PersonProfession } from "./personProfession";
+
 
 @Table({ tableName: "Person", timestamps: false })
 export class Person extends Model<TPersonOrmModel, TPersonCreationAtt> {

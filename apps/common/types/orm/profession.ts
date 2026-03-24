@@ -1,9 +1,9 @@
 import { TPersonEntity, TProfessionEntity } from "../entity";
 
-// Тип для создания профессии
-export interface TProfessionCreationAtt extends Pick<TProfessionEntity, "name"> {}
+/** Атрибуты для Sequelize.create профессии. */
+export type TProfessionCreationAtt = Pick<TProfessionEntity, "name">;
 
-// Тип для Sequelize модели (расширяет базовый интерфейс)
-export interface TProfessionOrmModel extends TProfessionEntity {
+/** Sequelize-тип профессии с опционально загруженными связями. */
+export type TProfessionOrmModel = TProfessionEntity & {
   persons?: TPersonEntity[]; // Связи Sequelize
-}
+};

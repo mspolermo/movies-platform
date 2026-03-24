@@ -1,3 +1,6 @@
+import type { TGenreCreationAtt, TGenreOrmModel } from "@common/types/orm";
+
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsToMany,
   Column,
@@ -5,10 +8,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Film } from "../films/films.model";
+
 import { FilmGenre } from "../films/filmGenre";
-import { ApiProperty } from "@nestjs/swagger";
-import { TGenreCreationAtt, TGenreOrmModel } from "@common/types";
+import { Film } from "../films/films.model";
 
 @Table({ tableName: "Genre", timestamps: false })
 export class Genre extends Model<TGenreOrmModel, TGenreCreationAtt> {

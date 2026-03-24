@@ -1,3 +1,5 @@
+import type { TRoleOrmModel, TRoleCreationAtt } from "@common/types/orm";
+
 import {
   BelongsToMany,
   Column,
@@ -5,9 +7,10 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { User } from "../users/users.model";
+
 import { UserRoles } from "./user-role";
-import { TRoleOrmModel, TRoleCreationAtt } from "@common/types";
 
 @Table({ tableName: "roles" })
 export class Role extends Model<TRoleOrmModel, TRoleCreationAtt> {

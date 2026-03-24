@@ -1,16 +1,17 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+
 import { AppController } from "./app.controller";
-import { JwtConfigModule } from "./jwt";
 import { AuthModule } from "./auth";
-import { FilmsModule } from "./films";
-import { PersonsModule } from "./persons";
-import { GenresModule } from "./genres";
 import { CommentsModule } from "./comments";
-import { SearchModule } from "./search";
-import { FiltersModule } from "./filters";
 import { CountriesModule } from "./countries";
+import { FilmsModule } from "./films";
+import { FiltersModule } from "./filters";
+import { GenresModule } from "./genres";
+import { JwtConfigModule } from "./jwt";
+import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
+import { SearchModule } from "./search";
 
 @Module({
   imports: [

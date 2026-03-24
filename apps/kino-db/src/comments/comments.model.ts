@@ -1,3 +1,6 @@
+import type { TCommentCreationAtt, TCommentOrmModel } from "@common/types/orm";
+
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsTo,
   Column,
@@ -6,9 +9,8 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { Film } from "../films/films.model";
-import { ApiProperty } from "@nestjs/swagger";
-import { TCommentCreationAtt, TCommentOrmModel } from "@common/types";
 
 @Table({ tableName: "Comment", timestamps: false })
 export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
@@ -42,6 +44,7 @@ export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
 
   @ApiProperty({ description: "дата создания комента" })
   @Column({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PG literal не в типах Sequelize
     type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any,
     defaultValue: DataType.NOW,
     allowNull: false,

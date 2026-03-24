@@ -5,12 +5,13 @@ import type {
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
+//TODO: параметры запроса из common/request - сделать на эндпойнте также
+
 /**
  * Получить персону по ID
  */
 export const getPersonById = async (
-  id: number,
-  params: Omit<TGetPersonByIdRequest, 'id'> = {}
+  params: TGetPersonByIdRequest
 ): Promise<TPersonDetailsResponse> => {
   const queryParams: Record<string, number> = {};
   if (typeof params.filmsLimit === 'number') {
@@ -20,8 +21,11 @@ export const getPersonById = async (
     queryParams.filmsOffset = params.filmsOffset;
   }
 
-  const response = await apiClient.get(API_ENDPOINTS.PERSONS.BY_ID(id), {
-    params: queryParams,
-  });
+  const response = await apiClient.get<TPersonDetailsResponse>(
+    API_ENDPOINTS.PERSONS.BY_ID(params.id),
+    {
+      params: queryParams,
+    }
+  );
   return response.data;
 };

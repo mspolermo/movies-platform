@@ -4,12 +4,15 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { User } from "./users.model";
-import { RolesService } from "../roles/roles.service";
-import * as bcrypt from "bcryptjs";
 import { JwtService } from "@nestjs/jwt";
+import { InjectModel } from "@nestjs/sequelize";
+import * as bcrypt from "bcryptjs";
+
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
+
+import { RolesService } from "../roles/roles.service";
+
+import { User } from "./users.model";
 
 @Injectable()
 export class UsersService {

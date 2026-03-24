@@ -1,4 +1,9 @@
-export type { TFilmSortBy, TSearchFilmsParams } from "./film";
+export type {
+  TFilmSortBy,
+  TGetFilmPersonsByProfessionRequest,
+  TGetFilmProfessionsRequest,
+  TSearchFilmsParams,
+} from "./film";
 export type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,

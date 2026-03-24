@@ -1,15 +1,4 @@
-import {
-  Injectable,
-  OnModuleInit,
-  ConflictException,
-  UnauthorizedException,
-} from "@nestjs/common";
-import { ClientProxy } from "@nestjs/microservices";
-import { firstValueFrom } from "rxjs";
-import { ConfigService } from "@nestjs/config";
-import { JwtService } from "@nestjs/jwt";
-import { ServiceError } from "./interfaces";
-import {
+import type {
   TAuthResponse,
   TAuthorizedUserResponse,
   TCheckTokenResponse,
@@ -17,10 +6,28 @@ import {
   TRegistrationResponse,
   TRoleResponse,
   TJwtUserRequest,
-  TUserOrmModel,
 } from "@common/types";
-import { RabbitMQConfig } from "../config";
+import type { TUserOrmModel } from "@common/types/orm";
+
+import {
+  Injectable,
+  OnModuleInit,
+  ConflictException,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
+import { ClientProxy } from "@nestjs/microservices";
+import { firstValueFrom } from "rxjs";
+
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
+import { authUsersRpc } from "@common/messaging";
+
+import { RabbitMQConfig } from "../config";
+
+import { ServiceError } from "./interfaces";
+
+
 
 const mapRoles = (roles?: TUserOrmModel["roles"]): TRoleResponse[] =>
   (roles ?? []).map(({ id, value, description }) => ({
@@ -56,7 +63,7 @@ export class AuthService implements OnModuleInit {
   async registrationUser(dto: CreateUserDto): Promise<TRegistrationResponse> {
     try {
       const { user, token } = await firstValueFrom(
-        this.clientUsers.send("registration", dto)
+        this.clientUsers.send(authUsersRpc.users.registration, dto)
       );
       return {
         user: mapAuthorizedUser(user),
@@ -96,7 +103,7 @@ export class AuthService implements OnModuleInit {
   ): Promise<TRegistrationResponse> {
     try {
       const { user, token } = await firstValueFrom(
-        this.clientUsers.send("outRegistration", dto)
+        this.clientUsers.send(authUsersRpc.users.outRegistration, dto)
       );
       return {
         user: mapAuthorizedUser(user),
@@ -125,7 +132,7 @@ export class AuthService implements OnModuleInit {
   async loginUser(dto: AuthDto): Promise<TAuthResponse> {
     try {
       const { user, token } = await firstValueFrom(
-        this.clientUsers.send("login", dto)
+        this.clientUsers.send(authUsersRpc.users.login, dto)
       );
       return {
         email: user.email,

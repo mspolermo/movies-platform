@@ -1,6 +1,10 @@
+import type { TUserOrmModel } from "@common/types/orm";
+
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import type { TUserOrmModel } from "@common/types";
+
+import { authUsersRpc } from "@common/messaging";
+
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -11,7 +15,7 @@ export class UserRolesService extends BaseMicroserviceService {
 
   async getUserWithRoles(userId: number): Promise<TUserOrmModel> {
     try {
-      return this.sendMessage("getUserById", userId);
+      return this.sendMessage(authUsersRpc.users.getById, userId);
     } catch (error) {
       console.error("❌ Ошибка получения ролей пользователя:", error);
       throw error;

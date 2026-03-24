@@ -1,9 +1,9 @@
 import { TFactEntity, TFilmEntity } from "../entity";
 
-// Тип для создания факта
-export interface TFactCreationAtt extends Pick<TFactEntity, "value" | "type" | "spoiler" | "filmId"> {}
+/** Атрибуты для Sequelize.create факта. */
+export type TFactCreationAtt = Pick<TFactEntity, "value" | "type" | "spoiler" | "filmId">;
 
 /** Sequelize-тип факта с опционально загруженной связью фильма. */
-export interface TFactOrmModel extends TFactEntity {
+export type TFactOrmModel = TFactEntity & {
   film?: TFilmEntity;
-}
+};

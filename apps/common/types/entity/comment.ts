@@ -1,5 +1,5 @@
 /** Доменная сущность комментария с полями, которые реально хранятся в таблице. */
-export interface TCommentEntity {
+export type TCommentEntity = {
   id: number;
   header: string;
   value: string;

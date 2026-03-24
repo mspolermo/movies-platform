@@ -1,13 +1,14 @@
 import { Module } from "@nestjs/common";
-import { SequelizeModule } from "@nestjs/sequelize";
 import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
-import { UsersModule } from "./users/users.module";
-import { User } from "./users/users.model";
-import { RolesModule } from "./roles/roles.module";
-import { Role } from "./roles/roles.model";
-import { UserRoles } from "./roles/user-role";
+import { SequelizeModule } from "@nestjs/sequelize";
+
 import { HealthController } from "./health.controller";
+import { Role } from "./roles/roles.model";
+import { RolesModule } from "./roles/roles.module";
+import { UserRoles } from "./roles/user-role";
+import { User } from "./users/users.model";
+import { UsersModule } from "./users/users.module";
 
 @Module({
   providers: [],

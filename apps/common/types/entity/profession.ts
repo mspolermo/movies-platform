@@ -1,5 +1,5 @@
 /** Доменная сущность профессии с полями таблицы. */
-export interface TProfessionEntity {
+export type TProfessionEntity = {
   id: number;
   name: string;
-}
+};

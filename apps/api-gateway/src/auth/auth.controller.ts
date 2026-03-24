@@ -1,3 +1,10 @@
+import type {
+  TAuthResponse,
+  TCheckTokenResponse,
+  TRefreshTokenResponse,
+  TRegistrationResponse,
+} from "@common/types";
+
 import {
   Body,
   Controller,
@@ -8,11 +15,14 @@ import {
   UsePipes,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { AuthService } from "./auth.service";
+
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
-import { ValidationPipe } from "../shared/pipes";
+
 import { JwtAuthGuard, Public } from "../shared/guards";
 import { AuthenticatedRequest } from "../shared/interfaces";
+import { ValidationPipe } from "../shared/pipes";
+
+import { AuthService } from "./auth.service";
 
 @Controller("auth")
 export class AuthController {
@@ -23,7 +33,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: "Пользователь зарегистрирован" })
   @UsePipes(ValidationPipe)
   @Post("/registration")
-  async registrationUser(@Body() dto: CreateUserDto) {
+  async registrationUser(@Body() dto: CreateUserDto): Promise<TRegistrationResponse> {
     return await this.authService.registrationUser(dto);
   }
 
@@ -32,7 +42,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: "OAuth регистрация" })
   @UsePipes(ValidationPipe)
   @Post("/outRegistration")
-  async outRegistrationUser(@Body() dto: OauthCreateUserDto) {
+  async outRegistrationUser(@Body() dto: OauthCreateUserDto): Promise<TRegistrationResponse> {
     return await this.authService.outRegistrationUser(dto);
   }
 
@@ -41,7 +51,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: "Пользователь авторизован" })
   @UsePipes(ValidationPipe)
   @Post("/login")
-  async loginUser(@Body() dto: AuthDto) {
+  async loginUser(@Body() dto: AuthDto): Promise<TAuthResponse> {
     return await this.authService.loginUser(dto);
   }
 
@@ -50,7 +60,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @UseGuards(JwtAuthGuard)
   @Get("/checkToken")
-  async checkToken(@Req() req: AuthenticatedRequest) {
+  async checkToken(@Req() req: AuthenticatedRequest): Promise<TCheckTokenResponse> {
     return await this.authService.checkToken(req.user);
   }
 
@@ -59,7 +69,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @UseGuards(JwtAuthGuard)
   @Post("/refresh")
-  async refreshToken(@Req() req: AuthenticatedRequest) {
+  async refreshToken(@Req() req: AuthenticatedRequest): Promise<TRefreshTokenResponse> {
     return await this.authService.refreshToken(req.user);
   }
 }

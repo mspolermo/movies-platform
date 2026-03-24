@@ -17,15 +17,15 @@ TFilmEntity,
 >;
 
 /** Ответ API для пагинированного списка персон. */
-export interface TPaginatedPersonsResponse {
+export type TPaginatedPersonsResponse = {
   items: TPersonListItemResponse[];
   total: number;
   hasMore: boolean;
-}
+};
 
 /** Ответ API для детальной информации о персоне. */
-export interface TPersonDetailsResponse extends TPersonListItemResponse {
+export type TPersonDetailsResponse = TPersonListItemResponse & {
   professions?: TPersonProfessionResponse[];
   films?: TPersonFilmographyItemResponse[];
   filmsTotal?: number;
-}
+};

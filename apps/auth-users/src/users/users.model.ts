@@ -1,3 +1,6 @@
+import type { TUserOrmModel, TUserCreationAtt } from "@common/types/orm";
+
+import { ApiProperty } from "@nestjs/swagger";
 import {
   BelongsToMany,
   Column,
@@ -5,10 +8,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
+
 import { Role } from "../roles/roles.model";
 import { UserRoles } from "../roles/user-role";
-import { ApiProperty } from "@nestjs/swagger";
-import { TUserOrmModel, TUserCreationAtt } from "@common/types";
 
 @Table({ tableName: "users" })
 export class User extends Model<TUserOrmModel, TUserCreationAtt> {

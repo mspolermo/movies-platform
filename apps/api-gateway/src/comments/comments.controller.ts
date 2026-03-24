@@ -1,3 +1,5 @@
+import type { TCommentResponse, TCommentsTreeResponse } from "@common/types";
+
 import {
   Controller,
   Get,
@@ -9,12 +11,14 @@ import {
   Req,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { CommentsService } from "./comments.service";
+
 import { CommentDTO } from "@common/dto";
-import { TCommentResponse, TCommentsTreeResponse } from "@common/types";
-import { ValidationPipe } from "../shared/pipes";
+
 import { JwtAuthGuard } from "../shared/guards";
 import { AuthenticatedRequest } from "../shared/interfaces";
+import { ValidationPipe } from "../shared/pipes";
+
+import { CommentsService } from "./comments.service";
 
 @Controller("comments")
 @UseGuards(JwtAuthGuard) // Защищаем весь контроллер

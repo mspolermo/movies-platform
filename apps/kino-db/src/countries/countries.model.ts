@@ -1,3 +1,5 @@
+import type { TCountryCreationAtt, TCountryOrmModel } from "@common/types/orm";
+
 import {
   BelongsToMany,
   Column,
@@ -5,9 +7,9 @@ import {
   Model,
   Table,
 } from "sequelize-typescript";
-import { Film } from "../films/films.model";
+
 import { FilmCountry } from "../films/filmCountry";
-import { TCountryCreationAtt, TCountryOrmModel } from "@common/types";
+import { Film } from "../films/films.model";
 
 @Table({ tableName: "Country", timestamps: false })
 export class Country extends Model<TCountryOrmModel, TCountryCreationAtt> {

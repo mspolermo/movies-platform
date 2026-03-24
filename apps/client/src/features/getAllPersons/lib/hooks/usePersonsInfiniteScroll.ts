@@ -45,7 +45,7 @@ export const usePersonsInfiniteScroll = ({
 
       try {
         const response: TPaginatedPersonsResponse =
-          await getAllPersonsPaginated(page, limit);
+          await getAllPersonsPaginated({ page, limit });
 
         if (reset) {
           setPersons(response.items);
