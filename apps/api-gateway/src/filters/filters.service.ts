@@ -2,8 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TFiltersResult } from "./dto";
 import {
-  TCountryListItemResponse,
-  TGenreListItemResponse,
+  TCountryItemResponse,
+  TGenreItemResponse,
   TQuickFiltersResponse,
 } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
@@ -20,8 +20,8 @@ export class FiltersService extends BaseMicroserviceService {
 
   async getFilters(): Promise<TFiltersResult> {
     const [genres, countries, years] = await Promise.all([
-      this.sendMessage<TGenreListItemResponse[]>("getAll.genres", ""),
-      this.sendMessage<TCountryListItemResponse[]>("getAll.countries", ""),
+      this.sendMessage<TGenreItemResponse[]>("getAll.genres", ""),
+      this.sendMessage<TCountryItemResponse[]>("getAll.countries", ""),
       this.sendMessage<number[]>("getAllFilmYears", ""),
     ]);
 
@@ -34,8 +34,8 @@ export class FiltersService extends BaseMicroserviceService {
 
   async getQuickFilters(): Promise<TQuickFiltersResponse> {
     const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
-      this.sendMessage<TGenreListItemResponse[]>("getAll.genres", ""),
-      this.sendMessage<TCountryListItemResponse[]>("getAll.countries", ""),
+      this.sendMessage<TGenreItemResponse[]>("getAll.genres", ""),
+      this.sendMessage<TCountryItemResponse[]>("getAll.countries", ""),
       this.sendMessage<number[]>("getAllFilmYears", ""),
     ]);
 

@@ -1,13 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Genre } from "./genres.model";
-import { TGenreListResponse } from "@common/types";
+import { TGenreItemResponse } from "@common/types";
 
 @Injectable()
 export class GenresService {
   constructor(@InjectModel(Genre) private genreRepository: typeof Genre) {}
 
-  async getAllGenres(): Promise<TGenreListResponse> {
+  async getAllGenres(): Promise<TGenreItemResponse[]> {
     const genres = await this.genreRepository.findAll({
       attributes: ["nameRu", "nameEn"],
       order: [["nameRu", "ASC"]],

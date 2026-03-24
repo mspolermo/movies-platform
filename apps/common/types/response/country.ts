@@ -1,10 +1,4 @@
-import type { TCountryEntity } from "../country";
+import type { TCountryEntity } from "../entity";
 
 /** Элемент ответа списка стран для страниц и селекторов без DB-идентификатора. */
-export type TCountryListItemResponse = Pick<
-  TCountryEntity,
-  "countryName" | "countryNameEn"
->;
-
-/** Ответ API для списка стран. */
-export type TCountryListResponse = TCountryListItemResponse[];
+export type TCountryItemResponse = Pick<TCountryEntity, "countryName" | "countryNameEn">;

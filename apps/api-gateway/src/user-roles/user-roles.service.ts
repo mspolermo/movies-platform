@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TUserBased } from "@common/types";
+import type { TUserOrmModel } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class UserRolesService extends BaseMicroserviceService {
     super(configService, "User Roles Service", "auth-users");
   }
 
-  async getUserWithRoles(userId: number): Promise<TUserBased> {
+  async getUserWithRoles(userId: number): Promise<TUserOrmModel> {
     try {
       return this.sendMessage("getUserById", userId);
     } catch (error) {

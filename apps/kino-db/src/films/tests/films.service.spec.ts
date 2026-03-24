@@ -48,7 +48,6 @@ describe("FilmsService", () => {
     top10: 1,
     top250: 1,
     premiereWorldDate: new Date("2023-05-10T16:34:56.833Z"),
-    createdAt: new Date("2023-05-10T16:34:56.833Z"),
     persons: [],
     countries: [{ countryName: "США", countryNameEn: "USA" }],
     genres: [
@@ -59,23 +58,12 @@ describe("FilmsService", () => {
     comments: [],
   };
 
-  const mockUpdateDto = {
-    filmNameEn: "Updated Film Name En",
-    filmNameRu: "Updated Film Name Ru",
-  };
-
   const mockFilmsRepository = {
     findAll: jest.fn().mockResolvedValue(mockFilm),
     findAndCountAll: jest
       .fn()
       .mockResolvedValue({ rows: [mockFilm], count: 1 }),
     findByPk: jest.fn().mockResolvedValue(mockFilm.id),
-    update: jest
-      .fn()
-      .mockResolvedValue(mockFilm.id)
-      .mockResolvedValue(mockUpdateDto),
-    destroy: jest.fn().mockResolvedValue(mockFilm.id),
-    findOne: jest.fn().mockResolvedValue(mockFilm),
   };
 
   beforeEach(async () => {
@@ -98,103 +86,6 @@ describe("FilmsService", () => {
 
   it("should be defined", () => {
     expect(service).toBeDefined();
-  });
-
-  describe("getAllFilms", () => {
-    it("should return all films from the repository", async () => {
-      mockFilmsRepository.findAll.mockResolvedValue(mockFilm);
-
-      const result = await service.getAllFilms();
-
-      expect(mockFilmsRepository.findAll).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(mockFilm);
-    });
-  });
-
-  describe("updateFilm", () => {
-    it("should update the film with the provided id and DTO", async () => {
-      mockFilmsRepository.findByPk.mockResolvedValue(mockFilm);
-
-      await service.updateFilm(mockFilm.id, mockUpdateDto);
-
-      expect(mockFilmsRepository.findByPk).toHaveBeenCalledTimes(1);
-      expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(mockFilm.id);
-      expect(mockFilmsRepository.update).toHaveBeenCalledTimes(1);
-      expect(mockFilmsRepository.update).toHaveBeenCalledWith(
-        {
-          filmNameEn: mockUpdateDto.filmNameEn,
-          filmNameRu: mockUpdateDto.filmNameRu,
-        },
-        { where: { id: mockFilm.id } }
-      );
-    });
-
-    it("should throw an error if the film with the provided id is not found", async () => {
-      const filmId = 1;
-      const updateDto = {
-        filmNameEn: "Updated Film Name En",
-        filmNameRu: "Updated Film Name Ru",
-      };
-
-      mockFilmsRepository.findByPk.mockResolvedValue(null);
-
-      await expect(service.updateFilm(filmId, updateDto)).rejects.toThrowError(
-        `Film with id ${filmId} not found`
-      );
-
-      expect(mockFilmsRepository.findByPk).toHaveBeenCalledTimes(1);
-      expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(filmId);
-      expect(mockFilmsRepository.update).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("deleteFilm", () => {
-    it("should delete the film with the provided id", async () => {
-      jest.spyOn(mockFilmsRepository, "findByPk").mockResolvedValue(mockFilm);
-      jest.spyOn(mockFilmsRepository, "destroy").mockResolvedValue(null);
-
-      await service.deleteFilm(mockFilm.id);
-
-      expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(mockFilm.id);
-      expect(mockFilmsRepository.destroy).toHaveBeenCalledWith({
-        where: { id: mockFilm.id },
-      });
-    });
-
-    it("should throw an error if the film with the provided id is not found", async () => {
-      jest.spyOn(mockFilmsRepository, "findByPk").mockResolvedValue(null);
-
-      await expect(service.deleteFilm(mockFilm.id)).rejects.toThrow(
-        `Film with id ${mockFilm.id} not found`
-      );
-    });
-  });
-
-  describe("getFilmByName", () => {
-    it("should return the film with the provided name", async () => {
-      const name = "Film Title";
-
-      jest.spyOn(mockFilmsRepository, "findOne").mockResolvedValue(mockFilm);
-
-      const result = await service.getFilmByName(name);
-
-      expect(mockFilmsRepository.findOne).toHaveBeenCalledWith({
-        where: {
-          [Op.or]: [{ filmNameRu: name }, { filmNameEn: name }],
-        },
-      });
-      expect(result).toEqual(mockFilm);
-    });
-
-    it("should throw an error if the film with the provided name is not found", async () => {
-      const name = "Nonexistent Film";
-
-      jest.spyOn(mockFilmsRepository, "findOne").mockResolvedValue(null);
-
-      await expect(service.getFilmByName(name)).rejects.toThrow(
-        `Film with name ${name} not found`
-      );
-    });
   });
 
   describe("searchFilmsByName", () => {
@@ -255,7 +146,7 @@ describe("FilmsService", () => {
       const mockPersons = ["Tom Cruise", "Brad Pitt"];
       const mockMinRatingKp = 7;
       const mockMinVotesKp = 1000;
-      const mockSortBy = "rating";
+      const mockSortBy = "rating" as const;
       const mockYear = 2022;
 
       jest
@@ -327,7 +218,13 @@ describe("FilmsService", () => {
         distinct: true,
         col: "id",
       });
-      expect(result).toEqual({ films: [expectedFilmCard], total: 1 });
+      expect(result).toEqual({
+        films: [expectedFilmCard],
+        total: 1,
+        page: mockPage,
+        perPage: mockPerPage,
+        hasMore: false,
+      });
     });
 
     it("should include popularity sort field in attributes without leaking it to response", async () => {
@@ -372,7 +269,13 @@ describe("FilmsService", () => {
         distinct: true,
         col: "id",
       });
-      expect(result).toEqual({ films: [expectedFilmCard], total: 1 });
+      expect(result).toEqual({
+        films: [expectedFilmCard],
+        total: 1,
+        page: 1,
+        perPage: 20,
+        hasMore: false,
+      });
     });
   });
 

@@ -1,5 +1,5 @@
-import type { TCountryListItemResponse } from '@common/types';
+import type { TCountryItemResponse } from '@common/types';
 
 export type TCountryCardProps = {
-  country: TCountryListItemResponse;
+  country: TCountryItemResponse;
 };

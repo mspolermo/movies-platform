@@ -1,8 +1,8 @@
-import { UsersService } from "./users.service";
+import { UsersService } from "../users.service";
 import { Test, TestingModule } from "@nestjs/testing";
 import { getModelToken } from "@nestjs/sequelize";
-import { User } from "./users.model";
-import { RolesService } from "../roles/roles.service";
+import { User } from "../users.model";
+import { RolesService } from "../../roles/roles.service";
 import { JwtService } from "@nestjs/jwt";
 import {
   HttpException,
@@ -93,7 +93,7 @@ describe("UsersService", () => {
 
   describe("generateToken", () => {
     it("should generate a token for the user", async () => {
-      const result = await service.generateToken(mockUser as User);
+      const result = await service.generateToken(mockUser as unknown as User);
 
       expect(mockJwtService.signAsync).toHaveBeenCalledWith({
         sub: mockUser.id,
@@ -106,7 +106,7 @@ describe("UsersService", () => {
   describe("validateUser", () => {
     it("should return the user if email and password are correct", async () => {
       jest.spyOn(mockUsersRepository, "findOne").mockResolvedValue(mockUser);
-      jest.spyOn(bcrypt, "compare").mockResolvedValue(true);
+      jest.spyOn(bcrypt, "compare").mockImplementation(async () => true);
 
       const result = await service.validateUser(mockAuthDto);
 
@@ -136,7 +136,9 @@ describe("UsersService", () => {
 
   describe("login", () => {
     it("should return user and token if login is successful", async () => {
-      jest.spyOn(service, "validateUser").mockResolvedValue(mockUser as User);
+      jest
+        .spyOn(service, "validateUser")
+        .mockResolvedValue(mockUser as unknown as User);
       jest
         .spyOn(service, "generateToken")
         .mockResolvedValue({ token: "your-token-value" });
@@ -169,7 +171,7 @@ describe("UsersService", () => {
     it('should create a new user with "USER" role if no user with the same email exists', async () => {
       mockUsersRepository.findOne.mockResolvedValue(null);
       jest.spyOn(service, "createUserWithRole").mockResolvedValue({
-        user: mockUser as User,
+        user: mockUser as unknown as User,
         token: { token: "your-token-value" },
       });
 
@@ -212,7 +214,7 @@ describe("UsersService", () => {
     it('should create a new user with "USER" role if no user with the same email exists', async () => {
       mockUsersRepository.findOne.mockResolvedValue(null);
       jest.spyOn(service, "createUserWithRole").mockResolvedValue({
-        user: mockUser as User,
+        user: mockUser as unknown as User,
         token: { token: "your-token-value" },
       });
 
@@ -235,7 +237,7 @@ describe("UsersService", () => {
     it("should login the user if a user with the same email already exists", async () => {
       mockUsersRepository.findOne.mockResolvedValue(mockUser);
       jest.spyOn(service, "login").mockResolvedValue({
-        user: mockUser as User,
+        user: mockUser as unknown as User,
         token: { token: "your-token-value" },
       });
       jest.spyOn(service, "createUserWithRole");

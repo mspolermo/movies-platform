@@ -1,5 +1,5 @@
 import type { TAllCreatorsViewerProps } from '../../models';
-import type { TProfessionBased } from '@common/types';
+import type { TProfessionItemResponse } from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
@@ -24,7 +24,7 @@ export const useAllCreatorsView = ({
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [professions, setProfessions] = useState<TProfessionBased[]>([]);
+  const [professions, setProfessions] = useState<TProfessionItemResponse[]>([]);
   const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
     null
   );

@@ -56,7 +56,7 @@ export const useProfessionPersons = ({
 
       try {
         const response: TPaginatedPersonsResponse =
-          await getPersonsByProfession(professionId, page, limit);
+          await getPersonsByProfession({ professionId, page, limit });
 
         if (reset) {
           setPersons(response.items);

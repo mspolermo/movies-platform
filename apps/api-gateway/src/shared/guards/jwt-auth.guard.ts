@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
 import { JwtService } from "@nestjs/jwt";
 import { AUTH_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
-import { TUserBased } from "@common/types";
+import type { TJwtUserRequest } from "@common/types";
 import { IS_PUBLIC_KEY } from "./public.decorator";
 
 interface JWTError extends Error {
@@ -88,7 +88,7 @@ export class JwtAuthGuard implements CanActivate {
       }
 
       // Создаем объект пользователя без ролей (роли будут получены позже)
-      const user: TUserBased = {
+      const user: TJwtUserRequest = {
         id: tokenPayload.sub,
         email: tokenPayload.email,
       };

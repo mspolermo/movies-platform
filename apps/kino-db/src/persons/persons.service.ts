@@ -1,15 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Person } from "./persons.model";
-import { ProfessionsService } from "../professions/professions.service";
 import {
   TPaginatedPersonsResponse,
   TPersonDetailsResponse,
   TPersonListItemResponse,
-} from "@common/types";
-import {
-  TProfessionModel,
-  TProfessionBased,
 } from "@common/types";
 import { Profession } from "../professions/professions.model";
 import { Op } from "sequelize";
@@ -17,24 +12,8 @@ import { Op } from "sequelize";
 @Injectable()
 export class PersonsService {
   constructor(
-    @InjectModel(Person) private personRepository: typeof Person,
-    private professionService: ProfessionsService
+    @InjectModel(Person) private personRepository: typeof Person
   ) {}
-
-  async getAllPersons(): Promise<TPersonListItemResponse[]> {
-    const persons = await this.personRepository.findAll({
-      include: [
-        {
-          model: Profession,
-          attributes: [],
-          through: { attributes: [] },
-        },
-      ],
-      attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
-      limit: 10
-    });
-    return persons;
-  }
 
   async getAllPersonsPaginated(
     page: number = 1,
@@ -207,41 +186,4 @@ export class PersonsService {
     };
   }
 
-  async createPerson(dto: { photoUrl: string; nameRu: string; nameEn: string; professions?: TProfessionBased[] }): Promise<Person> {
-    const person = await this.personRepository.create(dto);
-    if (dto.professions && dto.professions.length > 0) {
-      const professionsNames = dto.professions.map((p: TProfessionBased) => p.name);
-      const professions = await this.professionService.findProfessionByName(
-        professionsNames
-      );
-      if (professions.some(p => p === null)) {
-        throw new Error("One or more professions not found");
-      }
-      const professionIds = professions.map((p: TProfessionModel) => p.id);
-      await person.$set("professions", professionIds);
-      // Приводим к правильному типу для Sequelize модели
-      person.professions = professions as Profession[];
-    }
-    return person;
-  }
-
-  async createManyPersons(dtos: { photoUrl: string; nameRu: string; nameEn: string; professions?: TProfessionBased[] }[]): Promise<Person[]> {
-    const persons = await this.personRepository.bulkCreate(dtos);
-    if (dtos.some((dto) => dto.professions && dto.professions.length > 0)) {
-      const professionsNames = dtos.flatMap((p) =>
-        p.professions?.map((pr: TProfessionBased) => pr.name) || []
-      );
-      const professions = await this.professionService.findProfessionByName(
-        professionsNames
-      );
-      if (professions.some(p => p === null)) {
-        throw new Error("One or more professions not found");
-      }
-      const professionIds = professions.map((p: TProfessionModel) => p.id);
-      for (const person of persons) {
-        await person.$set("professions", professionIds);
-      }
-    }
-    return persons;
-  }
 }

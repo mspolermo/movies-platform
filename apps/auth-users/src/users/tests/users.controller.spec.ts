@@ -1,7 +1,17 @@
-import { UsersController } from "./users.controller";
+import { UsersController } from "../users.controller";
 import { Test, TestingModule } from "@nestjs/testing";
-import { UsersService } from "./users.service";
+import { UsersService } from "../users.service";
 import { HttpException, HttpStatus } from "@nestjs/common";
+
+jest.mock(
+  "@common/dto",
+  () => ({
+    AuthDto: class {},
+    CreateUserDto: class {},
+    OauthCreateUserDto: class {},
+  }),
+  { virtual: true }
+);
 
 describe("UsersController", () => {
   let controller: UsersController;

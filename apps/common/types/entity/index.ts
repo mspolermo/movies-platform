@@ -1,0 +1,9 @@
+export type { TCountryEntity } from './country';
+export type { TFactEntity } from './fact';
+export type { TFilmEntity } from './film';
+export type { TGenreEntity } from './genre';
+export type { TProfessionEntity } from './profession';
+export type { TPersonEntity } from './person';
+export type { TCommentEntity } from './comment';
+export type { TRoleEntity } from './role';
+export type { TUserEntity } from './user';

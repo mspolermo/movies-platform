@@ -11,10 +11,10 @@ import { Film } from "../films/films.model";
 import { FilmPerson } from "../films/filmPerson";
 import { ApiProperty } from "@nestjs/swagger";
 
-import { TPersonCreationAtt, TPersonModel } from "@common/types";
+import { TPersonCreationAtt, TPersonOrmModel } from "@common/types";
 
 @Table({ tableName: "Person", timestamps: false })
-export class Person extends Model<TPersonModel, TPersonCreationAtt> {
+export class Person extends Model<TPersonOrmModel, TPersonCreationAtt> {
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,

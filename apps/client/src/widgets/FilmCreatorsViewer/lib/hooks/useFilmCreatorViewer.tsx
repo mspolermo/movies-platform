@@ -1,4 +1,4 @@
-import type { TProfessionBased } from '@common/types';
+import type { TProfessionItemResponse } from '@common/types';
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -16,9 +16,9 @@ import { getFilmProfessions } from '@/entities/profession';
 export const useFilmCreatorViewer = () => {
   const params = useParams();
   const filmId = Number(params?.id);
-  const [filmProfessions, setFilmProfessions] = useState<TProfessionBased[]>(
-    []
-  );
+  const [filmProfessions, setFilmProfessions] = useState<
+    TProfessionItemResponse[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
     null

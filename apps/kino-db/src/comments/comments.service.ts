@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Comment } from "./comments.model";
-import { TCommentBased } from "@common/types";
-import { CommentDTO } from "@common/dto";;
+import { TCommentResponse, TCommentsTreeResponse } from "@common/types";
+import { CommentDTO } from "@common/dto";
 
 @Injectable()
 export class CommentsService {
@@ -10,7 +10,7 @@ export class CommentsService {
     @InjectModel(Comment) private commentRepository: typeof Comment
   ) {}
 
-  async createComment(userId: number, filmId: number, dto: CommentDTO): Promise<TCommentBased> {
+  async createComment(userId: number, filmId: number, dto: CommentDTO): Promise<TCommentResponse> {
     const comment = await this.commentRepository.create({
       header: dto.header,
       value: dto.value,
@@ -22,17 +22,17 @@ export class CommentsService {
     return comment;
   }
 
-  async getAllCommentsByFilmId(id: number): Promise<TCommentBased[][] | null> {
+  async getAllCommentsByFilmId(id: number): Promise<TCommentsTreeResponse | null> {
     const comments = await this.commentRepository.findAll({
       where: {
         filmId: id,
       },
     });
 
-    const sorting: TCommentBased[][] = [];
+    const sorting: TCommentsTreeResponse = [];
 
     for (let i = 0; i < comments.length; i++) {
-      const childrenComments: TCommentBased[] = [];
+      const childrenComments: TCommentResponse[] = [];
 
       if (comments[i].parentId === null) {
         for (let j = 0; j < comments.length; j++) {

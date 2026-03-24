@@ -1,4 +1,4 @@
-import type { TProfessionBased } from '@common/types';
+import type { TProfessionItemResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -6,7 +6,9 @@ import apiClient, { API_ENDPOINTS } from '@/shared/api';
  * Получить все существующие профессии
  * @returns Массив профессий
  */
-export const getAllProfessions = async (): Promise<TProfessionBased[]> => {
+export const getAllProfessions = async (): Promise<
+  TProfessionItemResponse[]
+> => {
   const response = await apiClient.get(API_ENDPOINTS.PROFESSIONS.LIST);
   return Array.isArray(response.data) ? response.data : [];
 };

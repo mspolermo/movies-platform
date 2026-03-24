@@ -1,4 +1,4 @@
-import type { TProfessionBased } from '@common/types';
+import type { TProfessionItemResponse } from '@common/types';
 
 import type { RefObject, MouseEvent } from 'react';
 
@@ -23,7 +23,7 @@ type UseScrollArrowsResult = {
  * Отслеживает возможность скролла, положение активного элемента,
  * а также зону ховера слева/справа для показа стрелок.
  *
- * @param {TProfessionBased[]} professions — список профессий, отображаемых в табах.
+ * @param {TProfessionItemResponse[]} professions — список профессий, отображаемых в табах.
  * @param {number | null} activeProfessionId — id активной профессии, для которой нужно прокрутить табы.
  *
  * @returns {UseScrollArrowsResult} Набор ссылок, состояний и обработчиков
@@ -42,7 +42,7 @@ type UseScrollArrowsResult = {
  * @property {() => void} scrollToActive — автоматическая прокрутка к активному табу.
  */
 export const useScrollArrows = (
-  professions: TProfessionBased[],
+  professions: TProfessionItemResponse[],
   activeProfessionId: number | null
 ): UseScrollArrowsResult => {
   const containerRef = useRef<HTMLDivElement | null>(null);

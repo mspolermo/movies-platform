@@ -1,4 +1,7 @@
-import type { TPaginatedPersonsResponse } from '@common/types';
+import type {
+  TGetPersonsRequest,
+  TPaginatedPersonsResponse,
+} from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -9,11 +12,9 @@ export const getAllPersonsPaginated = async (
   page: number = 1,
   limit: number = 20
 ): Promise<TPaginatedPersonsResponse> => {
+  const request: TGetPersonsRequest = { page, limit };
   const response = await apiClient.get(API_ENDPOINTS.PERSONS.LIST, {
-    params: {
-      page,
-      limit,
-    },
+    params: request,
   });
   return response.data;
 };

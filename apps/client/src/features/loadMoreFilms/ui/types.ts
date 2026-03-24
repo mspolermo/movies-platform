@@ -1,10 +1,10 @@
-import type { TFilmCardResponse, TSearchFilmsParams } from '@common/types';
+import type { TFilmListItemResponse, TSearchFilmsParams } from '@common/types';
 
 import type { ReactNode } from 'react';
 
 export interface LoadMoreFilmsProps {
   children: (
-    films: TFilmCardResponse[],
+    films: TFilmListItemResponse[],
     loading: boolean,
     error: string | null
   ) => ReactNode;

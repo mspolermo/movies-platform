@@ -1,6 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import {
+  TFindPersonsByNameAndProfessionRequest,
+  TGetPersonByIdRequest,
+  TGetPersonsRequest,
   TPaginatedPersonsResponse,
   TPersonDetailsResponse,
   TPersonListItemResponse,
@@ -13,31 +16,21 @@ export class PersonsService extends BaseMicroserviceService {
     super(configService, "Persons Service");
   }
 
-  async getAllPersons(): Promise<TPersonListItemResponse[]> {
-    return this.sendMessage("getAllPersons", {});
-  }
-
   async getAllPersonsPaginated(
-    page?: number,
-    limit?: number
+    params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage("getAllPersonsPaginated", { page, limit });
+    return this.sendMessage("getAllPersonsPaginated", params);
   }
 
   async getPersonById(
-    id: number,
-    options: { filmsLimit?: number; filmsOffset?: number } = {}
+    request: TGetPersonByIdRequest
   ): Promise<TPersonDetailsResponse> {
-    return this.sendMessage("getPersonById", { id, ...options });
+    return this.sendMessage("getPersonById", request);
   }
 
   async findPersonsByNameAndProfession(
-    name?: string,
-    professionId?: number
+    request: TFindPersonsByNameAndProfessionRequest
   ): Promise<TPersonListItemResponse[]> {
-    return this.sendMessage("findPersonsByNameAndProfession", {
-      name,
-      id: professionId,
-    });
+    return this.sendMessage("findPersonsByNameAndProfession", request);
   }
 }

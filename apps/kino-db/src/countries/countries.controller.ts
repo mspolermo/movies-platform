@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
-import { TCountryListResponse } from "@common/types";
+import { TCountryItemResponse } from "@common/types";
 import { CountriesService } from "./countries.service";
 
 @Controller("countries")
@@ -8,7 +8,7 @@ export class CountriesController {
   constructor(private readonly countriesService: CountriesService) {}
 
   @MessagePattern("getAll.countries")
-  async getAllCountries(): Promise<TCountryListResponse> {
+  async getAllCountries(): Promise<TCountryItemResponse[]> {
     return await this.countriesService.getAllCountries();
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TCommentBased } from "@common/types";
+import { TCommentResponse, TCommentsTreeResponse } from "@common/types";
 import { CommentDTO } from "@common/dto";
 import { BaseMicroserviceService } from "../shared/services";
 
@@ -10,7 +10,7 @@ export class CommentsService extends BaseMicroserviceService {
     super(configService, "Comments Service");
   }
 
-  async getCommentsByFilmId(filmId: number): Promise<TCommentBased[][]> {
+  async getCommentsByFilmId(filmId: number): Promise<TCommentsTreeResponse> {
     return this.sendMessage("getCommentsByFilmId", filmId);
   }
 
@@ -18,7 +18,7 @@ export class CommentsService extends BaseMicroserviceService {
     filmId: number,
     dto: CommentDTO,
     userId: number
-  ): Promise<TCommentBased> {
+  ): Promise<TCommentResponse> {
     return this.sendMessage("createComment", { filmId, dto, userId });
   }
 }

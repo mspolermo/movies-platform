@@ -16,19 +16,20 @@ import {
   TRefreshTokenResponse,
   TRegistrationResponse,
   TRoleResponse,
-  TUserBased,
+  TJwtUserRequest,
+  TUserOrmModel,
 } from "@common/types";
 import { RabbitMQConfig } from "../config";
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 
-const mapRoles = (roles?: TUserBased["roles"]): TRoleResponse[] =>
+const mapRoles = (roles?: TUserOrmModel["roles"]): TRoleResponse[] =>
   (roles ?? []).map(({ id, value, description }) => ({
     id,
     value,
     description,
   }));
 
-const mapAuthorizedUser = (user: TUserBased): TAuthorizedUserResponse => ({
+const mapAuthorizedUser = (user: TUserOrmModel): TAuthorizedUserResponse => ({
   id: user.id,
   email: user.email,
   name: user.name,
@@ -156,14 +157,14 @@ export class AuthService implements OnModuleInit {
     }
   }
 
-  async checkToken(user: TUserBased): Promise<TCheckTokenResponse> {
+  async checkToken(user: TJwtUserRequest): Promise<TCheckTokenResponse> {
     return {
       id: user.id,
       email: user.email,
     };
   }
 
-  async refreshToken(user: TUserBased): Promise<TRefreshTokenResponse> {
+  async refreshToken(user: TJwtUserRequest): Promise<TRefreshTokenResponse> {
     try {
       // Генерируем новый токен только с необходимыми данными
       const payload = {

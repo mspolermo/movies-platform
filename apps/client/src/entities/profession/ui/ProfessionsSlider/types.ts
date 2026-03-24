@@ -1,7 +1,7 @@
-import type { TProfessionBased } from '@common/types';
+import type { TProfessionItemResponse } from '@common/types';
 
 export interface TProfessionsTabsProps {
-  professions: TProfessionBased[];
+  professions: TProfessionItemResponse[];
   activeProfessionId: number | null;
   onProfessionChange: (professionId: number) => void;
 }

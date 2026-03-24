@@ -1,24 +1,11 @@
-import type { TFilmBased } from "../film";
-import { TCountryListItemResponse } from "./country";
+import type { TFilmEntity } from "../entity";
+import type { TCountryItemResponse } from "./country";
 import type { TFilmFactResponse } from "./fact";
-import type { TGenreListItemResponse } from "./genre";
+import type { TGenreItemResponse } from "./genre";
 
-export type TFilmSortBy = "rating" | "novelty" | "alphabet" | "popularity";
-
-export interface TSearchFilmsParams {
-  page?: number;
-  perPage?: number;
-  year?: number;
-  genres?: string[];
-  countries?: string[];
-  persons?: string[];
-  minRatingKp?: number;
-  minVotesKp?: number;
-  sortBy?: TFilmSortBy;
-}
-
-export type TFilmCardResponse = Pick<
-  TFilmBased,
+/** Элемент ответа списка фильмов для каталогов и поисковой выдачи. */
+export type TFilmListItemResponse = Pick<
+  TFilmEntity,
   | "id"
   | "filmNameRu"
   | "filmNameEn"
@@ -30,13 +17,9 @@ export type TFilmCardResponse = Pick<
   | "movieLength"
 >;
 
-export interface TFilmFiltersListPayload {
-  films: TFilmCardResponse[];
-  total: number;
-}
-
+/** Ответ API для пагинированного списка фильмов. */
 export interface TFilmsResponse {
-  films: TFilmCardResponse[];
+  films: TFilmListItemResponse[];
   total: number;
   page: number;
   perPage: number;
@@ -45,7 +28,7 @@ export interface TFilmsResponse {
 
 /** Ответ API для детальной информации о фильме. */
 export type TFilmDetailsResponse = Pick<
-  TFilmBased,
+  TFilmEntity,
   | "id"
   | "trailerUrl"
   | "ratingKp"
@@ -59,7 +42,7 @@ export type TFilmDetailsResponse = Pick<
   | "smallPictureUrl"
   | "year"
 > & {
-  countries?: TCountryListItemResponse[];
-  genres?: TGenreListItemResponse[];
+  countries?: TCountryItemResponse[];
+  genres?: TGenreItemResponse[];
   facts?: TFilmFactResponse[];
 };

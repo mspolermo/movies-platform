@@ -15,10 +15,10 @@ import { Genre } from "../genres/genres.model";
 import { FilmGenre } from "./filmGenre";
 import { Comment } from "../comments/comments.model";
 import { ApiProperty } from "@nestjs/swagger";
-import { TFilmModel, TFilmCreationAtt } from "@common/types";
+import { TFilmOrmModel, TFilmCreationAtt } from "@common/types";
 
 @Table({ tableName: "Film", timestamps: false })
-export class Film extends Model<TFilmModel, TFilmCreationAtt> {
+export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,

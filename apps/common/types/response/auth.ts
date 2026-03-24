@@ -1,12 +1,7 @@
-import type { TRoleBased } from "../role";
-import type { TUserBased } from "../user";
+import type { TRoleResponse } from "./role";
+import type { TUserBriefResponse, TUserTokenPayloadResponse } from "./user";
 
-export type TRoleResponse = Pick<TRoleBased, "id" | "value" | "description">;
-
-export type TAuthorizedUserResponse = Pick<
-  TUserBased,
-  "id" | "email" | "name"
-> & {
+export type TAuthorizedUserResponse = TUserBriefResponse & {
   roles: TRoleResponse[];
 };
 
@@ -23,7 +18,7 @@ export interface TRegistrationResponse {
   token: string;
 }
 
-export type TCheckTokenResponse = Pick<TUserBased, "id" | "email">;
+export type TCheckTokenResponse = TUserTokenPayloadResponse;
 
 export interface TRefreshTokenResponse {
   token: string;

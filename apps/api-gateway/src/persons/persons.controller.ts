@@ -1,6 +1,10 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 import { PersonsService } from "./persons.service";
+import type {
+  TFindPersonsByNameAndProfessionRequest,
+  TGetPersonByIdRequest,
+} from "@common/types";
 
 @Controller("persons")
 export class PersonsController {
@@ -11,20 +15,16 @@ export class PersonsController {
   @ApiQuery({ name: "page", required: false, description: "Номер страницы", type: Number })
   @ApiQuery({ name: "limit", required: false, description: "Количество элементов на странице", type: Number })
   @Get()
-  async getAllPersons(
+  async getAllPersonsPaginated(
     @Query("page") page?: string,
     @Query("limit") limit?: string
   ) {
     const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
     const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
-
-    // Если переданы параметры пагинации, используем новый метод
-    if (parsedPage !== undefined || parsedLimit !== undefined) {
-      return await this.personsService.getAllPersonsPaginated(parsedPage, parsedLimit);
-    }
-
-    // Иначе используем старый метод для обратной совместимости
-    return await this.personsService.getAllPersons();
+    return await this.personsService.getAllPersonsPaginated({
+      page: parsedPage,
+      limit: parsedLimit,
+    });
   }
 
   @ApiOperation({ summary: "Получить человека по ID" })
@@ -42,10 +42,13 @@ export class PersonsController {
     const parsedOffset =
       filmsOffset !== undefined && !isNaN(Number(filmsOffset)) ? Number(filmsOffset) : undefined;
 
-    return await this.personsService.getPersonById(id, {
+    const request: TGetPersonByIdRequest = {
+      id,
       filmsLimit: parsedLimit,
       filmsOffset: parsedOffset,
-    });
+    };
+
+    return await this.personsService.getPersonById(request);
   }
 
   @ApiOperation({ summary: "Поиск людей по имени и профессии" })
@@ -57,6 +60,11 @@ export class PersonsController {
     @Query("name") name?: string,
     @Query("professionId") professionId?: number
   ) {
-    return await this.personsService.findPersonsByNameAndProfession(name, professionId);
+    const request: TFindPersonsByNameAndProfessionRequest = {
+      name,
+      professionId,
+    };
+
+    return await this.personsService.findPersonsByNameAndProfession(request);
   }
 }

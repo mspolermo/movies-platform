@@ -1,4 +1,4 @@
-import type { TGenreListResponse } from '@common/types';
+import type { TGenreItemResponse } from '@common/types';
 
 export type TGenresPageProps =
   | {
@@ -7,5 +7,5 @@ export type TGenresPageProps =
     }
   | {
       isLoading?: false;
-      genresList: TGenreListResponse;
+      genresList: TGenreItemResponse[];
     };

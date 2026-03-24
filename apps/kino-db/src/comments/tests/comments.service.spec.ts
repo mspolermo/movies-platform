@@ -1,13 +1,13 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getModelToken } from "@nestjs/sequelize";
-import { CommentsService } from "./comments.service";
-import { Comment } from "./comments.model";
-import { TCommentBased } from "@common/types";
+import { CommentsService } from "../comments.service";
+import { Comment } from "../comments.model";
+import { TCommentResponse } from "@common/types";
 
 describe("CommentsService", () => {
   let service: CommentsService;
 
-  const mockComment: TCommentBased = {
+  const mockComment: TCommentResponse = {
     id: 1,
     header: "This is header",
     value: "This is value",
@@ -101,7 +101,7 @@ describe("CommentsService", () => {
             }
           }
 
-          sorting.push([commentsBased[i], childrenComments]);
+          sorting.push([commentsBased[i], ...childrenComments]);
         }
       }
 

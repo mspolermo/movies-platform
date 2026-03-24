@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { TGenreListResponse } from "@common/types";
+import { TGenreItemResponse } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class GenresService extends BaseMicroserviceService {
     super(configService, "Genres Service");
   }
 
-  async getAllGenres(): Promise<TGenreListResponse> {
+  async getAllGenres(): Promise<TGenreItemResponse[]> {
     return this.sendMessage("getAll.genres", "");
   }
 }

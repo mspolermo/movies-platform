@@ -8,10 +8,10 @@ import {
 } from "sequelize-typescript";
 import { Film } from "../films/films.model";
 import { ApiProperty } from "@nestjs/swagger";
-import { TCommentBased, TCommentCreationAtt, TCommentModel } from "@common/types";
+import { TCommentCreationAtt, TCommentOrmModel } from "@common/types";
 
 @Table({ tableName: "Comment", timestamps: false })
-export class Comment extends Model<TCommentBased, TCommentCreationAtt> implements TCommentModel {
+export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
   @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
   @Column({
     type: DataType.INTEGER,

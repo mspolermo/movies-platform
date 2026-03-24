@@ -4,16 +4,16 @@ import { Person } from "../persons/persons.model";
 import { Film } from "./films.model";
 import { Country } from "../countries/countries.model";
 import { Genre } from "../genres/genres.model";
-import { UpdateFilmDto } from "@common/dto";
 import { Profession } from "../professions/professions.model";
 import { Fact } from "../facts/facts.model";
 import { Op, Sequelize } from "sequelize";
 import {
-  TFilmCardResponse,
   TFilmDetailsResponse,
-  TFilmFiltersListPayload,
+  TFilmSortBy,
+  TFilmsResponse,
+  TFilmListItemResponse,
   TPaginatedPersonsResponse,
-  TProfessionBased,
+  TProfessionItemResponse,
 } from "@common/types";
 
 const FILM_CARD_ATTRIBUTES = [
@@ -28,10 +28,17 @@ const FILM_CARD_ATTRIBUTES = [
   "movieLength",
 ] as const;
 
-const pickFilmCardResponse = (film: Film): TFilmCardResponse => {
+const FILM_SORT_ORDER: Record<TFilmSortBy, [string, "ASC" | "DESC"]> = {
+  rating: ["ratingKp", "DESC"],
+  novelty: ["premiereWorldDate", "DESC"],
+  alphabet: ["filmNameRu", "ASC"],
+  popularity: ["votesKp", "DESC"],
+};
+
+const pickFilmCardResponse = (film: Film): TFilmListItemResponse => {
   const filmData = (
     typeof film.toJSON === "function" ? film.toJSON() : film
-  ) as TFilmCardResponse;
+  ) as TFilmListItemResponse;
 
   return {
     id: filmData.id,
@@ -96,48 +103,7 @@ export class FilmsService {
     return film.toJSON();
   }
 
-  async updateFilm(id: number, dto: UpdateFilmDto) {
-    const film = await this.filmRepository.findByPk(id);
-    if (!film) {
-      throw new Error(`Film with id ${id} not found`);
-    }
-
-    await this.filmRepository.update(
-      { filmNameEn: dto.filmNameEn, filmNameRu: dto.filmNameRu },
-      { where: { id } }
-    );
-
-    return film;
-  }
-
-  async getAllFilms(): Promise<Film[]> {
-    const films = await this.filmRepository.findAll();
-    return films;
-  }
-
-  async deleteFilm(id: number) {
-    const film = await this.filmRepository.findByPk(id);
-    if (!film) {
-      throw new Error(`Film with id ${id} not found`);
-    }
-    await this.filmRepository.destroy({ where: { id: id } });
-  }
-
-  async getFilmByName(name: string) {
-    const film = await this.filmRepository.findOne({
-      where: {
-        [Op.or]: [{ filmNameRu: name }, { filmNameEn: name }],
-      },
-    });
-
-    if (!film) {
-      throw new Error(`Film with name ${name} not found`);
-    }
-
-    return film;
-  }
-
-  async searchFilmsByName(name: string): Promise<TFilmCardResponse[]> {
+  async searchFilmsByName(name: string): Promise<TFilmListItemResponse[]> {
     const films = await this.filmRepository.findAll({
       attributes: FILM_CARD_ATTRIBUTES as unknown as string[],
       where: {
@@ -161,17 +127,10 @@ export class FilmsService {
     persons?: string[],
     minRatingKp = 0,
     minVotesKp = 0,
-    sortBy?: string,
+    sortBy: TFilmSortBy = "popularity",
     year?: number
-  ): Promise<TFilmFiltersListPayload> {
-    const order: [string, string] =
-      sortBy === "rating"
-        ? ["ratingKp", "DESC"]
-        : sortBy === "novelty"
-          ? ["premiereWorldDate", "DESC"]
-          : sortBy === "alphabet"
-            ? ["filmNameRu", "ASC"]
-            : ["votesKp", "DESC"];
+  ): Promise<TFilmsResponse> {
+    const order = FILM_SORT_ORDER[sortBy];
     const attributes = Array.from(
       new Set([...FILM_CARD_ATTRIBUTES, order[0]])
     ) as string[];
@@ -244,7 +203,13 @@ export class FilmsService {
     });
     const films = rows.map((film) => pickFilmCardResponse(film));
     const total = Array.isArray(count) ? count.length : count;
-    return { films, total };
+    return {
+      films,
+      total,
+      page,
+      perPage,
+      hasMore: page * perPage < total,
+    };
   }
 
   async getAllFilmYears(): Promise<number[]> {
@@ -256,7 +221,7 @@ export class FilmsService {
     return years.map((year) => year.year);
   }
 
-  async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
+  async getFilmProfessions(filmId: number): Promise<TProfessionItemResponse[]> {
     const film = await this.filmRepository.findByPk(filmId, {
       include: [
         {
@@ -281,7 +246,7 @@ export class FilmsService {
     }
 
     // Собираем уникальные профессии
-    const professionsMap = new Map<number, TProfessionBased>();
+    const professionsMap = new Map<number, TProfessionItemResponse>();
     
     if (film.persons) {
       for (const person of film.persons) {

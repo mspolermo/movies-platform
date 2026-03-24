@@ -7,10 +7,10 @@ import {
 } from "sequelize-typescript";
 import { User } from "../users/users.model";
 import { UserRoles } from "./user-role";
-import { TRoleBased, TRoleCreationAtt } from "@common/types";
+import { TRoleOrmModel, TRoleCreationAtt } from "@common/types";
 
 @Table({ tableName: "roles" })
-export class Role extends Model<TRoleBased, TRoleCreationAtt> {
+export class Role extends Model<TRoleOrmModel, TRoleCreationAtt> {
   @Column({
     type: DataType.INTEGER,
     unique: true,

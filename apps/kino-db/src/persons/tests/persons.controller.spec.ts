@@ -76,7 +76,7 @@ describe("PersonsController", () => {
   describe("findPersonsByNameAndProfession", () => {
     it("should return persons", async () => {
       const data = {
-        id: 1,
+        professionId: 1,
         name: "Джон",
       };
       expect(await controller.findPersonsByNameAndProfession(data)).toEqual(

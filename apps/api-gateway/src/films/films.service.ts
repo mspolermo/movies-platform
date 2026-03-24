@@ -1,14 +1,11 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TFilmFilters } from "./interfaces";
-import { UpdateFilmDto } from "@common/dto";
 import {
   TFilmDetailsResponse,
-  TFilmFiltersListPayload,
   TFilmsResponse,
   TPaginatedPersonsResponse,
-  TFilmBased,
-  TProfessionBased,
+  TProfessionItemResponse,
 } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
 
@@ -31,32 +28,14 @@ export class FilmsService extends BaseMicroserviceService {
     return film;
   }
 
-  async updateFilm(id: number, dto: UpdateFilmDto): Promise<TFilmBased> {
-    return this.sendMessage("updateFilm", { id, dto });
-  }
-
-  async deleteFilmById(id: number): Promise<boolean> {
-    return this.sendMessage("deleteFilmById", id);
-  }
-
   async searchFilms(filters: TFilmFilters): Promise<TFilmsResponse> {
-    const { films, total } = await this.sendMessage<TFilmFiltersListPayload>(
+    return this.sendMessage<TFilmsResponse>(
       "filters",
       filters
     );
-    const page = filters.page || 1;
-    const perPage = filters.perPage || 20;
-
-    return {
-      films,
-      total,
-      page,
-      perPage,
-      hasMore: page * perPage < total,
-    };
   }
 
-  async getFilmProfessions(filmId: number): Promise<TProfessionBased[]> {
+  async getFilmProfessions(filmId: number): Promise<TProfessionItemResponse[]> {
     return this.sendMessage("getFilmProfessions", filmId);
   }
 

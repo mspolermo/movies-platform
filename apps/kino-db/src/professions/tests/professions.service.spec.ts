@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { ProfessionsService } from "./professions.service";
-import { Profession } from "./professions.model";
+import { ProfessionsService } from "../professions.service";
+import { Profession } from "../professions.model";
 import { getModelToken } from "@nestjs/sequelize";
 
 describe("ProfessionsService", () => {
@@ -40,20 +40,6 @@ describe("ProfessionsService", () => {
       const result = await service.getAllProfessions();
       expect(result).toEqual(mockProfessionArray);
       expect(mockProfessionsRepository.findAll).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe("searchProfession", () => {
-    it("should return an array of professions that match the professions names", async () => {
-      const professionName = ["Актёры"];
-      mockProfessionsRepository.findAll.mockResolvedValue(mockProfessionArray);
-      const result = await service.findProfessionByName(professionName);
-      expect(mockProfessionsRepository.findAll).toHaveBeenCalledWith({
-        where: {
-          name: professionName,
-        },
-      });
-      expect(result).toEqual(mockProfessionArray);
     });
   });
 });

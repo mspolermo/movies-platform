@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { ProfessionsService } from './professions.service';
 import { JwtAuthGuard, Public } from '../shared/guards';
+import type { TGetPersonsByProfessionRequest } from '@common/types';
 
 @Controller('professions')
 @UseGuards(JwtAuthGuard)
@@ -33,10 +34,12 @@ export class ProfessionsController {
     const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
     const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
 
-    return await this.professionsService.getPersonsByProfessionId(
-      parsedProfessionId,
-      parsedPage,
-      parsedLimit
-    );
+    const request: TGetPersonsByProfessionRequest = {
+      professionId: parsedProfessionId,
+      page: parsedPage,
+      limit: parsedLimit,
+    };
+
+    return await this.professionsService.getPersonsByProfessionId(request);
   }
 }

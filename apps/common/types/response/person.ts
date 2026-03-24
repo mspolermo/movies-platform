@@ -1,19 +1,18 @@
-import type { TFilmBased } from "../film";
-import type { TPersonBased } from "../person";
-import type { TProfessionBased } from "../profession";
+import type { TFilmEntity, TPersonEntity } from "../entity";
+import type { TProfessionItemResponse } from "./profession";
 
 /** Ответ API для списка персон. */
 export type TPersonListItemResponse = Pick<
-  TPersonBased,
+  TPersonEntity,
   "id" | "photoUrl" | "nameRu" | "nameEn"
 >;
 
 /** Ответ API для профессии персоны. */
-export type TPersonProfessionResponse = Pick<TProfessionBased, "id" | "name">;
+export type TPersonProfessionResponse = TProfessionItemResponse;
 
 /** Ответ API для фильма персоны. */
 export type TPersonFilmographyItemResponse = Pick<
-  TFilmBased,
+TFilmEntity,
   "id" | "smallPictureUrl" | "filmNameRu" | "filmNameEn" | "year" | "ratingKp"
 >;
 

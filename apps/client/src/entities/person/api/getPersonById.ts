@@ -1,18 +1,16 @@
-import type { TPersonDetailsResponse } from '@common/types';
+import type {
+  TGetPersonByIdRequest,
+  TPersonDetailsResponse,
+} from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
-
-interface PersonFilmsParams {
-  filmsLimit?: number;
-  filmsOffset?: number;
-}
 
 /**
  * Получить персону по ID
  */
 export const getPersonById = async (
   id: number,
-  params: PersonFilmsParams = {}
+  params: Omit<TGetPersonByIdRequest, 'id'> = {}
 ): Promise<TPersonDetailsResponse> => {
   const queryParams: Record<string, number> = {};
   if (typeof params.filmsLimit === 'number') {

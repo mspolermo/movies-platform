@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TSearchResult } from "./interfaces";
 import {
-  TFilmCardResponse,
+  TFilmListItemResponse,
   TPersonListItemResponse,
 } from "@common/types";
 import { BaseMicroserviceService } from "../shared/services";
@@ -18,7 +18,7 @@ export class SearchService extends BaseMicroserviceService {
 
     try {
       const [films, persons] = await Promise.all([
-        this.sendMessage<TFilmCardResponse[]>("searchFilmsByName", searchName),
+        this.sendMessage<TFilmListItemResponse[]>("searchFilmsByName", searchName),
         this.sendMessage<TPersonListItemResponse[]>("searchPersonsByName", searchName),
       ]);
 

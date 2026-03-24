@@ -1,19 +1,20 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { PersonsService } from "./persons.service";
+import type {
+  TFindPersonsByNameAndProfessionRequest,
+  TGetPersonByIdRequest,
+  TGetPersonsByProfessionRequest,
+  TGetPersonsRequest,
+} from "@common/types";
 
 @Controller("persons")
 export class PersonsController {
   constructor(private readonly personsService: PersonsService) {}
 
-  @MessagePattern("getAllPersons")
-  async getAllPersons() {
-    return await this.personsService.getAllPersons();
-  }
-
   @MessagePattern("getAllPersonsPaginated")
   async getAllPersonsPaginated(
-    @Payload() data: { page?: number; limit?: number }
+    @Payload() data: TGetPersonsRequest
   ) {
     const { page = 1, limit = 20 } = data;
     return await this.personsService.getAllPersonsPaginated(page, limit);
@@ -21,31 +22,24 @@ export class PersonsController {
 
   @MessagePattern("getPersonsByProfessionId")
   async getPersonsByProfessionId(
-    @Payload() data: { professionId: number; page?: number; limit?: number }
+    @Payload() data: TGetPersonsByProfessionRequest
   ) {
     const { professionId, page = 1, limit = 20 } = data;
     return await this.personsService.getPersonsByProfessionId(professionId, page, limit);
   }
 
   @MessagePattern("getPersonById")
-  async getPersonById(
-    @Payload()
-    data: number | { id: number; filmsLimit?: number; filmsOffset?: number }
-  ) {
-    if (typeof data === "number") {
-      return await this.personsService.getPersonById(data);
-    }
-
+  async getPersonById(@Payload() data: TGetPersonByIdRequest) {
     const { id, filmsLimit, filmsOffset } = data;
     return await this.personsService.getPersonById(id, { filmsLimit, filmsOffset });
   }
 
   @MessagePattern("findPersonsByNameAndProfession")
   async findPersonsByNameAndProfession(
-    @Payload() data: { id: number; name: string }
+    @Payload() data: TFindPersonsByNameAndProfessionRequest
   ) {
-    const { id, name } = data;
-    return await this.personsService.findPersonsByNameAndProfession(name, id);
+    const { professionId, name } = data;
+    return await this.personsService.findPersonsByNameAndProfession(name, professionId);
   }
 
   @MessagePattern("searchPersonsByName")

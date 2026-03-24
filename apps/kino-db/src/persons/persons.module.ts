@@ -3,7 +3,6 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { PersonsController } from "./persons.controller";
 import { PersonProfession } from "./personProfession";
 import { ProfessionsModule } from "../professions/professions.module";
-import { ProfessionsService } from "../professions/professions.service";
 import { PersonsService } from "./persons.service";
 import { Person } from "./persons.model";
 import { Profession } from "../professions/professions.model";
@@ -18,7 +17,7 @@ import { Profession } from "../professions/professions.model";
     ProfessionsModule,
   ],
   controllers: [PersonsController],
-  providers: [PersonsService, ProfessionsService],
+  providers: [PersonsService],
   exports: [PersonsService],
 })
 export class PersonsModule {}

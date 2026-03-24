@@ -1,9 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { PersonsService } from "../persons.service";
-import { ProfessionsService } from "../../professions/professions.service";
 import { Person } from "../persons.model";
 import { Profession } from "../../professions/professions.model";
 import { getModelToken } from "@nestjs/sequelize";
+import { Op } from "sequelize";
 
 describe("PersonsService", () => {
   let service: PersonsService;
@@ -36,12 +36,6 @@ describe("PersonsService", () => {
     },
   ];
 
-  const mockProfessionsArray = [
-    { id: 1, name: "Актёр" },
-    { id: 2, name: "Режиссёр" },
-    { id: 3, name: "Сценарист" },
-  ];
-
   const mockPersonInstance = {
     ...mockPersonArray[0],
     get: jest.fn().mockReturnValue(mockPersonArray[0]),
@@ -52,12 +46,7 @@ describe("PersonsService", () => {
   const mockPersonsRepository = {
     findAll: jest.fn().mockResolvedValue(mockPersonArray),
     findByPk: jest.fn().mockResolvedValue(mockPersonInstance),
-    create: jest.fn().mockResolvedValue(mockPersonArray[0]),
-    bulkCreate: jest.fn().mockResolvedValue(mockPersonArray),
-  };
-
-  const mockProfessionsService = {
-    findProfessionByName: jest.fn().mockResolvedValue(mockProfessionsArray),
+    count: jest.fn().mockResolvedValue(mockPersonArray.length),
   };
 
   beforeEach(async () => {
@@ -67,10 +56,6 @@ describe("PersonsService", () => {
         {
           provide: getModelToken(Person),
           useValue: mockPersonsRepository,
-        },
-        {
-          provide: ProfessionsService,
-          useValue: mockProfessionsService,
         },
       ],
     }).compile();
@@ -82,10 +67,27 @@ describe("PersonsService", () => {
     expect(service).toBeDefined();
   });
 
-  describe("getAllPersons", () => {
-    it("should return an array of persons", async () => {
-      const result = await service.getAllPersons();
-      expect(result).toEqual(mockPersonArray);
+  describe("getAllPersonsPaginated", () => {
+    it("should return paginated persons response", async () => {
+      const result = await service.getAllPersonsPaginated(1, 20);
+      expect(mockPersonsRepository.findAll).toHaveBeenCalledWith({
+        include: [
+          {
+            model: Profession,
+            through: { attributes: [] },
+            attributes: [],
+          },
+        ],
+        attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+        limit: 20,
+        offset: 0,
+        order: [["nameRu", "ASC"]],
+      });
+      expect(result).toEqual({
+        items: mockPersonArray,
+        total: mockPersonArray.length,
+        hasMore: false,
+      });
     });
   });
 
@@ -97,6 +99,7 @@ describe("PersonsService", () => {
         include: [
           {
             model: Profession,
+            attributes: ["id", "name"],
             through: { attributes: [] },
           },
         ],
@@ -124,11 +127,28 @@ describe("PersonsService", () => {
         include: [
           {
             model: Profession,
-            where: { id: professionId },
             through: { attributes: [] },
+            attributes: [],
+            where: { id: professionId },
+            required: true,
           },
         ],
-        where: { nameRu: personName },
+        attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+        where: {
+          [Op.or]: [
+            {
+              nameRu: {
+                [Op.iLike]: `%${personName}%`,
+              },
+            },
+            {
+              nameEn: {
+                [Op.iLike]: `%${personName}%`,
+              },
+            },
+          ],
+        },
+        limit: 20,
       });
     });
   });

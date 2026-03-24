@@ -1,10 +1,17 @@
 export * from "./auth";
-export type {
-  TCountryListItemResponse,
-  TCountryListResponse,
-} from "./country";
-export type { TFilmFactResponse } from "./fact";
 export * from "./film";
+
+export type { TCountryItemResponse } from "./country";
+export type { TFilmFactResponse } from "./fact";
+export type { TGenreItemResponse } from "./genre";
+export type { TProfessionItemResponse } from "./profession";
+
+export type { TCommentResponse, TCommentsTreeResponse } from "./comment";
+export type { TUserBriefResponse, TUserTokenPayloadResponse } from "./user";
+export type { TRoleResponse } from "./role";
+
+export type { TSearchResultResponse } from "./search";
+
 
 export type {
   TFiltersResponse,
@@ -19,9 +26,4 @@ export type {
   TPersonListItemResponse
 } from "./person";
 
-export type { TSearchResultResponse } from "./search";
 
-export type {
-  TGenreListItemResponse,
-  TGenreListResponse,
-} from "./genre";

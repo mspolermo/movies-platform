@@ -1,7 +1,7 @@
-import { Controller, HttpStatus } from "@nestjs/common";
+import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 import { FilmsService } from "./films.service";
-import { UpdateFilmDto } from "@common/dto";
+import type { TFilmSortBy } from "@common/types";
 
 @Controller("films")
 export class FilmsController {
@@ -10,29 +10,6 @@ export class FilmsController {
   @MessagePattern("getFilmById")
   async getFilmById(@Payload() id: number) {
     return await this.filmService.getFilmById(id);
-  }
-
-  @MessagePattern("updateFilm")
-  async updateFilm(@Payload() data: { id: number; dto: UpdateFilmDto }) {
-    const { id, dto } = data;
-    await this.filmService.updateFilm(id, dto);
-    return HttpStatus.OK;
-  }
-
-  @MessagePattern("getAllFilms")
-  async getAllFilms() {
-    return await this.filmService.getAllFilms();
-  }
-
-  @MessagePattern("deleteFilmById")
-  async deleteFilmById(@Payload() id: number) {
-    await this.filmService.deleteFilm(id);
-    return HttpStatus.OK;
-  }
-
-  @MessagePattern("getFilmByName")
-  async getFilmByName(@Payload() name: string) {
-    return await this.filmService.getFilmByName(name);
   }
 
   @MessagePattern("filters")
@@ -46,7 +23,7 @@ export class FilmsController {
       persons?: string[];
       minRatingKp?: number;
       minVotesKp?: number;
-      sortBy?: string;
+      sortBy?: TFilmSortBy;
       year?: number;
     }
   ) {

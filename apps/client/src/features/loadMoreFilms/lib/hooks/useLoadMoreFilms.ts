@@ -1,5 +1,5 @@
 import type {
-  TFilmCardResponse,
+  TFilmListItemResponse,
   TFilmsResponse,
   TSearchFilmsParams,
 } from '@common/types';
@@ -18,7 +18,7 @@ export const useLoadMoreFilms = ({
   initialParams = {},
   threshold: _threshold = 200,
 }: UseLoadMoreFilmsOptions = {}) => {
-  const [films, setFilms] = useState<TFilmCardResponse[]>([]);
+  const [films, setFilms] = useState<TFilmListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
