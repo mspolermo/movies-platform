@@ -30,9 +30,7 @@ export const SearchFilmsAndPersons = () => {
       {loading && <div className={styles.state}>Поиск...</div>}
 
       {!loading && !hasResults && query.trim().length > 0 && (
-        <div className={styles.state}>
-          Мы ничего не нашли по вашему запросу.
-        </div>
+        <div className={styles.state}>Мы ничего не нашли по вашему запросу.</div>
       )}
 
       {!loading && hasResults && (
@@ -55,10 +53,7 @@ export const SearchFilmsAndPersons = () => {
               <h2 className={styles.sectionTitle}>Персоны</h2>
               <div className={styles.personsGrid}>
                 {results.persons.map((person) => (
-                  <div
-                    key={`person-${person.id}`}
-                    className={styles.personCard}
-                  >
+                  <div key={`person-${person.id}`} className={styles.personCard}>
                     <PersonCard person={person} />
                   </div>
                 ))}

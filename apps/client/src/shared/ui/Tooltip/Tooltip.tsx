@@ -68,30 +68,18 @@ export const Tooltip = ({
     switch (position) {
       case 'top':
         top = triggerRect.top + scrollY - tooltipRect.height - 8;
-        left =
-          triggerRect.left +
-          scrollX +
-          (triggerRect.width - tooltipRect.width) / 2;
+        left = triggerRect.left + scrollX + (triggerRect.width - tooltipRect.width) / 2;
         break;
       case 'bottom':
         top = triggerRect.bottom + scrollY + 8;
-        left =
-          triggerRect.left +
-          scrollX +
-          (triggerRect.width - tooltipRect.width) / 2;
+        left = triggerRect.left + scrollX + (triggerRect.width - tooltipRect.width) / 2;
         break;
       case 'left':
-        top =
-          triggerRect.top +
-          scrollY +
-          (triggerRect.height - tooltipRect.height) / 2;
+        top = triggerRect.top + scrollY + (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.left + scrollX - tooltipRect.width - 8;
         break;
       case 'right':
-        top =
-          triggerRect.top +
-          scrollY +
-          (triggerRect.height - tooltipRect.height) / 2;
+        top = triggerRect.top + scrollY + (triggerRect.height - tooltipRect.height) / 2;
         left = triggerRect.right + scrollX + 8;
         break;
     }
@@ -147,9 +135,7 @@ export const Tooltip = ({
       }}
     >
       <div className={styles.tooltip__content}>{content}</div>
-      <div
-        className={`${styles.tooltip__arrow} ${styles[`tooltip__arrow_${position}`]}`}
-      />
+      <div className={`${styles.tooltip__arrow} ${styles[`tooltip__arrow_${position}`]}`} />
     </div>
   );
 
@@ -165,8 +151,7 @@ export const Tooltip = ({
       >
         {children}
       </div>
-      {typeof document !== 'undefined' &&
-        createPortal(tooltipElement, document.body)}
+      {typeof document !== 'undefined' && createPortal(tooltipElement, document.body)}
     </>
   );
 };

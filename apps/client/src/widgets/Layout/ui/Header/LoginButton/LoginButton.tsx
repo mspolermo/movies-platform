@@ -11,12 +11,7 @@ export const LoginButton = ({ onOpen }: { onOpen: () => void }) => {
   const label = 'Войти';
 
   return (
-    <Link
-      aria-label={label}
-      className={styles.root}
-      href={href}
-      onMouseEnter={onOpen}
-    >
+    <Link aria-label={label} className={styles.root} href={href} onMouseEnter={onOpen}>
       <SvgIcon className={styles.icon} name="person" size={20} />
     </Link>
   );

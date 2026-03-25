@@ -1,0 +1,57 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.text {
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+.clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.link {
+  background: none;
+  border: none;
+  padding: 0;
+
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-red);
+
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  align-self: flex-start;
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+}
+
+.mobile {
+  display: none;
+
+  @media (max-width: sizes.$bp-mobile) {
+    display: inline;
+  }
+}
+
+.desktop {
+  display: inline;
+
+  @media (max-width: sizes.$bp-mobile) {
+    display: none;
+  }
+}

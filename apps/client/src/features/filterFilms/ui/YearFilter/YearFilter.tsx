@@ -9,14 +9,8 @@ interface YearFilterProps {
   onChange: (year: number | null) => void;
 }
 
-export const YearFilter = ({
-  allValues,
-  selectValue,
-  onChange,
-}: YearFilterProps) => {
-  const values = allValues.filter(
-    (v): v is number => v !== null && v !== undefined
-  );
+export const YearFilter = ({ allValues, selectValue, onChange }: YearFilterProps) => {
+  const values = allValues.filter((v): v is number => v !== null && v !== undefined);
 
   return (
     <div className={styles.yearFilter}>
@@ -28,10 +22,7 @@ export const YearFilter = ({
           return (
             <div
               key={year}
-              className={cn(
-                styles.yearOption,
-                isActive && styles.yearOptionActive
-              )}
+              className={cn(styles.yearOption, isActive && styles.yearOptionActive)}
               onClick={() => onChange(isActive ? null : year)}
             >
               {year}
@@ -55,10 +46,7 @@ export const YearFilter = ({
             return (
               <button
                 key={year}
-                className={cn(
-                  styles.mobileButton,
-                  isActive && styles.mobileButtonActive
-                )}
+                className={cn(styles.mobileButton, isActive && styles.mobileButtonActive)}
                 type="button"
                 onClick={() => onChange(isActive ? null : year)}
               >

@@ -1,0 +1,83 @@
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ===== TRIGGER ===== */
+.trigger {
+  background: none;
+  border: none;
+  padding: 0;
+
+  font-family: inherit;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+
+  transition: color 0.2s ease;
+}
+
+.triggerInner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.icon {
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+/* ===== VARIANTS ===== */
+
+/* 🔴 Accent */
+.accent .trigger {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-red);
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+}
+
+/* ⚪ Neutral */
+.neutral .trigger {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+
+  &:hover {
+    color: var(--color-heading);
+  }
+}
+
+/* 🔴 WARNING */
+.warning .trigger {
+  width: 100%;
+  justify-content: flex-start;
+
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--color-transparent-red-shadow);
+
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--color-transparent-red);
+
+  color: var(--color-red);
+
+  &:hover {
+    color: var(--color-active);
+  }
+}
+
+/* ===== CONTENT ===== */
+.content {
+  width: 100%;
+  margin-top: 8px;
+}

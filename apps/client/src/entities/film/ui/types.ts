@@ -1,9 +1,6 @@
-import type {
-  TFilmListItemResponse,
-  TFilmDetailsResponse,
-} from '@common/types';
+import type { TFilmListItemResponse } from '@common/types';
 
-import type { MouseEvent, ReactNode } from 'react';
+import type { MouseEvent } from 'react';
 export interface FilmCardProps {
   film: TFilmListItemResponse;
   showIcons?: boolean;
@@ -25,9 +22,4 @@ export interface IconsBlockProps {
   handleSimilarClick: (e: MouseEvent) => void;
   handleGradeClick: (e: MouseEvent) => void;
   handleNotLikeClick: (e: MouseEvent) => void;
-}
-
-export interface FilmDetailProps {
-  film: TFilmDetailsResponse;
-  creatorsViewer: ReactNode;
 }

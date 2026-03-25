@@ -45,10 +45,7 @@ export const RegisterForm = () => {
       <div className={styles.container}>
         <div className={styles.success}>
           <h1>✅ Форма отправлена (демо)</h1>
-          <p>
-            Регистрация на сервер не выполняется. Перенаправление на страницу
-            входа...
-          </p>
+          <p>Регистрация на сервер не выполняется. Перенаправление на страницу входа...</p>
         </div>
       </div>
     );
@@ -58,9 +55,7 @@ export const RegisterForm = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Регистрация</h1>
 
-      <p className={styles.demoNote}>
-        Данные не передаются на сервер — только демонстрация формы.
-      </p>
+      <p className={styles.demoNote}>Данные не передаются на сервер — только демонстрация формы.</p>
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input
@@ -94,12 +89,7 @@ export const RegisterForm = () => {
           onChange={handleChange}
         />
 
-        <Button
-          disabled={loading}
-          loading={loading}
-          type="submit"
-          variant="red"
-        >
+        <Button disabled={loading} loading={loading} type="submit" variant="red">
           {loading ? 'Регистрация...' : 'Зарегистрироваться'}
         </Button>
       </form>

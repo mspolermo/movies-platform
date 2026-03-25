@@ -14,8 +14,7 @@ export const useFilters = () => {
 
   // Инициализируем фильтры из URL синхронно
   const initialFilters = parseFiltersFromURL(searchParams);
-  const hasUrlFilters =
-    JSON.stringify(initialFilters) !== JSON.stringify(DEFAULT_ACTIVE_FILTERS);
+  const hasUrlFilters = JSON.stringify(initialFilters) !== JSON.stringify(DEFAULT_ACTIVE_FILTERS);
 
   const [allFilters, setAllFilters] = useState<AllFilters>(DEFAULT_ALL_FILTERS);
   const [selectedFilters, setSelectedFilters] = useState<ActiveFilters>(
@@ -29,9 +28,7 @@ export const useFilters = () => {
     try {
       setLoading(true);
 
-      const { data } = await apiClient.get<TFiltersResponse>(
-        API_ENDPOINTS.FILTERS.ROOT
-      );
+      const { data } = await apiClient.get<TFiltersResponse>(API_ENDPOINTS.FILTERS.ROOT);
 
       const filters: AllFilters = {
         ...DEFAULT_ALL_FILTERS,
@@ -54,9 +51,7 @@ export const useFilters = () => {
 
   // Проверка на пустые фильтры
   const isEmptyFilters = useCallback(() => {
-    return (
-      JSON.stringify(selectedFilters) === JSON.stringify(DEFAULT_ACTIVE_FILTERS)
-    );
+    return JSON.stringify(selectedFilters) === JSON.stringify(DEFAULT_ACTIVE_FILTERS);
   }, [selectedFilters]);
 
   // Сброс фильтров
@@ -79,10 +74,7 @@ export const useFilters = () => {
       // Конвертируем year в number если это строка
       let year: number | undefined;
       if (filters.years) {
-        year =
-          typeof filters.years === 'string'
-            ? parseInt(filters.years, 10)
-            : filters.years;
+        year = typeof filters.years === 'string' ? parseInt(filters.years, 10) : filters.years;
       }
 
       const params: TSearchFilmsParams = {

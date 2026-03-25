@@ -17,17 +17,13 @@ import { getAllProfessions } from '@/entities/profession';
  * - синхронизировать изменение профессии с URL-параметрами
  * - обрабатывать состояния загрузки и ошибок
  */
-export const useAllCreatorsView = ({
-  searchParams,
-}: TAllCreatorsViewerProps) => {
+export const useAllCreatorsView = ({ searchParams }: TAllCreatorsViewerProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [professions, setProfessions] = useState<TProfessionItemResponse[]>([]);
-  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
-    null
-  );
+  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProfessions = async () => {
@@ -62,8 +58,7 @@ export const useAllCreatorsView = ({
           typeof err.response.data === 'object' &&
           err.response.data !== null &&
           'message' in err.response.data &&
-          typeof (err.response.data as { message: unknown }).message ===
-            'string'
+          typeof (err.response.data as { message: unknown }).message === 'string'
             ? (err.response.data as { message: string }).message
             : fallback;
         setError(msg);

@@ -1,7 +1,4 @@
-import type {
-  TGetFilmPersonsByProfessionRequest,
-  TPaginatedPersonsResponse,
-} from '@common/types';
+import type { TGetFilmPersonsByProfessionRequest, TPaginatedPersonsResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
@@ -14,7 +11,9 @@ export const getFilmPersonsByProfession = async (
   const { filmId, ...queryParams } = params;
   const response = await apiClient.get<TPaginatedPersonsResponse>(
     API_ENDPOINTS.FILMS.PERSONS_BY_PROFESSION(filmId),
-    { params: queryParams }
+    {
+      params: queryParams,
+    }
   );
   return response.data;
 };

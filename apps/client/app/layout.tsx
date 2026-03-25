@@ -22,11 +22,7 @@ export const metadata: Metadata = {
   description: 'Платформа для просмотра информации о фильмах',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
   let initialQuickFilters = emptyQuickFilters;
 
   try {

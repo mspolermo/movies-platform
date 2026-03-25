@@ -8,9 +8,7 @@ import apiClient, { API_ENDPOINTS } from '@/shared/api';
 export const searchPersonsByNameAndProfession = async ({
   professionId,
   name,
-}: TFindPersonsByNameAndProfessionRequest): Promise<
-  TPersonListItemResponse[]
-> => {
+}: TFindPersonsByNameAndProfessionRequest): Promise<TPersonListItemResponse[]> => {
   const { data } = await apiClient.get<TPersonListItemResponse[]>(
     API_ENDPOINTS.PERSONS_EX.SEARCH_FIND,
     {

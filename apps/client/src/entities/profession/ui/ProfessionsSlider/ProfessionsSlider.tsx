@@ -71,11 +71,7 @@ export const ProfessionsSlider = ({
 
       <button
         aria-label="Прокрутить вправо"
-        className={cn(
-          styles.arrowButton,
-          styles.arrowButtonRight,
-          hoverRight && styles.visible
-        )}
+        className={cn(styles.arrowButton, styles.arrowButtonRight, hoverRight && styles.visible)}
         disabled={!showRight}
         type="button"
         onClick={scrollRight}

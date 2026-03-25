@@ -1,7 +1,4 @@
-import type {
-  TPersonDetailsResponse,
-  TPersonFilmographyItemResponse,
-} from '@common/types';
+import type { TPersonDetailsResponse, TPersonFilmographyItemResponse } from '@common/types';
 
 import { useCallback, useEffect, useState } from 'react';
 

@@ -5,9 +5,7 @@ import { notFound } from 'next/navigation';
 import { getFilmById } from '@/entities/film';
 import { FilmDetailPage } from '@/pages/FilmDetailPage';
 
-export default async function FilmPage({
-  params: { id },
-}: TPageProps<{ id: string }>) {
+export default async function FilmPage({ params: { id } }: TPageProps<{ id: string }>) {
   const filmId = Number(id);
 
   if (!id || Number.isNaN(filmId)) {
@@ -15,10 +13,6 @@ export default async function FilmPage({
   }
 
   const film = await getFilmById(filmId);
-
-  if (!film) {
-    notFound();
-  }
 
   return <FilmDetailPage film={film} />;
 }

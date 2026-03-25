@@ -1,7 +1,4 @@
-import type {
-  TGetPersonsByProfessionRequest,
-  TPaginatedPersonsResponse,
-} from '@common/types';
+import type { TGetPersonsByProfessionRequest, TPaginatedPersonsResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 

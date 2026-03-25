@@ -19,13 +19,12 @@ export const FilmPersonsByProfession = ({
   professionName,
 }: TFilmPersonsByProfessionProps) => {
   const router = useRouter();
-  const { persons, loading, error, hasMore, loadMore } =
-    useFilmPersonsByProfession({
-      filmId,
-      professionName,
-      initialPage: 1,
-      initialLimit: 14,
-    });
+  const { persons, loading, error, hasMore, loadMore } = useFilmPersonsByProfession({
+    filmId,
+    professionName,
+    initialPage: 1,
+    initialLimit: 14,
+  });
 
   const handlePersonClick = (personId: number) => {
     router.push(`/persons/${personId}`);

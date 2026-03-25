@@ -40,10 +40,7 @@ const uiDir = path.join(baseDir, 'ui');
 fs.mkdirSync(uiDir, { recursive: true });
 
 // main index.ts
-fs.writeFileSync(
-  path.join(baseDir, 'index.ts'),
-  `export { ${name} } from "./ui";\n`
-);
+fs.writeFileSync(path.join(baseDir, 'index.ts'), `export { ${name} } from "./ui";\n`);
 
 // component.tsx
 fs.writeFileSync(
@@ -77,9 +74,6 @@ fs.writeFileSync(
 );
 
 // ui index.ts
-fs.writeFileSync(
-  path.join(uiDir, 'index.ts'),
-  `export { ${name} } from "./${name}";\n`
-);
+fs.writeFileSync(path.join(uiDir, 'index.ts'), `export { ${name} } from "./${name}";\n`);
 
 console.info(`✅ Компонент ${name} создан в ${baseDir}`);

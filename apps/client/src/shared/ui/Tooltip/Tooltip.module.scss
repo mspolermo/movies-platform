@@ -1,8 +1,6 @@
 .tooltip {
   position: absolute;
-  z-index: var(
-    --z-tooltip
-  ); // Высокий z-index для отображения поверх всех элементов
+  z-index: var(--z-tooltip); // Высокий z-index для отображения поверх всех элементов
   pointer-events: none;
   transition:
     opacity 0.15s ease-out,

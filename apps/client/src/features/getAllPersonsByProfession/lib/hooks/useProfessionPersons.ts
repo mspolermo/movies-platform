@@ -1,7 +1,4 @@
-import type {
-  TPaginatedPersonsResponse,
-  TPersonListItemResponse,
-} from '@common/types';
+import type { TPaginatedPersonsResponse, TPersonListItemResponse } from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -55,8 +52,11 @@ export const useProfessionPersons = ({
       setError(null);
 
       try {
-        const response: TPaginatedPersonsResponse =
-          await getPersonsByProfession({ professionId, page, limit });
+        const response: TPaginatedPersonsResponse = await getPersonsByProfession({
+          professionId,
+          page,
+          limit,
+        });
 
         if (reset) {
           setPersons(response.items);
@@ -74,8 +74,7 @@ export const useProfessionPersons = ({
           typeof err.response.data === 'object' &&
           err.response.data !== null &&
           'message' in err.response.data &&
-          typeof (err.response.data as { message: unknown }).message ===
-            'string'
+          typeof (err.response.data as { message: unknown }).message === 'string'
             ? (err.response.data as { message: string }).message
             : fallback;
         setError(msg);

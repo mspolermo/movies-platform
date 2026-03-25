@@ -1,1 +1,8 @@
-export { checkIsCartoon, formatRating, getFilmsWord } from './utils';
+export {
+  checkIsCartoon,
+  formatRating,
+  getFilmsWord,
+  getKinopoiskUrl,
+  formatVotes,
+  formatDuration,
+} from './utils';

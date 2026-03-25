@@ -59,9 +59,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
         else params.set(key, value);
       });
 
-      const newUrl = params.toString()
-        ? `${pathname}?${params.toString()}`
-        : pathname || '/films';
+      const newUrl = params.toString() ? `${pathname}?${params.toString()}` : pathname || '/films';
 
       router.replace(newUrl, { scroll: false });
 
@@ -76,8 +74,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
   const handleFilterClick = useCallback(
     (key: 'genres' | 'countries' | 'year', value: string) => {
       if (isOnFilmsPage) {
-        const current =
-          searchParams?.get(key)?.split(',').filter(Boolean) || [];
+        const current = searchParams?.get(key)?.split(',').filter(Boolean) || [];
 
         const isSelected =
           key === 'year'
@@ -104,10 +101,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
         type: 'item' as const,
         label: g.nameRu,
         onClick: () =>
-          handleFilterClick(
-            'genres',
-            genreMap.get(g.nameEn || g.nameRu)?.nameRu || g.nameRu
-          ),
+          handleFilterClick('genres', genreMap.get(g.nameEn || g.nameRu)?.nameRu || g.nameRu),
       })),
 
       { type: 'heading', label: 'Страны' },

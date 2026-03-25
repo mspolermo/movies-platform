@@ -56,9 +56,7 @@ export const LaptopFooter = () => {
               <SvgIcon aria-hidden name="mute" size={56} />
             </div>
 
-            <p className={styles.ctaText}>
-              Смотрите фильмы, сериалы и мультфильмы без рекламы
-            </p>
+            <p className={styles.ctaText}>Смотрите фильмы, сериалы и мультфильмы без рекламы</p>
           </Link>
         </div>
       </div>
@@ -67,10 +65,7 @@ export const LaptopFooter = () => {
       <div className={styles.row}>
         <div className={styles.copyright}>
           <p>© {CURRENT_YEAR} Онлайн-кинотеатр</p>
-          <p>
-            HBO ® and related service marks are the property of Home Box
-            Office, Inc
-          </p>
+          <p>HBO ® and related service marks are the property of Home Box Office, Inc</p>
         </div>
       </div>
     </footer>

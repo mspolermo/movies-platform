@@ -26,11 +26,7 @@ const languageFilters = (selectedValues: string[]) => {
   });
 };
 
-export const Filters = ({
-  allFilters,
-  selectedFilters,
-  setSelectedFilters,
-}: FiltersProps) => {
+export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: FiltersProps) => {
   const [activeBlock, setActiveBlock] = useState<string[]>([]);
   const filtersRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
@@ -73,9 +69,7 @@ export const Filters = ({
       }
 
       const currentPath = pathname || window.location.pathname;
-      const newUrl = params.toString()
-        ? `${currentPath}?${params.toString()}`
-        : currentPath;
+      const newUrl = params.toString() ? `${currentPath}?${params.toString()}` : currentPath;
       isUpdatingFromURL.current = true;
       router.replace(newUrl, { scroll: false });
     },
@@ -109,10 +103,7 @@ export const Filters = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        filtersRef.current &&
-        !filtersRef.current.contains(event.target as Node)
-      ) {
+      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
         setActiveBlock([]);
       }
     };
@@ -211,9 +202,7 @@ export const Filters = ({
             blockName="genre"
             filterName="Жанры"
             isWideMenu={true}
-            selectedFiltersBy={languageFilters(selectedFilters.genres).join(
-              ', '
-            )}
+            selectedFiltersBy={languageFilters(selectedFilters.genres).join(', ')}
             setActiveBlock={setActiveBlock}
           >
             <FilterCheckboxList
@@ -228,9 +217,7 @@ export const Filters = ({
             blockName="country"
             filterName="Страны"
             isWideMenu={true}
-            selectedFiltersBy={languageFilters(selectedFilters.countries).join(
-              ', '
-            )}
+            selectedFiltersBy={languageFilters(selectedFilters.countries).join(', ')}
             setActiveBlock={setActiveBlock}
           >
             <FilterCheckboxList
@@ -244,18 +231,12 @@ export const Filters = ({
             activeBlock={activeBlock}
             blockName="years"
             filterName="Год"
-            selectedFiltersBy={
-              selectedFilters.years ? String(selectedFilters.years) : ''
-            }
+            selectedFiltersBy={selectedFilters.years ? String(selectedFilters.years) : ''}
             setActiveBlock={setActiveBlock}
           >
             <YearFilter
               allValues={allFilters.years}
-              selectValue={
-                typeof selectedFilters.years === 'number'
-                  ? selectedFilters.years
-                  : null
-              }
+              selectValue={typeof selectedFilters.years === 'number' ? selectedFilters.years : null}
               onChange={selectedYears}
             />
           </FilterDropdown>
@@ -264,9 +245,7 @@ export const Filters = ({
             activeBlock={activeBlock}
             blockName="rating"
             filterName="Рейтинг"
-            selectedFiltersBy={
-              selectedFilters.rating === 0 ? '' : selectedFilters.rating
-            }
+            selectedFiltersBy={selectedFilters.rating === 0 ? '' : selectedFilters.rating}
             setActiveBlock={setActiveBlock}
           >
             <RangeFilter
@@ -280,9 +259,7 @@ export const Filters = ({
             activeBlock={activeBlock}
             blockName="grade"
             filterName="Оценки"
-            selectedFiltersBy={
-              selectedFilters.grade === 0 ? '' : selectedFilters.grade
-            }
+            selectedFiltersBy={selectedFilters.grade === 0 ? '' : selectedFilters.grade}
             setActiveBlock={setActiveBlock}
           >
             <RangeFilter

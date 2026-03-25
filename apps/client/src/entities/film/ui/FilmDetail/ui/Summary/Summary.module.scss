@@ -1,0 +1,66 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-heading);
+
+  @media (max-width: sizes.$bp-mobile) {
+    font-size: 24px;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+
+  background: none;
+  border: none;
+  padding: 0;
+
+  color: var(--color-red);
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-red-active);
+  }
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-text);
+}

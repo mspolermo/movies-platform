@@ -126,10 +126,7 @@ export const FilmsPage = () => {
             return (
               <div className={styles.filmsGrid}>
                 {Array.from({ length: 8 }).map((_, index) => (
-                  <FilmCardSkeleton
-                    key={`skeleton-${index}`}
-                    showIcons={true}
-                  />
+                  <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
                 ))}
               </div>
             );
@@ -138,9 +135,7 @@ export const FilmsPage = () => {
           return (
             <div className={styles.filmsGrid}>
               {films && films.length > 0 ? (
-                films.map((film) => (
-                  <FilmCard key={film.id} film={film} showIcons={true} />
-                ))
+                films.map((film) => <FilmCard key={film.id} film={film} showIcons={true} />)
               ) : (
                 <div className={styles.noFilms}>Фильмы не найдены</div>
               )}

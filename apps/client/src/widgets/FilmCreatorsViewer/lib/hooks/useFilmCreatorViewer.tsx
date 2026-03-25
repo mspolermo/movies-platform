@@ -16,17 +16,12 @@ import { getFilmProfessions } from '@/entities/profession';
 export const useFilmCreatorViewer = () => {
   const params = useParams();
   const filmId = Number(params?.id);
-  const [filmProfessions, setFilmProfessions] = useState<
-    TProfessionItemResponse[]
-  >([]);
+  const [filmProfessions, setFilmProfessions] = useState<TProfessionItemResponse[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(
-    null
-  );
+  const [activeProfessionId, setActiveProfessionId] = useState<number | null>(null);
 
   const activeProfessionName =
-    filmProfessions.find((profession) => profession.id === activeProfessionId)
-      ?.name ?? null;
+    filmProfessions.find((profession) => profession.id === activeProfessionId)?.name ?? null;
 
   useEffect(() => {
     const fetchProfessions = async () => {

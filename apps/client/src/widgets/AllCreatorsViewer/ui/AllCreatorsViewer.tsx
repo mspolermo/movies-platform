@@ -10,16 +10,11 @@ import styles from './AllCreatorsViewer.module.scss';
 /**
  * UI-виджет для просмотра всех персон разбитых по профессиям на слайдере (с загрузкой данных)
  */
-export const AllCreatorsViewer = ({
-  searchParams,
-}: TAllCreatorsViewerProps) => {
-  const {
-    professions,
-    activeProfessionId,
-    loading,
-    error,
-    handleProfessionChange,
-  } = useAllCreatorsView({ searchParams });
+export const AllCreatorsViewer = ({ searchParams }: TAllCreatorsViewerProps) => {
+  const { professions, activeProfessionId, loading, error, handleProfessionChange } =
+    useAllCreatorsView({
+      searchParams,
+    });
 
   if (loading) {
     return (
@@ -47,9 +42,7 @@ export const AllCreatorsViewer = ({
         </div>
       )}
 
-      {professions.length === 0 && (
-        <div className={styles.emptyState}>Нет доступных профессий</div>
-      )}
+      {professions.length === 0 && <div className={styles.emptyState}>Нет доступных профессий</div>}
     </>
   );
 };

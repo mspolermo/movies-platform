@@ -1,4 +1,1 @@
-export {
-  QuickFiltersProvider,
-  QuickFiltersContext,
-} from './QuickFiltersContext';
+export { QuickFiltersProvider, QuickFiltersContext } from './QuickFiltersContext';

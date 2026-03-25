@@ -1,8 +1,6 @@
 import type { TFilmDetailsResponse } from '@common/types';
 
-export const checkIsCartoon = (
-  genres: TFilmDetailsResponse['genres']
-): boolean => {
+export const checkIsCartoon = (genres: TFilmDetailsResponse['genres']): boolean => {
   if (!genres) return false;
 
   return genres.some((g) => {
@@ -10,12 +8,7 @@ export const checkIsCartoon = (
     const en = g.nameEn?.toLowerCase() || '';
 
     // Проверяем русские названия
-    const ruPatterns = [
-      'мультфильм',
-      'анимация',
-      'анимационный',
-      'мультипликация',
-    ];
+    const ruPatterns = ['мультфильм', 'анимация', 'анимационный', 'мультипликация'];
 
     // Проверяем английские названия
     const enPatterns = ['animation', 'cartoon', 'animated', 'anime'];

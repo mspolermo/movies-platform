@@ -61,10 +61,7 @@ export const Header = () => {
             <ul className={styles.menu}>
               {HEADER_SECTIONS_LAPTOP.map((item, i) => (
                 <li key={`${item.label}-${i}`} className={styles.item}>
-                  <HeaderMenuItem
-                    item={item}
-                    onDropdownOpenChange={handleDropdownOpenChange}
-                  />
+                  <HeaderMenuItem item={item} onDropdownOpenChange={handleDropdownOpenChange} />
                 </li>
               ))}
             </ul>

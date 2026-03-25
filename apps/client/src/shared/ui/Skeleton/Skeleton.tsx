@@ -38,12 +38,7 @@ export const Skeleton = ({
     }),
   };
 
-  const skeletonClasses = [
-    styles.skeleton,
-    styles[variant],
-    styles[animation],
-    className,
-  ]
+  const skeletonClasses = [styles.skeleton, styles[variant], styles[animation], className]
     .filter(Boolean)
     .join(' ');
 
@@ -55,7 +50,5 @@ export const Skeleton = ({
     );
   }
 
-  return (
-    <div aria-label="Загрузка..." className={skeletonClasses} style={style} />
-  );
+  return <div aria-label="Загрузка..." className={skeletonClasses} style={style} />;
 };

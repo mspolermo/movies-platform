@@ -34,10 +34,7 @@ export const FilmCreatorsViewer = () => {
         onProfessionChange={handleProfessionChange}
       />
       {activeProfessionId && (
-        <FilmPersonsByProfession
-          filmId={filmId}
-          professionName={activeProfessionName}
-        />
+        <FilmPersonsByProfession filmId={filmId} professionName={activeProfessionName} />
       )}
     </>
   );

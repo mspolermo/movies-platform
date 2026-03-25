@@ -1,8 +1,4 @@
-import type {
-  TFilmListItemResponse,
-  TFilmsResponse,
-  TSearchFilmsParams,
-} from '@common/types';
+import type { TFilmListItemResponse, TFilmsResponse, TSearchFilmsParams } from '@common/types';
 
 import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';

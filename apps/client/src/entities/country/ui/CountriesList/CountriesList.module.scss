@@ -1,0 +1,13 @@
+.countriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  padding: 2rem;
+}

@@ -38,8 +38,7 @@ export const RangeFilter = ({
 
   // Мемоизируем расчет позиции bubble
   const bubblePosition = useMemo(() => {
-    const percentage =
-      ((initialValue - config.min) * 100) / (config.max - config.min);
+    const percentage = ((initialValue - config.min) * 100) / (config.max - config.min);
     return `calc(${percentage}% + (${8 - percentage * 0.13}px))`;
   }, [initialValue, config.min, config.max]);
 
@@ -72,10 +71,7 @@ export const RangeFilter = ({
 
       // Округляем до ближайшего шага с правильным округлением
       const steppedValue = Math.round(newValue / config.step) * config.step;
-      const clampedValue = Math.max(
-        config.min,
-        Math.min(config.max, steppedValue)
-      );
+      const clampedValue = Math.max(config.min, Math.min(config.max, steppedValue));
 
       // Исправляем проблемы с плавающей точкой
       const fixedValue = Math.round(clampedValue * 100) / 100;

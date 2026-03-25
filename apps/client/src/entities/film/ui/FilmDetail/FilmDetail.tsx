@@ -1,75 +1,64 @@
 'use client';
 
-import type { FilmDetailProps } from '../types';
+import type { FilmDetailProps } from './types';
 
-import {
-  AdditionalInfoBlock,
-  DescriptionBlock,
-  FactBlock,
-  PosterPreviewBlock,
-  RatingBlock,
-  SloganBlock,
-  SummaryBlock,
-  TrailerBlock,
-  CreatorsViewerBlock,
-} from './blocks';
+import { ExpandableBlock, Skeleton } from '@/shared/ui';
+
 import styles from './FilmDetail.module.scss';
-import { checkIsCartoon } from '../../lib';
+import { QualityInfo, Description, Facts, Poster, Rating, Slogan, Summary, Trailer } from './ui';
 
 export const FilmDetail = (props: FilmDetailProps) => {
-  const { film, creatorsViewer } = props;
-  const isCartoon = checkIsCartoon(film.genres ?? []);
+  const { film, creatorsViewer, isLoading } = props;
+
+  if (isLoading || !film) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.preview}>
+          <Skeleton height="400px" />
+          <Skeleton height="72px" />
+          <Skeleton height="72px" />
+        </div>
+        <div className={styles.info}>
+          <Skeleton height="36px" width="50%" />
+          <Skeleton height="64px" width="50%" />
+          <Skeleton height="250px" />
+          <Skeleton height="154px" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
-      <div className={styles.filmDetail}>
-        <div className={styles.posterSection}>
-          <PosterPreviewBlock
-            bigPictureUrl={film.bigPictureUrl}
-            filmNameEn={film.filmNameEn}
-            filmNameRu={film.filmNameRu}
-            smallPictureUrl={film.smallPictureUrl}
-          />
-          <SloganBlock slogan={film.slogan} />
+      <div className={styles.preview}>
+        <Poster film={film} />
+        <Slogan film={film} />
+        <Rating film={film} />
+      </div>
 
-          <RatingBlock
-            filmNameEn={film.filmNameEn}
-            filmNameRu={film.filmNameRu}
-            ratingKp={film.ratingKp}
-            votesKp={film.votesKp}
-          />
-        </div>
+      <div className={styles.info}>
+        <Summary film={film} />
+        <Description film={film} />
+        <Facts film={film} />
 
-        <div className={styles.infoSection}>
-          <SummaryBlock
-            countries={film.countries}
-            filmNameEn={film.filmNameEn}
-            filmNameRu={film.filmNameRu}
-            genres={film.genres}
-            isCartoon={isCartoon}
-            movieLength={film.movieLength}
-            year={film.year}
-          />
+        <ExpandableBlock
+          collapseLabel="Скрыть создателей и актёров"
+          expandLabel="Смотреть создателей и актёров"
+        >
+          {creatorsViewer}
+        </ExpandableBlock>
 
-          <DescriptionBlock
-            description={film.description || ''}
-            filmNameEn={film.filmNameEn}
-            filmNameRu={film.filmNameRu}
-          />
+        <QualityInfo view="mobile" />
 
-          <FactBlock facts={film.facts} isCartoon={isCartoon} />
-
-          <CreatorsViewerBlock creatorsViewer={creatorsViewer} />
-
-          <AdditionalInfoBlock />
-
-          <TrailerBlock
-            filmNameEn={film.filmNameEn}
-            filmNameRu={film.filmNameRu}
-            trailerUrl={film.trailerUrl}
-          />
+        <div className={styles.trailerDesctop}>
+          <Trailer film={film} />
         </div>
       </div>
+
+      <div className={styles.trailerTablet}>
+          <Trailer film={film} />
+      </div>
+
     </div>
   );
 };

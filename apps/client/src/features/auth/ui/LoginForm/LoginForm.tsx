@@ -23,9 +23,7 @@ export const LoginForm = () => {
     // Демо: данные не отправляются на сервер
     await new Promise((r) => setTimeout(r, 400));
     setIsLoading(false);
-    setInfo(
-      'Вход через API отключён на клиенте. Данные не передаются на сервер.'
-    );
+    setInfo('Вход через API отключён на клиенте. Данные не передаются на сервер.');
   };
 
   return (
@@ -46,9 +44,7 @@ export const LoginForm = () => {
           placeholder="user@example.com"
           type="email"
           value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         />
 
         <Input
@@ -58,17 +54,10 @@ export const LoginForm = () => {
           placeholder="••••••••"
           type="password"
           value={password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
         />
 
-        <Button
-          disabled={isLoading}
-          loading={isLoading}
-          type="submit"
-          variant="red"
-        >
+        <Button disabled={isLoading} loading={isLoading} type="submit" variant="red">
           {isLoading ? 'Вход...' : 'Войти'}
         </Button>
       </form>

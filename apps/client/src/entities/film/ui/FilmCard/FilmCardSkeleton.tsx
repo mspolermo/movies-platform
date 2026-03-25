@@ -6,9 +6,7 @@ import { Skeleton } from '@/shared/ui';
 
 import styles from './FilmCard.module.scss';
 
-export const FilmCardSkeleton = ({
-  showIcons = false,
-}: FilmCardSkeletonProps) => {
+export const FilmCardSkeleton = ({ showIcons = false }: FilmCardSkeletonProps) => {
   return (
     <article className={`${styles.card} ${styles.skeletonCard}`}>
       <div className={styles.container}>

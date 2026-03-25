@@ -9,16 +9,8 @@ import styles from './PersonDetail.module.scss';
 
 //TODO: добавить адаптив
 export const PersonDetail = ({ personId }: TPersonDetailProps) => {
-  const {
-    loading,
-    error,
-    person,
-    filmsTotal,
-    films,
-    handleLoadMore,
-    isLoadingMore,
-    hasMoreFilms,
-  } = usePersonDetails(personId);
+  const { loading, error, person, filmsTotal, films, handleLoadMore, isLoadingMore, hasMoreFilms } =
+    usePersonDetails(personId);
 
   if (loading) {
     return (
@@ -31,9 +23,7 @@ export const PersonDetail = ({ personId }: TPersonDetailProps) => {
   if (error || !person) {
     return (
       <div className={styles.errorWrapper}>
-        <div className={styles.errorMessage}>
-          {error || 'Персона не найдена'}
-        </div>
+        <div className={styles.errorMessage}>{error || 'Персона не найдена'}</div>
       </div>
     );
   }

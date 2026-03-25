@@ -15,11 +15,7 @@ import styles from './HeaderDropdown.module.scss';
  * - задержка закрытия (чтобы избежать случайных закрытий)
  * - возможность закрыть dropdown изнутри через `onClose`
  */
-export const HeaderDropdown = ({
-  trigger,
-  content,
-  onOpenChange,
-}: TDropdownProps) => {
+export const HeaderDropdown = ({ trigger, content, onOpenChange }: TDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   /** Таймер используется для плавного закрытия */
@@ -60,11 +56,7 @@ export const HeaderDropdown = ({
   }, [isOpen]);
 
   return (
-    <div
-      className={styles.container}
-      onMouseEnter={cancelClose}
-      onMouseLeave={handleClose}
-    >
+    <div className={styles.container} onMouseEnter={cancelClose} onMouseLeave={handleClose}>
       {/* Триггер (ссылка / кнопка меню) */}
       {trigger({
         onOpen: handleOpen,

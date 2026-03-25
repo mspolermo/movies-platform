@@ -39,11 +39,7 @@ export const SortFilter = ({ sortValue, setSortValue }: SortFilterProps) => {
 
               <div className={styles.title}>{sortLabels[sortValue]}</div>
 
-              <div
-                className={`${styles.arrow} ${
-                  active ? styles.arrowUp : styles.arrowDown
-                }`}
-              >
+              <div className={`${styles.arrow} ${active ? styles.arrowUp : styles.arrowDown}`}>
                 <SvgIcon name="chevron" size={20} />
               </div>
             </div>
@@ -51,10 +47,7 @@ export const SortFilter = ({ sortValue, setSortValue }: SortFilterProps) => {
 
           {active && (
             <>
-              <div
-                className={styles.closeBlock}
-                onClick={() => setActive(false)}
-              />
+              <div className={styles.closeBlock} onClick={() => setActive(false)} />
 
               <div className={styles.value}>
                 <div className={styles.subtitle}>Сортировка</div>
@@ -62,9 +55,7 @@ export const SortFilter = ({ sortValue, setSortValue }: SortFilterProps) => {
                 {SORT_OPTIONS.map((option) => (
                   <div
                     key={option}
-                    className={`${styles.option} ${
-                      option === sortValue ? styles.optionActive : ''
-                    }`}
+                    className={`${styles.option} ${option === sortValue ? styles.optionActive : ''}`}
                     onClick={() => handleOptionClick(option)}
                   >
                     {sortLabels[option]}

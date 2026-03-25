@@ -5,9 +5,7 @@ import { DEFAULT_ACTIVE_FILTERS } from '../../types';
 /**
  * Функция для парсинга фильтров фильма из URL
  */
-export const parseFiltersFromURL = (
-  searchParams: URLSearchParams | null
-): ActiveFilters => {
+export const parseFiltersFromURL = (searchParams: URLSearchParams | null): ActiveFilters => {
   const filters: ActiveFilters = { ...DEFAULT_ACTIVE_FILTERS };
 
   if (!searchParams) return filters;

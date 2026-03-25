@@ -1,23 +1,47 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
 .container {
   padding-top: 24px;
-}
-
-.filmDetail {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
-  overflow-x: visible;
 
-  @media (max-width: 768px) {
+  
+
+  @media (max-width: sizes.$bp-tablet) {
+    padding-top: 0;
+  }
+
+  @media (max-width: sizes.$bp-mobile) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 16px;
   }
 }
 
-.infoSection {
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   overflow-x: visible;
   min-width: 0;
+}
+
+.trailerDesctop {
+  @media (max-width: sizes.$bp-tablet){
+    display: none;
+  }
+}
+
+.trailerTablet {
+  display: none;
+  @media (max-width: sizes.$bp-tablet){
+    display: block;
+    grid-column: 1 / -1;
+  }
 }

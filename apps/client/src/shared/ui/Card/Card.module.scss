@@ -178,11 +178,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--color-background-elements),
-    var(--color-background)
-  );
+  background: linear-gradient(135deg, var(--color-background-elements), var(--color-background));
   border-radius: inherit;
   color: var(--color-text);
   opacity: 0.6;

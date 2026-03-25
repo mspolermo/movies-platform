@@ -50,9 +50,7 @@ export const IPTVPlayer = () => {
       setStreams(streamsData);
 
       const ruChannels = channelsData.filter(
-        (ch: Channel) =>
-          ch.country === 'RU' &&
-          streamsData.some((s: Stream) => s.channel === ch.id)
+        (ch: Channel) => ch.country === 'RU' && streamsData.some((s: Stream) => s.channel === ch.id)
       );
 
       setChannels(ruChannels);
@@ -69,9 +67,7 @@ export const IPTVPlayer = () => {
 
   // фильтр + сортировка
   useEffect(() => {
-    const list = channels.filter((ch) =>
-      ch.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const list = channels.filter((ch) => ch.name.toLowerCase().includes(search.toLowerCase()));
 
     if (sort === 'name') {
       list.sort((a, b) => a.name.localeCompare(b.name));
@@ -181,18 +177,14 @@ export const IPTVPlayer = () => {
           {filtered.map((ch) => (
             <div
               key={ch.id}
-              className={`${styles.item} ${
-                currentChannel === ch.id ? styles.active : ''
-              }`}
+              className={`${styles.item} ${currentChannel === ch.id ? styles.active : ''}`}
               onClick={() => playChannel(ch.id)}
             >
               <Skeleton height={40} width={40} />
 
               <div className={styles.meta}>
                 <div className={styles.name}>{ch.name}</div>
-                <div className={styles.sub}>
-                  {getStreams(ch.id).length} стримов
-                </div>
+                <div className={styles.sub}>{getStreams(ch.id).length} стримов</div>
               </div>
             </div>
           ))}

@@ -14,11 +14,7 @@ export const QickFiltersList = ({ onClose }: { onClose: () => void }) => {
             {item.label}
           </h3>
         ) : (
-          <button
-            key={`${item.label}-${id}`}
-            className={styles.item}
-            onClick={item.onClick}
-          >
+          <button key={`${item.label}-${id}`} className={styles.item} onClick={item.onClick}>
             {item.label}
           </button>
         )

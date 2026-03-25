@@ -37,9 +37,7 @@ export const FilterCheckboxList = ({
                   type="button"
                   onClick={() => onChange(nameRu)}
                 >
-                  <span className={styles.label}>
-                    {capitalizeFirst(nameRu)}
-                  </span>
+                  <span className={styles.label}>{capitalizeFirst(nameRu)}</span>
 
                   <span
                     className={cn(styles.checkmark, {

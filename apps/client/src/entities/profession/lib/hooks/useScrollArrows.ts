@@ -67,9 +67,7 @@ export const useScrollArrows = (
       const tolerance = 1;
 
       setShowLeft(canScroll && scrollLeft > tolerance);
-      setShowRight(
-        canScroll && scrollLeft < scrollWidth - clientWidth - tolerance
-      );
+      setShowRight(canScroll && scrollLeft < scrollWidth - clientWidth - tolerance);
     });
   }, []);
 
@@ -94,10 +92,8 @@ export const useScrollArrows = (
     return () => observer.disconnect();
   }, [professions, updateScrollState]);
 
-  const scrollLeft = () =>
-    tabsRef.current?.scrollBy({ left: -200, behavior: 'smooth' });
-  const scrollRight = () =>
-    tabsRef.current?.scrollBy({ left: 200, behavior: 'smooth' });
+  const scrollLeft = () => tabsRef.current?.scrollBy({ left: -200, behavior: 'smooth' });
+  const scrollRight = () => tabsRef.current?.scrollBy({ left: 200, behavior: 'smooth' });
 
   const scrollToActive = () => {
     const el = tabsRef.current;

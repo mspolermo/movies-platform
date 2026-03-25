@@ -18,10 +18,7 @@ type THeaderMenuItemProps = {
  * Рендерит пункт меню хедера.
  * Если у пункта есть dropdown-контент — подключает HeaderDropdown.
  */
-export const HeaderMenuItem = ({
-  item,
-  onDropdownOpenChange,
-}: THeaderMenuItemProps) => {
+export const HeaderMenuItem = ({ item, onDropdownOpenChange }: THeaderMenuItemProps) => {
   const { label, url, content } = item;
 
   if (content === 'qickFiltersList')

@@ -1,7 +1,4 @@
-import type {
-  TGetFilmProfessionsRequest,
-  TProfessionItemResponse,
-} from '@common/types';
+import type { TGetFilmProfessionsRequest, TProfessionItemResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 

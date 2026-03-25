@@ -1,0 +1,112 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 24px;
+  border-radius: 12px;
+
+  border-left: 4px solid var(--color-gray);
+  background: var(--color-background-elements);
+
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--color-icon-default-hover);
+  }
+}
+
+.high {
+  border-left-color: var(--color-green);
+}
+
+.content {
+  display: flex;
+}
+
+.badge {
+  width: 64px;
+  height: 64px;
+  margin-right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  background: var(--color-gray);
+}
+
+.badgeHigh {
+  background: var(--color-green);
+}
+
+.value {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+
+  color: var(--color-active);
+
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.title {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-heading);
+}
+
+.source,
+.votes {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text);
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  max-width: 100px;
+}
+
+/* 📱 tablet */
+@media (max-width: sizes.$bp-tablet) {
+  .badge {
+    width: 48px;
+    height: 48px;
+  }
+
+  .votes {
+    display: none;
+  }
+}
+
+/* 📱 mobile */
+@media (max-width: sizes.$bp-mobile) {
+  .content {
+    flex: 1 0 60%;
+  }
+
+  .action {
+    flex: 0 1 30%;
+    max-width: 90px;
+  }
+
+  .title,
+  .source {
+    font-size: 12px;
+    line-height: 12px;
+  }
+}

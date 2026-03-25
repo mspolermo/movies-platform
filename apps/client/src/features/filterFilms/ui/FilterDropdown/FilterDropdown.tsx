@@ -46,9 +46,7 @@ export const FilterDropdown = ({
           <div className={styles.text}>
             <div className={styles.title}>{filterName}</div>
 
-            {!!selectedFiltersBy && (
-              <div className={styles.subtitle}>{selectedFiltersBy}</div>
-            )}
+            {!!selectedFiltersBy && <div className={styles.subtitle}>{selectedFiltersBy}</div>}
           </div>
 
           <div

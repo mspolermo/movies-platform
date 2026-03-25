@@ -47,9 +47,4 @@ export const DEFAULT_ALL_FILTERS: AllFilters = {
   actor: '',
 };
 
-export const SORT_OPTIONS: SortOption[] = [
-  'popularity',
-  'rating',
-  'novelty',
-  'alphabet',
-];
+export const SORT_OPTIONS: SortOption[] = ['popularity', 'rating', 'novelty', 'alphabet'];

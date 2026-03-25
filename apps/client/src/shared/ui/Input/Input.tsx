@@ -29,9 +29,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [hasValue, setHasValue] = useState(
-      !!props.value || !!props.defaultValue
-    );
+    const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue);
     const inputId = useId();
 
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -91,9 +89,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </label>
           )}
 
-          {icon && iconPosition === 'left' && (
-            <div className={styles.input__icon}>{icon}</div>
-          )}
+          {icon && iconPosition === 'left' && <div className={styles.input__icon}>{icon}</div>}
 
           <input
             ref={ref}
@@ -107,9 +103,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
           />
 
-          {icon && iconPosition === 'right' && (
-            <div className={styles.input__icon}>{icon}</div>
-          )}
+          {icon && iconPosition === 'right' && <div className={styles.input__icon}>{icon}</div>}
 
           {clearable && hasValue && !disabled && (
             <button

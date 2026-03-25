@@ -14,13 +14,7 @@ interface CardProps {
   onClick?: () => void;
 }
 
-export const Card = ({
-  type = 'small',
-  title,
-  photoUrl,
-  role,
-  onClick,
-}: CardProps) => {
+export const Card = ({ type = 'small', title, photoUrl, role, onClick }: CardProps) => {
   const [cardClass, setCardClass] = useState(styles.card);
   const [imgClass, setImgClass] = useState(styles.card__img);
   const [bodyClass, setBodyClass] = useState(styles.card__body);

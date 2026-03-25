@@ -25,9 +25,7 @@ export const IconsBlock = (props: IconsBlockProps) => {
     <>
       <Tooltip content="Добавить в избранное" position="top">
         <button
-          aria-label={
-            isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'
-          }
+          aria-label={isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
           aria-pressed={isFavorite}
           className={styles.iconButton}
           onClick={handleFavoritesClick}
@@ -55,11 +53,7 @@ export const IconsBlock = (props: IconsBlockProps) => {
       </Tooltip>
 
       <Tooltip content="Оценить фильм" position="top">
-        <button
-          aria-label="Оценить фильм"
-          className={styles.iconButton}
-          onClick={handleGradeClick}
-        >
+        <button aria-label="Оценить фильм" className={styles.iconButton} onClick={handleGradeClick}>
           <SvgIcon
             className={`${styles.iconSvg} ${styles.iconDefault}`}
             icon={StarIcon}

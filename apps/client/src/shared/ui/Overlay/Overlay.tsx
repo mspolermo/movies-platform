@@ -70,10 +70,7 @@ export const Overlay = ({
       role="presentation"
       onClick={closeOnBackdrop ? onClose : undefined}
     >
-      <div
-        className={cn(styles.content, contentClassName)}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={cn(styles.content, contentClassName)} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

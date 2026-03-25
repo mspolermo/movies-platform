@@ -14,10 +14,7 @@ export const ProfessionCard = ({ profession }: TProfessionCardProps) => {
 
   return (
     <Link href={`/professions?profession=${name}`}>
-      <FilterCardButton
-        ariaLabel={`Открыть список ${name}`}
-        className={styles.wrapper}
-      >
+      <FilterCardButton ariaLabel={`Открыть список ${name}`} className={styles.wrapper}>
         <h3 className={styles.name}>{name}</h3>
       </FilterCardButton>
     </Link>

@@ -9,9 +9,7 @@ import { useProfessionPersons } from '../lib';
 /**
  * UI сетка больших карточек персон по выбранной професии (с логикой загрузки)
  */
-export const AllPersonsByProfession = ({
-  activeProfessionId,
-}: TAllPersonsByProfessionProps) => {
+export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProfessionProps) => {
   const {
     persons,
     loading: personsLoading,

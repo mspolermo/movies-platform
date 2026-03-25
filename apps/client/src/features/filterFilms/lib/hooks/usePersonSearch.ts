@@ -4,13 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { searchPersonsByNameAndProfession } from '@/entities/person';
 
-export const usePersonSearch = ({
-  professionId,
-  name,
-}: {
-  professionId: number;
-  name: string;
-}) => {
+export const usePersonSearch = ({ professionId, name }: { professionId: number; name: string }) => {
   const [results, setResults] = useState<TPersonListItemResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

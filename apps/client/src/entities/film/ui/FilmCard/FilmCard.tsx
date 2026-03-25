@@ -11,11 +11,7 @@ import { IconsBlock } from './IconsBlock';
 import { Preview } from './Preview';
 import { formatRating } from '../../lib';
 
-export const FilmCard = ({
-  film,
-  showIcons = false,
-  isLoading = false,
-}: FilmCardProps) => {
+export const FilmCard = ({ film, showIcons = false, isLoading = false }: FilmCardProps) => {
   const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
   const [notLike, setNotLike] = useState(false);
@@ -109,12 +105,8 @@ export const FilmCard = ({
                           {formatRating(film.ratingKp, true)}
                         </span>
                       </div>
-                      <div className={styles.filmDetails}>
-                        {formatFilmDetails()}
-                      </div>
-                      <div className={styles.duration}>
-                        {formatDuration(film.movieLength)}
-                      </div>
+                      <div className={styles.filmDetails}>{formatFilmDetails()}</div>
+                      <div className={styles.duration}>{formatDuration(film.movieLength)}</div>
                     </div>
                   </div>
                 </div>

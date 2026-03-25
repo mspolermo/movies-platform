@@ -7,9 +7,7 @@ export const DebugPage = () => {
     <Page title="🔍 Debug">
       <div style={{ fontFamily: 'monospace' }}>
         <div style={{ marginBottom: '1rem' }}>
-          <h2 style={{ color: 'var(--color-heading)' }}>
-            Клиент без авторизации
-          </h2>
+          <h2 style={{ color: 'var(--color-heading)' }}>Клиент без авторизации</h2>
           <p style={{ color: 'var(--color-text)' }}>
             Состояние входа и токенов на клиенте не хранится (zustand удалён).
           </p>
