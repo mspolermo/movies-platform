@@ -5,6 +5,10 @@ import { Skeleton } from '@/shared/ui';
 import styles from './CountriesList.module.scss';
 import { CountryCard } from '../CountryCard';
 
+/**
+ * Список стран.
+ * Отображает список стран, загрузку и пустое состояние.
+ */
 export const CountriesList = ({ isLoading, countriesList }: TCountriesListProps) => {
   if (isLoading)
     return (

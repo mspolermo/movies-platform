@@ -1,4 +1,4 @@
-import type { TFilmEntity, TPersonEntity } from "../entity";
+import type { TPersonEntity } from "../entity";
 import type { TProfessionItemResponse } from "./profession";
 
 /** Ответ API для списка персон. */
@@ -10,12 +10,6 @@ export type TPersonListItemResponse = Pick<
 /** Ответ API для профессии персоны. */
 export type TPersonProfessionResponse = TProfessionItemResponse;
 
-/** Ответ API для фильма персоны. */
-export type TPersonFilmographyItemResponse = Pick<
-TFilmEntity,
-  "id" | "smallPictureUrl" | "filmNameRu" | "filmNameEn" | "year" | "ratingKp"
->;
-
 /** Ответ API для пагинированного списка персон. */
 export type TPaginatedPersonsResponse = {
   items: TPersonListItemResponse[];
@@ -23,9 +17,7 @@ export type TPaginatedPersonsResponse = {
   hasMore: boolean;
 };
 
-/** Ответ API для детальной информации о персоне. */
-export type TPersonDetailsResponse = TPersonListItemResponse & {
+/** Профиль персоны c профессиями. */
+export type TPersonProfileResponse = TPersonListItemResponse & {
   professions?: TPersonProfessionResponse[];
-  films?: TPersonFilmographyItemResponse[];
-  filmsTotal?: number;
 };

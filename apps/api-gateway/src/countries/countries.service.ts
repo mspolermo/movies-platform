@@ -1,4 +1,4 @@
-import type { TCountryItemResponse } from "@common/types";
+import type { TCountriesListResponse } from "@common/types";
 
 import { Injectable, Inject } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
@@ -12,7 +12,7 @@ export class CountriesService {
     @Inject("FILMS_CLIENT") private readonly filmsClient: ClientProxy
   ) {}
 
-  async getAllCountries(): Promise<TCountryItemResponse[]> {
+  async getAllCountries(): Promise<TCountriesListResponse> {
     return await firstValueFrom(
       this.filmsClient.send(kinoDbRpc.countries.getAll, {})
     );

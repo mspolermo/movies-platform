@@ -32,7 +32,14 @@ describe("PersonsController", () => {
   ];
 
   const mockPersonsService = {
-    getPersonById: jest.fn().mockResolvedValue(mockPerson),
+    getPersonProfile: jest.fn().mockResolvedValue(mockPerson),
+    getPersonFilmography: jest.fn().mockResolvedValue({
+      items: [],
+      total: 0,
+      page: 1,
+      perPage: 10,
+      hasMore: false,
+    }),
     findPersonsByNameAndProfession: jest
       .fn()
       .mockResolvedValue(mockPersonsArray),
@@ -60,14 +67,20 @@ describe("PersonsController", () => {
   });
 
   describe("getPersonById", () => {
-    it("should return person with pagination params", async () => {
+    it("should return person profile by id", async () => {
       const id = 1;
-      const filmsLimit = 10;
-      const filmsOffset = 5;
-      await controller.getPersonById({id, filmsLimit, filmsOffset});
-      expect(mockPersonsService.getPersonById).toHaveBeenCalledWith(id, {
-        filmsLimit: 10,
-        filmsOffset: 5,
+      await controller.getPersonById({ id });
+      expect(mockPersonsService.getPersonProfile).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe("getPersonFilmography", () => {
+    it("should return filmography", async () => {
+      await controller.getPersonFilmography({ id: 1, limit: 10, offset: 5 });
+      expect(mockPersonsService.getPersonFilmography).toHaveBeenCalledWith({
+        id: 1,
+        limit: 10,
+        offset: 5,
       });
     });
   });

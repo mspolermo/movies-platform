@@ -1,0 +1,15 @@
+.errorWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  width: 100%;
+}
+
+.errorMessage {
+  color: var(--color-red);
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  padding: 20px;
+}

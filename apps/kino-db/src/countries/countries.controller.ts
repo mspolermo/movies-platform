@@ -1,4 +1,4 @@
-import type { TCountryItemResponse } from "@common/types";
+import type { TCountriesListResponse } from "@common/types";
 
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
@@ -12,7 +12,7 @@ export class CountriesController {
   constructor(private readonly countriesService: CountriesService) {}
 
   @MessagePattern(kinoDbRpc.countries.getAll)
-  async getAllCountries(): Promise<TCountryItemResponse[]> {
+  async getAllCountries(): Promise<TCountriesListResponse> {
     return await this.countriesService.getAllCountries();
   }
 }

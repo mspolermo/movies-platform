@@ -56,9 +56,8 @@ export const FilmDetail = (props: FilmDetailProps) => {
       </div>
 
       <div className={styles.trailerTablet}>
-          <Trailer film={film} />
+        <Trailer film={film} />
       </div>
-
     </div>
   );
 };

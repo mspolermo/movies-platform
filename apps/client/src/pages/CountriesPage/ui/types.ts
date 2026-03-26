@@ -1,4 +1,4 @@
-import type { TCountryItemResponse } from '@common/types';
+import type { TCountriesListResponse } from '@common/types';
 
 export type TCountriesPageProps =
   | {
@@ -7,5 +7,5 @@ export type TCountriesPageProps =
     }
   | {
       isLoading?: false;
-      countriesList: TCountryItemResponse[];
+      countriesList: TCountriesListResponse;
     };

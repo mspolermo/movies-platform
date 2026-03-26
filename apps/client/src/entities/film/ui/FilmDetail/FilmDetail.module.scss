@@ -6,8 +6,6 @@
   grid-template-columns: 300px 1fr;
   gap: 2rem;
 
-  
-
   @media (max-width: sizes.$bp-tablet) {
     padding-top: 0;
   }
@@ -33,14 +31,14 @@
 }
 
 .trailerDesctop {
-  @media (max-width: sizes.$bp-tablet){
+  @media (max-width: sizes.$bp-tablet) {
     display: none;
   }
 }
 
 .trailerTablet {
   display: none;
-  @media (max-width: sizes.$bp-tablet){
+  @media (max-width: sizes.$bp-tablet) {
     display: block;
     grid-column: 1 / -1;
   }

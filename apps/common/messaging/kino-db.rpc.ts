@@ -25,6 +25,7 @@ export const kinoDbRpc = {
     getAllPaginated: "getAllPersonsPaginated",
     getByProfessionId: "getPersonsByProfessionId",
     getById: "getPersonById",
+    getFilmography: "getPersonFilmography",
     findByNameAndProfession: "findPersonsByNameAndProfession",
     searchByName: "searchPersonsByName",
   },

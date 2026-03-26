@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
   PERSONS: {
     LIST: '/persons',
     BY_ID: (id: number) => `/persons/${id}`,
+    FILMOGRAPHY: (id: number) => `/persons/${id}/filmography`,
   },
 
   // Профессии

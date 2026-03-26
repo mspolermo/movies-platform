@@ -1,21 +1,30 @@
 export type { TRoleResponse } from "./role";
 export type { TSearchResultResponse } from "./search";
-export type { TCountryItemResponse } from "./country";
+
 export type { TFilmFactResponse } from "./fact";
-export type { TGenreItemResponse } from "./genre";
+
 export type { TProfessionItemResponse } from "./profession";
 
+export type { TCountryItemResponse, TCountriesListResponse } from "./country";
+export type { TGenreItemResponse, TGenresListResponse } from "./genre";
 export type { TCommentResponse, TCommentsTreeResponse } from "./comment";
 export type { TUserBriefResponse, TUserTokenPayloadResponse } from "./user";
 export type { TFiltersResponse, TQuickFiltersResponse } from "./filters";
-export type { TFilmsResponse, TFilmListItemResponse, TFilmDetailsResponse } from "./film";
 
-export type { 
-  TPersonProfessionResponse, 
-  TPersonFilmographyItemResponse, 
-  TPersonDetailsResponse, 
+export type {
+  TFilmsResponse,
+  TFilmListItemResponse,
+  TFilmDetailsResponse,
+  TPersonFilmographyItemResponse,
+  TPersonFilmographyListResponse,
+  TPersonFilmographyResponse,
+} from "./film";
+
+export type {
+  TPersonProfessionResponse,
+  TPersonProfileResponse,
   TPaginatedPersonsResponse,
-  TPersonListItemResponse
+  TPersonListItemResponse,
 } from "./person";
 
 export type { 

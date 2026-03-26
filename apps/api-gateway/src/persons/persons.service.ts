@@ -1,13 +1,15 @@
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
+  TGetPersonFilmographyRequest,
   TGetPersonsRequest,
   TPaginatedPersonsResponse,
-  TPersonDetailsResponse,
+  TPersonFilmographyResponse,
   TPersonListItemResponse,
+  TPersonProfileResponse,
 } from "@common/types";
 
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 import { kinoDbRpc } from "@common/messaging";
@@ -28,8 +30,32 @@ export class PersonsService extends BaseMicroserviceService {
 
   async getPersonById(
     request: TGetPersonByIdRequest
-  ): Promise<TPersonDetailsResponse> {
-    return this.sendMessage(kinoDbRpc.persons.getById, request);
+  ): Promise<TPersonProfileResponse> {
+    const person = await this.sendMessage<TPersonProfileResponse | null>(
+      kinoDbRpc.persons.getById,
+      request
+    );
+
+    if (!person) {
+      throw new NotFoundException(`Person with id ${request.id} not found`);
+    }
+
+    return person;
+  }
+
+  async getPersonFilmography(
+    request: TGetPersonFilmographyRequest
+  ): Promise<TPersonFilmographyResponse> {
+    const data = await this.sendMessage<TPersonFilmographyResponse | null>(
+      kinoDbRpc.persons.getFilmography,
+      request
+    );
+
+    if (!data) {
+      throw new NotFoundException(`Person with id ${request.id} not found`);
+    }
+
+    return data;
   }
 
   async findPersonsByNameAndProfession(

@@ -1,2 +1,2 @@
 export { getGenresList } from './api';
-export { GenreCard } from './ui';
+export { GenresList } from './ui';

@@ -7,6 +7,7 @@ export type {
 export type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
+  TGetPersonFilmographyRequest,
   TGetPersonsRequest,
 } from "./person";
 export type { TGetPersonsByProfessionRequest } from "./profession";

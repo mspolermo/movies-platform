@@ -4,11 +4,16 @@ export type TGetPersonsRequest = {
   limit?: number;
 };
 
-/** Параметры запроса персоны с частичной фильмографией. */
+/** Параметры запроса профиля персоны по id. */
 export type TGetPersonByIdRequest = {
   id: number;
-  filmsLimit?: number;
-  filmsOffset?: number;
+};
+
+/** Параметры запроса страницы фильмографии персоны. */
+export type TGetPersonFilmographyRequest = {
+  id: number;
+  limit?: number;
+  offset?: number;
 };
 
 /** Параметры поиска персон по имени и профессии. */

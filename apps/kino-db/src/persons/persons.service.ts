@@ -1,7 +1,9 @@
 import type {
+  TGetPersonFilmographyRequest,
   TPaginatedPersonsResponse,
-  TPersonDetailsResponse,
+  TPersonFilmographyResponse,
   TPersonListItemResponse,
+  TPersonProfileResponse,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -12,6 +14,7 @@ import { Profession } from "../professions/professions.model";
 
 import { Person } from "./persons.model";
 
+const DEFAULT_FILMOGRAPHY_LIMIT = 10;
 
 @Injectable()
 export class PersonsService {
@@ -53,15 +56,7 @@ export class PersonsService {
     };
   }
 
-  async getPersonById(
-    id: number,
-    options?: { filmsLimit?: number; filmsOffset?: number }
-  ): Promise<TPersonDetailsResponse | null> {
-    const filmsLimitRaw = options?.filmsLimit ?? 10;
-    const filmsOffsetRaw = options?.filmsOffset ?? 0;
-    const filmsLimit = filmsLimitRaw > 0 ? filmsLimitRaw : 10;
-    const filmsOffset = filmsOffsetRaw >= 0 ? filmsOffsetRaw : 0;
-
+  async getPersonProfile(id: number): Promise<TPersonProfileResponse | null> {
     const person = await this.personRepository.findByPk(id, {
       attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
       include: [
@@ -77,21 +72,46 @@ export class PersonsService {
       return null;
     }
 
-    const filmsTotal = await person.$count("films");
-    const films = await person.$get("films", {
+    return person.get({ plain: true }) as TPersonProfileResponse;
+  }
+
+  async getPersonFilmography(
+    request: TGetPersonFilmographyRequest
+  ): Promise<TPersonFilmographyResponse | null> {
+    const { id, limit: limitOpt, offset: offsetOpt } = request;
+    const limitRaw = limitOpt ?? DEFAULT_FILMOGRAPHY_LIMIT;
+    const offsetRaw = offsetOpt ?? 0;
+    const limit = limitRaw > 0 ? limitRaw : DEFAULT_FILMOGRAPHY_LIMIT;
+    const offset = offsetRaw >= 0 ? offsetRaw : 0;
+
+    const person = await this.personRepository.findByPk(id, {
+      attributes: ['id'],
+    });
+
+    if (!person) {
+      return null;
+    }
+
+    const total = await person.$count("films");
+    const items = await person.$get("films", {
       attributes: ['id', 'smallPictureUrl', 'filmNameRu', 'filmNameEn', 'year', 'ratingKp'],
-      limit: filmsLimit,
-      offset: filmsOffset,
+      limit,
+      offset,
       order: [
         ['year', 'DESC'],
         ['filmNameRu', 'ASC'],
       ],
     });
 
+    const page = Math.floor(offset / limit) + 1;
+    const hasMore = offset + items.length < total;
+
     return {
-      ...person.get({ plain: true }),
-      films,
-      filmsTotal,
+      items,
+      total,
+      page,
+      perPage: limit,
+      hasMore,
     };
   }
 

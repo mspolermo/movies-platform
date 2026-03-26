@@ -8,11 +8,14 @@ export type FilmDetailProps = {
   creatorsViewer?: ReactNode;
 };
 
-export type FactsProps = Pick<FilmDetailProps, 'film'>;
-export type PosterProps = Pick<FilmDetailProps, 'film'>;
-export type SloganProps = Pick<FilmDetailProps, 'film'>;
-export type RatingProps = Pick<FilmDetailProps, 'film'>;
-export type SummaryProps = Pick<FilmDetailProps, 'film'>;
-export type TrailerProps = Pick<FilmDetailProps, 'film'>;
-export type DescriptionProps = Pick<FilmDetailProps, 'film'>;
+/** Секции деталки получают film только после guard в FilmDetail (не loading и film задан). */
+export type FilmDetailSectionProps = Required<Pick<FilmDetailProps, 'film'>>;
+
+export type FactsProps = FilmDetailSectionProps;
+export type PosterProps = FilmDetailSectionProps;
+export type SloganProps = FilmDetailSectionProps;
+export type RatingProps = FilmDetailSectionProps;
+export type SummaryProps = FilmDetailSectionProps;
+export type TrailerProps = FilmDetailSectionProps;
+export type DescriptionProps = FilmDetailSectionProps;
 export type QualityInfoProps = { view: 'desktop' | 'mobile' };

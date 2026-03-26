@@ -93,9 +93,9 @@ describe("PersonsService", () => {
     });
   });
 
-  describe("getPersonById", () => {
-    it("should return a person by id with films and total", async () => {
-      const result = await service.getPersonById(1, { filmsLimit: 10, filmsOffset: 0 });
+  describe("getPersonProfile", () => {
+    it("should return a person profile without films", async () => {
+      const result = await service.getPersonProfile(1);
       expect(mockPersonsRepository.findByPk).toHaveBeenCalledWith(1, {
         attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
         include: [
@@ -106,14 +106,32 @@ describe("PersonsService", () => {
           },
         ],
       });
+      expect(mockPersonInstance.$get).not.toHaveBeenCalled();
+      expect(result).toEqual(mockPersonArray[0]);
+    });
+  });
+
+  describe("getPersonFilmography", () => {
+    it("should return filmography page", async () => {
+      const result = await service.getPersonFilmography({
+        id: 1,
+        limit: 10,
+        offset: 0,
+      });
+      expect(mockPersonsRepository.findByPk).toHaveBeenCalledWith(1, {
+        attributes: ['id'],
+      });
+      expect(mockPersonInstance.$count).toHaveBeenCalledWith("films");
       expect(mockPersonInstance.$get).toHaveBeenCalledWith("films", expect.objectContaining({
         limit: 10,
         offset: 0,
       }));
       expect(result).toEqual({
-        ...mockPersonArray[0],
-        films: mockFilms,
-        filmsTotal: mockFilms.length,
+        items: mockFilms,
+        total: mockFilms.length,
+        page: 1,
+        perPage: 10,
+        hasMore: false,
       });
     });
   });

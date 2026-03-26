@@ -1,12 +1,14 @@
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
+  TGetPersonFilmographyRequest,
   TPaginatedPersonsResponse,
-  TPersonDetailsResponse,
+  TPersonFilmographyResponse,
   TPersonListItemResponse,
+  TPersonProfileResponse,
 } from "@common/types";
 
-import { Controller, Get, Param, Query } from "@nestjs/common";
+import { BadRequestException, Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
 
 import { PersonsService } from "./persons.service";
@@ -32,30 +34,6 @@ export class PersonsController {
     });
   }
 
-  @ApiOperation({ summary: "Получить человека по ID" })
-  @ApiResponse({ status: 200, description: "Информация о человеке" })
-  @ApiQuery({ name: "filmsLimit", required: false, description: "Количество фильмов в ответе", type: Number })
-  @ApiQuery({ name: "filmsOffset", required: false, description: "Смещение по фильмам", type: Number })
-  @Get("/:id")
-  async getPersonById(
-    @Param("id") id: number,
-    @Query("filmsLimit") filmsLimit?: string,
-    @Query("filmsOffset") filmsOffset?: string
-  ): Promise<TPersonDetailsResponse> {
-    const parsedLimit =
-      filmsLimit !== undefined && !isNaN(Number(filmsLimit)) ? Number(filmsLimit) : undefined;
-    const parsedOffset =
-      filmsOffset !== undefined && !isNaN(Number(filmsOffset)) ? Number(filmsOffset) : undefined;
-
-    const request: TGetPersonByIdRequest = {
-      id,
-      filmsLimit: parsedLimit,
-      filmsOffset: parsedOffset,
-    };
-
-    return await this.personsService.getPersonById(request);
-  }
-
   @ApiOperation({ summary: "Поиск людей по имени и профессии" })
   @ApiResponse({ status: 200, description: "Список найденных людей" })
   @ApiQuery({ name: "name", required: false, description: "Имя человека" })
@@ -71,5 +49,49 @@ export class PersonsController {
     };
 
     return await this.personsService.findPersonsByNameAndProfession(request);
+  }
+
+  @ApiOperation({ summary: "Фильмография персоны (страница)" })
+  @ApiResponse({ status: 200, description: "Список фильмов и общее количество" })
+  @ApiQuery({ name: "limit", required: false, description: "Размер страницы", type: Number })
+  @ApiQuery({ name: "offset", required: false, description: "Смещение", type: Number })
+  @Get(":id/filmography")
+  async getPersonFilmography(
+    @Param("id") id: string,
+    @Query("limit") limit?: string,
+    @Query("offset") offset?: string
+  ): Promise<TPersonFilmographyResponse> {
+    const personId = Number(id);
+    if (!id || Number.isNaN(personId)) {
+      throw new BadRequestException("Invalid person id");
+    }
+    const parsedLimit =
+      limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
+    const parsedOffset =
+      offset !== undefined && !isNaN(Number(offset)) ? Number(offset) : undefined;
+
+    const request: TGetPersonFilmographyRequest = {
+      id: personId,
+      limit: parsedLimit,
+      offset: parsedOffset,
+    };
+
+    return await this.personsService.getPersonFilmography(request);
+  }
+
+  @ApiOperation({ summary: "Получить человека по ID (профиль)" })
+  @ApiResponse({ status: 200, description: "Информация о человеке" })
+  @Get(":id")
+  async getPersonById(@Param("id") id: string): Promise<TPersonProfileResponse> {
+    const personId = Number(id);
+    if (!id || Number.isNaN(personId)) {
+      throw new BadRequestException("Invalid person id");
+    }
+
+    const request: TGetPersonByIdRequest = {
+      id: personId,
+    };
+
+    return await this.personsService.getPersonById(request);
   }
 }

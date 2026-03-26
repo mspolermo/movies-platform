@@ -1,4 +1,4 @@
-import type { TGenreItemResponse } from "@common/types";
+import type { TGenresListResponse } from "@common/types";
 
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
@@ -12,7 +12,7 @@ export class GenresController {
   constructor(private readonly genresService: GenresService) {}
 
   @MessagePattern(kinoDbRpc.genres.getAll)
-  async getAllGenres(): Promise<TGenreItemResponse[]> {
+  async getAllGenres(): Promise<TGenresListResponse> {
     return await this.genresService.getAllGenres();
   }
 }

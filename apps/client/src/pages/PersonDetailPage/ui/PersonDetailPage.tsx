@@ -1,17 +1,12 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import type { TPersonDetailPageProps } from './types';
 
-import { PersonDetail } from '@/features/getPersonWithProffesionsFilmography';
 import { Page } from '@/widgets/Layout';
+import { PersonDetail } from '@/widgets/PersonDetail';
 
-export const PersonDetailPage = () => {
-  const params = useParams();
-  const personId = Number(params?.id);
-
-  return (
-    <Page withBackButton>
-      <PersonDetail personId={personId} />
-    </Page>
-  );
-};
+export const PersonDetailPage = ({ isLoading, person }: TPersonDetailPageProps) => (
+  <Page withBackButton>
+    <PersonDetail isLoading={Boolean(isLoading)} person={person} />
+  </Page>
+);

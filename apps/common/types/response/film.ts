@@ -1,4 +1,5 @@
 import type { TFilmEntity } from "../entity";
+import type { TPaginationMeta } from "../shared";
 import type { TCountryItemResponse } from "./country";
 import type { TFilmFactResponse } from "./fact";
 import type { TGenreItemResponse } from "./genre";
@@ -17,14 +18,12 @@ export type TFilmListItemResponse = Pick<
   | "movieLength"
 >;
 
+
+
 /** Ответ API для пагинированного списка фильмов. */
 export type TFilmsResponse = {
   films: TFilmListItemResponse[];
-  total: number;
-  page: number;
-  perPage: number;
-  hasMore: boolean;
-};
+} & TPaginationMeta;
 
 /** Ответ API для детальной информации о фильме. */
 export type TFilmDetailsResponse = Pick<
@@ -46,3 +45,17 @@ export type TFilmDetailsResponse = Pick<
   genres?: TGenreItemResponse[];
   facts?: TFilmFactResponse[];
 };
+
+/** Элемент ответа API для фильма персоны. */
+export type TPersonFilmographyItemResponse = Pick<
+  TFilmEntity,
+  "id" | "smallPictureUrl" | "filmNameRu" | "filmNameEn" | "year" | "ratingKp"
+>;
+
+/** Ответ API для списка фильмов персоны. */
+export type TPersonFilmographyListResponse = TPersonFilmographyItemResponse[];
+
+/** Ответ API для пагинированной фильмографии персоны. */
+export type TPersonFilmographyResponse = {
+  items: TPersonFilmographyListResponse;
+} & TPaginationMeta;

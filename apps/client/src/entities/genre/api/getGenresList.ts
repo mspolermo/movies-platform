@@ -1,12 +1,14 @@
-import type { TGenreItemResponse } from '@common/types';
+'use server';
+
+import type { TGenresListResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 /**
  * Получить список всех жанров
  */
-export const getGenresList = async (): Promise<TGenreItemResponse[]> => {
-  const response = await apiClient.get<TGenreItemResponse[]>(API_ENDPOINTS.GENRES.LIST);
+export const getGenresList = async (): Promise<TGenresListResponse> => {
+  const response = await apiClient.get<TGenresListResponse>(API_ENDPOINTS.GENRES.LIST);
 
   return response.data;
 };

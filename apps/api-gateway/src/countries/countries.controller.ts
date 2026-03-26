@@ -1,4 +1,4 @@
-import type { TCountryItemResponse } from "@common/types";
+import type { TCountriesListResponse } from "@common/types";
 
 import { Controller, Get } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -12,7 +12,7 @@ export class CountriesController {
   @ApiOperation({ summary: "Получить все страны" })
   @ApiResponse({ status: 200, description: "Список стран" })
   @Get()
-  async getAllCountries(): Promise<TCountryItemResponse[]> {
+  async getAllCountries(): Promise<TCountriesListResponse> {
     return await this.countriesService.getAllCountries();
   }
 }
