@@ -1,0 +1,1 @@
+export { getFilmsWord } from './getFilmsWord';

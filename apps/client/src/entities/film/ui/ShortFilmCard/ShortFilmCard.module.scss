@@ -1,90 +1,149 @@
-.card {
-  margin-top: 16px;
-}
+@use '@/shared/styles/variables/sizes' as sizes;
 
-.desktop {
+.root {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 16px;
   color: var(--color-heading);
   font-size: 15px;
   line-height: 22px;
   font-weight: 600;
-}
 
-.mobile {
-  display: none;
-}
+  @media (max-width: sizes.$bp-tablet) {
+    gap: 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
 
-.movie {
-  display: flex;
-  align-items: center;
-}
-
-.poster {
-  img {
-    width: 80px;
-    border-radius: 4px;
+  @media (max-width: sizes.$bp-mobile) {
+    align-items: flex-start;
+    font-size: 15px;
+    line-height: 22px;
   }
 }
 
-.specification {
-  margin-left: 16px;
+.posterSlot {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  aspect-ratio: 2 / 3;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-background-elements);
+
+  @media (max-width: sizes.$bp-tablet) {
+    width: 72px;
+  }
+
+  @media (max-width: sizes.$bp-mobile) {
+    width: 80px;
+  }
 }
 
-.year {
-  // Базовые стили наследуются от родителя
+.posterSkeleton {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.name {
-  margin-top: 4px;
+.posterImg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.posterImgVisible {
+  opacity: 1;
+}
+
+.posterFallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px;
+  text-align: center;
+  color: color-mix(in srgb, var(--color-input-text) 75%, transparent);
+  background: color-mix(in srgb, var(--color-background-elements) 92%, var(--color-heading));
+}
+
+.posterFallbackIcon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  opacity: 0.65;
+}
+
+.posterFallbackText {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 600;
+}
+
+.details {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (max-width: sizes.$bp-tablet) {
+    gap: 12px;
+  }
+
+  @media (max-width: sizes.$bp-mobile) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+}
+
+.meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filmTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .rating {
-  margin-top: 4px;
   font-size: 13px;
   line-height: 16px;
+  font-weight: 600;
   color: var(--color-input-text);
+
+  @media (max-width: sizes.$bp-tablet) {
+    font-size: 12px;
+    line-height: 15px;
+  }
 }
 
-.button {
-  // Базовые стили наследуются от родителя
+.action {
+  flex-shrink: 0;
+
+  @media (max-width: sizes.$bp-mobile) {
+    width: 100%;
+  }
 }
 
-.info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-@media (max-width: 600px) {
-  .desktop {
-    display: none;
-  }
-
-  .mobile {
-    display: flex;
-    color: var(--color-heading);
-    font-size: 15px;
-    line-height: 22px;
-    font-weight: 600;
-  }
-
-  .info {
-    display: flex;
-    flex: 0 1 100%;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 16px;
-  }
-
-  .rating {
-    font-size: 13px;
-    line-height: 16px;
-    color: var(--color-input-text);
-  }
-
-  .button {
-    min-width: 100%;
+.actionButton {
+  @media (max-width: sizes.$bp-mobile) {
+    width: 100%;
   }
 }

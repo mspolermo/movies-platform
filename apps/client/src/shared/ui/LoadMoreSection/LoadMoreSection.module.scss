@@ -1,7 +1,11 @@
 .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 48px;
   text-align: center;
-  padding: 1.5rem;
-  margin-top: 1.5rem;
+  padding: 1rem 1.5rem 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .endMessage {
@@ -16,31 +20,4 @@
   justify-content: center;
   align-items: center;
   margin-top: 24px;
-}
-
-.loadMoreButton {
-  appearance: none;
-  border: 1px solid var(--color-split-line);
-  background: var(--color-background-elements);
-  color: var(--color-heading);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 14px;
-  line-height: 20px;
-  cursor: pointer;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-
-  &:hover {
-    color: var(--color-active);
-    box-shadow: 0 0 0 3px var(--color-transparent-red);
-    border-color: var(--color-transparent-red);
-  }
-
-  &:active {
-    box-shadow: 0 0 0 3px var(--color-transparent-red-shadow);
-  }
 }

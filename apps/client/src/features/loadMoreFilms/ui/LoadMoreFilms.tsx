@@ -9,14 +9,12 @@ import { useLoadMoreFilms } from '../lib';
 export const LoadMoreFilms = ({
   children,
   initialParams = {},
-  threshold = 200,
   loadingComponent,
   endMessage,
   onParamsChange,
 }: LoadMoreFilmsProps) => {
   const { films, loading, error, hasMore, loadMore, updateParams } = useLoadMoreFilms({
     initialParams,
-    threshold,
   });
 
   useEffect(() => {
@@ -36,7 +34,6 @@ export const LoadMoreFilms = ({
       hasMore={hasMore}
       isLoading={loading}
       loadingComponent={loadingComponent || defaultLoadingComponent}
-      threshold={threshold}
       onLoadMore={loadMore}
     >
       {children(films, loading, error)}

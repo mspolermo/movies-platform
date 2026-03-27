@@ -1,0 +1,1 @@
+export { ShortInfoFilmsList } from './ShortInfoFilmsList';

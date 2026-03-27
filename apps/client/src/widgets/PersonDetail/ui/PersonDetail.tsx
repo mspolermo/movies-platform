@@ -29,7 +29,7 @@ export const PersonDetail = (props: TPersonDetailProps) => {
     <div className={styles.container}>
       <PersonInfo person={person} />
       <ProfessionsList professions={person.professions} />
-      <PersonFilmography personId={person.id} />;
+      <PersonFilmography personId={person.id} />
     </div>
   );
 };

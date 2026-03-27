@@ -1,4 +1,3 @@
-// features/professions/tabs/ui/ProfessionsTabs/ProfessionsTabs.tsx
 'use client';
 
 import type { TProfessionsTabsProps } from './types';

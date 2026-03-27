@@ -113,7 +113,6 @@ export const FilmsPage = () => {
             ))}
           </div>
         }
-        threshold={200}
         onParamsChange={handleParamsChange}
       >
         {(films, loading, error) => {

@@ -43,12 +43,7 @@ export const FilmPersonsByProfession = ({
   }
 
   return (
-    <LoadMoreSection
-      className={styles.infiniteScroll}
-      hasMore={hasMore}
-      isLoading={loading}
-      onLoadMore={loadMore}
-    >
+    <LoadMoreSection hasMore={hasMore} isLoading={loading} onLoadMore={loadMore}>
       <div className={styles.personsList}>
         {persons.map((person) => (
           <Card

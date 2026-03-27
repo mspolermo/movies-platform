@@ -7,13 +7,9 @@ import { searchFilms } from '@/entities/film';
 
 interface UseLoadMoreFilmsOptions {
   initialParams?: TSearchFilmsParams;
-  threshold?: number;
 }
 
-export const useLoadMoreFilms = ({
-  initialParams = {},
-  threshold: _threshold = 200,
-}: UseLoadMoreFilmsOptions = {}) => {
+export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions = {}) => {
   const [films, setFilms] = useState<TFilmListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

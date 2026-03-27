@@ -1,32 +1,24 @@
-import type { ReactNode } from 'react';
+import type { LoadMoreSectionProps } from './type';
 
-import { Loader } from '@/shared/ui';
+import { Button, Loader } from '@/shared/ui';
 
 import styles from './LoadMoreSection.module.scss';
 
-export interface LoadMoreSectionProps {
-  children: ReactNode;
-  onLoadMore: () => void;
-  isLoading: boolean;
-  hasMore: boolean;
-  threshold?: number;
-  loadingComponent?: ReactNode;
-  endMessage?: ReactNode;
-  className?: string;
-}
-
+/**
+ * Обёртка для бесконечной/постраничной подгрузки: контент, индикатор загрузки
+ * и кнопка «Показать ещё», пока `hasMore === true` и не идёт загрузка.
+ */
 export const LoadMoreSection = ({
   children,
   onLoadMore,
   isLoading,
   hasMore,
-  threshold: _threshold = 200, // сохраняем проп для обратной совместимости (IntersectionObserver позже)
   loadingComponent,
   endMessage,
   className,
 }: LoadMoreSectionProps) => {
   const defaultLoadingComponent = (
-    <div className={styles.loading}>
+    <div aria-busy="true" aria-live="polite" className={styles.loading} role="status">
       <Loader />
     </div>
   );
@@ -39,9 +31,9 @@ export const LoadMoreSection = ({
 
       {!isLoading && hasMore && (
         <div className={styles.controls}>
-          <button className={styles.loadMoreButton} onClick={onLoadMore}>
+          <Button type="button" variant="outline" onClick={onLoadMore}>
             Показать ещё
-          </button>
+          </Button>
         </div>
       )}
 

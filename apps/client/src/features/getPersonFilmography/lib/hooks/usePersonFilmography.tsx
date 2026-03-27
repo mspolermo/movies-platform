@@ -28,6 +28,9 @@ export const usePersonFilmography = (personId: number | null) => {
       try {
         setLoading(true);
         setError(null);
+        setFilms([]);
+        setFilmsTotal(0);
+        setHasMoreFilms(false);
         const data = await getPersonFilmography({
           id: personId,
           limit: DEFAULT_LIMIT,
