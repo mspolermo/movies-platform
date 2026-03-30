@@ -9,8 +9,8 @@ export type TGetPersonByIdRequest = {
   id: number;
 };
 
-/** Параметры запроса страницы фильмографии персоны. */
-export type TGetPersonFilmographyRequest = {
+/** Параметры запроса страницы фильмов с участием персоны. */
+export type TGetPersonFilmsRequest = {
   id: number;
   limit?: number;
   offset?: number;

@@ -1,5 +1,6 @@
 import type { TPageProps } from '@/shared/types';
 
+import { isAxiosError } from 'axios';
 import { notFound } from 'next/navigation';
 
 import { getFilmById } from '@/entities/film';
@@ -12,7 +13,13 @@ export default async function FilmPage({ params: { id } }: TPageProps<{ id: stri
     notFound();
   }
 
-  const film = await getFilmById(filmId);
-
-  return <FilmDetailPage film={film} />;
+  try {
+    const film = await getFilmById(filmId);
+    return <FilmDetailPage film={film} />;
+  } catch (err) {
+    if (isAxiosError(err) && err.response?.status === 404) {
+      notFound();
+    }
+    throw err;
+  }
 }

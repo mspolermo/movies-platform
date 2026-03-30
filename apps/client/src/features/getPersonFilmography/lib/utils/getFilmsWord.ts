@@ -1,9 +1,4 @@
-/**
- * Возвращает корректную форму слова "фильм" в зависимости от количества.
- *
- * @param {number} count - Количество фильмов.
- * @returns {string} Корректная форма слова "фильм".
- */
+/** Склонение «фильм» по числу (рус.). */
 export const getFilmsWord = (count: number): string => {
   // На случай отрицательного или некорректного ввода — приводим к 0
   const safeCount = Number.isFinite(count) && count >= 0 ? count : 0;

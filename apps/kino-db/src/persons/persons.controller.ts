@@ -1,7 +1,7 @@
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
-  TGetPersonFilmographyRequest,
+  TGetPersonFilmsRequest,
   TGetPersonsByProfessionRequest,
   TGetPersonsRequest,
 } from "@common/types";
@@ -40,7 +40,7 @@ export class PersonsController {
   }
 
   @MessagePattern(kinoDbRpc.persons.getFilmography)
-  async getPersonFilmography(@Payload() data: TGetPersonFilmographyRequest) {
+  async getPersonFilmography(@Payload() data: TGetPersonFilmsRequest) {
     return await this.personsService.getPersonFilmography(data);
   }
 

@@ -47,15 +47,15 @@ export type TFilmDetailsResponse = Pick<
 };
 
 /** Элемент ответа API для фильма персоны. */
-export type TPersonFilmographyItemResponse = Pick<
+export type TPersonFilmResponse = Pick<
   TFilmEntity,
   "id" | "smallPictureUrl" | "filmNameRu" | "filmNameEn" | "year" | "ratingKp"
 >;
 
 /** Ответ API для списка фильмов персоны. */
-export type TPersonFilmographyListResponse = TPersonFilmographyItemResponse[];
+export type TPersonFilmsListResponse = TPersonFilmResponse[];
 
-/** Ответ API для пагинированной фильмографии персоны. */
-export type TPersonFilmographyResponse = {
-  items: TPersonFilmographyListResponse;
+/** Ответ API для пагинированного списка фильмов персоны. */
+export type TPersonFilmsPaginationResponse = {
+  items: TPersonFilmsListResponse;
 } & TPaginationMeta;

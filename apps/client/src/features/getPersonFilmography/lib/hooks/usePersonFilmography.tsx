@@ -1,13 +1,14 @@
-import type { TPersonFilmographyListResponse } from '@common/types';
+import type { TPersonFilmsListResponse } from '@common/types';
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { getPersonFilmography } from '@/entities/person';
+import { getPersonFilms } from '@/entities/film';
 
 const DEFAULT_LIMIT = 10;
 
+/** Фильмография персоны: первая страница, догрузка, флаги загрузки. */
 export const usePersonFilmography = (personId: number | null) => {
-  const [films, setFilms] = useState<TPersonFilmographyListResponse>([]);
+  const [films, setFilms] = useState<TPersonFilmsListResponse>([]);
   const [filmsTotal, setFilmsTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +32,7 @@ export const usePersonFilmography = (personId: number | null) => {
         setFilms([]);
         setFilmsTotal(0);
         setHasMoreFilms(false);
-        const data = await getPersonFilmography({
+        const data = await getPersonFilms({
           id: personId,
           limit: DEFAULT_LIMIT,
           offset: 0,
@@ -59,7 +60,7 @@ export const usePersonFilmography = (personId: number | null) => {
 
     try {
       setIsLoadingMore(true);
-      const nextData = await getPersonFilmography({
+      const nextData = await getPersonFilms({
         id: personId,
         limit: DEFAULT_LIMIT,
         offset: films.length,

@@ -6,16 +6,10 @@ import { LoadMoreSection } from '@/shared/ui';
 import styles from './PersonFilmography.module.scss';
 import { getFilmsWord, usePersonFilmography } from '../lib';
 
+/** Блок фильмографии с пагинированной загрузкой. */
 export const PersonFilmography = ({ personId }: TPersonDetailLoadedProps) => {
-  const {
-    loading,
-    error,
-    filmsTotal,
-    films,
-    handleLoadMore,
-    isLoadingMore,
-    hasMoreFilms,
-  } = usePersonFilmography(personId);
+  const { loading, error, filmsTotal, films, handleLoadMore, isLoadingMore, hasMoreFilms } =
+    usePersonFilmography(personId);
 
   if (error) {
     return (
@@ -30,9 +24,11 @@ export const PersonFilmography = ({ personId }: TPersonDetailLoadedProps) => {
       <div className={styles.content}>
         <div className={styles.header}>
           <div className={styles.title}>Фильмография</div>
-          {Boolean(filmsTotal) && <div className={styles.subtitle}>
-            {filmsTotal} {getFilmsWord(filmsTotal)}
-          </div>}
+          {Boolean(filmsTotal) && (
+            <div className={styles.subtitle}>
+              {filmsTotal} {getFilmsWord(filmsTotal)}
+            </div>
+          )}
         </div>
 
         <div className={styles.role}>

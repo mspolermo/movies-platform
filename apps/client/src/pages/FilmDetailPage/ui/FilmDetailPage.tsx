@@ -8,6 +8,7 @@ import { FilmDetail } from '@/entities/film';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 import { Page } from '@/widgets/Layout';
 
+/** Страница фильма с блоком создателей и режимом загрузки */
 export const FilmDetailPage = ({ isLoading, film }: TFilmDetailPageProps) => (
   <Page>
     <FilmDetail

@@ -8,9 +8,10 @@ import styles from './ProfessionsList.module.scss';
 import { getProfessionsWord } from '../../lib';
 import { ProfessionCard } from '../ProfessionCard';
 
+/** Список профессий персоны: заголовок, число и карточки (или пустое состояние). */
 export const ProfessionsList = ({ professions }: TProfessionsListProps) => {
-  if (!professions || professions.length === 0) return null;
-  const professionsCount = professions.length;
+  const items = professions ?? [];
+  const professionsCount = items.length;
 
   return (
     <div className={styles.container}>
@@ -22,9 +23,11 @@ export const ProfessionsList = ({ professions }: TProfessionsListProps) => {
       </div>
 
       <div className={styles.list}>
-        {professions.map((profession) => (
-          <ProfessionCard key={profession.id} profession={profession} />
-        ))}
+        {items.length > 0 ? (
+          items.map((profession) => <ProfessionCard key={profession.id} profession={profession} />)
+        ) : (
+          <div className={styles.empty}>Профессии не указаны</div>
+        )}
       </div>
     </div>
   );

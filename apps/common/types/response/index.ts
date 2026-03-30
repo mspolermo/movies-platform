@@ -15,9 +15,9 @@ export type {
   TFilmsResponse,
   TFilmListItemResponse,
   TFilmDetailsResponse,
-  TPersonFilmographyItemResponse,
-  TPersonFilmographyListResponse,
-  TPersonFilmographyResponse,
+  TPersonFilmResponse,
+  TPersonFilmsListResponse,
+  TPersonFilmsPaginationResponse,
 } from "./film";
 
 export type {

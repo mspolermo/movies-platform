@@ -1,2 +1,2 @@
-export { PersonInfo, PersonInfoSkeleton } from './PersonInfo';
+export { PersonInfo } from './PersonInfo';
 export { PersonCard } from './PersonCard';

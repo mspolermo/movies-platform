@@ -1,10 +1,10 @@
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
-  TGetPersonFilmographyRequest,
+  TGetPersonFilmsRequest,
   TGetPersonsRequest,
   TPaginatedPersonsResponse,
-  TPersonFilmographyResponse,
+  TPersonFilmsPaginationResponse,
   TPersonListItemResponse,
   TPersonProfileResponse,
 } from "@common/types";
@@ -44,9 +44,9 @@ export class PersonsService extends BaseMicroserviceService {
   }
 
   async getPersonFilmography(
-    request: TGetPersonFilmographyRequest
-  ): Promise<TPersonFilmographyResponse> {
-    const data = await this.sendMessage<TPersonFilmographyResponse | null>(
+    request: TGetPersonFilmsRequest
+  ): Promise<TPersonFilmsPaginationResponse> {
+    const data = await this.sendMessage<TPersonFilmsPaginationResponse | null>(
       kinoDbRpc.persons.getFilmography,
       request
     );

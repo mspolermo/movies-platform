@@ -1,6 +1,6 @@
-import type { TPersonFilmographyListResponse } from '@common/types';
+import type { TPersonFilmsListResponse } from '@common/types';
 
 export type TShortInfoFilmsListProps = {
-  films: TPersonFilmographyListResponse;
+  films: TPersonFilmsListResponse;
   isLoading: boolean;
 };

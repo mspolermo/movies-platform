@@ -4,6 +4,9 @@ import React from 'react';
 
 import styles from './PersonInfo.module.scss';
 
+/**
+ * UI - информация о персоне. Используется на странице детальной информации о персоне
+ */
 export const PersonInfo = ({ person }: TPersonInfoProps) => {
   return (
     <div className={styles.content}>

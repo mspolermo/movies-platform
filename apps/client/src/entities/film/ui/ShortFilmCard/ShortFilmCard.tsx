@@ -1,6 +1,6 @@
 'use client';
 
-import type { TPersonFilmographyItemResponse } from '@common/types';
+import type { TPersonFilmResponse } from '@common/types';
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useId, useState } from 'react';
@@ -13,7 +13,7 @@ import styles from './ShortFilmCard.module.scss';
 import { formatRating } from '../../lib';
 
 interface ShortFilmCardProps {
-  film: TPersonFilmographyItemResponse;
+  film: TPersonFilmResponse;
 }
 
 type PosterLoadState = 'loading' | 'loaded' | 'error';

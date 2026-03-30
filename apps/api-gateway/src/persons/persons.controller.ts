@@ -1,9 +1,9 @@
 import type {
   TFindPersonsByNameAndProfessionRequest,
   TGetPersonByIdRequest,
-  TGetPersonFilmographyRequest,
+  TGetPersonFilmsRequest,
   TPaginatedPersonsResponse,
-  TPersonFilmographyResponse,
+  TPersonFilmsPaginationResponse,
   TPersonListItemResponse,
   TPersonProfileResponse,
 } from "@common/types";
@@ -60,7 +60,7 @@ export class PersonsController {
     @Param("id") id: string,
     @Query("limit") limit?: string,
     @Query("offset") offset?: string
-  ): Promise<TPersonFilmographyResponse> {
+  ): Promise<TPersonFilmsPaginationResponse> {
     const personId = Number(id);
     if (!id || Number.isNaN(personId)) {
       throw new BadRequestException("Invalid person id");
@@ -70,7 +70,7 @@ export class PersonsController {
     const parsedOffset =
       offset !== undefined && !isNaN(Number(offset)) ? Number(offset) : undefined;
 
-    const request: TGetPersonFilmographyRequest = {
+    const request: TGetPersonFilmsRequest = {
       id: personId,
       limit: parsedLimit,
       offset: parsedOffset,

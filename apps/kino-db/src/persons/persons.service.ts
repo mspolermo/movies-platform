@@ -1,7 +1,7 @@
 import type {
-  TGetPersonFilmographyRequest,
+  TGetPersonFilmsRequest,
   TPaginatedPersonsResponse,
-  TPersonFilmographyResponse,
+  TPersonFilmsPaginationResponse,
   TPersonListItemResponse,
   TPersonProfileResponse,
 } from "@common/types";
@@ -76,8 +76,8 @@ export class PersonsService {
   }
 
   async getPersonFilmography(
-    request: TGetPersonFilmographyRequest
-  ): Promise<TPersonFilmographyResponse | null> {
+    request: TGetPersonFilmsRequest
+  ): Promise<TPersonFilmsPaginationResponse | null> {
     const { id, limit: limitOpt, offset: offsetOpt } = request;
     const limitRaw = limitOpt ?? DEFAULT_FILMOGRAPHY_LIMIT;
     const offsetRaw = offsetOpt ?? 0;
