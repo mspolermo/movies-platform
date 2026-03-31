@@ -7,8 +7,8 @@ import { ExpandableBlock, Skeleton } from '@/shared/ui';
 import styles from './FilmDetail.module.scss';
 import { QualityInfo, Description, Facts, Poster, Rating, Slogan, Summary, Trailer } from './ui';
 
-/** Детальная информация фильма: 
- * постер, рейтинг, описание, факты, трейлер. 
+/** Детальная информация фильма:
+ * постер, рейтинг, описание, факты, трейлер.
  * Отображение скелетона при загрузке.
  * Принимает готовый блок создателей(персон).
  * */

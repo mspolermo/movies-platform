@@ -3,7 +3,8 @@
 import type { SortOption } from '@/features/filterFilms';
 import type { TSearchFilmsParams } from '@common/types';
 
-import { useMemo } from 'react';
+import cn from 'classnames';
+import { useMemo, type ReactNode } from 'react';
 
 import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { Filters, SortFilter, useFilters } from '@/features/filterFilms';
@@ -11,6 +12,12 @@ import { LoadMoreFilms } from '@/features/loadMoreFilms';
 import { Page } from '@/widgets/Layout';
 
 import styles from './FilmsPage.module.scss';
+
+const FilmsGrid = ({ children }: { children: ReactNode }) => (
+  <div className={cn(styles.filmsGrid)}>{children}</div>
+);
+
+const SKELETON_PLACEHOLDERS = Array.from({ length: 8 }, (_, i) => i);
 
 export const FilmsPage = () => {
   const {
@@ -23,7 +30,6 @@ export const FilmsPage = () => {
     buildFilterParams,
   } = useFilters();
 
-  // Вычисляем параметры на основе selectedFilters и sortValue
   const currentParams = useMemo(() => {
     return buildFilterParams(selectedFilters, 1, 20, sortValue);
   }, [selectedFilters, sortValue, buildFilterParams]);
@@ -37,37 +43,33 @@ export const FilmsPage = () => {
     setSortValue(nextSort);
   };
 
-  const handleFiltersUpdate = (nextFilters: typeof selectedFilters) => {
-    // Параметры обновляются автоматически через useMemo при изменении selectedFilters
-    updateFilters(nextFilters);
-  };
+  const skeletonGrid = (
+    <FilmsGrid>
+      {SKELETON_PLACEHOLDERS.map((index) => (
+        <FilmCardSkeleton key={index} showIcons={true} />
+      ))}
+    </FilmsGrid>
+  );
 
   //TODO: мобильные фильтры не работают, разобраться со стилями
 
   return (
     <Page title="Фильмы">
-      {/* Desktop filters */}
-      <div className={styles.filtersBlock}>
-        <div className={styles.filtersContainer}>
-          <Filters
-            allFilters={allFilters}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={(filters) => {
-              updateFilters(filters);
-              handleFiltersUpdate(filters);
-            }}
-          />
-        </div>
-        <div className={styles.sortingContainer}>
+      <div className={styles.desktopWrap}>
+        <Filters
+          allFilters={allFilters}
+          selectedFilters={selectedFilters}
+          setSelectedFilters={updateFilters}
+        />
+        <div className={styles.desktopSort}>
           <SortFilter setSortValue={handleSortChange} sortValue={sortValue} />
         </div>
       </div>
 
-      {/* Mobile filters */}
-      <div className={styles.mobileFilters}>
+      <div className={styles.mobileWrap}>
         <div className={styles.mobileHeader}>
-          <div className={styles.mobileTitle}>
-            <h1>Фильмы</h1>
+          <div className={styles.mobileTitleBlock}>
+            <h1 className={styles.mobileHeading}>Фильмы</h1>
             <div className={styles.mobileSubtitle}>
               {!selectedFilters.genres.length
                 ? 'Все жанры, '
@@ -78,41 +80,41 @@ export const FilmsPage = () => {
               {!selectedFilters.years ? 'все годы' : selectedFilters.years}
             </div>
           </div>
-          <div className={styles.mobileControls}>
-            <button
-              className={styles.mobileFilterButton}
-              onClick={() => {
-                /* TODO: открыть модальное окно с фильтрами */
-              }}
+          <button
+            className={cn(styles.mobileFilterBtn, !isEmptyFilters && styles.mobileFilterBtnActive)}
+            type="button"
+            onClick={() => {
+              /* TODO: открыть модальное окно с фильтрами */
+            }}
+          >
+            <svg
+              aria-hidden
+              className={styles.mobileFilterIcon}
+              fill="none"
+              height="24"
+              viewBox="0 0 24 24"
+              width="24"
             >
-              <svg fill="none" height="24" viewBox="0 0 24 24" width="24">
-                <path
-                  d="M3 7H21M9 12H21M17 17H21"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                />
-              </svg>
-              Фильтры
-              {!isEmptyFilters && <div className={styles.filterIndicator} />}
-            </button>
-          </div>
+              <path
+                d="M3 7H21M9 12H21M17 17H21"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="2"
+              />
+            </svg>
+            Фильтры
+            {!isEmptyFilters && <span aria-hidden className={styles.filterDot} />}
+          </button>
         </div>
 
-        <div className={styles.mobileSorting}>
+        <div className={styles.mobileSortRow}>
           <SortFilter setSortValue={handleSortChange} sortValue={sortValue} />
         </div>
       </div>
 
       <LoadMoreFilms
         initialParams={currentParams}
-        loadingComponent={
-          <div className={styles.filmsGrid}>
-            {Array.from({ length: 8 }).map((_, index) => (
-              <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
-            ))}
-          </div>
-        }
+        loadingComponent={skeletonGrid}
         onParamsChange={handleParamsChange}
       >
         {(films, loading, error) => {
@@ -120,25 +122,18 @@ export const FilmsPage = () => {
             return <div className={styles.error}>{error}</div>;
           }
 
-          // Показываем скелетоны во время первой загрузки
           if (loading && films.length === 0) {
-            return (
-              <div className={styles.filmsGrid}>
-                {Array.from({ length: 8 }).map((_, index) => (
-                  <FilmCardSkeleton key={`skeleton-${index}`} showIcons={true} />
-                ))}
-              </div>
-            );
+            return skeletonGrid;
           }
 
           return (
-            <div className={styles.filmsGrid}>
+            <FilmsGrid>
               {films && films.length > 0 ? (
                 films.map((film) => <FilmCard key={film.id} film={film} showIcons={true} />)
               ) : (
                 <div className={styles.noFilms}>Фильмы не найдены</div>
               )}
-            </div>
+            </FilmsGrid>
           );
         }}
       </LoadMoreFilms>
