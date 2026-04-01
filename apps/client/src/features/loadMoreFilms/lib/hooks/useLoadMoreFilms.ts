@@ -1,14 +1,22 @@
 import type { TFilmListItemResponse, TFilmsResponse, TSearchFilmsParams } from '@common/types';
 
-import { isAxiosError } from 'axios';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 import { searchFilms } from '@/entities/film';
 
-interface UseLoadMoreFilmsOptions {
+import { searchFilmsErrorMessage } from '../utils';
+
+export interface UseLoadMoreFilmsOptions {
+  /** Стартовые параметры поиска (страница перезапишется при загрузке). */
   initialParams?: TSearchFilmsParams;
 }
 
+/**
+ * Постраничная загрузка фильмов через `searchFilms`.
+ *
+ * При смене внутренних `params` (через `updateParams`) вызывается полный сброс и запрос 1-й страницы.
+ * `loadMore` догружает следующую страницу с теми же `params`.
+ */
 export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions = {}) => {
   const [films, setFilms] = useState<TFilmListItemResponse[]>([]);
   const [loading, setLoading] = useState(false);
@@ -45,22 +53,7 @@ export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions
         setHasMore(response.hasMore);
         setCurrentPage(page);
       } catch (err: unknown) {
-        const fallback = 'Ошибка загрузки фильмов';
-        const message = isAxiosError(err)
-          ? (() => {
-              const data = err.response?.data;
-              if (
-                data &&
-                typeof data === 'object' &&
-                'message' in data &&
-                typeof (data as { message: unknown }).message === 'string'
-              ) {
-                return (data as { message: string }).message;
-              }
-              return fallback;
-            })()
-          : fallback;
-        setError(message);
+        setError(searchFilmsErrorMessage(err));
       } finally {
         setLoading(false);
         isLoadingRef.current = false;
@@ -86,7 +79,6 @@ export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions
     setParams(newParams);
   }, []);
 
-  // Загрузка при изменении параметров
   useEffect(() => {
     reset();
   }, [params, reset]);

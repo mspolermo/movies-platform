@@ -2,41 +2,32 @@ import type { LoadMoreFilmsProps } from './types';
 
 import { useEffect } from 'react';
 
-import { LoadMoreSection, Loader } from '@/shared/ui';
+import { FilmCardsList } from '@/entities/film';
+import { LoadMoreSection } from '@/shared/ui';
 
 import { useLoadMoreFilms } from '../lib';
 
-export const LoadMoreFilms = ({
-  children,
-  initialParams = {},
-  loadingComponent,
-  endMessage,
-  onParamsChange,
-}: LoadMoreFilmsProps) => {
+/**
+ * Список фильмов с кнопкой «Показать ещё»: `initialParams` синхронизируется с хуком
+ * и при изменении сбрасывает выдачу и перезапрашивает первую страницу.
+ */
+export const LoadMoreFilms = ({ initialParams = {} }: LoadMoreFilmsProps) => {
   const { films, loading, error, hasMore, loadMore, updateParams } = useLoadMoreFilms({
     initialParams,
   });
 
   useEffect(() => {
     updateParams(initialParams);
-    onParamsChange?.(initialParams);
-  }, [initialParams, onParamsChange, updateParams]);
-
-  const defaultLoadingComponent = <Loader size="small" />;
-
-  const defaultEndMessage = (
-    <div style={{ textAlign: 'center', padding: '2rem', opacity: 0.7 }}>Все фильмы загружены</div>
-  );
+  }, [initialParams, updateParams]);
 
   return (
     <LoadMoreSection
-      endMessage={endMessage || defaultEndMessage}
       hasMore={hasMore}
       isLoading={loading}
-      loadingComponent={loadingComponent || defaultLoadingComponent}
+      loadingComponent={<FilmCardsList films={[]} loading={true} />}
       onLoadMore={loadMore}
     >
-      {children(films, loading, error)}
+      <FilmCardsList error={error} films={films} loading={false} />
     </LoadMoreSection>
   );
 };

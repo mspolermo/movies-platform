@@ -1,23 +1,15 @@
 'use client';
 
 import type { SortOption } from '@/features/filterFilms';
-import type { TSearchFilmsParams } from '@common/types';
 
 import cn from 'classnames';
-import { useMemo, type ReactNode } from 'react';
+import { useMemo } from 'react';
 
-import { FilmCard, FilmCardSkeleton } from '@/entities/film';
 import { Filters, SortFilter, useFilters } from '@/features/filterFilms';
 import { LoadMoreFilms } from '@/features/loadMoreFilms';
 import { Page } from '@/widgets/Layout';
 
 import styles from './FilmsPage.module.scss';
-
-const FilmsGrid = ({ children }: { children: ReactNode }) => (
-  <div className={cn(styles.filmsGrid)}>{children}</div>
-);
-
-const SKELETON_PLACEHOLDERS = Array.from({ length: 8 }, (_, i) => i);
 
 export const FilmsPage = () => {
   const {
@@ -34,22 +26,10 @@ export const FilmsPage = () => {
     return buildFilterParams(selectedFilters, 1, 20, sortValue);
   }, [selectedFilters, sortValue, buildFilterParams]);
 
-  const handleParamsChange = (_params: TSearchFilmsParams) => {
-    // Параметры обновляются автоматически через useMemo
-  };
-
   const handleSortChange = (newSort: string) => {
     const nextSort = newSort as SortOption;
     setSortValue(nextSort);
   };
-
-  const skeletonGrid = (
-    <FilmsGrid>
-      {SKELETON_PLACEHOLDERS.map((index) => (
-        <FilmCardSkeleton key={index} showIcons={true} />
-      ))}
-    </FilmsGrid>
-  );
 
   //TODO: мобильные фильтры не работают, разобраться со стилями
 
@@ -112,31 +92,7 @@ export const FilmsPage = () => {
         </div>
       </div>
 
-      <LoadMoreFilms
-        initialParams={currentParams}
-        loadingComponent={skeletonGrid}
-        onParamsChange={handleParamsChange}
-      >
-        {(films, loading, error) => {
-          if (error) {
-            return <div className={styles.error}>{error}</div>;
-          }
-
-          if (loading && films.length === 0) {
-            return skeletonGrid;
-          }
-
-          return (
-            <FilmsGrid>
-              {films && films.length > 0 ? (
-                films.map((film) => <FilmCard key={film.id} film={film} showIcons={true} />)
-              ) : (
-                <div className={styles.noFilms}>Фильмы не найдены</div>
-              )}
-            </FilmsGrid>
-          );
-        }}
-      </LoadMoreFilms>
+      <LoadMoreFilms initialParams={currentParams} />
     </Page>
   );
 };

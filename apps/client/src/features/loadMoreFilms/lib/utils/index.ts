@@ -1,0 +1,1 @@
+export { searchFilmsErrorMessage } from './searchFilmsErrorMessage'
