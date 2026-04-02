@@ -1,1 +1,1 @@
-export { searchFilmsErrorMessage } from './searchFilmsErrorMessage'
+export { searchFilmsErrorMessage } from './searchFilmsErrorMessage';

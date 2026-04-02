@@ -20,14 +20,16 @@ export const LoadMoreFilms = ({ initialParams = {} }: LoadMoreFilmsProps) => {
     updateParams(initialParams);
   }, [initialParams, updateParams]);
 
+  const listLoading = loading && films.length === 0;
+
   return (
     <LoadMoreSection
       hasMore={hasMore}
-      isLoading={loading}
+      isLoading={loading && films.length > 0}
       loadingComponent={<FilmCardsList films={[]} loading={true} />}
       onLoadMore={loadMore}
     >
-      <FilmCardsList error={error} films={films} loading={false} />
+      <FilmCardsList error={error} films={films} loading={listLoading} />
     </LoadMoreSection>
   );
 };

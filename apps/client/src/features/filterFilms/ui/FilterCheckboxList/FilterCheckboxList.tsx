@@ -6,6 +6,9 @@ import { capitalizeFirst } from '@/shared/lib';
 
 import styles from './FilterCheckboxList.module.scss';
 
+const itemLabel = (item: FilterItem): string =>
+  'countryName' in item ? item.countryName : item.nameRu;
+
 interface FilterCheckboxListProps {
   allValues: FilterItem[];
   selectedValues: string[];
@@ -25,19 +28,20 @@ export const FilterCheckboxList = ({
       <div className={styles.desktop}>
         <div className={styles.content} onClick={(e) => e.stopPropagation()}>
           <div className={styles.list}>
-            {allValues.map(({ nameRu }) => {
-              const active = isSelected(nameRu);
+            {allValues.map((item) => {
+              const label = itemLabel(item);
+              const active = isSelected(label);
 
               return (
                 <button
-                  key={nameRu}
+                  key={label}
                   className={cn(styles.item, {
                     [styles.itemActive]: active,
                   })}
                   type="button"
-                  onClick={() => onChange(nameRu)}
+                  onClick={() => onChange(label)}
                 >
-                  <span className={styles.label}>{capitalizeFirst(nameRu)}</span>
+                  <span className={styles.label}>{capitalizeFirst(label)}</span>
 
                   <span
                     className={cn(styles.checkmark, {
@@ -64,19 +68,20 @@ export const FilterCheckboxList = ({
       {/* Mobile */}
       <div className={styles.mobile}>
         <div className={styles.mobileList}>
-          {allValues.map(({ nameRu }) => {
-            const active = isSelected(nameRu);
+          {allValues.map((item) => {
+            const label = itemLabel(item);
+            const active = isSelected(label);
 
             return (
               <button
-                key={nameRu}
+                key={label}
                 className={cn(styles.chip, {
                   [styles.chipActive]: active,
                 })}
                 type="button"
-                onClick={() => onChange(nameRu)}
+                onClick={() => onChange(label)}
               >
-                {capitalizeFirst(nameRu)}
+                {capitalizeFirst(label)}
               </button>
             );
           })}

@@ -1,4 +1,4 @@
-export type { SortOption } from './types';
+export { getFilmsFilters } from './api';
+export { FilmsSortingFilter } from './ui';
+export { useFilters, parseSettingsFromNextSearchParams } from './lib';
 
-export { Filters, SortFilter } from './ui';
-export { useFilters } from './lib';

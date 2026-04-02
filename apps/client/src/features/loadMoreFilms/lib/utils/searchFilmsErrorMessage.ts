@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import { isAxiosError } from 'axios';
 
 const DEFAULT_ERROR = 'Ошибка загрузки фильмов';
 

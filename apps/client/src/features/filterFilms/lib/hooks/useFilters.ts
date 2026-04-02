@@ -1,119 +1,124 @@
-import type { ActiveFilters, AllFilters, SortOption } from '../../types';
-import type { TFiltersResponse, TSearchFilmsParams } from '@common/types';
+'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { useState, useEffect, useCallback } from 'react';
+import type { TFilmsFilters, TUseFiltersOptions, TUseFiltersReturn } from '../../types';
+import type { TFilmSortBy, TSearchFilmsParams } from '@common/types';
 
-import apiClient, { API_ENDPOINTS } from '@/shared/api';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
-import { DEFAULT_ACTIVE_FILTERS, DEFAULT_ALL_FILTERS } from '../../types';
-import { parseFiltersFromURL } from '../utils';
+import { isEqualFilters, parseSettingsFromURL, serializeFilmsPageQuery } from '../utils';
 
-export const useFilters = () => {
+/**
+ * Хук управления фильтрами фильмов с синхронизацией URL.
+ *
+ * Особенности:
+ * - URL является источником истины при внешних изменениях (back/forward, deeplink)
+ * - локальный state управляет UI
+ * - предотвращает лишние обновления через сравнение query string
+ */
+export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions): TUseFiltersReturn => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  // Инициализируем фильтры из URL синхронно
-  const initialFilters = parseFiltersFromURL(searchParams);
-  const hasUrlFilters = JSON.stringify(initialFilters) !== JSON.stringify(DEFAULT_ACTIVE_FILTERS);
+  const [selectedFilters, setSelectedFilters] = useState<TFilmsFilters>(initialFilters);
+  const [selectedSort, setSelectedSortState] = useState<TFilmSortBy>(initialSort);
 
-  const [allFilters, setAllFilters] = useState<AllFilters>(DEFAULT_ALL_FILTERS);
-  const [selectedFilters, setSelectedFilters] = useState<ActiveFilters>(
-    hasUrlFilters ? initialFilters : DEFAULT_ACTIVE_FILTERS
+  /** защита от лишней синхронизации */
+  const prevSearchParamsString = useRef<string>('');
+
+  /** обновление URL */
+  const replaceUrl = useCallback(
+    (filters: TFilmsFilters, sort: TFilmSortBy) => {
+      if (!pathname) return;
+  
+      const query = serializeFilmsPageQuery(filters, sort).toString();
+      router.replace(query ? `${pathname}?${query}` : pathname, {
+        scroll: false,
+      });
+    },
+    [router, pathname]
   );
-  const [sortValue, setSortValue] = useState<SortOption>('popularity');
-  const [loading, setLoading] = useState(false);
 
-  // Загрузка фильтров с сервера
-  const fetchFilters = useCallback(async () => {
-    try {
-      setLoading(true);
+  /**
+   * Синхронизация state ← URL
+   * (back/forward, внешние изменения)
+   */
+  useEffect(() => {
+    if (!searchParams) return;
 
-      const { data } = await apiClient.get<TFiltersResponse>(API_ENDPOINTS.FILTERS.ROOT);
+    const serialized = searchParams.toString();
+    if (prevSearchParamsString.current === serialized) return;
 
-      const filters: AllFilters = {
-        ...DEFAULT_ALL_FILTERS,
-        genres: data.genres || [],
-        countries:
-          data.countries?.map((item) => ({
-            nameRu: item.countryName,
-            nameEn: item.countryNameEn ?? '',
-          })) || [],
-        years: data.years?.reverse() || [],
-      };
+    prevSearchParamsString.current = serialized;
 
-      setAllFilters(filters);
-    } catch (error) {
-      console.error('Ошибка загрузки фильтров:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    const { filters: fromUrl, sort: sortFromUrl } = parseSettingsFromURL(searchParams);
 
-  // Проверка на пустые фильтры
-  const isEmptyFilters = useCallback(() => {
-    return JSON.stringify(selectedFilters) === JSON.stringify(DEFAULT_ACTIVE_FILTERS);
-  }, [selectedFilters]);
+    setSelectedFilters((prev) => (isEqualFilters(prev, fromUrl) ? prev : fromUrl));
+    setSelectedSortState((prev) => (prev === sortFromUrl ? prev : sortFromUrl));
+  }, [searchParams]);
 
-  // Сброс фильтров
-  const resetFilters = useCallback(() => {
-    setSelectedFilters(DEFAULT_ACTIVE_FILTERS);
-  }, []);
-
-  // Построение параметров для API
+  /** сбор параметров для API */
   const buildFilterParams = useCallback(
     (
-      filters: ActiveFilters,
-      page: number = 1,
-      limit: number = 35,
-      sort: SortOption = sortValue
+      filters: TFilmsFilters,
+      page = 1,
+      limit = 35,
+      sort: TFilmSortBy = selectedSort
     ): TSearchFilmsParams => {
-      const persons: string[] = [];
-      if (filters.producer) persons.push(filters.producer);
-      if (filters.actor) persons.push(filters.actor);
+      const persons = [filters.producer, filters.actor].filter(Boolean) as string[];
 
-      // Конвертируем year в number если это строка
-      let year: number | undefined;
-      if (filters.years) {
-        year = typeof filters.years === 'string' ? parseInt(filters.years, 10) : filters.years;
-      }
-
-      const params: TSearchFilmsParams = {
+      return {
         perPage: limit,
         page,
-        genres: filters.genres.length > 0 ? filters.genres : undefined,
-        countries: filters.countries.length > 0 ? filters.countries : undefined,
-        year,
-        persons: persons.length > 0 ? persons : undefined,
+        genres: filters.genres.length ? filters.genres : undefined,
+        countries: filters.countries.length ? filters.countries : undefined,
+        year: filters.year || undefined,
+        persons: persons.length ? persons : undefined,
         minRatingKp: filters.rating || undefined,
         minVotesKp: filters.grade || undefined,
         sortBy: sort,
       };
-
-      return params;
     },
-    [sortValue]
+    [selectedSort]
   );
 
-  // Обновление фильтров
-  const updateFilters = useCallback((updates: Partial<ActiveFilters>) => {
-    setSelectedFilters((prev) => ({ ...prev, ...updates }));
-  }, []);
+  /**
+   * Обновление фильтров (UI → state → URL)
+   */
+  const handleUpdateFilters = useCallback(
+    (updates: Partial<TFilmsFilters>) => {
+      setSelectedFilters((prev) => {
+        const next = { ...prev, ...updates };
+        replaceUrl(next, selectedSort);
+        return next;
+      });
+    },
+    [replaceUrl, selectedSort]
+  );
 
-  // Загрузка фильтров при монтировании
-  useEffect(() => {
-    fetchFilters();
-  }, [fetchFilters]);
+  /**
+   * Обновление сортировки (UI → state → URL)
+   */
+  const setSortValue = useCallback(
+    (value: TFilmSortBy) => {
+      setSelectedSortState(value);
+      replaceUrl(selectedFilters, value);
+    },
+    [replaceUrl, selectedFilters]
+  );
+
+  /** готовые параметры для запроса */
+  const searchFilmsParams = useMemo(
+    () => buildFilterParams(selectedFilters, 1, 20, selectedSort),
+    [selectedFilters, selectedSort, buildFilterParams]
+  );
 
   return {
-    allFilters,
     selectedFilters,
-    sortValue,
-    loading,
-    isEmptyFilters: isEmptyFilters(),
-    setSortValue,
-    updateFilters,
-    resetFilters,
-    buildFilterParams,
-    fetchFilters,
+    selectedSort,
+    searchFilmsParams,
+    onUpdateSort: setSortValue,
+    onUpdateFilters: handleUpdateFilters,
   };
 };

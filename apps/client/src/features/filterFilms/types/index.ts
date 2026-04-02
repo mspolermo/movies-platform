@@ -1,2 +1,7 @@
-export type { ActiveFilters, AllFilters, SortOption, FilterItem } from './filters';
-export { DEFAULT_ACTIVE_FILTERS, DEFAULT_ALL_FILTERS, SORT_OPTIONS } from './filters';
+export type { FilterItem, TFilmsFilters, TAllFilmsFilters } from './filters';
+export {
+  DEFAULT_FILTERS,
+  DEFAULT_ALL_FILTERS,
+} from './filters';
+
+export type { TUseFiltersReturn, TUseFiltersOptions,   TFilmsSortingFilterProps, TFilmFiltersProps } from './types';

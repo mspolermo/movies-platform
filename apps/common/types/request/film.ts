@@ -1,5 +1,5 @@
 /** Поля сортировки для запросов списка фильмов. */
-export type TFilmSortBy = "rating" | "novelty" | "alphabet" | "popularity";
+export type TFilmSortBy = "rating" | "novelty" | "alphabet" | "popularity" ;
 
 /** Query-параметры для поиска и фильтрации фильмов. */
 export type TSearchFilmsParams = {

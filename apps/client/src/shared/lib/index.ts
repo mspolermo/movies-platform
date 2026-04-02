@@ -1,2 +1,2 @@
-export { capitalizeFirst } from './utils';
+export { capitalizeFirst, isSortOption } from './utils';
 export { useMediaQuery } from './hooks';

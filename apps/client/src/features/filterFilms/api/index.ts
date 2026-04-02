@@ -1,0 +1,1 @@
+export { getFilmsFilters } from './getFilmsFilters';

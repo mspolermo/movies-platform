@@ -1,3 +1,5 @@
+'use client';
+
 import type { TPersonListItemResponse } from '@common/types';
 
 import { useEffect, useState } from 'react';

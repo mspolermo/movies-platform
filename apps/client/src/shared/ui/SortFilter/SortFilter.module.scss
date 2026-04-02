@@ -1,0 +1,120 @@
+.root {
+  position: relative;
+  display: inline-flex;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 36px;
+  padding: 0 12px;
+
+  border-radius: 10px;
+  border: 1px solid var(--color-split-line);
+
+  background: var(--color-background-elements);
+  color: var(--color-heading);
+
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  /* subtle depth */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+
+  &:hover {
+    border-color: var(--color-transparent-white);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.triggerOpen {
+  border-color: var(--color-purple);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.label {
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.chevron {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+  color: var(--color-purple);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+
+  min-width: 180px;
+  padding: 6px;
+
+  border-radius: 12px;
+  border: 1px solid var(--color-split-line);
+
+  background: var(--color-background-elements);
+
+  backdrop-filter: blur(10px);
+
+  z-index: 11;
+}
+
+.heading {
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+
+  color: var(--color-text);
+  text-transform: uppercase;
+}
+
+.option {
+  width: 100%;
+  text-align: left;
+
+  padding: 8px;
+  border: none;
+
+  font-size: 14px;
+  color: var(--color-heading);
+  background-color: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.1s ease;
+
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.optionSelected {
+  color: var(--color-red);
+
+}

@@ -1,15 +1,15 @@
-import type { ActiveFilters } from '../../types';
+import type { TFilmsFilters } from '../../types';
 
 import cn from 'classnames';
 import { useCallback } from 'react';
 
 import styles from './ResetFiltersButton.module.scss';
 import { areFiltersDefault } from '../../lib';
-import { DEFAULT_ACTIVE_FILTERS } from '../../types';
+import { DEFAULT_FILTERS } from '../../types';
 
 interface ResetFiltersButtonProps {
-  selectedFilters: ActiveFilters;
-  setSelectedFilters: (filters: ActiveFilters) => void;
+  selectedFilters: TFilmsFilters;
+  setSelectedFilters: (filters: TFilmsFilters) => void;
 }
 
 export const ResetFiltersButton = ({
@@ -19,7 +19,7 @@ export const ResetFiltersButton = ({
   const isDisabled = areFiltersDefault(selectedFilters);
 
   const handleReset = useCallback(() => {
-    setSelectedFilters(DEFAULT_ACTIVE_FILTERS);
+    setSelectedFilters(DEFAULT_FILTERS);
   }, [setSelectedFilters]);
 
   return (

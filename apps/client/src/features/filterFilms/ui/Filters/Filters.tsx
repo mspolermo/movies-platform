@@ -1,22 +1,14 @@
-import type { ActiveFilters, AllFilters } from '../../types';
+import type { TFilmFiltersProps, TFilmsFilters } from '../../types';
 
-import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useState, useCallback, useEffect, useRef } from 'react';
 
 import styles from './Filters.module.scss';
-import { parseFiltersFromURL } from '../../lib';
 import { FilterCheckboxList } from '../FilterCheckboxList';
 import { FilterDropdown } from '../FilterDropdown';
 import { PersonSearchFilter } from '../PersonSearchFilter';
 import { RangeFilter } from '../RangeFilter';
 import { ResetFiltersButton } from '../ResetFiltersButton';
 import { YearFilter } from '../YearFilter';
-
-interface FiltersProps {
-  allFilters: AllFilters;
-  selectedFilters: ActiveFilters;
-  setSelectedFilters: (filters: ActiveFilters) => void;
-}
 
 const firstCharUp = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -26,112 +18,16 @@ const languageFilters = (selectedValues: string[]) => {
   });
 };
 
-export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: FiltersProps) => {
+export const Filters = ({ allFilters, selectedFilters, onUpdateFilters }: TFilmFiltersProps) => {
   const [activeBlock, setActiveBlock] = useState<string[]>([]);
   const filtersRef = useRef<HTMLDivElement>(null);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const isInitialMount = useRef(true);
-  const isUpdatingFromURL = useRef(false);
-
-  // Функция для обновления URL с фильтрами
-  const updateURL = useCallback(
-    (filters: ActiveFilters) => {
-      const params = new URLSearchParams();
-
-      if (filters.genres.length > 0) {
-        params.set('genres', filters.genres.join(','));
-      }
-
-      if (filters.countries.length > 0) {
-        params.set('countries', filters.countries.join(','));
-      }
-
-      if (filters.years) {
-        params.set('year', String(filters.years));
-      }
-
-      if (filters.rating > 0) {
-        params.set('rating', String(filters.rating));
-      }
-
-      if (filters.grade > 0) {
-        params.set('grade', String(filters.grade));
-      }
-
-      if (filters.producer) {
-        params.set('producer', filters.producer);
-      }
-
-      if (filters.actor) {
-        params.set('actor', filters.actor);
-      }
-
-      const currentPath = pathname || window.location.pathname;
-      const newUrl = params.toString() ? `${currentPath}?${params.toString()}` : currentPath;
-      isUpdatingFromURL.current = true;
-      router.replace(newUrl, { scroll: false });
-    },
-    [router, pathname]
-  );
-
-  // Фильтры из URL теперь инициализируются в useFilters, здесь только синхронизация URL при изменении фильтров
-  useEffect(() => {
-    isInitialMount.current = false;
-  }, []);
-
-  // Синхронизация фильтров при изменении URL извне (навигация назад/вперед)
-  useEffect(() => {
-    if (isInitialMount.current || isUpdatingFromURL.current) {
-      if (isUpdatingFromURL.current) {
-        isUpdatingFromURL.current = false;
-      }
-      return;
-    }
-
-    const urlFilters = parseFiltersFromURL(searchParams);
-    const currentFiltersStr = JSON.stringify(selectedFilters);
-    const urlFiltersStr = JSON.stringify(urlFilters);
-
-    // Обновляем фильтры только если они отличаются от текущих
-    if (currentFiltersStr !== urlFiltersStr) {
-      setSelectedFilters(urlFilters);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
-        setActiveBlock([]);
-      }
-    };
-
-    if (activeBlock.length > 0) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [activeBlock]);
-
-  // Обертка для setSelectedFilters с обновлением URL
-  const setSelectedFiltersWithURL = useCallback(
-    (filters: ActiveFilters) => {
-      setSelectedFilters(filters);
-      updateURL(filters);
-    },
-    [setSelectedFilters, updateURL]
-  );
 
   const updateFilters = useCallback(
-    (updates: Partial<ActiveFilters>) => {
+    (updates: Partial<TFilmsFilters>) => {
       const newFilters = { ...selectedFilters, ...updates };
-      setSelectedFiltersWithURL(newFilters);
+      onUpdateFilters(newFilters);
     },
-    [selectedFilters, setSelectedFiltersWithURL]
+    [selectedFilters, onUpdateFilters]
   );
 
   const selectedGenres = useCallback(
@@ -160,7 +56,7 @@ export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: Fil
 
   const selectedYears = useCallback(
     (year: number | null) => {
-      updateFilters({ years: year });
+      updateFilters({ year });
     },
     [updateFilters]
   );
@@ -192,6 +88,22 @@ export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: Fil
     },
     [updateFilters]
   );
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filtersRef.current && !filtersRef.current.contains(event.target as Node)) {
+        setActiveBlock([]);
+      }
+    };
+
+    if (activeBlock.length > 0) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [activeBlock]);
 
   return (
     <div ref={filtersRef} className={styles.filters}>
@@ -231,12 +143,12 @@ export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: Fil
             activeBlock={activeBlock}
             blockName="years"
             filterName="Год"
-            selectedFiltersBy={selectedFilters.years ? String(selectedFilters.years) : ''}
+            selectedFiltersBy={selectedFilters.year !== null ? String(selectedFilters.year) : ''}
             setActiveBlock={setActiveBlock}
           >
             <YearFilter
               allValues={allFilters.years}
-              selectValue={typeof selectedFilters.years === 'number' ? selectedFilters.years : null}
+              selectValue={selectedFilters.year}
               onChange={selectedYears}
             />
           </FilterDropdown>
@@ -301,7 +213,7 @@ export const Filters = ({ allFilters, selectedFilters, setSelectedFilters }: Fil
         <div className={styles.button}>
           <ResetFiltersButton
             selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFiltersWithURL}
+            setSelectedFilters={onUpdateFilters}
           />
         </div>
       </div>
