@@ -1,9 +1,9 @@
-"use client"
+'use client';
 
 import type { TSortFilterProps } from './types';
 import type { TFilmSortBy } from '@common/types';
 
-import cn  from 'classnames';
+import cn from 'classnames';
 import React, { useState } from 'react';
 
 import { SORT_LABELS } from '@/shared/constants';
@@ -41,9 +41,7 @@ export const SortFilter = ({ selectedSort, onUpdateSort }: TSortFilterProps) => 
       >
         <SvgIcon name="sort" size={16} />
 
-        <span className={styles.label}>
-          {SORT_LABELS[selectedSort]}
-        </span>
+        <span className={styles.label}>{SORT_LABELS[selectedSort]}</span>
 
         <SvgIcon
           className={cn(styles.chevron, isOpen && styles.chevronOpen)}
@@ -62,10 +60,7 @@ export const SortFilter = ({ selectedSort, onUpdateSort }: TSortFilterProps) => 
             {SORT_OPTIONS.map((option) => (
               <button
                 key={option}
-                className={cn(
-                  styles.option,
-                  option === selectedSort && styles.optionSelected
-                )}
+                className={cn(styles.option, option === selectedSort && styles.optionSelected)}
                 type="button"
                 onClick={() => handleSelect(option)}
               >

@@ -97,13 +97,13 @@
   top: calc(100% + 4px);
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: var(--z-dropdown);
 
   padding: 20px;
   border-radius: 10px;
   background: var(--color-purple);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--color-split-line);
+  box-shadow: 0 8px 32px var(--color-transparent-black-overlay);
   backdrop-filter: blur(10px);
 
   opacity: 0;

@@ -1,1 +1,0 @@
-export { YearFilter } from './YearFilter';

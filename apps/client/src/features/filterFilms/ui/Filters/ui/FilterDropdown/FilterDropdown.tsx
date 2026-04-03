@@ -1,37 +1,39 @@
-import type { ReactNode } from 'react';
+import type { TFilterDropdownProps } from '../../../../model';
 
 import cn from 'classnames';
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import styles from './FilterDropdown.module.scss';
+import { useCloseOnOutsideClick } from '../../../../lib';
+import { useFiltersDropdown } from '../../../../model';
 
-interface FilterDropdownProps {
-  filterName: string;
-  selectedFiltersBy: string | number;
-  activeBlock: string[];
-  blockName: string;
-  setActiveBlock: (activeBlockName: string[]) => void;
-  children: ReactNode;
-  isWideMenu?: boolean;
-}
-
+/**
+ * Обёртка фильтра с выпадающим меню.
+ *
+ * Показывает название фильтра, выбранные значения и
+ * управляет открытием/закрытием через контекст.
+ */
 export const FilterDropdown = ({
   filterName,
   selectedFiltersBy,
-  activeBlock,
   blockName,
-  setActiveBlock,
   children,
   isWideMenu = false,
-}: FilterDropdownProps) => {
-  const isOpen = activeBlock.includes(blockName);
+}: TFilterDropdownProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
+  const { isOpen, toggleBlock, close } = useFiltersDropdown();
+  const open = isOpen(blockName);
 
-  const toggle = useCallback(() => {
-    setActiveBlock(isOpen ? [] : [blockName]);
-  }, [isOpen, blockName, setActiveBlock]);
+  /** Граница «снаружи» — сам дропдаун, а не весь блок Filters (чтобы клик по соседнему фильтру закрывал панель). */
+  useCloseOnOutsideClick(rootRef, open, close);
+
+  const handleToggle = useCallback(() => {
+    toggleBlock(blockName);
+  }, [blockName, toggleBlock]);
 
   return (
     <div
+      ref={rootRef}
       className={cn(styles.dropdown, {
         [styles.wide]: isWideMenu,
       })}
@@ -39,9 +41,9 @@ export const FilterDropdown = ({
       <div className={styles.desktop}>
         <div
           className={cn(styles.control, {
-            [styles.controlOpen]: isOpen,
+            [styles.controlOpen]: open,
           })}
-          onClick={toggle}
+          onClick={handleToggle}
         >
           <div className={styles.text}>
             <div className={styles.title}>{filterName}</div>
@@ -51,7 +53,7 @@ export const FilterDropdown = ({
 
           <div
             className={cn(styles.arrow, {
-              [styles.arrowOpen]: isOpen,
+              [styles.arrowOpen]: open,
             })}
           >
             <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
@@ -68,7 +70,7 @@ export const FilterDropdown = ({
 
         <div
           className={cn(styles.menu, {
-            [styles.menuOpen]: isOpen,
+            [styles.menuOpen]: open,
             [styles.menuWide]: isWideMenu,
           })}
         >

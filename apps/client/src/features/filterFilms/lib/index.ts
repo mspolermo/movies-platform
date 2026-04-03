@@ -1,2 +1,2 @@
-export { useFilters, usePersonSearch} from './hooks';
-export { areFiltersDefault, parseSettingsFromNextSearchParams } from './utils';
+export { useCloseOnOutsideClick, useFilters, usePersonSearch } from './hooks';
+export { areFiltersDefault, parseSettingsFromNextSearchParams, getCheckboxLabel } from './utils';

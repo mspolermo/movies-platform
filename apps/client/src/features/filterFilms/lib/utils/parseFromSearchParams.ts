@@ -1,10 +1,10 @@
-import type { TFilmsFilters } from "../../types";
-import type { TSearchParams } from "@/shared/types";
-import type { TFilmSortBy } from "@common/types";
+import type { TFilmsFilters } from '../../model';
+import type { TSearchParams } from '@/shared/types';
+import type { TFilmSortBy } from '@common/types';
 
-import { isSortOption } from "@/shared/lib";
+import { isSortOption } from '@/shared/lib';
 
-import { DEFAULT_FILTERS } from "../../types";
+import { DEFAULT_FILTERS } from '../../model';
 
 /**
  * Функция для парсинга фильтров фильма из URL
@@ -26,9 +26,21 @@ const parseFiltersFromURL = (searchParams: URLSearchParams | null): TFilmsFilter
       .filter(Boolean)
       .map((c) => c.trim()) || [];
 
-  const yearRaw = searchParams.get('year')?.split(',').filter(Boolean)[0];
-  const yearParsed = yearRaw ? parseInt(yearRaw, 10) : NaN;
-  const year: number | null = Number.isFinite(yearParsed) ? yearParsed : null;
+  const yearsFromParam =
+    searchParams
+      .get('years')
+      ?.split(',')
+      .map((s) => parseInt(s.trim(), 10))
+      .filter((n) => Number.isFinite(n)) ?? [];
+
+  const legacyYearRaw = searchParams.get('year')?.split(',').filter(Boolean)[0];
+  const legacyYearParsed = legacyYearRaw ? parseInt(legacyYearRaw, 10) : NaN;
+  const years: number[] =
+    yearsFromParam.length > 0
+      ? yearsFromParam
+      : Number.isFinite(legacyYearParsed)
+        ? [legacyYearParsed]
+        : [];
 
   const rating: TFilmsFilters['rating'] = searchParams.get('rating')
     ? parseFloat(searchParams.get('rating')!)
@@ -43,7 +55,7 @@ const parseFiltersFromURL = (searchParams: URLSearchParams | null): TFilmsFilter
   return {
     genres,
     countries,
-    year,
+    years,
     rating,
     grade,
     producer,
@@ -55,9 +67,7 @@ const parseFiltersFromURL = (searchParams: URLSearchParams | null): TFilmsFilter
  * Извлекает и валидирует параметр сортировки из URLSearchParams.
  * Возвращает дефолтное значение, если параметр отсутствует или некорректен.
  */
-const parseSortFromURL = (
-  searchParams: URLSearchParams | null
-): TFilmSortBy => {
+const parseSortFromURL = (searchParams: URLSearchParams | null): TFilmSortBy => {
   const DEFAULT_SORT: TFilmSortBy = 'popularity';
   if (!searchParams) return DEFAULT_SORT;
 
@@ -79,9 +89,7 @@ export const parseSettingsFromURL = (searchParams: URLSearchParams | null) => ({
 /**
  * Парсит searchParams из Next.js в настройки страницы (через URLSearchParams).
  */
-export const parseSettingsFromNextSearchParams = (
-  searchParams: TSearchParams
-) => {
+export const parseSettingsFromNextSearchParams = (searchParams: TSearchParams) => {
   const urlSearchParams = new URLSearchParams();
 
   for (const [key, value] of Object.entries(searchParams)) {

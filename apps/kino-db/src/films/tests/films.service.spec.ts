@@ -147,7 +147,7 @@ describe("FilmsService", () => {
       const mockMinRatingKp = 7;
       const mockMinVotesKp = 1000;
       const mockSortBy = "rating" as const;
-      const mockYear = 2022;
+      const mockYears = [2022];
 
       jest
         .spyOn(mockFilmsRepository, "findAndCountAll")
@@ -162,7 +162,7 @@ describe("FilmsService", () => {
         mockMinRatingKp,
         mockMinVotesKp,
         mockSortBy,
-        mockYear
+        mockYears
       );
 
       expect(mockFilmsRepository.findAndCountAll).toHaveBeenCalledWith({
@@ -210,7 +210,7 @@ describe("FilmsService", () => {
         where: {
           ratingKp: { [Op.gte]: mockMinRatingKp },
           votesKp: { [Op.gte]: mockMinVotesKp },
-          year: mockYear,
+          year: mockYears[0],
         },
         limit: mockPerPage,
         offset: (mockPage - 1) * mockPerPage,

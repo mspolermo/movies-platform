@@ -96,12 +96,21 @@ export class SearchFilmsDto {
   sortBy?: TFilmSortBy;
 
   @IsOptional()
-  @IsNumber()
-  @Min(1900)
-  @Max(new Date().getFullYear())
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @Min(1900, { each: true })
+  @Max(new Date().getFullYear(), { each: true })
   @Transform(({ value }) => {
-    const parsed = parseInt(value);
-    return isNaN(parsed) ? undefined : parsed;
+    if (typeof value === "string") {
+      return value
+        .split(",")
+        .map((item) => parseInt(item.trim(), 10))
+        .filter((n) => !Number.isNaN(n));
+    }
+    if (Array.isArray(value)) {
+      return value.map((v) => (typeof v === "string" ? parseInt(v, 10) : v)).filter((n) => !Number.isNaN(n));
+    }
+    return value;
   })
-  year?: number;
+  years?: number[];
 }

@@ -1,4 +1,4 @@
-import type { TFilmSortBy } from "@common/types";
+import type { TFilmSortBy } from '@common/types';
 
 /**
  * Подписи для опций сортировки фильмов.

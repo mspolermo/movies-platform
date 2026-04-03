@@ -132,7 +132,7 @@ export class FilmsService {
     minRatingKp = 0,
     minVotesKp = 0,
     sortBy: TFilmSortBy = "popularity",
-    year?: number
+    years?: number[]
   ): Promise<TFilmsResponse> {
     const order = FILM_SORT_ORDER[sortBy];
     const attributes = Array.from(
@@ -186,13 +186,13 @@ export class FilmsService {
     const where: {
       ratingKp?: { [Op.gte]: number };
       votesKp?: { [Op.gte]: number };
-      year?: number;
+      year?: number | { [Op.in]: number[] };
     } = {
       ratingKp: { [Op.gte]: minRatingKp },
       votesKp: { [Op.gte]: minVotesKp },
     };
-    if (year) {
-      where.year = year;
+    if (years?.length) {
+      where.year = years.length === 1 ? years[0] : { [Op.in]: years };
     }
 
     const { rows, count } = await this.filmRepository.findAndCountAll({

@@ -1,11 +1,12 @@
 'use client';
 
-import type { TFilmsFilters, TUseFiltersOptions, TUseFiltersReturn } from '../../types';
+import type { TFilmsFilters, TUseFiltersOptions, TUseFiltersReturn } from '../../model';
 import type { TFilmSortBy, TSearchFilmsParams } from '@common/types';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 
+import { FILMS_LIST_PER_PAGE } from '../../constants';
 import { isEqualFilters, parseSettingsFromURL, serializeFilmsPageQuery } from '../utils';
 
 /**
@@ -16,7 +17,10 @@ import { isEqualFilters, parseSettingsFromURL, serializeFilmsPageQuery } from '.
  * - локальный state управляет UI
  * - предотвращает лишние обновления через сравнение query string
  */
-export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions): TUseFiltersReturn => {
+export const useFilters = ({
+  initialFilters,
+  initialSort,
+}: TUseFiltersOptions): TUseFiltersReturn => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -31,7 +35,7 @@ export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions):
   const replaceUrl = useCallback(
     (filters: TFilmsFilters, sort: TFilmSortBy) => {
       if (!pathname) return;
-  
+
       const query = serializeFilmsPageQuery(filters, sort).toString();
       router.replace(query ? `${pathname}?${query}` : pathname, {
         scroll: false,
@@ -63,7 +67,7 @@ export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions):
     (
       filters: TFilmsFilters,
       page = 1,
-      limit = 35,
+      limit = FILMS_LIST_PER_PAGE,
       sort: TFilmSortBy = selectedSort
     ): TSearchFilmsParams => {
       const persons = [filters.producer, filters.actor].filter(Boolean) as string[];
@@ -73,7 +77,7 @@ export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions):
         page,
         genres: filters.genres.length ? filters.genres : undefined,
         countries: filters.countries.length ? filters.countries : undefined,
-        year: filters.year || undefined,
+        years: filters.years.length ? filters.years : undefined,
         persons: persons.length ? persons : undefined,
         minRatingKp: filters.rating || undefined,
         minVotesKp: filters.grade || undefined,
@@ -110,8 +114,8 @@ export const useFilters = ({ initialFilters, initialSort }: TUseFiltersOptions):
 
   /** готовые параметры для запроса */
   const searchFilmsParams = useMemo(
-    () => buildFilterParams(selectedFilters, 1, 20, selectedSort),
-    [selectedFilters, selectedSort, buildFilterParams]
+    () => buildFilterParams(selectedFilters, 1),
+    [selectedFilters, buildFilterParams]
   );
 
   return {

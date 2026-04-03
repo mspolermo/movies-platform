@@ -1,4 +1,4 @@
-import { DEFAULT_FILTERS, type TFilmsFilters } from '../../types';
+import { DEFAULT_FILTERS, type TFilmsFilters } from '../../model';
 
 /**
  * Проверяет, отличаются ли текущие фильтры от дефолтных

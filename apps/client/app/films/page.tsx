@@ -3,17 +3,10 @@ import type { TSearchParams } from '@/shared/types';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import {
-  getFilmsFilters,
-  parseSettingsFromNextSearchParams,
-} from '@/features/filterFilms';
+import { getFilmsFilters, parseSettingsFromNextSearchParams } from '@/features/filterFilms';
 import { FilmsPage } from '@/pages/FilmsPage';
 
-export default async function FilmsPageRoute({
-  searchParams,
-}: {
-  searchParams: TSearchParams;
-}) {
+export default async function FilmsPageRoute({ searchParams }: { searchParams: TSearchParams }) {
   const allFilters = await getFilmsFilters();
 
   if (!allFilters) {

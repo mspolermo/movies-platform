@@ -26,7 +26,7 @@
     box-shadow 0.2s ease;
 
   /* subtle depth */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 6px var(--color-transparent-black-overlay);
 
   &:hover {
     border-color: var(--color-transparent-white);
@@ -39,7 +39,7 @@
 
 .triggerOpen {
   border-color: var(--color-purple);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px var(--color-transparent-black-overlay);
 }
 
 .label {
@@ -61,7 +61,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: var(--z-dropdown);
 }
 
 .dropdown {
@@ -79,7 +79,7 @@
 
   backdrop-filter: blur(10px);
 
-  z-index: 11;
+  z-index: var(--z-dropdown);
 }
 
 .heading {
@@ -105,9 +105,7 @@
 
   cursor: pointer;
 
-  transition:
-    transform 0.1s ease;
-
+  transition: transform 0.1s ease;
 
   &:active {
     transform: scale(0.98);
@@ -116,5 +114,4 @@
 
 .optionSelected {
   color: var(--color-red);
-
 }

@@ -1,26 +1,18 @@
-import type { TFilmsFilters } from '../../types';
+import type { TResetButtonProps } from '../../../../model';
 
 import cn from 'classnames';
 import { useCallback } from 'react';
 
-import styles from './ResetFiltersButton.module.scss';
-import { areFiltersDefault } from '../../lib';
-import { DEFAULT_FILTERS } from '../../types';
+import styles from './ResetButton.module.scss';
+import { areFiltersDefault } from '../../../../lib';
+import { DEFAULT_FILTERS } from '../../../../model';
 
-interface ResetFiltersButtonProps {
-  selectedFilters: TFilmsFilters;
-  setSelectedFilters: (filters: TFilmsFilters) => void;
-}
-
-export const ResetFiltersButton = ({
-  selectedFilters,
-  setSelectedFilters,
-}: ResetFiltersButtonProps) => {
+export const ResetButton = ({ selectedFilters, onChange }: TResetButtonProps) => {
   const isDisabled = areFiltersDefault(selectedFilters);
 
   const handleReset = useCallback(() => {
-    setSelectedFilters(DEFAULT_FILTERS);
-  }, [setSelectedFilters]);
+    onChange(DEFAULT_FILTERS);
+  }, [onChange]);
 
   return (
     <div className={styles.root}>

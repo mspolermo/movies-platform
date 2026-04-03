@@ -7,10 +7,11 @@ import { LoadMoreFilms } from '@/features/loadMoreFilms';
 import { Page } from '@/widgets/Layout';
 
 export const FilmsPage = ({ allFilters, initialFilters, initialSort }: TFilmsPageProps) => {
-  const { selectedFilters, selectedSort, searchFilmsParams, onUpdateSort, onUpdateFilters } = useFilters({
-    initialFilters,
-    initialSort,
-  });
+  const { selectedFilters, selectedSort, searchFilmsParams, onUpdateSort, onUpdateFilters } =
+    useFilters({
+      initialFilters,
+      initialSort,
+    });
 
   return (
     <Page title="Фильмы">

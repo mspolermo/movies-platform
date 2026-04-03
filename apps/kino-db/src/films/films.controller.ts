@@ -28,7 +28,7 @@ export class FilmsController {
       minRatingKp?: number;
       minVotesKp?: number;
       sortBy?: TFilmSortBy;
-      year?: number;
+      years?: number[];
     }
   ) {
     const {
@@ -40,7 +40,7 @@ export class FilmsController {
       minRatingKp,
       minVotesKp,
       sortBy,
-      year,
+      years,
     } = data;
     return await this.filmService.filmFilters(
       page,
@@ -51,7 +51,7 @@ export class FilmsController {
       minRatingKp,
       minVotesKp,
       sortBy,
-      year
+      years
     );
   }
 

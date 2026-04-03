@@ -1,4 +1,4 @@
-import type { TFilmSortBy } from "@common/types";
+import type { TFilmSortBy } from '@common/types';
 
 /**
  * Пропсы компонента SortFilter.
@@ -10,4 +10,4 @@ export type TSortFilterProps = {
   selectedSort: TFilmSortBy;
   /** Функция для установки значения сортировки. */
   onUpdateSort: (sort: TFilmSortBy) => void;
-}
+};

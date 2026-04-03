@@ -124,7 +124,7 @@ describe("FilmsController", () => {
         minRatingKp: 7,
         minVotesKp: 1000,
         sortBy: "rating" as const,
-        year: 2021,
+        years: [2021],
       };
 
       const filmFiltersSpy = jest.spyOn(service, "filmFilters").mockResolvedValue({
@@ -146,7 +146,7 @@ describe("FilmsController", () => {
         mockData.minRatingKp,
         mockData.minVotesKp,
         mockData.sortBy,
-        mockData.year
+        mockData.years
       );
       expect(result).toEqual({
         films: [mockFilm],

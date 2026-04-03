@@ -1,4 +1,4 @@
-import type { TFilmsSortingFilterProps } from '../../types';
+import type { TFilmsSortingFilterProps } from '../../model';
 
 import cn from 'classnames';
 import { useCallback, useState } from 'react';
@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { SortFilter } from '@/shared/ui';
 
 import styles from './FilmsSortingFilter.module.scss';
-import { DEFAULT_FILTERS } from '../../types';
+import { DEFAULT_FILTERS } from '../../model';
 import { Filters } from '../Filters';
 
 export const FilmsSortingFilterMobile = ({
@@ -38,7 +38,7 @@ export const FilmsSortingFilterMobile = ({
             {!selectedFilters.countries.length
               ? 'все страны, '
               : `${selectedFilters.countries.join(', ')}, `}
-            {selectedFilters.year === null ? 'все годы' : selectedFilters.year}
+            {!selectedFilters.years.length ? 'все годы' : selectedFilters.years.join(', ')}
           </div>
         </div>
         <button

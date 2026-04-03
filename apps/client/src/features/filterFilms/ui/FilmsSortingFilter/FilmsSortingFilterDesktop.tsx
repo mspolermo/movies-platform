@@ -1,4 +1,4 @@
-import type { TFilmsSortingFilterProps } from '../../types';
+import type { TFilmsSortingFilterProps } from '../../model';
 
 import { SortFilter } from '@/shared/ui';
 

@@ -1,6 +1,6 @@
-import type { TFilmSortBy } from "@common/types";
+import type { TFilmSortBy } from '@common/types';
 
-import { SORT_LABELS } from "@/shared/constants";
+import { SORT_LABELS } from '@/shared/constants';
 
 /**
  * Проверяет, что значение является допустимым вариантом сортировки.

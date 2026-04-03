@@ -1,11 +1,11 @@
 'use server';
 
-import type { TAllFilmsFilters } from '../types';
+import type { TAllFilmsFilters } from '../model';
 import type { TFiltersResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
-import { DEFAULT_ALL_FILTERS } from '../types';
+import { DEFAULT_ALL_FILTERS } from '../model';
 
 //TODO: годы на сервере переворачивать сразу
 
@@ -21,7 +21,7 @@ export const getFilmsFilters = async (): Promise<TAllFilmsFilters | null> => {
       genres: data.genres ?? [],
       countries: data.countries ?? [],
       years: data.years?.slice().reverse() ?? [],
-    }
+    };
   } catch {
     return null;
   }

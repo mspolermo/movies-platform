@@ -72,19 +72,30 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
    * Универсальный обработчик фильтров
    */
   const handleFilterClick = useCallback(
-    (key: 'genres' | 'countries' | 'year', value: string) => {
+    (key: 'genres' | 'countries' | 'years', value: string) => {
       if (isOnFilmsPage) {
+        if (key === 'years') {
+          const fromYears = searchParams?.get('years')?.split(',').filter(Boolean) ?? [];
+          const legacyYear = searchParams?.get('year');
+          const current = fromYears.length > 0 ? fromYears : legacyYear ? [legacyYear] : [];
+          const isSelected = current.length === 1 && current[0] === value;
+
+          updateQueryParams({ years: isSelected ? null : value }, true);
+          return;
+        }
+
         const current = searchParams?.get(key)?.split(',').filter(Boolean) || [];
 
-        const isSelected =
-          key === 'year'
-            ? searchParams?.get('year') === value
-            : current.length === 1 && current[0] === value;
+        const isSelected = current.length === 1 && current[0] === value;
 
         updateQueryParams({ [key]: isSelected ? null : value }, true);
       } else {
         const params = new URLSearchParams();
-        params.set(key, value);
+        if (key === 'years') {
+          params.set('years', value);
+        } else {
+          params.set(key, value);
+        }
 
         router.push(`/films?${params.toString()}`);
         onClose();
@@ -118,7 +129,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
         type: 'item' as const,
         label: year,
         key: year,
-        onClick: () => handleFilterClick('year', String(year)),
+        onClick: () => handleFilterClick('years', String(year)),
       })),
     ],
     [state.genres, state.countries, state.years, handleFilterClick, genreMap]

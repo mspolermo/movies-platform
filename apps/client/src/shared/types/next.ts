@@ -1,8 +1,5 @@
 /** Query-параметры страницы Next.js App Router. */
-export type TSearchParams = Record<
-  string,
-  string | string[] | undefined
->;
+export type TSearchParams = Record<string, string | string[] | undefined>;
 
 /**
  * Тип пропсов страницы в Next (App Router)

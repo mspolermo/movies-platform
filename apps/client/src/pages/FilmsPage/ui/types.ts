@@ -1,4 +1,4 @@
-import type { TAllFilmsFilters, TFilmsFilters } from '@/features/filterFilms/types';
+import type { TAllFilmsFilters, TFilmsFilters } from '@/features/filterFilms';
 import type { TFilmSortBy } from '@common/types';
 
 export type TFilmsPageProps = {

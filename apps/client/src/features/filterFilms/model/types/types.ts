@@ -1,19 +1,18 @@
-import type { TAllFilmsFilters, TFilmsFilters } from "./filters";
-import type { TSortFilterProps } from "@/shared/ui";
-import type { TFilmSortBy, TSearchFilmsParams } from "@common/types";
-
+import type { TAllFilmsFilters, TFilmsFilters } from './filters';
+import type { TSortFilterProps } from '@/shared/ui';
+import type { TFilmSortBy, TSearchFilmsParams } from '@common/types';
 
 /**
  * Базовый тип для компонентов сортировки.
- * Наследуется от пропсов компонента сортировки, который уже 
+ * Наследуется от пропсов компонента сортировки, который уже
  * работает с фиксированными опциями сортировки.
  */
 type TFilmsSortingsBase = TSortFilterProps;
 
-/** 
+/**
  * * Базовый тип для компонентов фильтров.
- */ 
-type TFilmsFilterBase =  {
+ */
+type TFilmsFilterBase = {
   /** Все возможные фильтры для установки значений */
   allFilters: TAllFilmsFilters;
 
@@ -33,7 +32,7 @@ type TExtendedFilmsFilterBase = TFilmsFilterBase & TFilmsSortingsBase;
  *  Возвращаемый тип для хука useFilters.
  *  Фильтры, сортировка и параметры для запроса фильмов.
  */
-export type TUseFiltersReturn = Omit <TExtendedFilmsFilterBase, 'allFilters'> & {
+export type TUseFiltersReturn = Omit<TExtendedFilmsFilterBase, 'allFilters'> & {
   searchFilmsParams: TSearchFilmsParams;
 };
 
@@ -48,13 +47,13 @@ export type TUseFiltersOptions = {
 
 /**
  * Тип для пропсов компонента FilmsFilter.
- * Все возможные фильтры, выбранные фильтры, значение сортировки, 
+ * Все возможные фильтры, выбранные фильтры, значение сортировки,
  * функция для обновления фильтров и функция для установки значения сортировки.
  */
-export type TFilmsSortingFilterProps = TExtendedFilmsFilterBase
+export type TFilmsSortingFilterProps = TExtendedFilmsFilterBase;
 
 /**
  * Тип для пропсов компонента FilmsFilters.
  * Все возможные фильтры, выбранные фильтры и функция для обновления фильтров.
  */
-export type TFilmFiltersProps = TFilmsFilterBase
+export type TFilmFiltersProps = TFilmsFilterBase;

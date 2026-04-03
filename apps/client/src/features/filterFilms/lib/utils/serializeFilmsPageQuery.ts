@@ -1,6 +1,6 @@
 import type { TFilmSortBy } from '@common/types';
 
-import { type TFilmsFilters } from '../../types';
+import { type TFilmsFilters } from '../../model';
 
 /**
  * Сериализует фильтры и сортировку страницы фильмов в URLSearchParams.
@@ -12,15 +12,7 @@ export const serializeFilmsPageQuery = (
 ): URLSearchParams => {
   const params = new URLSearchParams();
 
-  const {
-    genres,
-    countries,
-    year,
-    rating,
-    grade,
-    producer,
-    actor,
-  } = filters;
+  const { genres, countries, years, rating, grade, producer, actor } = filters;
 
   if (genres.length) {
     params.set('genres', genres.join(','));
@@ -30,8 +22,8 @@ export const serializeFilmsPageQuery = (
     params.set('countries', countries.join(','));
   }
 
-  if (year !== null) {
-    params.set('year', String(year));
+  if (years.length) {
+    params.set('years', years.join(','));
   }
 
   if (rating > 0) {
@@ -56,4 +48,4 @@ export const serializeFilmsPageQuery = (
   }
 
   return params;
-}
+};

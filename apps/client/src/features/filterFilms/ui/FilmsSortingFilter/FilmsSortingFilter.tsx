@@ -1,6 +1,6 @@
 'use client';
 
-import type { TFilmsSortingFilterProps } from '../../types';
+import type { TFilmsSortingFilterProps } from '../../model';
 
 import { TABLET_BREAKPOINT } from '@/shared/constants';
 import { useMediaQuery } from '@/shared/lib';
@@ -16,5 +16,9 @@ const MOBILE_QUERY = `(max-width: ${TABLET_BREAKPOINT}px)`;
 export const FilmsSortingFilter = (props: TFilmsSortingFilterProps) => {
   const isMobile = useMediaQuery(MOBILE_QUERY);
 
-  return isMobile ? <FilmsSortingFilterMobile {...props} /> : <FilmsSortingFilterDesktop {...props} />;
+  return isMobile ? (
+    <FilmsSortingFilterMobile {...props} />
+  ) : (
+    <FilmsSortingFilterDesktop {...props} />
+  );
 };

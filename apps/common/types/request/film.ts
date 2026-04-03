@@ -5,7 +5,7 @@ export type TFilmSortBy = "rating" | "novelty" | "alphabet" | "popularity" ;
 export type TSearchFilmsParams = {
   page?: number;
   perPage?: number;
-  year?: number;
+  years?: number[];
   genres?: string[];
   countries?: string[];
   persons?: string[];
