@@ -1,14 +1,16 @@
 import type { TFilmListItemResponse, TFilmsResponse, TSearchFilmsParams } from '@common/types';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 
 import { searchFilms } from '@/entities/film';
 
-import { searchFilmsErrorMessage } from '../utils';
+import { areSearchFilmsParamsEqual, searchFilmsErrorMessage } from '../utils';
 
 export interface UseLoadMoreFilmsOptions {
   /** Стартовые параметры поиска (страница перезапишется при загрузке). */
   initialParams?: TSearchFilmsParams;
+  /** Если `false`, сброс и запросы не выполняются (например, route `loading.tsx`). */
+  enabled?: boolean;
 }
 
 /**
@@ -17,15 +19,23 @@ export interface UseLoadMoreFilmsOptions {
  * При смене внутренних `params` (через `updateParams`) вызывается полный сброс и запрос 1-й страницы.
  * `loadMore` догружает следующую страницу с теми же `params`.
  */
-export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions = {}) => {
+export const useLoadMoreFilms = ({
+  initialParams = {},
+  enabled = true,
+}: UseLoadMoreFilmsOptions = {}) => {
   const [films, setFilms] = useState<TFilmListItemResponse[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [params, setParams] = useState<TSearchFilmsParams>(initialParams);
 
   const isLoadingRef = useRef(false);
+
+  /** Синхронизация с родителем до `useEffect(reset)`; без сравнения по значению — новая ссылка `initialParams` каждый рендер даёт бесконечный цикл setState. */
+  useLayoutEffect(() => {
+    setParams((prev) => (areSearchFilmsParamsEqual(prev, initialParams) ? prev : initialParams));
+  }, [initialParams]);
 
   const loadFilms = useCallback(
     async (page: number, reset = false) => {
@@ -80,8 +90,9 @@ export const useLoadMoreFilms = ({ initialParams = {} }: UseLoadMoreFilmsOptions
   }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     reset();
-  }, [params, reset]);
+  }, [params, reset, enabled]);
 
   return {
     films,

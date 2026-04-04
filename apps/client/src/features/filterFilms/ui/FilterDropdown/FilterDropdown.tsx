@@ -1,11 +1,11 @@
-import type { TFilterDropdownProps } from '../../../../model';
+import type { TFilterDropdownProps } from '../../model';
 
 import cn from 'classnames';
 import { useCallback, useRef } from 'react';
 
 import styles from './FilterDropdown.module.scss';
-import { useCloseOnOutsideClick } from '../../../../lib';
-import { useFiltersDropdown } from '../../../../model';
+import { useCloseOnOutsideClick } from '../../lib';
+import { useFiltersDropdown } from '../../model';
 
 /**
  * Обёртка фильтра с выпадающим меню.

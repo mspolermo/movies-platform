@@ -1,27 +1,22 @@
 'use server';
 
-import type { TAllFilmsFilters } from '../model';
-import type { TFiltersResponse } from '@common/types';
+import type { TFiltersLocale, TFiltersResponse } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
-
-import { DEFAULT_ALL_FILTERS } from '../model';
-
-//TODO: годы на сервере переворачивать сразу
+import { DEFAULT_FILTERS_LOCALE } from '@/shared/constants';
 
 /**
  * Полный каталог фильтров для страницы «Фильмы» (жанры, страны, годы).
  */
-export const getFilmsFilters = async (): Promise<TAllFilmsFilters | null> => {
+export const getFilmsFilters = async (
+  locale: TFiltersLocale = DEFAULT_FILTERS_LOCALE
+): Promise<TFiltersResponse | null> => {
   try {
-    const { data } = await apiClient.get<TFiltersResponse>(API_ENDPOINTS.FILTERS.ROOT);
+    const { data } = await apiClient.get<TFiltersResponse>(API_ENDPOINTS.FILTERS.ROOT, {
+      params: { locale },
+    });
 
-    return {
-      ...DEFAULT_ALL_FILTERS,
-      genres: data.genres ?? [],
-      countries: data.countries ?? [],
-      years: data.years?.slice().reverse() ?? [],
-    };
+    return data;
   } catch {
     return null;
   }

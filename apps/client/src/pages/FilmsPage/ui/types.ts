@@ -1,8 +1,3 @@
-import type { TAllFilmsFilters, TFilmsFilters } from '@/features/filterFilms';
-import type { TFilmSortBy } from '@common/types';
+import type { TFilmsFilteredListingProps } from '@/widgets/FilmsFilteredListing';
 
-export type TFilmsPageProps = {
-  allFilters: TAllFilmsFilters;
-  initialFilters: TFilmsFilters;
-  initialSort: TFilmSortBy;
-};
+export type TFilmsPageProps = TFilmsFilteredListingProps;

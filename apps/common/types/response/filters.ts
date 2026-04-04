@@ -1,10 +1,10 @@
-import type { TCountryItemResponse } from "./country";
-import type { TGenreItemResponse } from "./genre";
-
-/** Ответ API для фильтров (полные списки). */
+/**
+ * Ответ API для фильтров: подписи жанров и стран в запрошенной локали (`locale` query).
+ * `years` — по убыванию (новые первыми); на `/filters/quick` дополнительно обрезается лимитом.
+ */
 export type TFiltersResponse = {
-  genres: TGenreItemResponse[];
-  countries: TCountryItemResponse[];
+  genres: string[];
+  countries: string[];
   years: number[];
 };
 

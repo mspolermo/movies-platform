@@ -1,0 +1,28 @@
+.content {
+  padding: 16px 10px;
+  background-color: var(--color-background-elements);
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.blocks {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  position: relative;
+}
+
+/* жанры, страны, годы — на всю ширину */
+.blocks > :nth-child(-n + 3) {
+  grid-column: 1 / -1;
+}
+
+/* рейтинг | оценка, затем режиссёр | актёр — по половине строки */
+.blocks > :nth-child(n + 4) {
+  min-width: 0;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -4,32 +4,12 @@
   margin-bottom: 12px;
   flex: 0 1 20%;
   min-width: 20%;
-
-  @media (max-width: 880px) {
-    flex: 0 1 50%;
-  }
 }
 
 .wide {
   flex: 1 1 100%;
   min-width: 100%;
 }
-
-/* =======================
-  DESKTOP
-======================= */
-
-.desktop {
-  display: block;
-
-  @media (max-width: 600px) {
-    display: none;
-  }
-}
-
-/* =======================
-   CONTROL
-======================= */
 
 .control {
   height: 56px;
@@ -74,10 +54,6 @@
   text-overflow: ellipsis;
 }
 
-/* =======================
-  ARROW
-======================= */
-
 .arrow {
   margin-left: 16px;
   color: var(--color-icon-default);
@@ -87,10 +63,6 @@
 .arrowOpen {
   transform: rotate(180deg);
 }
-
-/* =======================
-  MENU
-======================= */
 
 .menu {
   position: absolute;

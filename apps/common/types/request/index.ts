@@ -1,3 +1,4 @@
+export type { TFiltersLocale, TGetFiltersQuery } from "./filters";
 export type {
   TFilmSortBy,
   TGetFilmPersonsByProfessionRequest,

@@ -14,7 +14,7 @@
   border: none;
 
   font-size: 14px;
-  color: var(--text-secondary, #999);
+  color: var(--color-text);
   cursor: pointer;
 
   transition:
@@ -22,7 +22,7 @@
     opacity 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--color-transparent-white-hover);
   }
 
   &:disabled {
@@ -38,24 +38,4 @@
 
 .text {
   white-space: nowrap;
-}
-
-/* Desktop / Mobile */
-
-.desktop {
-  @media (max-width: 768px) {
-    display: none;
-  }
-}
-
-.mobile {
-  display: none;
-  width: 100%;
-
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: center;
-    padding: 12px 16px;
-    border: 1px solid var(--border-color, #333);
-  }
 }

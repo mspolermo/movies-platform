@@ -1,7 +1,6 @@
 'use client';
 
 import type { TQickFilter } from '../../models';
-import type { TGenreItemResponse } from '@common/types';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useMemo, useCallback } from 'react';
@@ -36,12 +35,6 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
       };
 
   const isOnFilmsPage = pathname === '/films';
-
-  const genreMap = useMemo(() => {
-    const map = new Map<string, TGenreItemResponse>();
-    state.genres.forEach((g) => map.set(g.nameEn || g.nameRu, g));
-    return map;
-  }, [state.genres]);
 
   /**
    * Обновление query параметров страницы фильмов
@@ -108,19 +101,18 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
     () => [
       { type: 'heading', label: 'Жанры' },
 
-      ...state.genres.map((g) => ({
+      ...state.genres.map((label) => ({
         type: 'item' as const,
-        label: g.nameRu,
-        onClick: () =>
-          handleFilterClick('genres', genreMap.get(g.nameEn || g.nameRu)?.nameRu || g.nameRu),
+        label,
+        onClick: () => handleFilterClick('genres', label),
       })),
 
       { type: 'heading', label: 'Страны' },
 
-      ...state.countries.map((c) => ({
+      ...state.countries.map((label) => ({
         type: 'item' as const,
-        label: c.countryName,
-        onClick: () => handleFilterClick('countries', c.countryName),
+        label,
+        onClick: () => handleFilterClick('countries', label),
       })),
 
       { type: 'heading', label: 'Годы' },
@@ -132,7 +124,7 @@ export const useQuickFiltersList = (onClose: () => void): TQickFilter[] => {
         onClick: () => handleFilterClick('years', String(year)),
       })),
     ],
-    [state.genres, state.countries, state.years, handleFilterClick, genreMap]
+    [state.genres, state.countries, state.years, handleFilterClick]
   );
 
   return items;

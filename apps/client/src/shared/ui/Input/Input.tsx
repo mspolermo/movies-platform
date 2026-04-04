@@ -2,7 +2,7 @@
 
 import type { InputProps } from './types';
 
-import React, { forwardRef, useState, useId } from 'react';
+import React, { forwardRef, useEffect, useState, useId } from 'react';
 
 import styles from './Input.module.scss';
 
@@ -32,6 +32,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const [hasValue, setHasValue] = useState(!!props.value || !!props.defaultValue);
     const inputId = useId();
 
+    /** Контролируемое значение: держим hasValue вместе с value из пропсов (иначе крестик не совпадает с полем). */
+    useEffect(() => {
+      if (props.value !== undefined) {
+        setHasValue(Boolean(props.value));
+      }
+    }, [props.value]);
+
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(true);
       props.onFocus?.(e);
@@ -55,6 +62,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
     };
 
+    const showClearButton = clearable && !disabled && hasValue;
+
     const inputClasses = [
       styles.input,
       styles[`input--${variant}`],
@@ -62,6 +71,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       isFocused && styles['input--focused'],
       error && styles['input--error'],
       disabled && styles['input--disabled'],
+      !label && styles['input--no-label'],
       icon && iconPosition === 'left' && styles['input--with-left-icon'],
       icon && iconPosition === 'right' && styles['input--with-right-icon'],
       clearable && styles['input--clearable'],
@@ -96,7 +106,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             className={styles.input__field}
             disabled={disabled}
             id={inputId}
-            placeholder={isFocused || hasValue ? '' : placeholder}
+            placeholder={
+              label ? (isFocused || hasValue ? '' : placeholder) : hasValue ? '' : placeholder
+            }
             onBlur={handleBlur}
             onChange={handleChange}
             onFocus={handleFocus}
@@ -105,7 +117,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
           {icon && iconPosition === 'right' && <div className={styles.input__icon}>{icon}</div>}
 
-          {clearable && hasValue && !disabled && (
+          {showClearButton && (
             <button
               className={styles.input__clear}
               tabIndex={-1}

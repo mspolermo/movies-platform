@@ -2,28 +2,14 @@
 
 import type { TFilmsPageProps } from './types';
 
-import { FilmsSortingFilter, useFilters } from '@/features/filterFilms';
-import { LoadMoreFilms } from '@/features/loadMoreFilms';
+import { FilmsFilteredListing } from '@/widgets/FilmsFilteredListing';
 import { Page } from '@/widgets/Layout';
 
-export const FilmsPage = ({ allFilters, initialFilters, initialSort }: TFilmsPageProps) => {
-  const { selectedFilters, selectedSort, searchFilmsParams, onUpdateSort, onUpdateFilters } =
-    useFilters({
-      initialFilters,
-      initialSort,
-    });
 
+export const FilmsPage = (props: TFilmsPageProps) => {
   return (
-    <Page title="Фильмы">
-      <FilmsSortingFilter
-        allFilters={allFilters}
-        selectedFilters={selectedFilters}
-        selectedSort={selectedSort}
-        onUpdateFilters={onUpdateFilters}
-        onUpdateSort={onUpdateSort}
-      />
-
-      <LoadMoreFilms initialParams={searchFilmsParams} />
+    <Page onlyLaptopTitle title="Фильмы">
+      <FilmsFilteredListing {...props} />
     </Page>
   );
 };

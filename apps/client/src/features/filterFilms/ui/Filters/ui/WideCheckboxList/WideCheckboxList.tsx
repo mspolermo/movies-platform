@@ -1,30 +1,58 @@
+'use client';
+
 import type { TFilterCheckboxListProps } from '../../../../model';
 
-import cn from 'classnames';
+import { useCallback, useMemo } from 'react';
 
-import { capitalizeFirst } from '@/shared/lib';
+import { MOBILE_BREAKPOINT } from '@/shared/constants';
+import { capitalizeFirst, useMediaQuery } from '@/shared/lib';
 
-import styles from './WideCheckboxList.module.scss';
-import { getCheckboxLabel } from '../../../../lib';
-import { FilterDropdown } from '../FilterDropdown';
+import { LaptopWideCheckboxList } from './LaptopWideCheckboxList';
+import { MobileWideCheckboxList } from './MobileWideCheckboxList';
+import { FilterDropdown } from '../../../FilterDropdown';
 
+const MOBILE_QUERY = `(max-width: ${MOBILE_BREAKPOINT}px)`;
+
+/**
+ * Фильтр по жанрам или странам: широкое выпадающее меню с мультивыбором.
+ *
+ * На узком экране — горизонтальный ряд чипов; на широком — сетка кнопок с галочкой.
+ */
 export const WideCheckboxList = <T extends 'genres' | 'countries'>({
   type,
   allValues,
   selectedValues,
   onChange,
 }: TFilterCheckboxListProps<T>) => {
-  const isSelected = (value: string) => selectedValues.includes(value);
+  const isMobile = useMediaQuery(MOBILE_QUERY);
 
-  const handleToggle = (value: string) => {
-    const next = selectedValues.includes(value)
-      ? selectedValues.filter((x) => x !== value)
-      : [...selectedValues, value];
+  const entries = useMemo(
+    () =>
+      allValues.map((value, i) => ({
+        key: `${value}-${i}`,
+        value,
+        label: capitalizeFirst(value),
+      })),
+    [allValues]
+  );
 
-    onChange({
-      [type]: next,
-    });
-  };
+  const isSelected = useCallback(
+    (value: string) => selectedValues.includes(value),
+    [selectedValues]
+  );
+
+  const onToggle = useCallback(
+    (value: string) => {
+      const next = selectedValues.includes(value)
+        ? selectedValues.filter((x) => x !== value)
+        : [...selectedValues, value];
+
+      onChange({
+        [type]: next,
+      });
+    },
+    [onChange, selectedValues, type]
+  );
 
   return (
     <FilterDropdown
@@ -33,71 +61,11 @@ export const WideCheckboxList = <T extends 'genres' | 'countries'>({
       isWideMenu={true}
       selectedFiltersBy={selectedValues.map((value) => capitalizeFirst(value)).join(', ')}
     >
-      <div className={styles.root}>
-        {/* Desktop */}
-        <div className={styles.desktop}>
-          <div className={styles.content} onClick={(e) => e.stopPropagation()}>
-            <div className={styles.list}>
-              {allValues.map((item) => {
-                const label = getCheckboxLabel(item);
-                const active = isSelected(label);
-
-                return (
-                  <button
-                    key={label}
-                    className={cn(styles.item, {
-                      [styles.itemActive]: active,
-                    })}
-                    type="button"
-                    onClick={() => handleToggle(label)}
-                  >
-                    <span className={styles.label}>{capitalizeFirst(label)}</span>
-
-                    <span
-                      className={cn(styles.checkmark, {
-                        [styles.checkmarkVisible]: active,
-                      })}
-                    >
-                      <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
-                        <path
-                          d="M13.5 4.5L6 12L2.5 8.5"
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile */}
-        <div className={styles.mobile}>
-          <div className={styles.mobileList}>
-            {allValues.map((item) => {
-              const label = getCheckboxLabel(item);
-              const active = isSelected(label);
-
-              return (
-                <button
-                  key={label}
-                  className={cn(styles.chip, {
-                    [styles.chipActive]: active,
-                  })}
-                  type="button"
-                  onClick={() => handleToggle(label)}
-                >
-                  {capitalizeFirst(label)}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      {isMobile ? (
+        <MobileWideCheckboxList entries={entries} isSelected={isSelected} onToggle={onToggle} />
+      ) : (
+        <LaptopWideCheckboxList entries={entries} isSelected={isSelected} onToggle={onToggle} />
+      )}
     </FilterDropdown>
   );
 };

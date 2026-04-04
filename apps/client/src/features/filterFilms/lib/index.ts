@@ -1,2 +1,12 @@
-export { useCloseOnOutsideClick, useFilters, usePersonSearch } from './hooks';
-export { areFiltersDefault, parseSettingsFromNextSearchParams, getCheckboxLabel } from './utils';
+export {
+  useCloseOnOutsideClick,
+  useFilters,
+  usePersonFilterField,
+  usePersonSearchQuery,
+  useRangeSliderFilter,
+} from './hooks';
+export {
+  areFiltersDefault,
+  getMobileFilmsSelectionSummary,
+  parseSettingsFromNextSearchParams,
+} from './utils';

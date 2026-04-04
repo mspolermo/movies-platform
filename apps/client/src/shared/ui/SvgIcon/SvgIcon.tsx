@@ -187,6 +187,16 @@ const icons = {
       <path d="M8 15L5.5 10H10.5L8 15Z" fill="currentColor" />
     </svg>
   ),
+  filters: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} fill="none" viewBox="0 0 24 24">
+      <path
+        d="M3 7H21M9 12H21M17 17H21"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
+  ),
   chevron: (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} fill="none" viewBox="0 0 20 20">
       <path

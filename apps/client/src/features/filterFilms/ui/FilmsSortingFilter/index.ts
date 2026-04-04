@@ -1,1 +1,0 @@
-export { FilmsSortingFilter } from './FilmsSortingFilter';

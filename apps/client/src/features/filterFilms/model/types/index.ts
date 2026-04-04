@@ -1,12 +1,10 @@
-export type { TFilmsFilters, TAllFilmsFilters } from './filters';
-export { DEFAULT_FILTERS, DEFAULT_ALL_FILTERS } from './filters';
-
 export type {
+  TFilmsFilters,
   TUseFiltersReturn,
   TUseFiltersOptions,
-  TFilmsSortingFilterProps,
+  TFilmsListToolbarProps,
   TFilmFiltersProps,
-} from './types';
+} from './filters';
 
 export type {
   TFilterDropdownBlockId,

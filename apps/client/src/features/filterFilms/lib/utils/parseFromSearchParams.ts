@@ -4,7 +4,7 @@ import type { TFilmSortBy } from '@common/types';
 
 import { isSortOption } from '@/shared/lib';
 
-import { DEFAULT_FILTERS } from '../../model';
+import { DEFAULT_FILM_SORT, DEFAULT_FILTERS } from '../../constants';
 
 /**
  * Функция для парсинга фильтров фильма из URL
@@ -68,13 +68,12 @@ const parseFiltersFromURL = (searchParams: URLSearchParams | null): TFilmsFilter
  * Возвращает дефолтное значение, если параметр отсутствует или некорректен.
  */
 const parseSortFromURL = (searchParams: URLSearchParams | null): TFilmSortBy => {
-  const DEFAULT_SORT: TFilmSortBy = 'popularity';
-  if (!searchParams) return DEFAULT_SORT;
+  if (!searchParams) return DEFAULT_FILM_SORT;
 
   const rawSort = searchParams.get('sort');
-  if (!rawSort) return DEFAULT_SORT;
+  if (!rawSort) return DEFAULT_FILM_SORT;
 
-  return isSortOption(rawSort) ? rawSort : DEFAULT_SORT;
+  return isSortOption(rawSort) ? rawSort : DEFAULT_FILM_SORT;
 };
 
 /**

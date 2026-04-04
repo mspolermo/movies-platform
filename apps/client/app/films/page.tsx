@@ -1,13 +1,13 @@
 import type { TSearchParams } from '@/shared/types';
 
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 import { getFilmsFilters, parseSettingsFromNextSearchParams } from '@/features/filterFilms';
 import { FilmsPage } from '@/pages/FilmsPage';
+import { DEFAULT_FILTERS_LOCALE } from '@/shared/constants';
 
 export default async function FilmsPageRoute({ searchParams }: { searchParams: TSearchParams }) {
-  const allFilters = await getFilmsFilters();
+  const allFilters = await getFilmsFilters(DEFAULT_FILTERS_LOCALE);
 
   if (!allFilters) {
     notFound();
@@ -17,12 +17,6 @@ export default async function FilmsPageRoute({ searchParams }: { searchParams: T
     parseSettingsFromNextSearchParams(searchParams);
 
   return (
-    <Suspense fallback={null}>
-      <FilmsPage
-        allFilters={allFilters}
-        initialFilters={initialFilters}
-        initialSort={initialSort}
-      />
-    </Suspense>
+    <FilmsPage allFilters={allFilters} initialFilters={initialFilters} initialSort={initialSort} />
   );
 }

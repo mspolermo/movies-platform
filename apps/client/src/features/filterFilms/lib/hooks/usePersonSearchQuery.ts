@@ -6,7 +6,15 @@ import { useEffect, useState } from 'react';
 
 import { searchPersonsByNameAndProfession } from '@/entities/person';
 
-export const usePersonSearch = ({ professionId, name }: { professionId: number; name: string }) => {
+type TUsePersonSearchQueryParams = {
+  professionId: number;
+  name: string;
+};
+
+/**
+ * Поиск персон по имени и профессии (debounce + API). Только загрузка данных, без UI-состояния.
+ */
+export const usePersonSearchQuery = ({ professionId, name }: TUsePersonSearchQueryParams) => {
   const [results, setResults] = useState<TPersonListItemResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 

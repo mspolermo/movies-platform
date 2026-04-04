@@ -3,6 +3,7 @@ import type {
   TCountryItemResponse,
   TGenreItemResponse,
   TQuickFiltersResponse,
+  TFiltersLocale,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -16,46 +17,59 @@ const QUICK_FILTERS_MAX_GENRES = 23;
 const QUICK_FILTERS_MAX_COUNTRIES = 25;
 const QUICK_FILTERS_MAX_YEARS = 9;
 
+const pickGenreLabel = (g: TGenreItemResponse, locale: TFiltersLocale): string => {
+  if (locale === "en") {
+    return g.nameEn?.trim() ? g.nameEn : g.nameRu;
+  }
+  return g.nameRu;
+};
+
+const pickCountryLabel = (c: TCountryItemResponse, locale: TFiltersLocale): string => {
+  if (locale === "en") {
+    return c.countryNameEn?.trim() ? c.countryNameEn : c.countryName;
+  }
+  return c.countryName;
+};
+
 @Injectable()
 export class FiltersService extends BaseMicroserviceService {
   constructor(configService: ConfigService) {
     super(configService, "Filters Service");
   }
 
-  async getFilters(): Promise<TFiltersResponse> {
-    const [genres, countries, years] = await Promise.all([
-      this.sendMessage<TGenreItemResponse[]>(kinoDbRpc.genres.getAll, ""),
-      this.sendMessage<TCountryItemResponse[]>(kinoDbRpc.countries.getAll, ""),
-      this.sendMessage<number[]>(kinoDbRpc.films.getAllFilmYears, ""),
-    ]);
-
-    return {
-      genres,
-      countries,
-      years,
-    };
-  }
-
-  async getQuickFilters(): Promise<TQuickFiltersResponse> {
+  async getFilters(locale: TFiltersLocale): Promise<TFiltersResponse> {
     const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
       this.sendMessage<TGenreItemResponse[]>(kinoDbRpc.genres.getAll, ""),
       this.sendMessage<TCountryItemResponse[]>(kinoDbRpc.countries.getAll, ""),
       this.sendMessage<number[]>(kinoDbRpc.films.getAllFilmYears, ""),
     ]);
 
-    const genres = genresRaw.slice(0, QUICK_FILTERS_MAX_GENRES).map((
-      { nameRu, nameEn }
-    ) => ({ nameRu, nameEn }));
+    const years = [...yearsRaw].sort((a, b) => b - a);
 
-    const countries = countriesRaw
-      .slice(0, QUICK_FILTERS_MAX_COUNTRIES)
-      .map(({countryName, countryNameEn}) => (
-        { countryName, countryNameEn }));
+    return {
+      genres: genresRaw.map((g) => pickGenreLabel(g, locale)),
+      countries: countriesRaw.map((c) => pickCountryLabel(c, locale)),
+      years,
+    };
+  }
 
+  async getQuickFilters(locale: TFiltersLocale): Promise<TQuickFiltersResponse> {
+    const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
+      this.sendMessage<TGenreItemResponse[]>(kinoDbRpc.genres.getAll, ""),
+      this.sendMessage<TCountryItemResponse[]>(kinoDbRpc.countries.getAll, ""),
+      this.sendMessage<number[]>(kinoDbRpc.films.getAllFilmYears, ""),
+    ]);
+
+    const genresSliced = genresRaw.slice(0, QUICK_FILTERS_MAX_GENRES);
+    const countriesSliced = countriesRaw.slice(0, QUICK_FILTERS_MAX_COUNTRIES);
     const years = [...yearsRaw]
       .sort((a, b) => b - a)
       .slice(0, QUICK_FILTERS_MAX_YEARS);
 
-    return { genres, countries, years };
+    return {
+      genres: genresSliced.map((g) => pickGenreLabel(g, locale)),
+      countries: countriesSliced.map((c) => pickCountryLabel(c, locale)),
+      years,
+    };
   }
 }

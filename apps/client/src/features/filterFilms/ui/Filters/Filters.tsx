@@ -1,70 +1,28 @@
+'use client';
+
 import type { TFilmFiltersProps } from '../../model';
 
-import styles from './Filters.module.scss';
-import {
-  PersonSearching,
-  RangeSlider,
-  ResetFiltersButton,
-  ShortCheckboxList,
-  WideCheckboxList,
-} from './ui';
-import { FiltersDropdownProvider } from '../../model';
+import { MOBILE_BREAKPOINT, TABLET_BREAKPOINT } from '@/shared/constants';
+import { useMediaQuery } from '@/shared/lib';
 
-export const Filters = ({ allFilters, selectedFilters, onUpdateFilters }: TFilmFiltersProps) => {
-  return (
-    <FiltersDropdownProvider>
-      <div className={styles.content}>
-        <div className={styles.blocks}>
-          <WideCheckboxList
-            allValues={allFilters.genres}
-            selectedValues={selectedFilters.genres}
-            type="genres"
-            onChange={onUpdateFilters}
-          />
+import { LaptopFilters } from './LaptopFilters';
+import { MobileFilters } from './MobileFilters';
+import { TabletFilters } from './TabletFilters';
 
-          <WideCheckboxList
-            allValues={allFilters.countries}
-            selectedValues={selectedFilters.countries}
-            type="countries"
-            onChange={onUpdateFilters}
-          />
+const MOBILE_QUERY = `(max-width: ${MOBILE_BREAKPOINT}px)`;
+const TABLET_QUERY = `(max-width: ${TABLET_BREAKPOINT}px)`;
 
-          <ShortCheckboxList
-            allValues={allFilters.years}
-            selectedValues={selectedFilters.years}
-            type="years"
-            onChange={onUpdateFilters}
-          />
+export const Filters = (props: TFilmFiltersProps) => {
+  const isMobile = useMediaQuery(MOBILE_QUERY);
+  const isTablet = useMediaQuery(TABLET_QUERY);
 
-          <RangeSlider
-            selectedValue={selectedFilters.rating}
-            type="rating"
-            onChange={onUpdateFilters}
-          />
+  if (isMobile) {
+    return <MobileFilters {...props} />;
+  }
 
-          <RangeSlider
-            selectedValue={selectedFilters.grade}
-            type="grade"
-            onChange={onUpdateFilters}
-          />
+  if (isTablet) {
+    return <TabletFilters {...props} />;
+  }
 
-          <PersonSearching
-            selectedValue={selectedFilters.producer}
-            type="producer"
-            onChange={onUpdateFilters}
-          />
-
-          <PersonSearching
-            selectedValue={selectedFilters.actor}
-            type="actor"
-            onChange={onUpdateFilters}
-          />
-        </div>
-
-        <div className={styles.button}>
-          <ResetFiltersButton selectedFilters={selectedFilters} onChange={onUpdateFilters} />
-        </div>
-      </div>
-    </FiltersDropdownProvider>
-  );
+  return <LaptopFilters {...props} />;
 };

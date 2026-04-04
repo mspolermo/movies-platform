@@ -1,0 +1,104 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (min-width: sizes.$bp-tablet) {
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: sizes.$bp-tablet) {
+    color: var(--color-white);
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 700;
+    gap: 0;
+  }
+}
+
+.mobileTopBar {
+  display: none;
+
+  @media (max-width: sizes.$bp-tablet) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-background-elements);
+    padding: 32px ;
+  }
+}
+
+.lead {
+  flex: 1;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 900;
+}
+
+.selectionSummary {
+  margin: 8px 0 0;
+  color: var(--color-input-text);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+/* Переопределение shared Button (variant outline) под тулбар фильмов */
+.filtersToggle {
+  position: relative;
+  flex-shrink: 0;
+  padding: 12px 16px;
+  min-height: auto;
+  background-color: var(--color-background-elements);
+  color: var(--color-text);
+  border: 1px solid var(--color-split-line);
+  font-weight: 400;
+
+  &:hover:not(:disabled) {
+    background: var(--color-transparent-white-hover);
+    color: var(--color-text);
+  }
+}
+
+.filtersToggle_active {
+  border-color: var(--color-red);
+}
+
+.filtersToggleIcon {
+  color: var(--color-icon-default);
+}
+
+.filtersToggleIcon_active {
+  color: var(--color-red);
+}
+
+.filtersRegion {
+  display: block;
+
+  @media (max-width: sizes.$bp-tablet) {
+    display: none;
+  }
+}
+
+@media (max-width: sizes.$bp-tablet) {
+  .root_filtersOpen .filtersRegion {
+    display: block;
+  }
+}
+
+.sort {
+  display: flex;
+  justify-content: flex-end;
+
+  @media (max-width: sizes.$bp-tablet) {
+    margin-top: 16px;
+    padding-right: 8px;
+  }
+}

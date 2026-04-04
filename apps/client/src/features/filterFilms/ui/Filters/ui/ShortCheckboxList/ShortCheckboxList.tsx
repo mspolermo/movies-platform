@@ -3,8 +3,13 @@ import type { TFilterCheckboxListProps } from '../../../../model';
 import cn from 'classnames';
 
 import styles from './ShortCheckboxList.module.scss';
-import { FilterDropdown } from '../FilterDropdown';
+import { FilterDropdown } from '../../../FilterDropdown';
 
+/**
+ * Фильтр по годам: выпадающий список с мультивыбором.
+ *
+ * Вертикальный список годов с отметкой выбранных значений.
+ */
 export const ShortCheckboxList = ({
   type,
   allValues,
@@ -29,9 +34,8 @@ export const ShortCheckboxList = ({
       isWideMenu={false}
       selectedFiltersBy={selectedValues.join(', ')}
     >
-      <div className={styles.yearFilter}>
-        {/* Desktop */}
-        <div className={styles.content}>
+      <div className={styles.root}>
+        <div className={styles.scroll}>
           {values.map((year) => {
             const active = isSelected(year);
 
@@ -51,26 +55,6 @@ export const ShortCheckboxList = ({
               </div>
             );
           })}
-        </div>
-
-        {/* Mobile */}
-        <div className={styles.mobile}>
-          <div className={styles.scroll}>
-            {values.map((year) => {
-              const active = isSelected(year);
-
-              return (
-                <button
-                  key={year}
-                  className={cn(styles.mobileButton, active && styles.mobileButtonActive)}
-                  type="button"
-                  onClick={() => toggleYear(year)}
-                >
-                  {year}
-                </button>
-              );
-            })}
-          </div>
         </div>
       </div>
     </FilterDropdown>

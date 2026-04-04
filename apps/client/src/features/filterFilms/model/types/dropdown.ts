@@ -1,16 +1,9 @@
-import type { TFilmFiltersProps } from './types';
+import type { TFilmFiltersProps, TFilmsFilters } from './filters';
 
 import type { ReactNode } from 'react';
 
 /** Идентификатор открытого дропдауна на странице фильмов (аккордеон). */
-export type TFilterDropdownBlockId =
-  | 'genres'
-  | 'countries'
-  | 'years'
-  | 'rating'
-  | 'grade'
-  | 'producer'
-  | 'actor';
+export type TFilterDropdownBlockId = keyof TFilmsFilters;
 
 /**
  * Пропсы выпадающего фильтра (FilterDropdown).

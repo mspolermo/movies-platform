@@ -194,7 +194,9 @@ describe("FilmsService", () => {
             attributes: [],
             through: { attributes: [] },
             required: true,
-            where: { countryName: mockCountries },
+            where: {
+              [Op.or]: [{ countryName: mockCountries }, { countryNameEn: mockCountries }],
+            },
           },
           {
             model: Person,

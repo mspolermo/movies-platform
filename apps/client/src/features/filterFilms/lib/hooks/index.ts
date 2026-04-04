@@ -1,3 +1,5 @@
 export { useCloseOnOutsideClick } from './useCloseOnOutsideClick';
 export { useFilters } from './useFilters';
-export { usePersonSearch } from './usePersonSearch';
+export { usePersonFilterField } from './usePersonFilterField';
+export { usePersonSearchQuery } from './usePersonSearchQuery';
+export { useRangeSliderFilter } from './useRangeSliderFilter';

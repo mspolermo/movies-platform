@@ -12,5 +12,6 @@ export type TLayoutProps = {
 export type TPageProps = {
   children: ReactNode;
   title?: string;
+  onlyLaptopTitle?: boolean;
   withBackButton?: boolean;
 };

@@ -145,7 +145,12 @@ export class FilmsService {
       through?: { attributes: [] };
       required?: boolean;
       where?: {
-        [Op.or]?: Array<{ nameRu?: string[]; nameEn?: string[]; countryName?: string[] }>;
+        [Op.or]?: Array<{
+          nameRu?: string[];
+          nameEn?: string[];
+          countryName?: string[];
+          countryNameEn?: string[];
+        }>;
         countryName?: string[];
       };
     }> = [];
@@ -168,7 +173,9 @@ export class FilmsService {
         attributes: [],
         through: { attributes: [] },
         required: true,
-        where: { countryName: countries },
+        where: {
+          [Op.or]: [{ countryName: countries }, { countryNameEn: countries }],
+        },
       });
 
     if (persons)

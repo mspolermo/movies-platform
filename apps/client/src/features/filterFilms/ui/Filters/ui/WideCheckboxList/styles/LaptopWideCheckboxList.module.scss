@@ -1,0 +1,75 @@
+.root {
+  display: block;
+  min-width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--color-input-text);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--color-white) 10%, transparent);
+  background: color-mix(in srgb, var(--color-white) 5%, transparent);
+
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text);
+
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--color-transparent-white-hover);
+    border-color: color-mix(in srgb, var(--color-white) 20%, transparent);
+    transform: translateY(-1px);
+  }
+}
+
+.itemActive {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-white);
+  box-shadow: 0 2px 8px var(--color-transparent-red-shadow);
+}
+
+.label {
+  font: inherit;
+  color: inherit;
+}
+
+.checkmark {
+  opacity: 0;
+  color: var(--color-icon-default);
+  transition: opacity 0.2s ease;
+  font-size: 16px;
+}
+
+.checkmarkVisible {
+  opacity: 1;
+  color: var(--color-white);
+}

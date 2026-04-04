@@ -1,37 +1,47 @@
 import type { TPersonSearchingProps } from '../../../../model';
 
-import { useState, useCallback } from 'react';
+import { useMemo } from 'react';
+
+import { Input } from '@/shared/ui';
 
 import styles from './PersonSearching.module.scss';
-import { usePersonSearch } from '../../../../lib';
-import { useFiltersDropdown } from '../../../../model';
-import { FilterDropdown } from '../FilterDropdown';
+import { usePersonFilterField, usePersonSearchQuery } from '../../../../lib';
+import { FilterDropdown } from '../../../FilterDropdown';
 
-//TODO: Нужно добавить сброс фильтра по крестику в input
-// и поиск не по id профессии должен быть явно
+//TODO: поиск не по id профессии должен быть, но для этого нужно сделать посев в базу
+// с англ названиями профессий и переработать сервер
+
+/**
+ * Фильтр фильмов по актёру или режиссёру: поиск персон по имени, выбор из списка, очистка через `Input`.
+ * В поле показывается зафиксированное значение; при правках сбрасывается фильтр до нового выбора.
+ * При закрытии дропдауна черновик ввода отбрасывается и подставляется актуальный `selectedValue`.
+ *
+ * @template T — поле фильтра: `actor` или `producer`.
+ */
 export const PersonSearching = <T extends 'actor' | 'producer'>({
   type,
   selectedValue,
   onChange,
 }: TPersonSearchingProps<T>) => {
-  const [name, setName] = useState('');
-  const { close } = useFiltersDropdown();
+  const professionId = type === 'producer' ? 2 : 1;
 
-  const { results } = usePersonSearch({
-    professionId: type === 'producer' ? 2 : 1,
+  const { name, handleChange, handleClearFilter, handleSelectPerson } = usePersonFilterField({
+    type,
+    selectedValue,
+    onChange,
+  });
+
+  const { results } = usePersonSearchQuery({
+    professionId,
     name,
   });
 
-  const handleSelectPerson = useCallback(
-    (personName: string) => {
-      onChange({
-        [type]: personName,
-      });
-      setName('');
-      close();
-    },
-    [onChange, type, close]
-  );
+  const resultsToShow = useMemo(() => {
+    if (!selectedValue) {
+      return results;
+    }
+    return results.filter((person) => person.nameRu !== selectedValue);
+  }, [results, selectedValue]);
 
   return (
     <FilterDropdown
@@ -40,17 +50,18 @@ export const PersonSearching = <T extends 'actor' | 'producer'>({
       selectedFiltersBy={selectedValue}
     >
       <div className={styles.root}>
-        <input
-          className={styles.input}
+        <Input
+          clearable
           placeholder="Введите имя…"
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChange}
+          onClear={handleClearFilter}
         />
 
-        {results.length > 0 && (
+        {resultsToShow.length > 0 && (
           <div className={styles.results}>
-            {results.map((person) => (
+            {resultsToShow.map((person) => (
               <button
                 key={person.id}
                 className={styles.resultItem}

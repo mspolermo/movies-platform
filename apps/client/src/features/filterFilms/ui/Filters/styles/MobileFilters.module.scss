@@ -1,0 +1,27 @@
+.content {
+  padding: 16px 10px;
+  background-color: var(--color-background-elements);
+  border-radius: 10px;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.blocks {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.blocks > * {
+  width: 100%;
+  min-width: 0;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
