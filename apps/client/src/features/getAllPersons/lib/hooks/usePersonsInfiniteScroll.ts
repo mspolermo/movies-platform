@@ -8,6 +8,10 @@ import { getAllPersonsPaginated } from '@/entities/person';
 interface UsePersonsInfiniteScrollOptions {
   initialPage?: number;
   initialLimit?: number;
+  /** Первая страница с сервера (без повторного запроса при монтировании). */
+  initialData?: TPaginatedPersonsResponse;
+  /** Не дергать API при монтировании (например, пока `loading.tsx` с скелетоном). */
+  suppressInitialLoad?: boolean;
 }
 
 interface UsePersonsInfiniteScrollReturn {
@@ -22,11 +26,13 @@ interface UsePersonsInfiniteScrollReturn {
 export const usePersonsInfiniteScroll = ({
   initialPage = 1,
   initialLimit = 20,
+  initialData,
+  suppressInitialLoad = false,
 }: UsePersonsInfiniteScrollOptions = {}): UsePersonsInfiniteScrollReturn => {
-  const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
+  const [persons, setPersons] = useState<TPersonListItemResponse[]>(() => initialData?.items ?? []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(() => initialData?.hasMore ?? true);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit] = useState(initialLimit);
 
@@ -84,8 +90,9 @@ export const usePersonsInfiniteScroll = ({
     loadPersons(initialPage, true);
   }, [loadPersons, initialPage]);
 
-  // Загрузка при монтировании
+  // Загрузка при монтировании (если нет данных с сервера и не подавлен старт)
   useEffect(() => {
+    if (initialData || suppressInitialLoad) return;
     loadPersons(initialPage, true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
