@@ -1,0 +1,20 @@
+@use '@/shared/styles/mixins/grid' as mixins;
+
+.error {
+  text-align: center;
+  color: var(--color-red);
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.personsGrid {
+  @include mixins.bigCardsGrid;
+}
+
+.notFound {
+  flex: 1 1 100%;
+  text-align: center;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  padding: 2rem;
+}
