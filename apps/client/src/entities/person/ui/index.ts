@@ -1,3 +1,3 @@
 export { PersonInfo } from './PersonInfo';
-export { PersonCard } from './PersonCard';
+export { PersonCard, PersonCardSkeleton } from './PersonCard';
 export { PersonCardsList } from './PersonCardsList';

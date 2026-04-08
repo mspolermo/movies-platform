@@ -26,10 +26,10 @@ export const AllPersonsList = ({ isLoading = false, initialData }: TAllPersonsLi
     <LoadMoreSection
       hasMore={hasMore}
       isLoading={loading}
-      loadingComponent={<PersonCardsList isLoading={true} persons={[]}/>}
+      loadingComponent={<PersonCardsList isLoading={true} persons={[]} />}
       onLoadMore={loadMore}
     >
-      <PersonCardsList error={error} isLoading={listLoading} persons={persons}/>
+      <PersonCardsList error={error} isLoading={listLoading} persons={persons} />
     </LoadMoreSection>
   );
 };

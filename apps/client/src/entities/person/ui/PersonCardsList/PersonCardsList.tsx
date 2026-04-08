@@ -1,11 +1,7 @@
-
-
 import type { TPersonCardsListProps } from './types';
 
-import { Skeleton } from '@/shared/ui';
-
 import styles from './PersonCardsList.module.scss';
-import { PersonCard } from '../PersonCard';
+import { PersonCard, PersonCardSkeleton } from '../PersonCard';
 
 const SKELETON_PLACEHOLDERS = Array.from({ length: 8 }, (_, i) => i);
 
@@ -13,7 +9,6 @@ const SKELETON_PLACEHOLDERS = Array.from({ length: 8 }, (_, i) => i);
  * Сетка карточек персон: ошибка, скелетоны при загрузке, пусто, либо список.
  */
 export const PersonCardsList = ({ persons, isLoading, error }: TPersonCardsListProps) => {
-
   if (error) {
     return <div className={styles.error}>{error}</div>;
   }
@@ -22,7 +17,7 @@ export const PersonCardsList = ({ persons, isLoading, error }: TPersonCardsListP
     return (
       <div className={styles.personsGrid}>
         {SKELETON_PLACEHOLDERS.map((index) => (
-          <Skeleton key={index} height={280} width={220} />
+          <PersonCardSkeleton key={index} />
         ))}
       </div>
     );
@@ -35,7 +30,7 @@ export const PersonCardsList = ({ persons, isLoading, error }: TPersonCardsListP
   return (
     <div className={styles.personsGrid}>
       {persons.map((person) => (
-        <PersonCard key={person.id} person={person}/>
+        <PersonCard key={person.id} person={person} />
       ))}
     </div>
   );

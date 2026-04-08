@@ -1,4 +1,4 @@
-import type { TPersonListItemResponse } from "@common/types";
+import type { TPersonListItemResponse } from '@common/types';
 
 export type TPersonCardsListProps = {
   persons: TPersonListItemResponse[];

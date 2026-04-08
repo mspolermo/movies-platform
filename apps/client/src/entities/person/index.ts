@@ -1,4 +1,4 @@
-export { PersonInfo, PersonCard, PersonCardsList } from './ui';
+export { PersonInfo, PersonCard, PersonCardSkeleton, PersonCardsList } from './ui';
 export {
   getPersonsByProfession,
   getFilmPersonsByProfession,

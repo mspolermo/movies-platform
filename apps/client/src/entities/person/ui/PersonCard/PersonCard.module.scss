@@ -75,6 +75,17 @@
     text-overflow: ellipsis;
   }
 
+  &.skeletonCard {
+    cursor: default;
+    pointer-events: none;
+
+    &:hover {
+      .poster {
+        transform: scale(0.96);
+      }
+    }
+  }
+
   &:hover {
     .poster {
       transform: scale(1);
