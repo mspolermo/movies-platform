@@ -1,0 +1,1 @@
+export { resolveInitialProfessionId } from './resolveInitialProfessionId';

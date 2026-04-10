@@ -1,16 +1,14 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import type { TProfessionsPageProps } from './types';
 
 import { AllCreatorsViewer } from '@/widgets/AllCreatorsViewer';
 import { Page } from '@/widgets/Layout';
 
-export const ProfessionsPage = () => {
-  const searchParams = useSearchParams();
-
+export const ProfessionsPage = (props: TProfessionsPageProps) => {
   return (
     <Page title="Профессии">
-      <AllCreatorsViewer searchParams={searchParams} />
+      <AllCreatorsViewer {...props} />
     </Page>
   );
 };

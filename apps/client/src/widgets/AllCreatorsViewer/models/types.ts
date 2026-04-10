@@ -1,5 +1,6 @@
-import type { ReadonlyURLSearchParams } from 'next/navigation';
+import type { TProfessionItemResponse } from '@common/types';
 
 export interface TAllCreatorsViewerProps {
-  searchParams: ReadonlyURLSearchParams | null;
+  professions: TProfessionItemResponse[];
+  initialActiveProfessionId: number | null;
 }

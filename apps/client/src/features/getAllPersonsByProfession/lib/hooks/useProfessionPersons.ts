@@ -1,3 +1,5 @@
+"use client"
+
 import type { TPaginatedPersonsResponse, TPersonListItemResponse } from '@common/types';
 
 import { isAxiosError } from 'axios';

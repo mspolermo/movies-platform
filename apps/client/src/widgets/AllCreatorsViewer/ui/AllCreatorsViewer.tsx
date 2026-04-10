@@ -2,7 +2,6 @@ import type { TAllCreatorsViewerProps } from '../models';
 
 import { ProfessionsSlider } from '@/entities/profession';
 import { AllPersonsByProfession } from '@/features/getAllPersonsByProfession';
-import { Loader } from '@/shared/ui';
 
 import { useAllCreatorsView } from '../lib';
 import styles from './AllCreatorsViewer.module.scss';
@@ -10,39 +9,22 @@ import styles from './AllCreatorsViewer.module.scss';
 /**
  * UI-виджет для просмотра всех персон разбитых по профессиям на слайдере (с загрузкой данных)
  */
-export const AllCreatorsViewer = ({ searchParams }: TAllCreatorsViewerProps) => {
-  const { professions, activeProfessionId, loading, error, handleProfessionChange } =
-    useAllCreatorsView({
-      searchParams,
-    });
+export const AllCreatorsViewer = (props: TAllCreatorsViewerProps) => {
+  const { professions, activeProfessionId, handleProfessionChange } = useAllCreatorsView(props);
 
-  if (loading) {
-    return (
-      <div className={styles.loaderWrapper}>
-        <Loader size="small" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>;
+  if (professions.length === 0) {
+    return <div className={styles.emptyState}>Нет доступных профессий</div>;
   }
 
   return (
-    <>
-      {professions.length > 0 && (
-        <div className={styles.content}>
-          <ProfessionsSlider
-            activeProfessionId={activeProfessionId}
-            professions={professions}
-            onProfessionChange={handleProfessionChange}
-          />
+    <div className={styles.content}>
+      <ProfessionsSlider
+        activeProfessionId={activeProfessionId}
+        professions={professions}
+        onProfessionChange={handleProfessionChange}
+      />
 
-          <AllPersonsByProfession activeProfessionId={activeProfessionId} />
-        </div>
-      )}
-
-      {professions.length === 0 && <div className={styles.emptyState}>Нет доступных профессий</div>}
-    </>
+      <AllPersonsByProfession activeProfessionId={activeProfessionId} />
+    </div>
   );
 };
