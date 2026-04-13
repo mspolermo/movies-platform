@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import type { TPaginatedPersonsResponse, TPersonListItemResponse } from '@common/types';
 

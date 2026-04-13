@@ -1,0 +1,1 @@
+export { getAllProfessionsForPage } from './api';

@@ -1,3 +1,5 @@
+'use client';
+
 import type { TAllCreatorsViewerProps } from '../models';
 
 import { ProfessionsSlider } from '@/entities/profession';

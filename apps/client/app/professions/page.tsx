@@ -3,7 +3,7 @@ import type { TSearchParams } from '@/shared/types';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import { fetchAllProfessionsData } from '@/entities/profession';
+import { getAllProfessionsForPage } from '@/features/professionsForPage';
 import { ProfessionsPage } from '@/pages/ProfessionsPage';
 import { resolveInitialProfessionId } from '@/widgets/AllCreatorsViewer';
 
@@ -12,7 +12,7 @@ export default async function ProfessionsPageRoute({
 }: {
   searchParams: TSearchParams;
 }) {
-  const professions = await fetchAllProfessionsData();
+  const professions = await getAllProfessionsForPage();
 
   if (professions === null) {
     notFound();
