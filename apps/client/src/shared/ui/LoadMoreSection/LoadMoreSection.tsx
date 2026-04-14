@@ -27,7 +27,7 @@ export const LoadMoreSection = ({
     <div className={className}>
       {children}
 
-      {isLoading && (loadingComponent || defaultLoadingComponent)}
+      {isLoading && (loadingComponent !== undefined ? loadingComponent : defaultLoadingComponent)}
 
       {!isLoading && hasMore && (
         <div className={styles.controls}>

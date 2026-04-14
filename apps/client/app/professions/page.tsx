@@ -1,12 +1,12 @@
 import type { TSearchParams } from '@/shared/types';
 
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 import { getAllProfessionsForPage } from '@/features/professionsForPage';
 import { ProfessionsPage } from '@/pages/ProfessionsPage';
 import { resolveInitialProfessionId } from '@/widgets/AllCreatorsViewer';
 
+//TODO: прорефакторить полностью 
 export default async function ProfessionsPageRoute({
   searchParams,
 }: {
@@ -21,11 +21,9 @@ export default async function ProfessionsPageRoute({
   const initialActiveProfessionId = resolveInitialProfessionId(professions, searchParams);
 
   return (
-    <Suspense fallback={null}>
-      <ProfessionsPage
-        initialActiveProfessionId={initialActiveProfessionId}
-        professions={professions}
-      />
-    </Suspense>
+    <ProfessionsPage
+      initialActiveProfessionId={initialActiveProfessionId}
+      professions={professions}
+    />
   );
 }

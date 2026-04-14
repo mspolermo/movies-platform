@@ -37,7 +37,8 @@ export const useProfessionPersons = ({
   initialLimit = 20,
 }: UseProfessionPersonsOptions): UseProfessionPersonsReturn => {
   const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
-  const [loading, setLoading] = useState(false);
+  /** Пока нет первого ответа по выбранной профессии — считаем загрузку активной (избегаем ложного «пусто» до useEffect). */
+  const [loading, setLoading] = useState(() => Boolean(professionId));
   const [error, setError] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -115,6 +116,7 @@ export const useProfessionPersons = ({
       setPersons([]);
       setHasMore(false);
       setError(null);
+      setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [professionId]);

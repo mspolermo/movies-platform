@@ -1,2 +1,2 @@
 export { fetchAllProfessionsData, getFilmProfessions } from './api';
-export { ProfessionsSlider, ProfessionsList } from './ui';
+export { ProfessionsSlider, ProfessionsSliderSkeleton, ProfessionsList } from './ui';

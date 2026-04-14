@@ -1,6 +1,6 @@
 'use client';
 
-import type { TAllCreatorsViewerProps } from '../../models';
+import type { TAllCreatorsViewerReadyProps } from '../../models';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 export const useAllCreatorsView = ({
   professions,
   initialActiveProfessionId,
-}: TAllCreatorsViewerProps) => {
+}: TAllCreatorsViewerReadyProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

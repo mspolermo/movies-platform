@@ -1,0 +1,1 @@
+export { ProfessionsSliderSkeleton } from './ProfessionsSliderSkeleton';

@@ -1,6 +1,6 @@
 import type { TAllPersonsByProfessionProps } from './types';
 
-import { PersonCard } from '@/entities/person';
+import { PersonCard, PersonCardsList } from '@/entities/person';
 import { LoadMoreSection } from '@/shared/ui';
 
 import styles from './AllPersonsByProfession.module.scss';
@@ -36,13 +36,18 @@ export const AllPersonsByProfession = ({ activeProfessionId }: TAllPersonsByProf
         className={styles.infiniteScroll}
         hasMore={hasMore}
         isLoading={personsLoading}
+        loadingComponent={personsLoading && persons.length === 0 ? null : undefined}
         onLoadMore={loadMore}
       >
-        <div className={styles.personsGrid}>
-          {persons.map((person) => (
-            <PersonCard key={person.id} person={person} />
-          ))}
-        </div>
+        {personsLoading && persons.length === 0 ? (
+          <PersonCardsList isLoading persons={[]} />
+        ) : (
+          <div className={styles.personsGrid}>
+            {persons.map((person) => (
+              <PersonCard key={person.id} person={person} />
+            ))}
+          </div>
+        )}
       </LoadMoreSection>
     </div>
   );

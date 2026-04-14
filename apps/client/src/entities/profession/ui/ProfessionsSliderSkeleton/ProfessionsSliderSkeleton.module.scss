@@ -1,0 +1,11 @@
+.chip {
+  flex-shrink: 0;
+  margin-right: 32px;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: flex-end;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
