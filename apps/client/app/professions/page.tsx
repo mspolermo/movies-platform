@@ -6,7 +6,7 @@ import { getAllProfessionsForPage } from '@/features/professionsForPage';
 import { ProfessionsPage } from '@/pages/ProfessionsPage';
 import { resolveInitialProfessionId } from '@/widgets/AllCreatorsViewer';
 
-//TODO: прорефакторить полностью 
+//TODO: прорефакторить полностью
 export default async function ProfessionsPageRoute({
   searchParams,
 }: {
