@@ -1,17 +1,15 @@
 import type { TPaginatedPersonsResponse, TPersonListItemResponse } from '@common/types';
 
 import { isAxiosError } from 'axios';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 import { getAllPersonsPaginated } from '@/entities/person';
 
 interface UsePersonsInfiniteScrollOptions {
   initialPage?: number;
   initialLimit?: number;
-  /** Первая страница с сервера (без повторного запроса при монтировании). */
+  /** Первая страница с сервера (RSC); дальше только `loadMore` на клиенте. */
   initialData?: TPaginatedPersonsResponse;
-  /** Не дергать API при монтировании (например, пока `loading.tsx` с скелетоном). */
-  suppressInitialLoad?: boolean;
 }
 
 interface UsePersonsInfiniteScrollReturn {
@@ -20,14 +18,12 @@ interface UsePersonsInfiniteScrollReturn {
   error: string | null;
   hasMore: boolean;
   loadMore: () => Promise<void>;
-  reset: () => void;
 }
 
 export const usePersonsInfiniteScroll = ({
   initialPage = 1,
   initialLimit = 20,
   initialData,
-  suppressInitialLoad = false,
 }: UsePersonsInfiniteScrollOptions = {}): UsePersonsInfiniteScrollReturn => {
   const [persons, setPersons] = useState<TPersonListItemResponse[]>(() => initialData?.items ?? []);
   const [loading, setLoading] = useState(false);
@@ -38,8 +34,8 @@ export const usePersonsInfiniteScroll = ({
 
   const isLoadingRef = useRef(false);
 
-  const loadPersons = useCallback(
-    async (page: number, reset = false) => {
+  const loadNextPage = useCallback(
+    async (page: number) => {
       if (isLoadingRef.current) return;
 
       isLoadingRef.current = true;
@@ -49,12 +45,7 @@ export const usePersonsInfiniteScroll = ({
       try {
         const response: TPaginatedPersonsResponse = await getAllPersonsPaginated({ page, limit });
 
-        if (reset) {
-          setPersons(response.items);
-        } else {
-          setPersons((prev) => [...prev, ...response.items]);
-        }
-
+        setPersons((prev) => [...prev, ...response.items]);
         setHasMore(response.hasMore);
         setCurrentPage(page);
       } catch (err: unknown) {
@@ -79,22 +70,8 @@ export const usePersonsInfiniteScroll = ({
 
   const loadMore = useCallback(async () => {
     if (!hasMore || loading) return;
-    await loadPersons(currentPage + 1, false);
-  }, [hasMore, loading, currentPage, loadPersons]);
-
-  const reset = useCallback(() => {
-    setPersons([]);
-    setCurrentPage(initialPage);
-    setHasMore(true);
-    setError(null);
-    loadPersons(initialPage, true);
-  }, [loadPersons, initialPage]);
-
-  // Загрузка при монтировании (если нет данных с сервера и не подавлен старт)
-  useEffect(() => {
-    if (initialData || suppressInitialLoad) return;
-    loadPersons(initialPage, true);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    await loadNextPage(currentPage + 1);
+  }, [hasMore, loading, currentPage, loadNextPage]);
 
   return {
     persons,
@@ -102,6 +79,5 @@ export const usePersonsInfiniteScroll = ({
     error,
     hasMore,
     loadMore,
-    reset,
   };
 };

@@ -19,7 +19,6 @@ interface UseProfessionPersonsReturn {
   error: string | null;
   hasMore: boolean;
   loadMore: () => Promise<void>;
-  reset: () => void;
 }
 
 /**
@@ -94,16 +93,6 @@ export const useProfessionPersons = ({
     await loadPersons(currentPage + 1, false);
   }, [hasMore, loading, currentPage, loadPersons, professionId]);
 
-  const reset = useCallback(() => {
-    setPersons([]);
-    setCurrentPage(initialPage);
-    setHasMore(true);
-    setError(null);
-    if (professionId) {
-      loadPersons(initialPage, true);
-    }
-  }, [loadPersons, initialPage, professionId]);
-
   // Загрузка при изменении professionId
   useEffect(() => {
     if (professionId) {
@@ -127,6 +116,5 @@ export const useProfessionPersons = ({
     error,
     hasMore,
     loadMore,
-    reset,
   };
 };

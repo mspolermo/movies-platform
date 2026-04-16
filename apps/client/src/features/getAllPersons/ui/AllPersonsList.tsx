@@ -12,19 +12,21 @@ export type TAllPersonsListProps = {
   initialData?: TPaginatedPersonsResponse;
 };
 
+/**
+ * UI сетка карточек персон (с логикой загрузки)
+ */
 export const AllPersonsList = ({ isLoading = false, initialData }: TAllPersonsListProps = {}) => {
   const { persons, loading, error, hasMore, loadMore } = usePersonsInfiniteScroll({
     initialPage: 1,
     initialLimit: 20,
     initialData,
-    suppressInitialLoad: isLoading,
   });
 
   const listLoading = isLoading || (loading && persons.length === 0);
 
   return (
     <LoadMoreSection
-      hasMore={hasMore}
+      hasMore={hasMore && !isLoading}
       isLoading={loading}
       loadingComponent={<PersonCardsList isLoading={true} persons={[]} />}
       onLoadMore={loadMore}
