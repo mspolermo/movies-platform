@@ -2,11 +2,11 @@
 
 import type { TAllCreatorsViewerProps, TAllCreatorsViewerReadyProps } from '../models';
 
-import { PersonCardsList } from '@/entities/person';
-import { ProfessionsSlider, ProfessionsSliderSkeleton } from '@/entities/profession';
+import { ProfessionsSlider } from '@/entities/profession';
 import { AllPersonsByProfession } from '@/features/getAllPersonsByProfession';
 
 import { useAllCreatorsView } from '../lib';
+import { AllCreatorsLoader } from './AllCreatorsLoader';
 import styles from './AllCreatorsViewer.module.scss';
 
 const AllCreatorsViewerContent = (props: TAllCreatorsViewerReadyProps) => {
@@ -34,15 +34,7 @@ const AllCreatorsViewerContent = (props: TAllCreatorsViewerReadyProps) => {
  */
 export const AllCreatorsViewer = (props: TAllCreatorsViewerProps) => {
   if (props.isLoading) {
-    return (
-      <div className={styles.content}>
-        <ProfessionsSliderSkeleton />
-
-        <div className={styles.personsSection}>
-          <PersonCardsList isLoading persons={[]} />
-        </div>
-      </div>
-    );
+    return <AllCreatorsLoader />
   }
 
   return <AllCreatorsViewerContent {...props} />;
