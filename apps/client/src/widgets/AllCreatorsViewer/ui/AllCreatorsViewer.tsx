@@ -1,33 +1,9 @@
 'use client';
 
-import type { TAllCreatorsViewerProps, TAllCreatorsViewerReadyProps } from '../models';
+import type { TAllCreatorsViewerProps } from '../models';
 
-import { ProfessionsSlider } from '@/entities/profession';
-import { AllPersonsByProfession } from '@/features/getAllPersonsByProfession';
-
-import { useAllCreatorsView } from '../lib';
+import { AllCreatorsViewerDiscovery } from './AllCreatorsDiscovery';
 import { AllCreatorsLoader } from './AllCreatorsLoader';
-import styles from './AllCreatorsViewer.module.scss';
-
-const AllCreatorsViewerContent = (props: TAllCreatorsViewerReadyProps) => {
-  const { professions, activeProfessionId, handleProfessionChange } = useAllCreatorsView(props);
-
-  if (professions.length === 0) {
-    return <div className={styles.emptyState}>Нет доступных профессий</div>;
-  }
-
-  return (
-    <div className={styles.content}>
-      <ProfessionsSlider
-        activeProfessionId={activeProfessionId}
-        professions={professions}
-        onProfessionChange={handleProfessionChange}
-      />
-
-      <AllPersonsByProfession activeProfessionId={activeProfessionId} />
-    </div>
-  );
-};
 
 /**
  * UI-виджет для просмотра всех персон разбитых по профессиям на слайдере (с загрузкой данных)
@@ -37,5 +13,5 @@ export const AllCreatorsViewer = (props: TAllCreatorsViewerProps) => {
     return <AllCreatorsLoader />
   }
 
-  return <AllCreatorsViewerContent {...props} />;
+  return <AllCreatorsViewerDiscovery {...props} />;
 };
