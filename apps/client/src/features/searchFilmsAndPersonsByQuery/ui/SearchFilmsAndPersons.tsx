@@ -7,8 +7,6 @@ import { Input } from '@/shared/ui';
 import { useSearchByQuery } from '../lib';
 import styles from './SearchFilmsAndPersons.module.scss';
 
-//TODO: убрать контейнер
-
 export const SearchFilmsAndPersons = () => {
   const [query, setQuery] = useState('');
 
