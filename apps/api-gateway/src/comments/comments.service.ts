@@ -1,21 +1,23 @@
 import type { TCommentResponse, TCommentsTreeResponse } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 import { CommentDTO } from "@common/dto";
 import { kinoDbRpc } from "@common/messaging";
 
-import { BaseMicroserviceService } from "../shared/services";
+import { RmqService } from "../shared/rmq/rmq.service";
 
 @Injectable()
-export class CommentsService extends BaseMicroserviceService {
-  constructor(configService: ConfigService) {
-    super(configService, "Comments Service");
-  }
+export class CommentsService {
+  constructor(private readonly rmq: RmqService) {}
 
-  async getCommentsByFilmId(filmId: number): Promise<TCommentsTreeResponse> {
-    return this.sendMessage(kinoDbRpc.comments.getByFilmId, filmId);
+  async getCommentsByFilmId(
+    filmId: number
+  ): Promise<TCommentsTreeResponse> {
+    return this.rmq.sendToFilms<TCommentsTreeResponse>(
+      kinoDbRpc.comments.getByFilmId,
+      filmId
+    );
   }
 
   async createComment(
@@ -23,6 +25,9 @@ export class CommentsService extends BaseMicroserviceService {
     dto: CommentDTO,
     userId: number
   ): Promise<TCommentResponse> {
-    return this.sendMessage(kinoDbRpc.comments.create, { filmId, dto, userId });
+    return this.rmq.sendToFilms<TCommentResponse>(
+      kinoDbRpc.comments.create,
+      { filmId, dto, userId }
+    );
   }
 }

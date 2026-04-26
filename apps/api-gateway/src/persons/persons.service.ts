@@ -10,28 +10,30 @@ import type {
 } from "@common/types";
 
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 import { kinoDbRpc } from "@common/messaging";
 
-import { BaseMicroserviceService } from "../shared/services";
+import { RmqService } from "../shared/rmq/rmq.service";
 
 @Injectable()
-export class PersonsService extends BaseMicroserviceService {
-  constructor(configService: ConfigService) {
-    super(configService, "Persons Service");
+export class PersonsService {
+  constructor(private readonly rmq: RmqService) {}
+
+  async ping(): Promise<boolean> {
+    await this.rmq.sendToFilms("health.ping", {});
+    return true;
   }
 
   async getAllPersonsPaginated(
     params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage(kinoDbRpc.persons.getAllPaginated, params);
+    return this.rmq.sendToFilms(kinoDbRpc.persons.getAllPaginated, params);
   }
 
   async getPersonById(
     request: TGetPersonByIdRequest
   ): Promise<TPersonProfileResponse> {
-    const person = await this.sendMessage<TPersonProfileResponse | null>(
+    const person = await this.rmq.sendToFilms<TPersonProfileResponse | null>(
       kinoDbRpc.persons.getById,
       request
     );
@@ -46,7 +48,7 @@ export class PersonsService extends BaseMicroserviceService {
   async getPersonFilmography(
     request: TGetPersonFilmsRequest
   ): Promise<TPersonFilmsPaginationResponse> {
-    const data = await this.sendMessage<TPersonFilmsPaginationResponse | null>(
+    const data = await this.rmq.sendToFilms<TPersonFilmsPaginationResponse | null>(
       kinoDbRpc.persons.getFilmography,
       request
     );
@@ -61,6 +63,6 @@ export class PersonsService extends BaseMicroserviceService {
   async findPersonsByNameAndProfession(
     request: TFindPersonsByNameAndProfessionRequest
   ): Promise<TPersonListItemResponse[]> {
-    return this.sendMessage(kinoDbRpc.persons.findByNameAndProfession, request);
+    return this.rmq.sendToFilms(kinoDbRpc.persons.findByNameAndProfession, request);
   }
 }

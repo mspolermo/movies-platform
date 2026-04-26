@@ -12,6 +12,7 @@ import { JwtConfigModule } from "./jwt";
 import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
 import { SearchModule } from "./search";
+import { RmqModule } from "./shared/rmq/rmq.module";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SearchModule } from "./search";
       isGlobal: true,
       envFilePath: ".env",
     }),
+    RmqModule,
     JwtConfigModule,
     AuthModule,
     FilmsModule,

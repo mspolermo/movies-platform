@@ -1,5 +1,6 @@
+import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
-import { MicroserviceOptions, Transport } from "@nestjs/microservices";
+import { createRmqMicroserviceOptions } from "apps/api-gateway/src/shared/rmq/rmq.factory";
 
 import { AppModule } from "./app.module";
 
@@ -13,29 +14,18 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // Создаем микросервис
-  const rabbitmqUrl = process.env.RABBITMQ_URL;
-  const filmsQueue = process.env.FILMS_QUEUE;
-  
-  if (!rabbitmqUrl || !filmsQueue) {
-    throw new Error("RABBITMQ_URL and FILMS_QUEUE must be defined");
-  }
-  
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [rabbitmqUrl],
-      queue: filmsQueue,
-      queueOptions: {
-        durable: false,
-      },
-    },
-  });
+  // Получаем конфиг из DI
+  const config = app.get(ConfigService);
 
-  // Запускаем все сервисы
+  // Подключаем RMQ через общий factory
+  app.connectMicroservice(
+    createRmqMicroserviceOptions(config, "FILMS_QUEUE")
+  );
+
+  // Запускаем микросервисы
   await app.startAllMicroservices();
 
-  // Запускаем HTTP сервер
+  // HTTP сервер
   const port = process.env.PORT || 3002;
   await app.listen(port);
 

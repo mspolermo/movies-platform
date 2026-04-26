@@ -5,20 +5,17 @@ import type {
 } from '@common/types';
 
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 
 import { kinoDbRpc } from '@common/messaging';
 
-import { BaseMicroserviceService } from '../shared/services';
+import { RmqService } from '../shared/rmq/rmq.service';
 
 @Injectable()
-export class ProfessionsService extends BaseMicroserviceService {
-  constructor(configService: ConfigService) {
-    super(configService, 'Professions Service');
-  }
+export class ProfessionsService {
+  constructor(private readonly rmq: RmqService) {}
 
   async getAllProfessions(): Promise<TProfessionItemResponse[]> {
-    return this.sendMessage<TProfessionItemResponse[]>(
+    return this.rmq.sendToFilms<TProfessionItemResponse[]>(
       kinoDbRpc.professions.getAll,
       {}
     );
@@ -27,7 +24,7 @@ export class ProfessionsService extends BaseMicroserviceService {
   async getPersonsByProfessionId(
     request: TGetPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage<TPaginatedPersonsResponse>(
+    return this.rmq.sendToFilms<TPaginatedPersonsResponse>(
       kinoDbRpc.persons.getByProfessionId,
       request
     );

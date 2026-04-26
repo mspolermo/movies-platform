@@ -16,42 +16,25 @@ export class AppController {
   @Public()
   @Get("/health")
   async health() {
-    console.log("🏥 Health check запрос");
-
-    // Проверяем реальное состояние RabbitMQ соединений
-    const rabbitmqStatus = {
-      users: await this.checkRabbitMQConnection("users"),
-      films: await this.checkRabbitMQConnection("films"),
-      persons: await this.checkRabbitMQConnection("persons"),
-    };
+    const [users, films, persons] = await Promise.allSettled([
+      this.authService.ping(),
+      this.filmsService.ping(),
+      this.personsService.ping(),
+    ]);
 
     return {
       status: "ok",
       timestamp: new Date().toISOString(),
       service: "api-gateway",
-      rabbitmq: rabbitmqStatus,
+      rabbitmq: {
+        users: this.map(users),
+        films: this.map(films),
+        persons: this.map(persons),
+      },
     };
   }
 
-  private async checkRabbitMQConnection(service: string): Promise<string> {
-    try {
-      if (service === "users") {
-        // Проверяем соединение с auth-users через проверку клиента
-        const isConnected = this.authService.isConnected();
-        return isConnected ? "connected" : "disconnected";
-      } else if (service === "films") {
-        // Проверяем соединение с kino-db через проверку клиента
-        const isConnected = this.filmsService.isConnected();
-        return isConnected ? "connected" : "disconnected";
-      } else if (service === "persons") {
-        // Проверяем соединение с kino-db через проверку клиента persons
-        const isConnected = this.personsService.isConnected();
-        return isConnected ? "connected" : "disconnected";
-      }
-      return "unknown";
-    } catch (error) {
-      console.error(`❌ Ошибка проверки соединения ${service}:`, error);
-      return "disconnected";
-    }
+  private map(result: PromiseSettledResult<unknown>) {
+    return result.status === "fulfilled" ? "connected" : "disconnected";
   }
 }

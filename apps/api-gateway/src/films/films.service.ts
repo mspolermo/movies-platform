@@ -9,20 +9,22 @@ import type {
 } from "@common/types";
 
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 import { kinoDbRpc } from "@common/messaging";
 
-import { BaseMicroserviceService } from "../shared/services";
+import { RmqService } from "../shared/rmq/rmq.service";
 
 @Injectable()
-export class FilmsService extends BaseMicroserviceService {
-  constructor(configService: ConfigService) {
-    super(configService, "Films Service");
+export class FilmsService {
+  constructor(private readonly rmq: RmqService) {}
+
+  async ping(): Promise<boolean> {
+    await this.rmq.sendToFilms("health.ping", {});
+    return true;
   }
 
   async getFilmById(id: number): Promise<TFilmDetailsResponse> {
-    const film = await this.sendMessage<TFilmDetailsResponse | null>(
+    const film = await this.rmq.sendToFilms<TFilmDetailsResponse | null>(
       kinoDbRpc.films.getById,
       id
     );
@@ -35,14 +37,14 @@ export class FilmsService extends BaseMicroserviceService {
   }
 
   async searchFilms(filters: TSearchFilmsParams): Promise<TFilmsResponse> {
-    return this.sendMessage<TFilmsResponse>(
+    return this.rmq.sendToFilms<TFilmsResponse>(
       kinoDbRpc.films.filters,
       filters
     );
   }
 
   async getFilmProfessions(params: TGetFilmProfessionsRequest): Promise<TProfessionItemResponse[]> {
-    return this.sendMessage<TProfessionItemResponse[]>(
+    return this.rmq.sendToFilms<TProfessionItemResponse[]>(
       kinoDbRpc.films.getFilmProfessions,
       params.filmId
     );
@@ -51,7 +53,7 @@ export class FilmsService extends BaseMicroserviceService {
   async getFilmPersonsByProfession(
     request: TGetFilmPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
-    return this.sendMessage(kinoDbRpc.films.getFilmPersonsByProfession, {
+    return this.rmq.sendToFilms(kinoDbRpc.films.getFilmPersonsByProfession, {
       filmId: request.filmId,
       professionName: request.profession,
       page: request.page,

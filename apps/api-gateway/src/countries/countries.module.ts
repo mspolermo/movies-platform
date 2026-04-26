@@ -1,41 +1,11 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
-import { ClientsModule, Transport } from "@nestjs/microservices";
 
 import { CountriesController } from "./countries.controller";
 import { CountriesService } from "./countries.service";
 
 
 @Module({
-  imports: [
-    ClientsModule.registerAsync([
-      {
-        name: "FILMS_CLIENT",
-        imports: [ConfigModule],
-        useFactory: async (configService: ConfigService) => {
-          //TODO: вынести в общую логику по подключению к RabbitMQ
-          const rabbitmqUrl = configService.get<string>("RABBITMQ_URL");
-          const filmsQueue = configService.get<string>("FILMS_QUEUE");
-          
-          if (!rabbitmqUrl || !filmsQueue) {
-            throw new Error("RABBITMQ_URL and FILMS_QUEUE must be defined");
-          }
-          
-          return {
-            transport: Transport.RMQ,
-            options: {
-              urls: [rabbitmqUrl],
-              queue: filmsQueue,
-              queueOptions: {
-                durable: false,
-              },
-            },
-          };
-        },
-        inject: [ConfigService],
-      },
-    ]),
-  ],
+  imports: [],
   controllers: [CountriesController],
   providers: [CountriesService],
   exports: [CountriesService],

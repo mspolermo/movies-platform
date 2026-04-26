@@ -5,37 +5,29 @@ import type {
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 
 import { kinoDbRpc } from "@common/messaging";
 
-import { BaseMicroserviceService } from "../shared/services";
+import { RmqService } from "../shared/rmq/rmq.service";
 
 @Injectable()
-export class SearchService extends BaseMicroserviceService {
-  constructor(configService: ConfigService) {
-    super(configService, "Search Service");
-  }
+export class SearchService {
+  constructor(private readonly rmq: RmqService) {}
 
   async searchByName(name?: string): Promise<TSearchResultResponse> {
-    const searchName = name || "";
+    const searchName = name ?? "";
 
-    try {
-      const [films, persons] = await Promise.all([
-        this.sendMessage<TFilmListItemResponse[]>(
-          kinoDbRpc.films.searchFilmsByName,
-          searchName
-        ),
-        this.sendMessage<TPersonListItemResponse[]>(
-          kinoDbRpc.persons.searchByName,
-          searchName
-        ),
-      ]);
+    const [films, persons] = await Promise.all([
+      this.rmq.sendToFilms<TFilmListItemResponse[]>(
+        kinoDbRpc.films.searchFilmsByName,
+        searchName
+      ),
+      this.rmq.sendToFilms<TPersonListItemResponse[]>(
+        kinoDbRpc.persons.searchByName,
+        searchName
+      ),
+    ]);
 
-      return { films, persons };
-    } catch (error) {
-      console.error("❌ Ошибка при поиске:", error);
-      throw error;
-    }
+    return { films, persons };
   }
 }
