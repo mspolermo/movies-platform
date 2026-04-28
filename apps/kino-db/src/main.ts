@@ -1,6 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
-import { createRmqMicroserviceOptions } from "apps/api-gateway/src/shared/rmq/rmq.factory";
+
+import { createRmqMicroserviceOptions } from "@common/services";
 
 import { AppModule } from "./app.module";
 

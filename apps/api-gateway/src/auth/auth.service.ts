@@ -18,8 +18,7 @@ import { JwtService } from "@nestjs/jwt";
 
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 import { authUsersRpc } from "@common/messaging";
-
-import { RmqService } from "../shared/rmq/rmq.service";
+import { RmqService } from "@common/services";
 
 import { ServiceError } from "./interfaces";
 

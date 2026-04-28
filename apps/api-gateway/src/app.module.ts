@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
+import { RmqModule } from "@common/services";
+
 import { AppController } from "./app.controller";
 import { AuthModule } from "./auth";
 import { CommentsModule } from "./comments";
@@ -12,7 +14,6 @@ import { JwtConfigModule } from "./jwt";
 import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
 import { SearchModule } from "./search";
-import { RmqModule } from "./shared/rmq/rmq.module";
 
 @Module({
   imports: [

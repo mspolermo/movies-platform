@@ -4,8 +4,7 @@ import { Injectable } from "@nestjs/common";
 
 import { CommentDTO } from "@common/dto";
 import { kinoDbRpc } from "@common/messaging";
-
-import { RmqService } from "../shared/rmq/rmq.service";
+import { RmqService } from "@common/services";
 
 @Injectable()
 export class CommentsService {

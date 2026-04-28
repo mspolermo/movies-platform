@@ -1,0 +1,1 @@
+export { RmqModule, RmqService, createRmqMicroserviceOptions } from './rmq'
