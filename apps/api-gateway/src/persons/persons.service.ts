@@ -11,8 +11,7 @@ import type {
 
 import { Injectable, NotFoundException } from "@nestjs/common";
 
-import { kinoDbRpc } from "@common/messaging";
-import { RmqService } from "@common/services";
+import { RmqService, kinoDbRpc } from "@common/services";
 
 @Injectable()
 export class PersonsService {

@@ -2,7 +2,7 @@ import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
-import { authUsersRpc } from "@common/messaging";
+import { authUsersRpc } from "@common/services";
 
 import { UsersService } from "./users.service";
 

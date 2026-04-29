@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
-import { authUsersRpc } from "@common/messaging";
+import { authUsersRpc } from "@common/services";
 
 import { CreateRoleDto } from "./dto/createRoleDto";
 import { RolesService } from "./roles.service";

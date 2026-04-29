@@ -4,7 +4,7 @@ import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
 import { CommentDTO } from "@common/dto";
-import { kinoDbRpc } from "@common/messaging";
+import { kinoDbRpc } from "@common/services";
 
 import { CommentsService } from "./comments.service";
 

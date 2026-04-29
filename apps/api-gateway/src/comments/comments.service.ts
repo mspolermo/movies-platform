@@ -3,8 +3,7 @@ import type { TCommentResponse, TCommentsTreeResponse } from "@common/types";
 import { Injectable } from "@nestjs/common";
 
 import { CommentDTO } from "@common/dto";
-import { kinoDbRpc } from "@common/messaging";
-import { RmqService } from "@common/services";
+import { RmqService, kinoDbRpc } from "@common/services";
 
 @Injectable()
 export class CommentsService {

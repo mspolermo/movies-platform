@@ -9,7 +9,7 @@ import type {
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
-import { kinoDbRpc } from "@common/messaging";
+import { kinoDbRpc } from "@common/services";
 
 import { PersonsService } from "./persons.service";
 

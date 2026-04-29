@@ -8,8 +8,7 @@ import type {
 
 import { Injectable } from "@nestjs/common";
 
-import { kinoDbRpc } from "@common/messaging";
-import { RmqService } from "@common/services";
+import { RmqService, kinoDbRpc } from "@common/services";
 
 const QUICK_FILTERS_MAX_GENRES = 23;
 const QUICK_FILTERS_MAX_COUNTRIES = 25;

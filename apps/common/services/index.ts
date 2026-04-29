@@ -1,1 +1,1 @@
-export { RmqModule, RmqService, createRmqMicroserviceOptions } from './rmq'
+export { RmqModule, RmqService, createRmqMicroserviceOptions, authUsersRpc, kinoDbRpc } from './rmq'

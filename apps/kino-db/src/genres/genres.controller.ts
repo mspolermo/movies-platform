@@ -3,7 +3,7 @@ import type { TGenresListResponse } from "@common/types";
 import { Controller } from "@nestjs/common";
 import { MessagePattern } from "@nestjs/microservices";
 
-import { kinoDbRpc } from "@common/messaging";
+import { kinoDbRpc } from "@common/services";
 
 import { GenresService } from "./genres.service";
 
