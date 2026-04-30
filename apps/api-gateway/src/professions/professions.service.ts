@@ -2,9 +2,9 @@ import type {
   TGetPersonsByProfessionRequest,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
-} from '@common/types';
+} from "@common/types";
 
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
 import { RmqService, kinoDbRpc } from "@common/services";
 
@@ -13,7 +13,7 @@ export class ProfessionsService {
   constructor(private readonly rmq: RmqService) {}
 
   async getAllProfessions(): Promise<TProfessionItemResponse[]> {
-    return this.rmq.sendToFilms<TProfessionItemResponse[]>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.professions.getAll,
       {}
     );
@@ -22,7 +22,7 @@ export class ProfessionsService {
   async getPersonsByProfessionId(
     request: TGetPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
-    return this.rmq.sendToFilms<TPaginatedPersonsResponse>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.persons.getByProfessionId,
       request
     );

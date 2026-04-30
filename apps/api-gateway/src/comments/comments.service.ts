@@ -12,7 +12,7 @@ export class CommentsService {
   async getCommentsByFilmId(
     filmId: number
   ): Promise<TCommentsTreeResponse> {
-    return this.rmq.sendToFilms<TCommentsTreeResponse>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.comments.getByFilmId,
       filmId
     );
@@ -23,7 +23,7 @@ export class CommentsService {
     dto: CommentDTO,
     userId: number
   ): Promise<TCommentResponse> {
-    return this.rmq.sendToFilms<TCommentResponse>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.comments.create,
       { filmId, dto, userId }
     );

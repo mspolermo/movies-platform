@@ -1,2 +1,2 @@
-export { authUsersRpc } from "./auth-users.rpc";
-export { kinoDbRpc } from "./kino-db.rpc";
+export { authUsersRpc, type TAuthUsersRpcContract } from "./auth-users.rpc";
+export { kinoDbRpc, type TKinoDbRpcContract } from "./kino-db.rpc";

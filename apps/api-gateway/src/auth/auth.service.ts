@@ -1,5 +1,6 @@
 import type {
   TAuthResponse,
+  TAuthUsersRpcAuthResponse,
   TAuthorizedUserResponse,
   TCheckTokenResponse,
   TRefreshTokenResponse,
@@ -7,7 +8,6 @@ import type {
   TRoleResponse,
   TJwtUserRequest,
 } from "@common/types";
-import type { TUserOrmModel } from "@common/types/orm";
 
 import {
   Injectable,
@@ -21,20 +21,18 @@ import { RmqService, authUsersRpc } from "@common/services";
 
 import { ServiceError } from "./interfaces";
 
-//TODO: тип вынести в common
-type AuthUsersResponse = {
-  user: TUserOrmModel;
-  token: string;
-};
+//TODO: странные типы для мапперов на входе
 
-const mapRoles = (roles?: TUserOrmModel["roles"]): TRoleResponse[] =>
+const mapRoles = (roles?: TRoleResponse[]): TRoleResponse[] =>
   (roles ?? []).map(({ id, value, description }) => ({
     id,
     value,
     description,
   }));
 
-const mapAuthorizedUser = (user: TUserOrmModel): TAuthorizedUserResponse => ({
+const mapAuthorizedUser = (
+  user: TAuthUsersRpcAuthResponse["user"]
+): TAuthorizedUserResponse => ({
   id: user.id,
   email: user.email,
   name: user.name,
@@ -50,14 +48,14 @@ export class AuthService {
 
   // ✅ используется в health-check
   async ping(): Promise<boolean> {
-    await this.rmq.sendToUsers("health.ping", {});
+    await this.rmq.sendToUsers(authUsersRpc.health.ping, {});
     return true;
   }
 
   async registrationUser(dto: CreateUserDto): Promise<TRegistrationResponse> {
     try {
       const { user, token } =
-        await this.rmq.sendToUsers<AuthUsersResponse>(
+        await this.rmq.sendToUsers(
           authUsersRpc.users.registration,
           dto
         );
@@ -96,7 +94,7 @@ export class AuthService {
   ): Promise<TRegistrationResponse> {
     try {
       const { user, token } =
-        await this.rmq.sendToUsers<AuthUsersResponse>(
+        await this.rmq.sendToUsers(
           authUsersRpc.users.outRegistration,
           dto
         );
@@ -126,7 +124,7 @@ export class AuthService {
   async loginUser(dto: AuthDto): Promise<TAuthResponse> {
     try {
       const { user, token } =
-        await this.rmq.sendToUsers<AuthUsersResponse>(
+        await this.rmq.sendToUsers(
           authUsersRpc.users.login,
           dto
         );

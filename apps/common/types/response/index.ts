@@ -32,5 +32,6 @@ export type {
   TAuthResponse,
   TRegistrationResponse,
   TCheckTokenResponse,
-  TRefreshTokenResponse
+  TRefreshTokenResponse,
+  TAuthUsersRpcAuthResponse
 } from "./auth";

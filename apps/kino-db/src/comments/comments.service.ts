@@ -25,7 +25,7 @@ export class CommentsService {
     return comment;
   }
 
-  async getAllCommentsByFilmId(id: number): Promise<TCommentsTreeResponse | null> {
+  async getAllCommentsByFilmId(id: number): Promise<TCommentsTreeResponse> {
     const comments = await this.commentRepository.findAll({
       where: {
         filmId: id,
@@ -48,9 +48,6 @@ export class CommentsService {
       }
     }
 
-    if (sorting.length === 0) {
-      return null;
-    }
     return sorting;
   }
 }

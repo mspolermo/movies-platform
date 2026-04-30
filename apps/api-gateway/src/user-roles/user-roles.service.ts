@@ -9,7 +9,7 @@ export class UserRolesService {
   constructor(private readonly rmq: RmqService) {}
 
   async getUserWithRoles(userId: number): Promise<TUserOrmModel> {
-    return this.rmq.sendToUsers<TUserOrmModel>(
+    return this.rmq.sendToUsers(
       authUsersRpc.users.getById,
       userId
     );

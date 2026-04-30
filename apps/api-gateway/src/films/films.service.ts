@@ -17,12 +17,12 @@ export class FilmsService {
   constructor(private readonly rmq: RmqService) {}
 
   async ping(): Promise<boolean> {
-    await this.rmq.sendToFilms("health.ping", {});
+    await this.rmq.sendToFilms(kinoDbRpc.health.ping, {});
     return true;
   }
 
   async getFilmById(id: number): Promise<TFilmDetailsResponse> {
-    const film = await this.rmq.sendToFilms<TFilmDetailsResponse | null>(
+    const film = await this.rmq.sendToFilms(
       kinoDbRpc.films.getById,
       id
     );
@@ -35,14 +35,14 @@ export class FilmsService {
   }
 
   async searchFilms(filters: TSearchFilmsParams): Promise<TFilmsResponse> {
-    return this.rmq.sendToFilms<TFilmsResponse>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.films.filters,
       filters
     );
   }
 
   async getFilmProfessions(params: TGetFilmProfessionsRequest): Promise<TProfessionItemResponse[]> {
-    return this.rmq.sendToFilms<TProfessionItemResponse[]>(
+    return this.rmq.sendToFilms(
       kinoDbRpc.films.getFilmProfessions,
       params.filmId
     );
@@ -53,7 +53,7 @@ export class FilmsService {
   ): Promise<TPaginatedPersonsResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.films.getFilmPersonsByProfession, {
       filmId: request.filmId,
-      professionName: request.profession,
+      profession: request.profession,
       page: request.page,
       limit: request.limit,
     });

@@ -1,4 +1,5 @@
 import type { TFilmSortBy } from "@common/types";
+import type { TGetFilmPersonsByProfessionRequest } from "@common/types";
 
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -72,9 +73,9 @@ export class FilmsController {
 
   @MessagePattern(kinoDbRpc.films.getFilmPersonsByProfession)
   async getFilmPersonsByProfession(
-    @Payload() data: { filmId: number; professionName: string; page?: number; limit?: number }
+    @Payload() data: TGetFilmPersonsByProfessionRequest
   ) {
-    const { filmId, professionName, page = 1, limit = 20 } = data;
-    return await this.filmService.getFilmPersonsByProfession(filmId, professionName, page, limit);
+    const { filmId, profession, page = 1, limit = 20 } = data;
+    return await this.filmService.getFilmPersonsByProfession(filmId, profession, page, limit);
   }
 }

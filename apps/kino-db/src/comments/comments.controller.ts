@@ -21,7 +21,7 @@ export class CommentsController {
   }
 
   @MessagePattern(kinoDbRpc.comments.getByFilmId)
-  async getCommentsByFilmId(@Payload() id: number): Promise<TCommentsTreeResponse | null> {
+  async getCommentsByFilmId(@Payload() id: number): Promise<TCommentsTreeResponse> {
     return await this.commentService.getAllCommentsByFilmId(id);
   }
 }

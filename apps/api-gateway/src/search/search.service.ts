@@ -1,7 +1,5 @@
 import type {
   TSearchResultResponse,
-  TFilmListItemResponse,
-  TPersonListItemResponse,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -16,11 +14,11 @@ export class SearchService {
     const searchName = name ?? "";
 
     const [films, persons] = await Promise.all([
-      this.rmq.sendToFilms<TFilmListItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.films.searchFilmsByName,
         searchName
       ),
-      this.rmq.sendToFilms<TPersonListItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.persons.searchByName,
         searchName
       ),

@@ -1,3 +1,5 @@
+import type { TAuthUsersRpcContract, TKinoDbRpcContract } from "./messaging";
+
 import { Inject, Injectable } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
@@ -11,11 +13,21 @@ export class RmqService {
     @Inject(USERS_CLIENT) private readonly usersClient: ClientProxy,
   ) {}
 
-  sendToFilms<T>(pattern: string, data: unknown): Promise<T> {
-    return firstValueFrom(this.filmsClient.send<T>(pattern, data));
+  sendToFilms<TPattern extends keyof TKinoDbRpcContract>(
+    pattern: TPattern,
+    data: TKinoDbRpcContract[TPattern]["request"]
+  ): Promise<TKinoDbRpcContract[TPattern]["response"]> {
+    return firstValueFrom(
+      this.filmsClient.send<TKinoDbRpcContract[TPattern]["response"]>(pattern, data)
+    );
   }
 
-  sendToUsers<T>(pattern: string, data: unknown): Promise<T> {
-    return firstValueFrom(this.usersClient.send<T>(pattern, data));
+  sendToUsers<TPattern extends keyof TAuthUsersRpcContract>(
+    pattern: TPattern,
+    data: TAuthUsersRpcContract[TPattern]["request"]
+  ): Promise<TAuthUsersRpcContract[TPattern]["response"]> {
+    return firstValueFrom(
+      this.usersClient.send<TAuthUsersRpcContract[TPattern]["response"]>(pattern, data)
+    );
   }
 }

@@ -18,7 +18,7 @@ export class PersonsService {
   constructor(private readonly rmq: RmqService) {}
 
   async ping(): Promise<boolean> {
-    await this.rmq.sendToFilms("health.ping", {});
+    await this.rmq.sendToFilms(kinoDbRpc.health.ping, {});
     return true;
   }
 
@@ -31,7 +31,7 @@ export class PersonsService {
   async getPersonById(
     request: TGetPersonByIdRequest
   ): Promise<TPersonProfileResponse> {
-    const person = await this.rmq.sendToFilms<TPersonProfileResponse | null>(
+    const person = await this.rmq.sendToFilms(
       kinoDbRpc.persons.getById,
       request
     );
@@ -46,7 +46,7 @@ export class PersonsService {
   async getPersonFilmography(
     request: TGetPersonFilmsRequest
   ): Promise<TPersonFilmsPaginationResponse> {
-    const data = await this.rmq.sendToFilms<TPersonFilmsPaginationResponse | null>(
+    const data = await this.rmq.sendToFilms(
       kinoDbRpc.persons.getFilmography,
       request
     );

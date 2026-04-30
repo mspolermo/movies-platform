@@ -23,3 +23,10 @@ export type TCheckTokenResponse = TUserTokenPayloadResponse;
 export type TRefreshTokenResponse = {
   token: string;
 };
+
+export type TAuthUsersRpcAuthResponse = {
+  user: TUserBriefResponse & {
+    roles?: TRoleResponse[];
+  };
+  token: string;
+};

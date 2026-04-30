@@ -32,15 +32,15 @@ export class FiltersService {
 
   async getFilters(locale: TFiltersLocale): Promise<TFiltersResponse> {
     const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
-      this.rmq.sendToFilms<TGenreItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.genres.getAll,
         {}
       ),
-      this.rmq.sendToFilms<TCountryItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.countries.getAll,
         {}
       ),
-      this.rmq.sendToFilms<number[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.films.getAllFilmYears,
         {}
       ),
@@ -55,15 +55,15 @@ export class FiltersService {
 
   async getQuickFilters(locale: TFiltersLocale): Promise<TQuickFiltersResponse> {
     const [genresRaw, countriesRaw, yearsRaw] = await Promise.all([
-      this.rmq.sendToFilms<TGenreItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.genres.getAll,
         {}
       ),
-      this.rmq.sendToFilms<TCountryItemResponse[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.countries.getAll,
         {}
       ),
-      this.rmq.sendToFilms<number[]>(
+      this.rmq.sendToFilms(
         kinoDbRpc.films.getAllFilmYears,
         {}
       ),
