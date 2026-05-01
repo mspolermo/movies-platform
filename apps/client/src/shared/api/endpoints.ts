@@ -44,6 +44,6 @@ export const API_ENDPOINTS = {
 
   // Расширенные операции для персон
   PERSONS_EX: {
-    SEARCH_FIND: '/persons/search/find',
+    SEARCH_FIND: '/persons/search',
   },
 } as const;

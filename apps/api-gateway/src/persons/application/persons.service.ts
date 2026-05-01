@@ -11,33 +11,31 @@ import type {
 
 import { Injectable, NotFoundException } from "@nestjs/common";
 
-import { RmqService, kinoDbRpc } from "@common/services";
+import { PersonsClient } from "../clients";
 
 @Injectable()
 export class PersonsService {
-  constructor(private readonly rmq: RmqService) {}
+  constructor(private readonly personsClient: PersonsClient) {}
 
   async ping(): Promise<boolean> {
-    await this.rmq.sendToFilms(kinoDbRpc.health.ping, {});
-    return true;
+    return this.personsClient.ping();
   }
 
   async getAllPersonsPaginated(
     params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {
-    return this.rmq.sendToFilms(kinoDbRpc.persons.getAllPaginated, params);
+    return this.personsClient.getAllPersons(params);
   }
 
   async getPersonById(
     request: TGetPersonByIdRequest
   ): Promise<TPersonProfileResponse> {
-    const person = await this.rmq.sendToFilms(
-      kinoDbRpc.persons.getById,
-      request
-    );
+    const person = await this.personsClient.getPersonById(request);
 
     if (!person) {
-      throw new NotFoundException(`Person with id ${request.id} not found`);
+      throw new NotFoundException(
+        `Person with id ${request.id} not found`
+      );
     }
 
     return person;
@@ -46,13 +44,12 @@ export class PersonsService {
   async getPersonFilmography(
     request: TGetPersonFilmsRequest
   ): Promise<TPersonFilmsPaginationResponse> {
-    const data = await this.rmq.sendToFilms(
-      kinoDbRpc.persons.getFilmography,
-      request
-    );
+    const data = await this.personsClient.getFilmography(request);
 
     if (!data) {
-      throw new NotFoundException(`Person with id ${request.id} not found`);
+      throw new NotFoundException(
+        `Person with id ${request.id} not found`
+      );
     }
 
     return data;
@@ -61,6 +58,6 @@ export class PersonsService {
   async findPersonsByNameAndProfession(
     request: TFindPersonsByNameAndProfessionRequest
   ): Promise<TPersonListItemResponse[]> {
-    return this.rmq.sendToFilms(kinoDbRpc.persons.findByNameAndProfession, request);
+    return this.personsClient.findByNameAndProfession(request);
   }
 }

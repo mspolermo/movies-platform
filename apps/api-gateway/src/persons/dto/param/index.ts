@@ -1,0 +1,1 @@
+export { PersonIdParamDto } from './personId.param.dto'

@@ -1,2 +1,2 @@
-export * from "./persons.service";
-export * from "./persons.module";
+export { PersonsModule } from "./persons.module";
+export { PersonsService } from './application'

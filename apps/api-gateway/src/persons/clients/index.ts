@@ -1,0 +1,1 @@
+export { PersonsClient } from './persons.client'

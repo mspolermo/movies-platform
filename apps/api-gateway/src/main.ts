@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule } from "@nestjs/swagger";
@@ -18,6 +18,14 @@ async function bootstrap() {
 
   // Настройка CORS
   app.enableCors(getCorsConfig(configService));
+
+  // для работоспособности DTO
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    })
+  );
 
   // Настройка для правильной обработки query параметров
   const expressApp = app.getHttpAdapter().getInstance();

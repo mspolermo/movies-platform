@@ -1,0 +1,1 @@
+export { PersonsController } from './persons.controller'
