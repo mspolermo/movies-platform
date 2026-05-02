@@ -1,14 +1,14 @@
 import type {
-  TGetPersonsByProfessionRequest,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from '@common/types';
 
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 
 import { JwtAuthGuard, Public } from '../shared/guards';
 
+import { ProfessionPersonsParamDto, ProfessionPersonsQueryDto } from './dto';
 import { ProfessionsService } from './professions.service';
 
 @Controller('professions')
@@ -29,24 +29,15 @@ export class ProfessionsController {
   @ApiOperation({ summary: 'Получить персон по профессии с пагинацией' })
   @ApiResponse({ status: 200, description: 'Список персон профессии' })
   @ApiParam({ name: 'profession', description: 'ID профессии', type: Number })
-  @ApiQuery({ name: 'page', required: false, description: 'Номер страницы', type: Number })
-  @ApiQuery({ name: 'limit', required: false, description: 'Количество элементов на странице', type: Number })
   @Get(':profession/persons')
   async getPersonsByProfession(
-    @Param('profession') professionId: string,
-    @Query('page') page?: string,
-    @Query('limit') limit?: string
+    @Param() params: ProfessionPersonsParamDto,
+    @Query() query: ProfessionPersonsQueryDto
   ): Promise<TPaginatedPersonsResponse> {
-    const parsedProfessionId = Number(professionId);
-    const parsedPage = page !== undefined && !isNaN(Number(page)) ? Number(page) : undefined;
-    const parsedLimit = limit !== undefined && !isNaN(Number(limit)) ? Number(limit) : undefined;
-
-    const request: TGetPersonsByProfessionRequest = {
-      professionId: parsedProfessionId,
-      page: parsedPage,
-      limit: parsedLimit,
-    };
-
-    return await this.professionsService.getPersonsByProfessionId(request);
+    return await this.professionsService.getPersonsByProfessionId({
+      professionId: params.profession,
+      page: query.page,
+      limit: query.limit,
+    });
   }
 }

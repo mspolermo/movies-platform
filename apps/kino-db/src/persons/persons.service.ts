@@ -5,6 +5,7 @@ import type {
   TPersonListItemResponse,
   TPersonProfileResponse,
 } from "@common/types";
+import type { FindOptions } from "sequelize";
 
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
@@ -12,9 +13,19 @@ import { Op } from "sequelize";
 
 import { Profession } from "../professions/professions.model";
 
+import {
+  normalizePersonListPagination,
+  PERSON_LIST_DEFAULT_LIMIT,
+} from "./persons-pagination.util";
+import {
+  mapFilmToPersonFilm,
+  mapPersonToListItem,
+  mapPersonToProfile,
+} from "./persons.mapping";
 import { Person } from "./persons.model";
 
 const DEFAULT_FILMOGRAPHY_LIMIT = 10;
+const MAX_FILMOGRAPHY_LIMIT = 100;
 
 @Injectable()
 export class PersonsService {
@@ -24,33 +35,33 @@ export class PersonsService {
 
   async getAllPersonsPaginated(
     page: number = 1,
-    limit: number = 20
+    limit: number = PERSON_LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
-    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
-    const normalizedPage = page > 0 ? page : 1;
-    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+    const { limit: normalizedLimit, offset: normalizedOffset } =
+      normalizePersonListPagination(page, limit);
 
-    const [persons, total] = await Promise.all([
-      this.personRepository.findAll({
-        include: [
-          {
-            model: Profession,
-            through: { attributes: [] },
-            attributes: [],
-          },
-        ],
-        attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
-        limit: normalizedLimit,
-        offset: normalizedOffset,
-        order: [['nameRu', 'ASC']],
-      }),
-      this.personRepository.count(),
-    ]);
+    const { rows, count } = await this.personRepository.findAndCountAll({
+      include: [
+        {
+          model: Profession,
+          through: { attributes: [] },
+          attributes: [],
+        },
+      ],
+      attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+      order: [["nameRu", "ASC"]],
+      distinct: true,
+      col: "id",
+    });
 
-    const hasMore = normalizedOffset + persons.length < total;
+    const items = rows.map((row) => mapPersonToListItem(row));
+    const total = Array.isArray(count) ? count.length : count;
+    const hasMore = normalizedOffset + items.length < total;
 
     return {
-      items: persons,
+      items,
       total,
       hasMore,
     };
@@ -58,7 +69,7 @@ export class PersonsService {
 
   async getPersonProfile(id: number): Promise<TPersonProfileResponse | null> {
     const person = await this.personRepository.findByPk(id, {
-      attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+      attributes: ["id", "photoUrl", "nameRu", "nameEn"],
       include: [
         {
           model: Profession,
@@ -72,7 +83,7 @@ export class PersonsService {
       return null;
     }
 
-    return person.get({ plain: true }) as TPersonProfileResponse;
+    return mapPersonToProfile(person);
   }
 
   async getPersonFilmography(
@@ -81,11 +92,12 @@ export class PersonsService {
     const { id, limit: limitOpt, offset: offsetOpt } = request;
     const limitRaw = limitOpt ?? DEFAULT_FILMOGRAPHY_LIMIT;
     const offsetRaw = offsetOpt ?? 0;
-    const limit = limitRaw > 0 ? limitRaw : DEFAULT_FILMOGRAPHY_LIMIT;
+    let limit = limitRaw > 0 ? limitRaw : DEFAULT_FILMOGRAPHY_LIMIT;
+    limit = Math.min(limit, MAX_FILMOGRAPHY_LIMIT);
     const offset = offsetRaw >= 0 ? offsetRaw : 0;
 
     const person = await this.personRepository.findByPk(id, {
-      attributes: ['id'],
+      attributes: ["id"],
     });
 
     if (!person) {
@@ -93,15 +105,24 @@ export class PersonsService {
     }
 
     const total = await person.$count("films");
-    const items = await person.$get("films", {
-      attributes: ['id', 'smallPictureUrl', 'filmNameRu', 'filmNameEn', 'year', 'ratingKp'],
+    const films = await person.$get("films", {
+      attributes: [
+        "id",
+        "smallPictureUrl",
+        "filmNameRu",
+        "filmNameEn",
+        "year",
+        "ratingKp",
+      ],
       limit,
       offset,
       order: [
-        ['year', 'DESC'],
-        ['filmNameRu', 'ASC'],
+        ["year", "DESC"],
+        ["filmNameRu", "ASC"],
       ],
     });
+
+    const items = films.map((film) => mapFilmToPersonFilm(film));
 
     const page = Math.floor(offset / limit) + 1;
     const hasMore = offset + items.length < total;
@@ -133,13 +154,12 @@ export class PersonsService {
       },
     ];
 
-    // Добавляем условие для профессии только если professionId передан
     if (professionId) {
       include[0].where = { id: professionId };
       include[0].required = true;
     }
 
-    const persons = await this.personRepository.findAll({
+    const findOptions = {
       include,
       attributes: ["id", "photoUrl", "nameRu", "nameEn"],
       where: personName
@@ -159,55 +179,51 @@ export class PersonsService {
           }
         : {},
       limit: 20,
-    });
-    return persons;
+      distinct: true,
+      col: "id",
+      order: [["nameRu", "ASC"]],
+    };
+    const persons = await this.personRepository.findAll(
+      findOptions as unknown as FindOptions
+    );
+
+    return persons.map((p) => mapPersonToListItem(p));
   }
 
   async getPersonsByProfessionId(
     professionId: number,
     page: number = 1,
-    limit: number = 20
+    limit: number = PERSON_LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
-    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
-    const normalizedPage = page > 0 ? page : 1;
-    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+    const { limit: normalizedLimit, offset: normalizedOffset } =
+      normalizePersonListPagination(page, limit);
 
-    const [persons, total] = await Promise.all([
-      this.personRepository.findAll({
-        include: [
-          {
-            model: Profession,
-            through: { attributes: [] },
-            where: { id: professionId },
-            attributes: [],
-            required: true,
-          },
-        ],
-        attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
-        limit: normalizedLimit,
-        offset: normalizedOffset,
-        order: [['nameRu', 'ASC']],
-      }),
-      this.personRepository.count({
-        include: [
-          {
-            model: Profession,
-            through: { attributes: [] },
-            where: { id: professionId },
-            attributes: [],
-            required: true,
-          },
-        ],
-      }),
-    ]);
+    const { rows, count } = await this.personRepository.findAndCountAll({
+      include: [
+        {
+          model: Profession,
+          through: { attributes: [] },
+          where: { id: professionId },
+          attributes: [],
+          required: true,
+        },
+      ],
+      attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+      order: [["nameRu", "ASC"]],
+      distinct: true,
+      col: "id",
+    });
 
-    const hasMore = normalizedOffset + persons.length < total;
+    const items = rows.map((row) => mapPersonToListItem(row));
+    const total = Array.isArray(count) ? count.length : count;
+    const hasMore = normalizedOffset + items.length < total;
 
     return {
-      items: persons,
+      items,
       total,
       hasMore,
     };
   }
-
 }

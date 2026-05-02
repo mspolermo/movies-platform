@@ -45,8 +45,19 @@ describe("PersonsService", () => {
     $get: jest.fn().mockResolvedValue(mockFilms),
   };
 
+  const listItemExpectation = mockPersonArray.map((p) => ({
+    id: p.id,
+    photoUrl: p.photoUrl,
+    nameRu: p.nameRu,
+    nameEn: p.nameEn,
+  }));
+
   const mockPersonsRepository = {
     findAll: jest.fn().mockResolvedValue(mockPersonArray),
+    findAndCountAll: jest.fn().mockResolvedValue({
+      rows: mockPersonArray,
+      count: mockPersonArray.length,
+    }),
     findByPk: jest.fn().mockResolvedValue(mockPersonInstance),
     count: jest.fn().mockResolvedValue(mockPersonArray.length),
   };
@@ -72,7 +83,7 @@ describe("PersonsService", () => {
   describe("getAllPersonsPaginated", () => {
     it("should return paginated persons response", async () => {
       const result = await service.getAllPersonsPaginated(1, 20);
-      expect(mockPersonsRepository.findAll).toHaveBeenCalledWith({
+      expect(mockPersonsRepository.findAndCountAll).toHaveBeenCalledWith({
         include: [
           {
             model: Profession,
@@ -84,9 +95,11 @@ describe("PersonsService", () => {
         limit: 20,
         offset: 0,
         order: [["nameRu", "ASC"]],
+        distinct: true,
+        col: "id",
       });
       expect(result).toEqual({
-        items: mockPersonArray,
+        items: listItemExpectation,
         total: mockPersonArray.length,
         hasMore: false,
       });
@@ -169,6 +182,9 @@ describe("PersonsService", () => {
           ],
         },
         limit: 20,
+        distinct: true,
+        col: "id",
+        order: [["nameRu", "ASC"]],
       });
     });
   });

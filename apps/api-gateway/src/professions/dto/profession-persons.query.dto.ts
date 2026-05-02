@@ -4,9 +4,19 @@ import { IsOptional, IsInt, Max, Min } from "class-validator";
 
 import { LIST_MAX_LIMIT } from "@common/constants";
 
-export class FilmographyQueryDto {
+export class ProfessionPersonsQueryDto {
   @ApiPropertyOptional({
-    description: "Размер страницы",
+    description: "Номер страницы",
+    example: 1,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  page?: number;
+
+  @ApiPropertyOptional({
+    description: "Количество элементов на странице",
     example: 10,
   })
   @IsOptional()
@@ -15,14 +25,4 @@ export class FilmographyQueryDto {
   @Min(1)
   @Max(LIST_MAX_LIMIT)
   limit?: number;
-
-  @ApiPropertyOptional({
-    description: "Смещение (offset)",
-    example: 0,
-  })
-  @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  @Min(0)
-  offset?: number;
 }
