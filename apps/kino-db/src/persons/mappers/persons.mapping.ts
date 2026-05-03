@@ -1,5 +1,5 @@
-import type { Person } from "./persons.model";
-import type { Film } from "../films/films.model";
+import type { Film } from "../../films/films.model";
+import type { Person } from "../models";
 import type {
   TPersonFilmResponse,
   TPersonListItemResponse,

@@ -54,8 +54,7 @@ export const kinoDbRpc = {
     getByProfessionId: "getPersonsByProfessionId",
     getById: "getPersonById",
     getFilmography: "getPersonFilmography",
-    findByNameAndProfession: "findPersonsByNameAndProfession",
-    searchByName: "searchPersonsByName",
+    findByNameAndProfession: "findPersonsByNameAndProfession"
   },
   professions: {
     getAll: "getAll.professions",
@@ -129,10 +128,6 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.persons.findByNameAndProfession]: {
     request: TFindPersonsByNameAndProfessionRequest;
-    response: TPersonListItemResponse[];
-  };
-  [kinoDbRpc.persons.searchByName]: {
-    request: string;
     response: TPersonListItemResponse[];
   };
   [kinoDbRpc.professions.getAll]: {

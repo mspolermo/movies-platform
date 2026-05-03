@@ -11,21 +11,20 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
 
-import { Profession } from "../professions/professions.model";
+import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
-import {
-  normalizePersonListPagination,
-  PERSON_LIST_DEFAULT_LIMIT,
-} from "./persons-pagination.util";
+import { Profession } from "../../professions/professions.model";
 import {
   mapFilmToPersonFilm,
   mapPersonToListItem,
   mapPersonToProfile,
-} from "./persons.mapping";
-import { Person } from "./persons.model";
+} from "../mappers";
+import { Person } from "../models";
+import {
+  normalizePersonListPagination,
+} from "../utils/persons-pagination.util";
 
 const DEFAULT_FILMOGRAPHY_LIMIT = 10;
-const MAX_FILMOGRAPHY_LIMIT = 100;
 
 @Injectable()
 export class PersonsService {
@@ -35,7 +34,7 @@ export class PersonsService {
 
   async getAllPersonsPaginated(
     page: number = 1,
-    limit: number = PERSON_LIST_DEFAULT_LIMIT
+    limit: number = LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
     const { limit: normalizedLimit, offset: normalizedOffset } =
       normalizePersonListPagination(page, limit);
@@ -93,7 +92,7 @@ export class PersonsService {
     const limitRaw = limitOpt ?? DEFAULT_FILMOGRAPHY_LIMIT;
     const offsetRaw = offsetOpt ?? 0;
     let limit = limitRaw > 0 ? limitRaw : DEFAULT_FILMOGRAPHY_LIMIT;
-    limit = Math.min(limit, MAX_FILMOGRAPHY_LIMIT);
+    limit = Math.min(limit, LIST_MAX_LIMIT);
     const offset = offsetRaw >= 0 ? offsetRaw : 0;
 
     const person = await this.personRepository.findByPk(id, {
@@ -193,7 +192,7 @@ export class PersonsService {
   async getPersonsByProfessionId(
     professionId: number,
     page: number = 1,
-    limit: number = PERSON_LIST_DEFAULT_LIMIT
+    limit: number = LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
     const { limit: normalizedLimit, offset: normalizedOffset } =
       normalizePersonListPagination(page, limit);

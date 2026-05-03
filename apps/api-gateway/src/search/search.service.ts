@@ -19,8 +19,8 @@ export class SearchService {
         searchName
       ),
       this.rmq.sendToFilms(
-        kinoDbRpc.persons.searchByName,
-        searchName
+        kinoDbRpc.persons.findByNameAndProfession,
+        { name: searchName }
       ),
     ]);
 

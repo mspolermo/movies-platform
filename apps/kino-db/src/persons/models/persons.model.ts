@@ -9,11 +9,11 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { FilmPerson } from "../films/filmPerson";
-import { Film } from "../films/films.model";
-import { Profession } from "../professions/professions.model";
+import { FilmPerson } from "../../films/filmPerson";
+import { Film } from "../../films/films.model";
+import { Profession } from "../../professions/professions.model";
 
-import { PersonProfession } from "./personProfession";
+import { PersonProfession } from "./personProfession.model";
 
 
 @Table({ tableName: "Person", timestamps: false })

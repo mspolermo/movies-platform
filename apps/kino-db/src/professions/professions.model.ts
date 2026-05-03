@@ -8,7 +8,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { PersonProfession } from "../persons/personProfession";
+import { PersonProfession } from "../persons/models/personProfession.model";
 import { Person } from "../persons/persons.model";
 
 @Table({ tableName: "Profession", timestamps: false })

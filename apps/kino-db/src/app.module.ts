@@ -15,9 +15,8 @@ import { FilmsModule } from "./films/films.module";
 import { Genre } from "./genres/genres.model";
 import { GenresModule } from "./genres/genres.module";
 import { HealthController } from "./health.controller";
-import { PersonProfession } from "./persons/personProfession";
-import { Person } from "./persons/persons.model";
-import { PersonsModule } from "./persons/persons.module";
+import { Person, PersonsModule } from "./persons";
+import { PersonProfession } from "./persons/models/personProfession.model";
 import { Profession } from "./professions/professions.model";
 import { ProfessionsModule } from "./professions/professions.module";
 

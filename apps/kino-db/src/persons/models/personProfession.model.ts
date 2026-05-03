@@ -6,10 +6,11 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Profession } from "../professions/professions.model";
+import { Profession } from "../../professions/professions.model";
 
 import { Person } from "./persons.model";
 
+//TODO: A и B переделать на нормальные колонки 
 @Table({
   tableName: "_PersonToProfession",
   createdAt: false,
