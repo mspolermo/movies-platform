@@ -14,7 +14,7 @@ import { Comment } from "../comments/comments.model";
 import { Country } from "../countries/countries.model";
 import { Fact } from "../facts/facts.model";
 import { Genre } from "../genres/genres.model";
-import { Person } from "../persons/persons.model";
+import { Person } from "../persons";
 
 import { FilmCountry } from "./filmCountry";
 import { FilmGenre } from "./filmGenre";

@@ -8,7 +8,7 @@ import { FilmGenre } from "../films/filmGenre";
 import { FilmPerson } from "../films/filmPerson";
 import { Film } from "../films/films.model";
 import { Genre } from "../genres/genres.model";
-import { Person } from "../persons/persons.model";
+import { Person } from "../persons";
 import { Profession } from "../professions/professions.model";
 
 import { CommentsController } from "./comments.controller";

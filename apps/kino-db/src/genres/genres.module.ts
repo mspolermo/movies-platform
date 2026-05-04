@@ -7,7 +7,7 @@ import { FilmCountry } from "../films/filmCountry";
 import { FilmGenre } from "../films/filmGenre";
 import { FilmPerson } from "../films/filmPerson";
 import { Film } from "../films/films.model";
-import { Person } from "../persons/persons.model";
+import { Person } from "../persons";
 import { Profession } from "../professions/professions.model";
 
 import { GenresController } from "./genres.controller";

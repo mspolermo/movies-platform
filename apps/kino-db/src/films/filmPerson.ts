@@ -6,7 +6,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Person } from "../persons/persons.model";
+import { Person } from "../persons";
 
 import { Film } from "./films.model";
 
