@@ -3,6 +3,7 @@ import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
 import { kinoDbRpc } from "@common/services";
+import { TGetPersonFilmsRequest } from "@common/types";
 
 import { GetPersonByIdDto, GetPersonsByProfessionDto, GetPersonsDto, SearchPersonDto } from "../dto";
 import { PersonsService } from "../services/persons.service";
@@ -36,5 +37,10 @@ export class PersonsController {
       dto.name,
       dto.professionId
     );
+  }
+
+  @MessagePattern(kinoDbRpc.persons.getFilmography)
+  getFilmography(@Payload() dto: TGetPersonFilmsRequest) {
+    return this.personsService.getPersonFilmography(dto);
   }
 }
