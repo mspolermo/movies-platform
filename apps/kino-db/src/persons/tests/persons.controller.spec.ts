@@ -76,7 +76,7 @@ describe("PersonsController", () => {
 
   describe("getPersonFilmography", () => {
     it("should return filmography", async () => {
-      await controller.getPersonFilmography({ id: 1, limit: 10, offset: 5 });
+      await controller.getFilmography({ id: 1, limit: 10, offset: 5 });
       expect(mockPersonsService.getPersonFilmography).toHaveBeenCalledWith({
         id: 1,
         limit: 10,
@@ -91,7 +91,7 @@ describe("PersonsController", () => {
         professionId: 1,
         name: "Джон",
       };
-      expect(await controller.findPersonsByNameAndProfession(data)).toEqual(
+      expect(await controller.findPersons(data)).toEqual(
         mockPersonsArray
       );
       expect(
