@@ -1,2 +1,1 @@
-export * from "./countries.module";
-export * from "./countries.service";
+export { CountriesModule } from "./countries.module";
