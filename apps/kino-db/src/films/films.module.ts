@@ -2,9 +2,8 @@ import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
 import { Comment } from "../comments/comments.model";
-import { Country } from "../countries/countries.model";
-import { CountriesModule } from "../countries/countries.module";
-import { CountriesService } from "../countries/countries.service";
+import { Country, CountriesModule } from "../countries";
+import { CountriesService } from "../countries/services/countries.service";
 import { Fact } from "../facts/facts.model";
 import { Genre } from "../genres/genres.model";
 import { GenresModule } from "../genres/genres.module";

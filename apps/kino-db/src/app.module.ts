@@ -4,8 +4,7 @@ import { SequelizeModule } from "@nestjs/sequelize";
 
 import { Comment } from "./comments/comments.model";
 import { CommentsModule } from "./comments/comments.module";
-import { Country } from "./countries/countries.model";
-import { CountriesModule } from "./countries/countries.module";
+import { Country, CountriesModule } from "./countries";
 import { Fact } from "./facts/facts.model";
 import { FilmCountry } from "./films/filmCountry";
 import { FilmGenre } from "./films/filmGenre";

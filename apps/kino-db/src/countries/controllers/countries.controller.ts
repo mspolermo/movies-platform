@@ -5,14 +5,16 @@ import { MessagePattern } from "@nestjs/microservices";
 
 import { kinoDbRpc } from "@common/services";
 
-import { CountriesService } from "./countries.service";
+import { CountriesService } from "../services";
 
-@Controller("countries")
+@Controller()
 export class CountriesController {
-  constructor(private readonly countriesService: CountriesService) {}
+  constructor(
+    private readonly countriesService: CountriesService
+  ) {}
 
   @MessagePattern(kinoDbRpc.countries.getAll)
-  async getAllCountries(): Promise<TCountriesListResponse> {
-    return await this.countriesService.getAllCountries();
+  getAllCountries(): Promise<TCountriesListResponse> {
+    return this.countriesService.getAllCountries();
   }
 }

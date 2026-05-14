@@ -2,7 +2,7 @@ import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { Country } from "../countries.model";
-import { CountriesService } from "../countries.service";
+import { CountriesService } from "../services/countries.service";
 
 describe("CountriesService", () => {
   let service: CountriesService;
