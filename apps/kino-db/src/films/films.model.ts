@@ -11,7 +11,7 @@ import {
 } from "sequelize-typescript";
 
 import { Comment } from "../comments/comments.model";
-import { Country } from "../countries/countries.model";
+import { Country } from "../countries";
 import { Fact } from "../facts/facts.model";
 import { Genre } from "../genres/genres.model";
 import { Person } from "../persons";

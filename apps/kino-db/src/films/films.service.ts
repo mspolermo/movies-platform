@@ -11,7 +11,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
-import { Country } from "../countries/countries.model";
+import { Country } from "../countries";
 import { Fact } from "../facts/facts.model";
 import { Genre } from "../genres/genres.model";
 import { Person } from "../persons";

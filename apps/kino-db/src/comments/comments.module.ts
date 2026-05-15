@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { Country } from "../countries/countries.model";
+import { Country } from "../countries";
 import { Fact } from "../facts/facts.model";
 import { FilmCountry } from "../films/filmCountry";
 import { FilmGenre } from "../films/filmGenre";
