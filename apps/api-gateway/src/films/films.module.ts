@@ -2,13 +2,17 @@ import { Module } from "@nestjs/common";
 
 import { JwtConfigModule } from "../jwt";
 
-import { FilmsController } from "./films.controller";
-import { FilmsService } from "./films.service";
+import { FilmsService } from "./application";
+import { FilmsClient } from "./clients";
+import { FilmsController } from "./controllers";
 
 @Module({
   imports: [JwtConfigModule],
   controllers: [FilmsController],
-  providers: [FilmsService],
+  providers: [
+    FilmsService,
+    FilmsClient,
+  ],
   exports: [FilmsService],
 })
 export class FilmsModule {}

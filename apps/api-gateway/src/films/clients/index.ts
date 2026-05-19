@@ -1,0 +1,1 @@
+export { FilmsClient } from './films.client'
