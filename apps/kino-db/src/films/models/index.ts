@@ -1,0 +1,5 @@
+export { FilmCountry } from './filmCountry.model'
+export { FilmGenre } from './filmGenre.model'
+export { FilmPerson } from './filmPerson.model'
+export { Fact } from './facts.model'
+export { Film } from './films.model'

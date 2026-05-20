@@ -10,7 +10,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Film } from "../films/films.model";
+import { Film } from "../films";
 
 @Table({ tableName: "Comment", timestamps: false })
 export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {

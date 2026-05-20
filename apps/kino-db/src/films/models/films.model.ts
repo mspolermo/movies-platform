@@ -10,15 +10,15 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Comment } from "../comments/comments.model";
-import { Country } from "../countries";
-import { Fact } from "../facts/facts.model";
-import { Genre } from "../genres/genres.model";
-import { Person } from "../persons";
+import { Comment } from "../../comments/comments.model";
+import { Country } from "../../countries";
+import { Genre } from "../../genres/genres.model";
+import { Person } from "../../persons";
 
-import { FilmCountry } from "./filmCountry";
-import { FilmGenre } from "./filmGenre";
-import { FilmPerson } from "./filmPerson";
+import { Fact } from "./facts.model";
+import { FilmCountry } from "./filmCountry.model";
+import { FilmGenre } from "./filmGenre.model";
+import { FilmPerson } from "./filmPerson.model";
 
 
 @Table({ tableName: "Film", timestamps: false })

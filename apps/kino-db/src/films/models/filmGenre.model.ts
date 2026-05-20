@@ -6,22 +6,22 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Country } from "../countries";
+import { Genre } from "../../genres/genres.model";
 
 import { Film } from "./films.model";
 
 @Table({
-  tableName: "_CountryToFilm",
+  tableName: "_FilmToGenre",
   createdAt: false,
   updatedAt: false,
-  indexes: [{ name: "_CountryToFilm_B_index", fields: ["B"] }],
+  indexes: [{ name: "_FilmToGenre_B_index", fields: ["B"] }],
 })
-export class FilmCountry extends Model<FilmCountry> {
-  @ForeignKey(() => Country)
+export class FilmGenre extends Model<FilmGenre> {
+  @ForeignKey(() => Film)
   @Column({ type: DataType.INTEGER, allowNull: false })
   A!: number;
 
-  @ForeignKey(() => Film)
+  @ForeignKey(() => Genre)
   @Column({ type: DataType.INTEGER, allowNull: false })
   B!: number;
 }

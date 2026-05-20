@@ -9,7 +9,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Film } from "../films/films.model";
+import { Film } from "./films.model";
 
 @Table({ tableName: "Fact", timestamps: false })
 export class Fact extends Model<TFactOrmModel, TFactCreationAtt> {
