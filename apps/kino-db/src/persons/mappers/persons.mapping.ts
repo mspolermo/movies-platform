@@ -1,4 +1,4 @@
-import type { Film } from "../../films";
+import type { Film } from "../../films/models/films.model";
 import type { Person } from "../models";
 import type {
   TPersonFilmResponse,

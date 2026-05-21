@@ -8,7 +8,8 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Film, FilmCountry } from "../../films";
+import { FilmCountry } from "../../films/models/filmCountry.model";
+import { Film } from "../../films/models/films.model";
 
 @Table({ tableName: "Country", timestamps: false })
 export class Country extends Model<TCountryOrmModel, TCountryCreationAtt> {

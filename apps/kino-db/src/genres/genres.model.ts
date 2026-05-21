@@ -9,7 +9,8 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Film, FilmGenre } from "../films";
+import { FilmGenre } from "../films/models/filmGenre.model";
+import { Film } from "../films/models/films.model";
 
 @Table({ tableName: "Genre", timestamps: false })
 export class Genre extends Model<TGenreOrmModel, TGenreCreationAtt> {

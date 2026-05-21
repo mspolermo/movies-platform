@@ -9,7 +9,8 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { FilmPerson, Film } from "../../films";
+import { FilmPerson } from "../../films/models/filmPerson.model";
+import { Film } from "../../films/models/films.model";
 import { Profession } from "../../professions/professions.model";
 
 import { PersonProfession } from "./personProfession.model";

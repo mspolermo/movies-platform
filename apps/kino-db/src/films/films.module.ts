@@ -10,6 +10,7 @@ import { Profession } from "../professions/professions.model";
 import { ProfessionsModule } from "../professions/professions.module";
 
 import { FilmsController } from "./films.controller";
+import { FilmsService } from "./films.service";
 import { Film, FilmCountry, FilmGenre, FilmPerson } from "./models";
 import { Fact } from "./models/facts.model";
 
@@ -33,5 +34,6 @@ import { Fact } from "./models/facts.model";
     ProfessionsModule,
   ],
   controllers: [FilmsController],
+  providers: [FilmsService],
 })
 export class FilmsModule {}
