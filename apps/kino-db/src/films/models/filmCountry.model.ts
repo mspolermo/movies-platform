@@ -12,16 +12,24 @@ import { Film } from "./films.model";
 
 @Table({
   tableName: "_CountryToFilm",
-  createdAt: false,
-  updatedAt: false,
-  indexes: [{ name: "_CountryToFilm_B_index", fields: ["B"] }],
+  timestamps: false,
 })
 export class FilmCountry extends Model<FilmCountry> {
   @ForeignKey(() => Country)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  A!: number;
+  @Column({
+    field: "A",
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  })
+  countryId!: number;
 
   @ForeignKey(() => Film)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  B!: number;
+  @Column({
+    field: "B",
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  })
+  filmId!: number;
 }

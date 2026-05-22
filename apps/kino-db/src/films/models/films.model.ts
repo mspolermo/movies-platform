@@ -21,9 +21,15 @@ import { FilmGenre } from "./filmGenre.model";
 import { FilmPerson } from "./filmPerson.model";
 
 
-@Table({ tableName: "Film", timestamps: false })
-export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
-  @ApiProperty({ example: "1", description: "Уникальный идентификатор" })
+@Table({
+  tableName: "Film",
+  timestamps: false,
+})
+export class Film extends Model<TFilmOrmModel, TFilmCreationAtt> {
+  @ApiProperty({
+    example: 1,
+    description: "Уникальный идентификатор",
+  })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -32,101 +38,170 @@ export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
   })
   id!: number;
 
-  @ApiProperty({ example: "имя", description: "Имя трейлера" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "Official Trailer",
+    description: "Название трейлера",
+  })
+  @Column(DataType.TEXT)
   trailerName!: string;
 
-  @ApiProperty({ example: "url", description: "url трейлера" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "https://youtube.com/...",
+    description: "URL трейлера",
+  })
+  @Column(DataType.TEXT)
   trailerUrl!: string;
 
-  @ApiProperty({ example: "8.4", description: "рейтинг кинопоиска" })
-  @Column({ type: DataType.DOUBLE })
+  @ApiProperty({
+    example: 8.4,
+    description: "Рейтинг Кинопоиска",
+  })
+  @Column(DataType.DOUBLE)
   ratingKp!: number;
 
-  @ApiProperty({ example: "110", description: "кол-во голосов" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 120000,
+    description: "Количество голосов Кинопоиска",
+  })
+  @Column(DataType.INTEGER)
   votesKp!: number;
 
-  @ApiProperty({ example: "8.4", description: "рейтинг imdb" })
-  @Column({ type: DataType.DOUBLE })
+  @ApiProperty({
+    example: 7.9,
+    description: "Рейтинг IMDb",
+  })
+  @Column(DataType.DOUBLE)
   ratingImdb!: number;
 
-  @ApiProperty({ example: "110", description: "кол-во голосов" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 95000,
+    description: "Количество голосов IMDb",
+  })
+  @Column(DataType.INTEGER)
   votesImdb!: number;
 
-  @ApiProperty({ example: "5", description: "рейтинг критиков" })
-  @Column({ type: DataType.DOUBLE })
+  @ApiProperty({
+    example: 7.1,
+    description: "Рейтинг кинокритиков",
+  })
+  @Column(DataType.DOUBLE)
   ratingFilmCritics!: number;
 
-  @ApiProperty({ example: "110", description: "кол-во голосов критиков" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 320,
+    description: "Количество голосов кинокритиков",
+  })
+  @Column(DataType.INTEGER)
   votesFilmCritics!: number;
 
-  @ApiProperty({ example: "5", description: "рейтинг критиков" })
-  @Column({ type: DataType.DOUBLE })
+  @ApiProperty({
+    example: 6.8,
+    description: "Рейтинг российских критиков",
+  })
+  @Column(DataType.DOUBLE)
   ratingRussianFilmCritics!: number;
 
-  @ApiProperty({ example: "110", description: "кол-во голосов критиков" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 120,
+    description: "Количество голосов российских критиков",
+  })
+  @Column(DataType.INTEGER)
   votesRussianFilmCritics!: number;
 
-  @ApiProperty({ example: "110", description: "длительнотсь фильма" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 110,
+    description: "Длительность фильма в минутах",
+  })
+  @Column(DataType.INTEGER)
   movieLength!: number;
 
-  @ApiProperty({ example: "eng", description: "язык оригинала фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "en",
+    description: "Язык оригинала",
+  })
+  @Column(DataType.TEXT)
   originalFilmLanguage!: string;
 
-  @ApiProperty({ example: "имя", description: "Имя фильма русское" })
-  @Column({ type: DataType.TEXT, allowNull: false })
+  @ApiProperty({
+    example: "Интерстеллар",
+    description: "Русское название фильма",
+  })
+  @Column({
+    type: DataType.TEXT,
+    allowNull: false,
+  })
   filmNameRu!: string;
 
-  @ApiProperty({ example: "name", description: "Имя фильма английское" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "Interstellar",
+    description: "Английское название фильма",
+  })
+  @Column(DataType.TEXT)
   filmNameEn!: string;
 
-  @ApiProperty({ example: "описание", description: "описание фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "Описание фильма",
+    description: "Описание фильма",
+  })
+  @Column(DataType.TEXT)
   description!: string;
 
-  @ApiProperty({ example: "1.10.2020", description: "дата приемьеры фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "01.10.2020",
+    description: "Дата премьеры в стране",
+  })
+  @Column(DataType.TEXT)
   premiereCountry!: string;
 
-  @ApiProperty({ example: "слоган", description: "слоган фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "Mankind was born on Earth...",
+    description: "Слоган фильма",
+  })
+  @Column(DataType.TEXT)
   slogan!: string;
 
-  @ApiProperty({ example: "url", description: "url картинки фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "https://image.jpg",
+    description: "Большой постер",
+  })
+  @Column(DataType.TEXT)
   bigPictureUrl!: string;
 
-  @ApiProperty({ example: "url", description: "url картинки фильма" })
-  @Column({ type: DataType.TEXT })
+  @ApiProperty({
+    example: "https://small-image.jpg",
+    description: "Маленький постер",
+  })
+  @Column(DataType.TEXT)
   smallPictureUrl!: string;
 
-  @ApiProperty({ example: "2022", description: "год создания фильма" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 2022,
+    description: "Год выпуска",
+  })
+  @Column(DataType.INTEGER)
   year!: number;
 
-  @ApiProperty({ example: "1", description: "номер в топ10" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 5,
+    description: "Позиция в топ-10",
+  })
+  @Column(DataType.INTEGER)
   top10!: number;
 
-  @ApiProperty({ example: "1", description: "номер в топ250" })
-  @Column({ type: DataType.INTEGER })
+  @ApiProperty({
+    example: 42,
+    description: "Позиция в топ-250",
+  })
+  @Column(DataType.INTEGER)
   top250!: number;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PG literal не в типах Sequelize
-  @Column({ type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any })
+  @Column({
+    type: DataType.DATE(3),
+  })
   premiereWorldDate!: Date;
 
   @Column({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PG literal не в типах Sequelize
-    type: "TIMESTAMP(3) WITHOUT TIME ZONE" as any,
+    type: DataType.DATE(3),
     defaultValue: DataType.NOW,
     allowNull: false,
   })
@@ -145,5 +220,5 @@ export class Film extends Model<TFilmOrmModel, TFilmCreationAtt>{
   facts!: Fact[];
 
   @HasMany(() => Comment)
-  comments!: Comment;
+  comments!: Comment[];
 }
