@@ -7,7 +7,7 @@ import { Fact } from "../models/facts.model";
 import { Genre } from "../../genres/genres.model";
 import { Person } from "../../persons/persons.model";
 import { Film } from "../models/films.model";
-import { FilmsService } from "../films.service";
+import { FilmsService } from "../services/films.service";
 
 describe("FilmsService", () => {
   let service: FilmsService;

@@ -6,7 +6,7 @@ import { MessagePattern, Payload } from "@nestjs/microservices";
 
 import { kinoDbRpc } from "@common/services";
 
-import { FilmsService } from "./films.service";
+import { FilmsService } from "../services";
 
 @Controller("films")
 export class FilmsController {

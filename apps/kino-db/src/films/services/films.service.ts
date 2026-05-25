@@ -11,12 +11,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
-import { Country } from "../countries";
-import { Genre } from "../genres/genres.model";
-import { Person } from "../persons";
-import { Profession } from "../professions/professions.model";
-
-import { Fact, Film } from "./models";
+import { Country } from "../../countries";
+import { Genre } from "../../genres/genres.model";
+import { Person } from "../../persons";
+import { Profession } from "../../professions/professions.model";
+import { Fact, Film } from "../models";
 
 
 const FILM_CARD_ATTRIBUTES = [
