@@ -1,0 +1,1 @@
+export { mapFilmToCardResponse } from './film.mapper'

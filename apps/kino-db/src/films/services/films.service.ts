@@ -1,65 +1,40 @@
 import type {
   TFilmDetailsResponse,
-  TFilmSortBy,
-  TFilmsResponse,
   TFilmListItemResponse,
+  TFilmsResponse,
+  TFilmSortBy,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from "@common/types";
+import type { Includeable, WhereOptions } from "sequelize";
 
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
+import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
+
 import { Country } from "../../countries";
 import { Genre } from "../../genres/genres.model";
 import { Person } from "../../persons";
 import { Profession } from "../../professions/professions.model";
+import {
+  FILM_CARD_ATTRIBUTES,
+  FILM_SORT_ORDER,
+} from "../constants";
+import { mapFilmToCardResponse } from "../mappers/film.mapper";
 import { Fact, Film } from "../models";
-
-
-const FILM_CARD_ATTRIBUTES = [
-  "id",
-  "filmNameRu",
-  "filmNameEn",
-  "bigPictureUrl",
-  "smallPictureUrl",
-  "ratingKp",
-  "year",
-  "premiereCountry",
-  "movieLength",
-] as const;
-
-const FILM_SORT_ORDER: Record<TFilmSortBy, [string, "ASC" | "DESC"]> = {
-  rating: ["ratingKp", "DESC"],
-  novelty: ["premiereWorldDate", "DESC"],
-  alphabet: ["filmNameRu", "ASC"],
-  popularity: ["votesKp", "DESC"],
-};
-
-const pickFilmCardResponse = (film: Film): TFilmListItemResponse => {
-  const filmData = (
-    typeof film.toJSON === "function" ? film.toJSON() : film
-  ) as TFilmListItemResponse;
-
-  return {
-    id: filmData.id,
-    filmNameRu: filmData.filmNameRu,
-    filmNameEn: filmData.filmNameEn,
-    bigPictureUrl: filmData.bigPictureUrl,
-    smallPictureUrl: filmData.smallPictureUrl,
-    ratingKp: filmData.ratingKp,
-    year: filmData.year,
-    premiereCountry: filmData.premiereCountry,
-    movieLength: filmData.movieLength,
-  };
-};
 
 @Injectable()
 export class FilmsService {
-  constructor(@InjectModel(Film) private filmRepository: typeof Film) {}
+  constructor(
+    @InjectModel(Film)
+    private readonly filmRepository: typeof Film
+  ) {}
 
-  async getFilmById(id: number): Promise<TFilmDetailsResponse | null> {
+  async getFilmById(
+    id: number
+  ): Promise<TFilmDetailsResponse | null> {
     const film = await this.filmRepository.findByPk(id, {
       attributes: [
         "id",
@@ -79,13 +54,13 @@ export class FilmsService {
         {
           model: Country,
           as: "countries",
-          attributes: ['countryName', 'countryNameEn'],
+          attributes: ["countryName", "countryNameEn"],
           through: { attributes: [] },
         },
         {
           model: Genre,
           as: "genres",
-          attributes: ['nameRu', 'nameEn'],
+          attributes: ["nameRu", "nameEn"],
           through: { attributes: [] },
         },
         {
@@ -102,23 +77,33 @@ export class FilmsService {
       return null;
     }
 
-    return film.toJSON();
+    return film.toJSON() as TFilmDetailsResponse;
   }
 
-  async searchFilmsByName(name: string): Promise<TFilmListItemResponse[]> {
+  async searchFilmsByName(
+    name: string
+  ): Promise<TFilmListItemResponse[]> {
     const films = await this.filmRepository.findAll({
-      attributes: FILM_CARD_ATTRIBUTES as unknown as string[],
+      attributes: [...FILM_CARD_ATTRIBUTES],
       where: {
         [Op.or]: [
-          { filmNameRu: { [Op.iLike]: `%${name}%` } },
-          { filmNameEn: { [Op.iLike]: `%${name}%` } },
+          {
+            filmNameRu: {
+              [Op.iLike]: `%${name}%`,
+            },
+          },
+          {
+            filmNameEn: {
+              [Op.iLike]: `%${name}%`,
+            },
+          },
         ],
       },
       limit: 10,
       order: [["votesKp", "DESC"]],
     });
 
-    return films;
+    return films.map(mapFilmToCardResponse);
   }
 
   async filmFilters(
@@ -133,26 +118,14 @@ export class FilmsService {
     years?: number[]
   ): Promise<TFilmsResponse> {
     const order = FILM_SORT_ORDER[sortBy];
+
     const attributes = Array.from(
       new Set([...FILM_CARD_ATTRIBUTES, order[0]])
-    ) as string[];
-    const include: Array<{
-      model: typeof Genre | typeof Country | typeof Person;
-      as?: string;
-      attributes?: string[];
-      through?: { attributes: [] };
-      required?: boolean;
-      where?: {
-        [Op.or]?: Array<{
-          nameRu?: string[];
-          nameEn?: string[];
-          countryName?: string[];
-          countryNameEn?: string[];
-        }>;
-        countryName?: string[];
-      };
-    }> = [];
-    if (genres) {
+    );
+
+    const include: Includeable[] = [];
+
+    if (genres?.length) {
       include.push({
         model: Genre,
         as: "genres",
@@ -160,11 +133,15 @@ export class FilmsService {
         through: { attributes: [] },
         required: true,
         where: {
-          [Op.or]: [{ nameRu: genres }, { nameEn: genres }],
+          [Op.or]: [
+            { nameRu: genres },
+            { nameEn: genres },
+          ],
         },
       });
     }
-    if (countries)
+
+    if (countries?.length) {
       include.push({
         model: Country,
         as: "countries",
@@ -172,11 +149,15 @@ export class FilmsService {
         through: { attributes: [] },
         required: true,
         where: {
-          [Op.or]: [{ countryName: countries }, { countryNameEn: countries }],
+          [Op.or]: [
+            { countryName: countries },
+            { countryNameEn: countries },
+          ],
         },
       });
+    }
 
-    if (persons)
+    if (persons?.length) {
       include.push({
         model: Person,
         as: "persons",
@@ -184,36 +165,50 @@ export class FilmsService {
         through: { attributes: [] },
         required: true,
         where: {
-          [Op.or]: [{ nameRu: persons }, { nameEn: persons }],
+          [Op.or]: [
+            { nameRu: persons },
+            { nameEn: persons },
+          ],
         },
       });
-
-    const where: {
-      ratingKp?: { [Op.gte]: number };
-      votesKp?: { [Op.gte]: number };
-      year?: number | { [Op.in]: number[] };
-    } = {
-      ratingKp: { [Op.gte]: minRatingKp },
-      votesKp: { [Op.gte]: minVotesKp },
-    };
-    if (years?.length) {
-      where.year = years.length === 1 ? years[0] : { [Op.in]: years };
     }
 
-    const { rows, count } = await this.filmRepository.findAndCountAll({
-      attributes,
-      include,
-      where,
-      limit: perPage,
-      offset: (page - 1) * perPage,
-      order: [order],
-      distinct: true,
-      col: "id",
-    });
-    const films = rows.map((film) => pickFilmCardResponse(film));
-    const total = Array.isArray(count) ? count.length : count;
+    const where: WhereOptions = {
+      ratingKp: {
+        [Op.gte]: minRatingKp,
+      },
+      votesKp: {
+        [Op.gte]: minVotesKp,
+      },
+    };
+
+    if (years?.length) {
+      where.year =
+        years.length === 1
+          ? years[0]
+          : {
+              [Op.in]: years,
+            };
+    }
+
+    const { rows, count } =
+      await this.filmRepository.findAndCountAll({
+        attributes,
+        include,
+        where,
+        limit: perPage,
+        offset: (page - 1) * perPage,
+        order: [order],
+        distinct: true,
+        col: "id",
+      });
+
+    const total = Array.isArray(count)
+      ? count.length
+      : count;
+
     return {
-      films,
+      films: rows.map(mapFilmToCardResponse),
       total,
       page,
       perPage,
@@ -223,26 +218,36 @@ export class FilmsService {
 
   async getAllFilmYears(): Promise<number[]> {
     const years = await this.filmRepository.findAll({
-      attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("year")), "year"]],
+      attributes: [
+        [
+          Sequelize.fn(
+            "DISTINCT",
+            Sequelize.col("year")
+          ),
+          "year",
+        ],
+      ],
       order: [[Sequelize.col("year"), "ASC"]],
     });
 
-    return years.map((year) => year.year);
+    return years.map((item) => item.year);
   }
 
-  async getFilmProfessions(filmId: number): Promise<TProfessionItemResponse[]> {
+  async getFilmProfessions(
+    filmId: number
+  ): Promise<TProfessionItemResponse[]> {
     const film = await this.filmRepository.findByPk(filmId, {
       include: [
         {
           model: Person,
           as: "persons",
-          attributes: ['id'],
+          attributes: ["id"],
           through: { attributes: [] },
           include: [
             {
               model: Profession,
               as: "professions",
-              attributes: ['id', 'name'],
+              attributes: ["id", "name"],
               through: { attributes: [] },
             },
           ],
@@ -254,51 +259,63 @@ export class FilmsService {
       return [];
     }
 
-    // Собираем уникальные профессии
-    const professionsMap = new Map<number, TProfessionItemResponse>();
-    
-    if (film.persons) {
-      for (const person of film.persons) {
-        if (person.professions && person.professions.length > 0) {
-          for (const profession of person.professions) {
-            if (!professionsMap.has(profession.id)) {
-              professionsMap.set(profession.id, {
-                id: profession.id,
-                name: profession.name,
-              });
-            }
-          }
+    const professionsMap = new Map<
+      number,
+      TProfessionItemResponse
+    >();
+
+    for (const person of film.persons ?? []) {
+      for (const profession of person.professions ?? []) {
+        if (!professionsMap.has(profession.id)) {
+          professionsMap.set(profession.id, {
+            id: profession.id,
+            name: profession.name,
+          });
         }
       }
     }
 
-    return Array.from(professionsMap.values());
+    return [...professionsMap.values()];
   }
 
   async getFilmPersonsByProfession(
     filmId: number,
     professionName: string,
-    page: number = 1,
-    limit: number = 20
+    page = 1,
+    limit = LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
-    const normalizedLimit = limit > 0 && limit <= 100 ? limit : 20;
-    const normalizedPage = page > 0 ? page : 1;
-    const normalizedOffset = (normalizedPage - 1) * normalizedLimit;
+    const normalizedLimit =
+      limit > 0 && limit <= LIST_MAX_LIMIT
+        ? limit
+        : LIST_DEFAULT_LIMIT;
+
+    const normalizedPage =
+      page > 0 ? page : 1;
+
+    const offset =
+      (normalizedPage - 1) * normalizedLimit;
 
     const film = await this.filmRepository.findByPk(filmId, {
       include: [
         {
           model: Person,
           as: "persons",
-          attributes: ['id', 'photoUrl', 'nameRu', 'nameEn'],
+          attributes: [
+            "id",
+            "photoUrl",
+            "nameRu",
+            "nameEn",
+          ],
           through: { attributes: [] },
           include: [
             {
               model: Profession,
               as: "professions",
-              attributes: ['id', 'name'],
+              attributes: ["id", "name"],
               through: { attributes: [] },
-              where: { name: professionName },
+              where: {
+                name: professionName,
+              },
             },
           ],
         },
@@ -313,23 +330,24 @@ export class FilmsService {
       };
     }
 
-    // Фильтруем персон с нужной профессией
-    const personsWithProfession = (film.persons || []).filter(
-      (person) => person.professions && person.professions.length > 0
-    );
+    const persons =
+      (film.persons ?? []).filter(
+        (person) =>
+          (person.professions?.length ?? 0) > 0
+      );
 
-    const total = personsWithProfession.length;
-    const paginatedPersons = personsWithProfession.slice(
-      normalizedOffset,
-      normalizedOffset + normalizedLimit
-    );
+    const total = persons.length;
 
-    const hasMore = normalizedOffset + paginatedPersons.length < total;
+    const items = persons.slice(
+      offset,
+      offset + normalizedLimit
+    );
 
     return {
-      items: paginatedPersons,
+      items,
       total,
-      hasMore,
+      hasMore:
+        offset + items.length < total,
     };
   }
 }

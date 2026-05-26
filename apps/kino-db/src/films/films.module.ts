@@ -10,8 +10,13 @@ import { Profession } from "../professions/professions.model";
 import { ProfessionsModule } from "../professions/professions.module";
 
 import { FilmsController } from "./controllers";
-import { Film, FilmCountry, FilmGenre, FilmPerson } from "./models";
-import { Fact } from "./models/facts.model";
+import {
+  Fact,
+  Film,
+  FilmCountry,
+  FilmGenre,
+  FilmPerson,
+} from "./models";
 import { FilmsService } from "./services";
 
 @Module({
@@ -35,5 +40,6 @@ import { FilmsService } from "./services";
   ],
   controllers: [FilmsController],
   providers: [FilmsService],
+  exports: [FilmsService],
 })
 export class FilmsModule {}
