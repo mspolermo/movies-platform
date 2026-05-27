@@ -1,2 +1,2 @@
-export * from "./filters.module";
-export * from "./filters.service";
+export { FiltersModule } from "./filters.module";
+export { FiltersService } from "./application";

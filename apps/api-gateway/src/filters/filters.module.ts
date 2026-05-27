@@ -1,11 +1,15 @@
 import { Module } from "@nestjs/common";
 
-import { FiltersController } from "./filters.controller";
-import { FiltersService } from "./filters.service";
+import { FiltersService } from "./application";
+import { FiltersClient } from "./clients";
+import { FiltersController } from "./controllers";
 
 @Module({
   controllers: [FiltersController],
-  providers: [FiltersService],
+  providers: [
+    FiltersService,
+    FiltersClient,
+  ],
   exports: [FiltersService],
 })
 export class FiltersModule {}
