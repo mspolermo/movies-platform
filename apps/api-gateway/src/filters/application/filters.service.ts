@@ -1,32 +1,14 @@
 import type {
-  TCountryItemResponse,
   TFiltersLocale,
   TFiltersResponse,
-  TGenreItemResponse,
   TQuickFiltersResponse,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
 
 import { FiltersClient } from "../clients";
-
-const QUICK_FILTERS_MAX_GENRES = 23;
-const QUICK_FILTERS_MAX_COUNTRIES = 25;
-const QUICK_FILTERS_MAX_YEARS = 9;
-
-const pickGenreLabel = (genre: TGenreItemResponse, locale: TFiltersLocale): string => {
-  if (locale === "en") {
-    return genre.nameEn?.trim() || genre.nameRu;
-  }
-  return genre.nameRu;
-};
-
-const pickCountryLabel = (country: TCountryItemResponse, locale: TFiltersLocale): string => {
-  if (locale === "en") {
-    return country.countryNameEn?.trim() || country.countryName;
-  }
-  return country.countryName;
-};
+import { QUICK_FILTERS_MAX_COUNTRIES, QUICK_FILTERS_MAX_GENRES, QUICK_FILTERS_MAX_YEARS } from "../constants";
+import { pickCountryLabel, pickGenreLabel } from "../utils";
 
 @Injectable()
 export class FiltersService {
