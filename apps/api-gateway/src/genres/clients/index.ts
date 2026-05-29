@@ -1,0 +1,1 @@
+export { GenresClient } from './genres.client'

@@ -1,2 +1,2 @@
 export * from "./genres.module";
-export * from "./genres.service";
+export * from "./services/genres.service";
