@@ -5,14 +5,14 @@ import { MessagePattern } from "@nestjs/microservices";
 
 import { kinoDbRpc } from "@common/services";
 
-import { GenresService } from "./genres.service";
+import { GenresService } from "../services";
 
 @Controller("genres")
 export class GenresController {
   constructor(private readonly genresService: GenresService) {}
 
   @MessagePattern(kinoDbRpc.genres.getAll)
-  async getAllGenres(): Promise<TGenresListResponse> {
-    return await this.genresService.getAllGenres();
+  getAllGenres(): Promise<TGenresListResponse> {
+    return this.genresService.getAllGenres();
   }
 }

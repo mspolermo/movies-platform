@@ -1,0 +1,1 @@
+export { GenresController } from './genres.controller'

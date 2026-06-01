@@ -4,7 +4,7 @@ import { Op, Sequelize } from "sequelize";
 
 import { Country } from "../../countries/countries.model";
 import { Fact } from "../models/facts.model";
-import { Genre } from "../../genres/genres.model";
+import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons/persons.model";
 import { Film } from "../models/films.model";
 import { FilmsService } from "../services/films.service";

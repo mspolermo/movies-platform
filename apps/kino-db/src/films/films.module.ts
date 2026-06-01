@@ -3,7 +3,7 @@ import { SequelizeModule } from "@nestjs/sequelize";
 
 import { Comment } from "../comments/comments.model";
 import { Country, CountriesModule } from "../countries";
-import { Genre } from "../genres/genres.model";
+import { Genre } from "../genres/models/genres.model";
 import { GenresModule } from "../genres/genres.module";
 import { Person, PersonsModule } from "../persons";
 import { Profession } from "../professions/professions.model";

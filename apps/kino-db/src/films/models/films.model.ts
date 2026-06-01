@@ -12,7 +12,7 @@ import {
 
 import { Comment } from "../../comments/comments.model";
 import { Country } from "../../countries/models/countries.model";
-import { Genre } from "../../genres/genres.model";
+import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons/models/persons.model";
 
 import { Fact } from "./facts.model";

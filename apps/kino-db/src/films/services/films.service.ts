@@ -15,7 +15,7 @@ import { Op, Sequelize } from "sequelize";
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
 import { Country } from "../../countries";
-import { Genre } from "../../genres/genres.model";
+import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
 import { Profession } from "../../professions/professions.model";
 import {
