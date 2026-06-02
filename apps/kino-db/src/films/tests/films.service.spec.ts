@@ -2,12 +2,12 @@ import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Op, Sequelize } from "sequelize";
 
-import { Country } from "../../countries/countries.model";
-import { Fact } from "../models/facts.model";
+import { Country } from "../../countries";
+import {  } from "../models/facts.model";
 import { Genre } from "../../genres/models/genres.model";
-import { Person } from "../../persons/persons.model";
-import { Film } from "../models/films.model";
-import { FilmsService } from "../services/films.service";
+import { Person } from "../../persons";
+import { Film, Fact } from "../models";
+import { FilmsService } from "../services";
 
 describe("FilmsService", () => {
   let service: FilmsService;
