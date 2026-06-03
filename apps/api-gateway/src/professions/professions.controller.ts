@@ -9,7 +9,7 @@ import { ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swag
 import { JwtAuthGuard, Public } from '../shared/guards';
 
 import { ProfessionPersonsParamDto, ProfessionPersonsQueryDto } from './dto';
-import { ProfessionsService } from './professions.service';
+import { ProfessionsService } from './services';
 
 @Controller('professions')
 @UseGuards(JwtAuthGuard)

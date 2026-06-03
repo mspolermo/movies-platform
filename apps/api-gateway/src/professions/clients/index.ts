@@ -1,0 +1,1 @@
+export { ProfessionsClient } from './professions.client';

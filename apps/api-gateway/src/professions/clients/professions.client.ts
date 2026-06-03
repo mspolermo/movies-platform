@@ -6,20 +6,25 @@ import type {
 
 import { Injectable } from "@nestjs/common";
 
-import { RmqService, kinoDbRpc } from "@common/services";
+import {
+  kinoDbRpc,
+  RmqService,
+} from "@common/services";
 
 @Injectable()
-export class ProfessionsService {
-  constructor(private readonly rmq: RmqService) {}
+export class ProfessionsClient {
+  constructor(
+    private readonly rmq: RmqService
+  ) {}
 
-  async getAllProfessions(): Promise<TProfessionItemResponse[]> {
+  getAllProfessions(): Promise<TProfessionItemResponse[]> {
     return this.rmq.sendToFilms(
       kinoDbRpc.professions.getAll,
       {}
     );
   }
 
-  async getPersonsByProfessionId(
+  getPersonsByProfessionId(
     request: TGetPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
     return this.rmq.sendToFilms(
