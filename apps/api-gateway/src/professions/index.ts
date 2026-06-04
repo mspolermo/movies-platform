@@ -1,3 +1,3 @@
-export * from './professions.controller';
-export * from './services/professions.service';
-export * from './professions.module';
+export { ProfessionsController } from './controllers';
+export { ProfessionsService } from './services';
+export { ProfessionsModule } from './professions.module';

@@ -10,7 +10,7 @@ import { AllCreatorsLoader } from './AllCreatorsLoader';
  */
 export const AllCreatorsViewer = (props: TAllCreatorsViewerProps) => {
   if (props.isLoading) {
-    return <AllCreatorsLoader />
+    return <AllCreatorsLoader />;
   }
 
   return <AllCreatorsViewerDiscovery {...props} />;

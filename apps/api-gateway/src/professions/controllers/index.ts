@@ -1,0 +1,1 @@
+export { ProfessionsController } from './professions.controller';
