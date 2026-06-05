@@ -1,0 +1,1 @@
+export { ProfessionsService } from './professions.service';

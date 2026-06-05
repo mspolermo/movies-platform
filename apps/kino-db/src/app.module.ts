@@ -8,10 +8,8 @@ import { Country, CountriesModule } from "./countries";
 import { Film, FilmsModule, FilmPerson, FilmGenre, FilmCountry, Fact } from "./films";
 import { Genre, GenresModule } from "./genres";
 import { HealthController } from "./health.controller";
-import { Person, PersonsModule } from "./persons";
-import { PersonProfession } from "./persons/models/personProfession.model";
-import { Profession } from "./professions/professions.model";
-import { ProfessionsModule } from "./professions/professions.module";
+import { Person, PersonProfession, PersonsModule } from "./persons";
+import { Profession, ProfessionsModule } from "./professions";
 
 @Module({
   imports: [

@@ -6,7 +6,7 @@ import { Country, CountriesModule } from "../countries";
 import { Genre } from "../genres/models/genres.model";
 import { GenresModule } from "../genres/genres.module";
 import { Person, PersonsModule } from "../persons";
-import { Profession } from "../professions/professions.model";
+import { Profession } from "../professions/models/professions.model";
 import { ProfessionsModule } from "../professions/professions.module";
 
 import { FilmsController } from "./controllers";

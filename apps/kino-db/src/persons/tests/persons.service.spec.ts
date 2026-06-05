@@ -2,7 +2,7 @@ import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 import { Op } from "sequelize";
 
-import { Profession } from "../../professions/professions.model";
+import { Profession } from "../../professions/models/professions.model";
 import { Person } from "../models";
 import { PersonsService } from "../services/persons.service";
 

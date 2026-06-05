@@ -17,7 +17,7 @@ import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
-import { Profession } from "../../professions/professions.model";
+import { Profession } from "../../professions/models/professions.model";
 import {
   FILM_CARD_ATTRIBUTES,
   FILM_SORT_ORDER,

@@ -11,7 +11,7 @@ import {
 
 import { FilmPerson } from "../../films/models/filmPerson.model";
 import { Film } from "../../films/models/films.model";
-import { Profession } from "../../professions/professions.model";
+import { Profession } from "../../professions/models/professions.model";
 
 import { PersonProfession } from "./personProfession.model";
 

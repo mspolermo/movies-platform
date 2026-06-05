@@ -1,0 +1,1 @@
+export { Profession } from './professions.model';

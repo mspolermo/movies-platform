@@ -8,8 +8,8 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Person } from "../persons/models/persons.model";
-import { PersonProfession } from "../persons/models/personProfession.model";
+import { PersonProfession } from "../../persons/models/personProfession.model";
+import { Person } from "../../persons/models/persons.model";
 
 @Table({ tableName: "Profession", timestamps: false })
 export class Profession extends Model<TProfessionOrmModel, TProfessionCreationAtt> {

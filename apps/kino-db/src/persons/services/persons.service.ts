@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
-import { Profession } from "../../professions/professions.model";
+import { Profession } from "../../professions/models/professions.model";
 import {
   mapFilmToPersonFilm,
   mapPersonToListItem,
