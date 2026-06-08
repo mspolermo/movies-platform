@@ -4,7 +4,7 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { FilmGenre, Film } from "../films";
 
 import { GenresController } from "./controllers";
-import { Genre } from "./models/genres.model";
+import { Genre } from "./models";
 import { GenresService } from "./services";
 
 @Module({

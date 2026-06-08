@@ -1,8 +1,7 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { Profession } from "../professions/models/professions.model";
-import { ProfessionsModule } from "../professions/professions.module";
+import { Profession, ProfessionsModule } from "../professions";
 
 import { PersonsController } from "./controllers";
 import { Person, PersonProfession } from "./models";

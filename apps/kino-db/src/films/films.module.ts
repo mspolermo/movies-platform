@@ -3,11 +3,9 @@ import { SequelizeModule } from "@nestjs/sequelize";
 
 import { Comment } from "../comments/comments.model";
 import { Country, CountriesModule } from "../countries";
-import { Genre } from "../genres/models/genres.model";
-import { GenresModule } from "../genres/genres.module";
+import { Genre, GenresModule } from "../genres";
 import { Person, PersonsModule } from "../persons";
-import { Profession } from "../professions/models/professions.model";
-import { ProfessionsModule } from "../professions/professions.module";
+import { Profession, ProfessionsModule } from "../professions";
 
 import { FilmsController } from "./controllers";
 import {

@@ -1,8 +1,8 @@
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { Profession } from "../models/professions.model";
-import { ProfessionsService } from "../services/professions.service";
+import { Profession } from "../models";
+import { ProfessionsService } from "../services";
 
 describe("ProfessionsService", () => {
   let service: ProfessionsService;

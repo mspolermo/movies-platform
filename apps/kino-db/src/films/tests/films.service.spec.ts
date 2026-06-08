@@ -3,7 +3,6 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { Op, Sequelize } from "sequelize";
 
 import { Country } from "../../countries";
-import {  } from "../models/facts.model";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
 import { Film, Fact } from "../models";
