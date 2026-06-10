@@ -1,2 +1,2 @@
-export * from "./search.service";
-export * from "./search.module";
+export { SearchService } from "./services";
+export { SearchModule } from "./search.module";

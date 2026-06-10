@@ -1,0 +1,1 @@
+export { SearchClient } from './search.client';
