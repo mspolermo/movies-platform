@@ -10,7 +10,6 @@ import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { Observable } from "rxjs";
 
-import { AUTH_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
 
 import { IS_PUBLIC_KEY } from "./public.decorator";
@@ -121,7 +120,7 @@ export class JwtAuthGuard implements CanActivate {
 
       console.log("🔐 JWT Guard: Ошибка при проверке токена:", jwtError?.message || e);
       throw new UnauthorizedException({
-        message: AUTH_ERROR,
+        message: "Пользователь не авторизован",
       });
     }
   }

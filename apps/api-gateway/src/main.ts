@@ -5,7 +5,7 @@ import { SwaggerModule } from "@nestjs/swagger";
 
 import { AppModule } from "./app.module";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
-import { GlobalExceptionFilter } from "./shared/filters";
+import { GlobalExceptionFilter } from "./shared";
 
 
 let app: INestApplication | null = null;

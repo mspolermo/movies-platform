@@ -9,7 +9,6 @@ import {
 import { Reflector } from "@nestjs/core";
 
 import { UserRolesService } from "../../user-roles";
-import { ACCESS_ERROR } from "../constants/errors.constants";
 import { AuthenticatedRequest } from "../interfaces";
 
 import { ROLES_KEY } from "./roles-auth.decorator";
@@ -57,7 +56,7 @@ export class RolesGuard implements CanActivate {
 
       if (!userWithRoles.roles || !Array.isArray(userWithRoles.roles)) {
         console.log("🔒 RolesGuard: У пользователя нет ролей");
-        throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
+        throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
       }
 
       const hasRequiredRole = userWithRoles.roles.some((role) =>
@@ -70,7 +69,7 @@ export class RolesGuard implements CanActivate {
             userWithRoles.id
           }) не имеет требуемых ролей: ${requiredRoles.join(", ")}`
         );
-        throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
+        throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
       }
 
       console.log(
@@ -90,7 +89,7 @@ export class RolesGuard implements CanActivate {
 
       const errorWithMessage = e as ErrorWithMessage;
       console.log("🔒 RolesGuard: Ошибка при проверке ролей:", errorWithMessage?.message || e);
-      throw new HttpException(ACCESS_ERROR, HttpStatus.FORBIDDEN);
+      throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
     }
   }
 }
