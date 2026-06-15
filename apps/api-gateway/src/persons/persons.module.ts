@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { PersonsService } from "./application";
+import { PersonsService } from "./services";
 import { PersonsClient } from "./clients";
 import { PersonsController } from "./controllers";
 

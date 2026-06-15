@@ -1,2 +1,2 @@
 export { FilmsModule } from "./films.module";
-export { FilmsService } from "./application";
+export { FilmsService } from "./services";

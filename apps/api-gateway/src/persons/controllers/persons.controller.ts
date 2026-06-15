@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 
-import { PersonsService } from "../application";
+import { PersonsService } from "../services";
 import { 
   FilmographyQueryDto, 
   FindPersonsQueryDto, 

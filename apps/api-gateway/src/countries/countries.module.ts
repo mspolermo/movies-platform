@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { CountriesService } from "./application";
+import { CountriesService } from "./services";
 import { CountriesClient } from "./clients";
 import { CountriesController } from "./controllers";
 

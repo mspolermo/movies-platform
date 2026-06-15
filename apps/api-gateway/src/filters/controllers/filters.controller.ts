@@ -17,7 +17,7 @@ import {
 } from "@nestjs/swagger";
 
 import { Public } from "../../shared";
-import { FiltersService } from "../application";
+import { FiltersService } from "../services";
 import { GetFiltersQueryDto } from "../dto";
 
 @Controller("filters")

@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 
-import { FiltersService } from "./application";
+import { FiltersService } from "./services";
 import { FiltersClient } from "./clients";
 import { FiltersController } from "./controllers";
 

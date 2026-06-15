@@ -22,7 +22,7 @@ import {
 } from "@nestjs/swagger";
 
 import { JwtAuthGuard, Public } from "../../shared";
-import { FilmsService } from "../application";
+import { FilmsService } from "../services";
 import {
   GetFilmPersonsByProfessionDto,
   SearchFilmsDto,

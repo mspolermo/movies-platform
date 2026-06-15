@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 
 import { JwtConfigModule } from "../jwt";
 
-import { FilmsService } from "./application";
+import { FilmsService } from "./services";
 import { FilmsClient } from "./clients";
 import { FilmsController } from "./controllers";
 
