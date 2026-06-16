@@ -11,8 +11,6 @@ import { Reflector } from "@nestjs/core";
 import { UserRolesService } from "../../user-roles";
 import { AuthenticatedRequest } from "../interfaces";
 
-import { ROLES_KEY } from "./roles-auth.decorator";
-
 interface ErrorWithMessage {
   message: string;
 }
@@ -32,7 +30,7 @@ export class RolesGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const requiredRoles = this.reflector.getAllAndOverride<string[]>(
-        ROLES_KEY,
+        "roles",
         [context.getHandler(), context.getClass()]
       );
 
