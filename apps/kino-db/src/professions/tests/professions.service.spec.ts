@@ -13,22 +13,26 @@ describe("ProfessionsService", () => {
     { id: 3, name: "Сценарист" },
   ];
 
-  const mockProfessionsRepository = {
-    findAll: jest.fn().mockResolvedValue(mockProfessionArray),
+  const mockProfessionRepository = {
+    findAll: jest.fn(),
   };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProfessionsService,
-        {
-          provide: getModelToken(Profession),
-          useValue: mockProfessionsRepository,
-        },
-      ],
-    }).compile();
+    jest.clearAllMocks();
 
-    service = module.get<ProfessionsService>(ProfessionsService);
+    const module: TestingModule =
+      await Test.createTestingModule({
+        providers: [
+          ProfessionsService,
+          {
+            provide: getModelToken(Profession),
+            useValue: mockProfessionRepository,
+          },
+        ],
+      }).compile();
+
+    service =
+      module.get<ProfessionsService>(ProfessionsService);
   });
 
   it("should be defined", () => {
@@ -36,11 +40,22 @@ describe("ProfessionsService", () => {
   });
 
   describe("getAllProfessions", () => {
-    it("should return an array of professions", async () => {
-      mockProfessionsRepository.findAll.mockResolvedValue(mockProfessionArray);
-      const result = await service.getAllProfessions();
+    it("should return professions ordered by name", async () => {
+      mockProfessionRepository.findAll.mockResolvedValue(
+        mockProfessionArray
+      );
+
+      const result =
+        await service.getAllProfessions();
+
       expect(result).toEqual(mockProfessionArray);
-      expect(mockProfessionsRepository.findAll).toHaveBeenCalledTimes(1);
+
+      expect(
+        mockProfessionRepository.findAll
+      ).toHaveBeenCalledWith({
+        attributes: ["id", "name"],
+        order: [["name", "ASC"]],
+      });
     });
   });
 });

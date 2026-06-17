@@ -5,46 +5,54 @@ import { ProfessionsService } from "../services";
 
 describe("ProfessionsController", () => {
   let controller: ProfessionsController;
-  let service: ProfessionsService;
 
-  const mockProfessionArray = [
-    { id: 1, name: "Актёры" },
-    { id: 2, name: "Режисёры" },
+  const mockProfessions = [
+    { id: 1, name: "Актёр" },
+    { id: 2, name: "Режиссёр" },
   ];
+
   const mockProfessionsService = {
     getAllProfessions: jest.fn(),
   };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProfessionsController],
-      providers: [
-        {
-          provide: ProfessionsService,
-          useValue: mockProfessionsService,
-        },
-      ],
-    }).compile();
-
-    controller = module.get<ProfessionsController>(ProfessionsController);
-    service = module.get<ProfessionsService>(ProfessionsService);
-  });
-
-  afterEach(() => {
     jest.clearAllMocks();
+
+    const module: TestingModule =
+      await Test.createTestingModule({
+        controllers: [ProfessionsController],
+        providers: [
+          {
+            provide: ProfessionsService,
+            useValue: mockProfessionsService,
+          },
+        ],
+      }).compile();
+
+    controller =
+      module.get<ProfessionsController>(
+        ProfessionsController
+      );
   });
 
   it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 
-  describe("getAll.professions", () => {
-    it("should return an array of professions", async () => {
+  describe("getAllProfessions", () => {
+    it("should return professions", async () => {
       mockProfessionsService.getAllProfessions.mockResolvedValue(
-        mockProfessionArray
+        mockProfessions
       );
-      expect(await controller.getAllProfessions()).toEqual(mockProfessionArray);
-      expect(service.getAllProfessions).toHaveBeenCalledTimes(1);
+
+      const result =
+        await controller.getAllProfessions();
+
+      expect(result).toEqual(mockProfessions);
+
+      expect(
+        mockProfessionsService.getAllProfessions
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });
