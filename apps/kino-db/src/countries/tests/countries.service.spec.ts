@@ -7,28 +7,43 @@ import { CountriesService } from "../services";
 describe("CountriesService", () => {
   let service: CountriesService;
 
-  const mockCountry = [{ countryName: "США", countryNameEn: "USA" }];
+  const mockCountries = [
+    {
+      toJSON: () => ({
+        countryName: "США",
+        countryNameEn: "USA",
+      }),
+    },
+    {
+      toJSON: () => ({
+        countryName: "Россия",
+        countryNameEn: "Russia",
+      }),
+    },
+  ];
 
-  const mockCountriesRepository = {
-    findAll: jest.fn().mockResolvedValue(mockCountry),
+  const mockCountryRepository = {
+    findAll: jest.fn(),
   };
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CountriesService,
-        {
-          provide: getModelToken(Country),
-          useValue: mockCountriesRepository,
-        },
-      ],
-    }).compile();
-
-    service = module.get<CountriesService>(CountriesService);
-  });
-
-  afterEach(() => {
     jest.clearAllMocks();
+
+    const module: TestingModule =
+      await Test.createTestingModule({
+        providers: [
+          CountriesService,
+          {
+            provide: getModelToken(Country),
+            useValue: mockCountryRepository,
+          },
+        ],
+      }).compile();
+
+    service =
+      module.get<CountriesService>(
+        CountriesService
+      );
   });
 
   it("should be defined", () => {
@@ -36,11 +51,35 @@ describe("CountriesService", () => {
   });
 
   describe("getAllCountries", () => {
-    it("should return an array of countries", async () => {
-      mockCountriesRepository.findAll.mockResolvedValue(mockCountry);
+    it("should return mapped countries", async () => {
+      mockCountryRepository.findAll.mockResolvedValue(
+        mockCountries
+      );
 
-      expect(await service.getAllCountries()).toEqual(mockCountry);
-      expect(mockCountriesRepository.findAll).toHaveBeenCalledTimes(1);
+      const result =
+        await service.getAllCountries();
+
+      expect(result).toEqual([
+        {
+          countryName: "США",
+          countryNameEn: "USA",
+        },
+        {
+          countryName: "Россия",
+          countryNameEn: "Russia",
+        },
+      ]);
+
+      expect(
+        mockCountryRepository.findAll
+      ).toHaveBeenCalledWith({
+        attributes: [
+          "id",
+          "countryName",
+          "countryNameEn",
+        ],
+        order: [["countryName", "ASC"]],
+      });
     });
   });
 });
