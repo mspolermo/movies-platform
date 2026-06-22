@@ -1,0 +1,1 @@
+export { mapProfessionToItem } from "./professions.mapping";
