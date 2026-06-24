@@ -22,7 +22,7 @@ import {
   FILM_CARD_ATTRIBUTES,
   FILM_SORT_ORDER,
 } from "../constants";
-import { mapFilmToCardResponse } from "../mappers/film.mapper";
+import { mapFilmToCardResponse, mapFilmToDetailsResponse } from "../mappers/film.mapper";
 import { Fact, Film } from "../models";
 
 @Injectable()
@@ -77,7 +77,7 @@ export class FilmsService {
       return null;
     }
 
-    return film.toJSON() as TFilmDetailsResponse;
+    return mapFilmToDetailsResponse(film);
   }
 
   async searchFilmsByName(

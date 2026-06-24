@@ -6,12 +6,12 @@ import { kinoDbRpc } from "@common/services";
 @Controller()
 export class HealthController {
   @MessagePattern(kinoDbRpc.health.ping)
-  async ping(): Promise<true> {
+  ping(): true {
     return true;
   }
 
   @Get("/health")
-  async health() {
+  health() {
     return {
       status: "ok",
       timestamp: new Date().toISOString(),
