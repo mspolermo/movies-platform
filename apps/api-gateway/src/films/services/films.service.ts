@@ -53,11 +53,20 @@ export class FilmsService {
     );
   }
 
-  getFilmPersonsByProfession(
+  async getFilmPersonsByProfession(
     request: TGetFilmPersonsByProfessionRequest
   ): Promise<TPaginatedPersonsResponse> {
-    return this.filmsClient.getFilmPersonsByProfession(
-      request
-    );
+    const result =
+      await this.filmsClient.getFilmPersonsByProfession(
+        request
+      );
+
+    if (!result) {
+      throw new NotFoundException(
+        `Film with id ${request.filmId} not found`
+      );
+    }
+
+    return result;
   }
 }

@@ -52,7 +52,7 @@ export class FilmsClient {
 
   getFilmPersonsByProfession(
     request: TGetFilmPersonsByProfessionRequest
-  ): Promise<TPaginatedPersonsResponse> {
+  ): Promise<TPaginatedPersonsResponse | null> {
     return this.rmq.sendToFilms(
       kinoDbRpc.films.getFilmPersonsByProfession,
       request

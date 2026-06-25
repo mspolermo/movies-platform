@@ -104,7 +104,7 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.films.getFilmPersonsByProfession]: {
     request: TGetFilmPersonsByProfessionRequest;
-    response: TPaginatedPersonsResponse;
+    response: TPaginatedPersonsResponse | null;
   };
   [kinoDbRpc.genres.getAll]: {
     request: Record<string, never>;

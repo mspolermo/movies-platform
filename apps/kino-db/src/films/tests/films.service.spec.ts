@@ -5,6 +5,7 @@ import { Op, Sequelize } from "sequelize";
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
+import { Profession } from "../../professions/models/professions.model";
 import { Film, Fact } from "../models";
 import { FilmsService } from "../services";
 
@@ -65,6 +66,25 @@ describe("FilmsService", () => {
     findByPk: jest.fn().mockResolvedValue(mockFilm.id),
   };
 
+  const mockPerson = {
+    id: 10,
+    photoUrl: "photo.jpg",
+    nameRu: "Иван",
+    nameEn: "Ivan",
+    toJSON: () => ({
+      id: 10,
+      photoUrl: "photo.jpg",
+      nameRu: "Иван",
+      nameEn: "Ivan",
+    }),
+  };
+
+  const mockPersonsRepository = {
+    findAndCountAll: jest
+      .fn()
+      .mockResolvedValue({ rows: [mockPerson], count: 1 }),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -72,6 +92,10 @@ describe("FilmsService", () => {
         {
           provide: getModelToken(Film),
           useValue: mockFilmsRepository,
+        },
+        {
+          provide: getModelToken(Person),
+          useValue: mockPersonsRepository,
         },
       ],
     }).compile();
@@ -116,7 +140,7 @@ describe("FilmsService", () => {
         limit: 10,
         order: [["votesKp", "DESC"]],
       });
-      expect(result).toEqual([mockFilm]);
+      expect(result).toEqual([expectedFilmCard]);
     });
   });
 
@@ -358,6 +382,75 @@ describe("FilmsService", () => {
         ],
       });
       expect(result).toEqual(filmDetailsResponse);
+    });
+  });
+
+  describe("getFilmPersonsByProfession", () => {
+    it("should return null when film is not found", async () => {
+      jest.spyOn(mockFilmsRepository, "findByPk").mockResolvedValue(null);
+
+      const result = await service.getFilmPersonsByProfession(
+        999,
+        "Актёр"
+      );
+
+      expect(result).toBeNull();
+      expect(mockPersonsRepository.findAndCountAll).not.toHaveBeenCalled();
+    });
+
+    it("should query persons with film and profession filters and map response", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+
+      const result = await service.getFilmPersonsByProfession(
+        1,
+        "Актёр",
+        1,
+        20
+      );
+
+      expect(mockFilmsRepository.findByPk).toHaveBeenCalledWith(1, {
+        attributes: ["id"],
+      });
+      expect(mockPersonsRepository.findAndCountAll).toHaveBeenCalledWith({
+        attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+        include: [
+          {
+            model: Film,
+            as: "films",
+            attributes: [],
+            through: { attributes: [] },
+            where: { id: 1 },
+            required: true,
+          },
+          {
+            model: Profession,
+            as: "professions",
+            attributes: [],
+            through: { attributes: [] },
+            where: { name: "Актёр" },
+            required: true,
+          },
+        ],
+        limit: 20,
+        offset: 0,
+        order: [["nameRu", "ASC"]],
+        distinct: true,
+        col: "id",
+      });
+      expect(result).toEqual({
+        items: [
+          {
+            id: 10,
+            photoUrl: "photo.jpg",
+            nameRu: "Иван",
+            nameEn: "Ivan",
+          },
+        ],
+        total: 1,
+        hasMore: false,
+      });
     });
   });
 });

@@ -12,24 +12,30 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
-import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
+import { LIST_DEFAULT_LIMIT } from "@common/constants";
 
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
+import { mapPersonToListItem } from "../../persons/mappers";
+import {
+  normalizePersonListPagination,
+} from "../../persons/utils/persons-pagination.util";
 import { Profession } from "../../professions/models/professions.model";
 import {
   FILM_CARD_ATTRIBUTES,
   FILM_SORT_ORDER,
 } from "../constants";
-import { mapFilmToCardResponse, mapFilmToDetailsResponse } from "../mappers/film.mapper";
+import { mapFilmToCardResponse, mapFilmToDetailsResponse } from "../mappers/film.mapping";
 import { Fact, Film } from "../models";
 
 @Injectable()
 export class FilmsService {
   constructor(
     @InjectModel(Film)
-    private readonly filmRepository: typeof Film
+    private readonly filmRepository: typeof Film,
+    @InjectModel(Person)
+    private readonly personRepository: typeof Person
   ) {}
 
   async getFilmById(
@@ -283,71 +289,53 @@ export class FilmsService {
     professionName: string,
     page = 1,
     limit = LIST_DEFAULT_LIMIT
-  ): Promise<TPaginatedPersonsResponse> {
-    const normalizedLimit =
-      limit > 0 && limit <= LIST_MAX_LIMIT
-        ? limit
-        : LIST_DEFAULT_LIMIT;
-
-    const normalizedPage =
-      page > 0 ? page : 1;
-
-    const offset =
-      (normalizedPage - 1) * normalizedLimit;
-
+  ): Promise<TPaginatedPersonsResponse | null> {
     const film = await this.filmRepository.findByPk(filmId, {
-      include: [
-        {
-          model: Person,
-          as: "persons",
-          attributes: [
-            "id",
-            "photoUrl",
-            "nameRu",
-            "nameEn",
-          ],
-          through: { attributes: [] },
-          include: [
-            {
-              model: Profession,
-              as: "professions",
-              attributes: ["id", "name"],
-              through: { attributes: [] },
-              where: {
-                name: professionName,
-              },
-            },
-          ],
-        },
-      ],
+      attributes: ["id"],
     });
 
     if (!film) {
-      return {
-        items: [],
-        total: 0,
-        hasMore: false,
-      };
+      return null;
     }
 
-    const persons =
-      (film.persons ?? []).filter(
-        (person) =>
-          (person.professions?.length ?? 0) > 0
-      );
+    const { limit: normalizedLimit, offset: normalizedOffset } =
+      normalizePersonListPagination(page, limit);
 
-    const total = persons.length;
+    const { rows, count } =
+      await this.personRepository.findAndCountAll({
+        attributes: ["id", "photoUrl", "nameRu", "nameEn"],
+        include: [
+          {
+            model: Film,
+            as: "films",
+            attributes: [],
+            through: { attributes: [] },
+            where: { id: filmId },
+            required: true,
+          },
+          {
+            model: Profession,
+            as: "professions",
+            attributes: [],
+            through: { attributes: [] },
+            where: { name: professionName },
+            required: true,
+          },
+        ],
+        limit: normalizedLimit,
+        offset: normalizedOffset,
+        order: [["nameRu", "ASC"]],
+        distinct: true,
+        col: "id",
+      });
 
-    const items = persons.slice(
-      offset,
-      offset + normalizedLimit
-    );
+    const items = rows.map(mapPersonToListItem);
+    const total = Array.isArray(count) ? count.length : count;
 
     return {
       items,
       total,
-      hasMore:
-        offset + items.length < total,
+      hasMore: normalizedOffset + items.length < total,
     };
   }
 }

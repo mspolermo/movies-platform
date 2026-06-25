@@ -1,1 +1,1 @@
-export { mapFilmToCardResponse, mapFilmToDetailsResponse } from './film.mapper'
+export { mapFilmToCardResponse, mapFilmToDetailsResponse } from './film.mapping'
