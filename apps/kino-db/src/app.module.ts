@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { Comment } from "./comments/comments.model";
+import { Comment } from "./comments/models/comments.model";
 import { CommentsModule } from "./comments/comments.module";
 import { Country, CountriesModule } from "./countries";
 import { Film, FilmsModule, FilmPerson, FilmGenre, FilmCountry, Fact } from "./films";

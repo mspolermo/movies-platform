@@ -10,7 +10,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Film } from "../films/models/films.model";
+import { Film } from "../../films/models/films.model";
 
 @Table({ tableName: "Comment", timestamps: false })
 export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
@@ -40,7 +40,7 @@ export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
     description: "id user комента к которому пишется коментт",
   })
   @Column({ type: DataType.INTEGER })
-  parentId!: number;
+  parentId!: number | null;
 
   @ApiProperty({ description: "дата создания комента" })
   @Column({

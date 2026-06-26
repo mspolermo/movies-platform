@@ -10,7 +10,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Comment } from "../../comments/comments.model";
+import { Comment } from "../../comments/models/comments.model";
 import { Country } from "../../countries/models/countries.model";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons/models/persons.model";

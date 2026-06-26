@@ -7,9 +7,9 @@ import { Genre } from "../genres/models/genres.model";
 import { Person } from "../persons";
 import { Profession } from "../professions/models/professions.model";
 
-import { CommentsController } from "./comments.controller";
-import { Comment } from "./comments.model";
-import { CommentsService } from "./comments.service";
+import { CommentsController } from "./controllers/comments.controller";
+import { Comment } from "./models/comments.model";
+import { CommentsService } from "./services/comments.service";
 
 @Module({
   imports: [

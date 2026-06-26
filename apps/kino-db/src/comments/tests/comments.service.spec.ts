@@ -3,8 +3,8 @@ import type { TCommentResponse } from "@common/types";
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { Comment } from "../comments.model";
-import { CommentsService } from "../comments.service";
+import { Comment } from "../models/comments.model";
+import { CommentsService } from "../services/comments.service";
 
 
 describe("CommentsService", () => {
