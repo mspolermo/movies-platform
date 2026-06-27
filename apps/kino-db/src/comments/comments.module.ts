@@ -3,12 +3,12 @@ import { SequelizeModule } from "@nestjs/sequelize";
 
 import { Country } from "../countries";
 import { FilmCountry, FilmGenre, FilmPerson, Fact, Film } from "../films";
-import { Genre } from "../genres/models/genres.model";
+import { Genre } from "../genres";
 import { Person } from "../persons";
-import { Profession } from "../professions/models/professions.model";
+import { Profession } from "../professions";
 
-import { CommentsController } from "./controllers/comments.controller";
-import { Comment } from "./models/comments.model";
+import { CommentsController } from "./controllers";
+import { Comment } from "./models";
 import { CommentsService } from "./services/comments.service";
 
 @Module({

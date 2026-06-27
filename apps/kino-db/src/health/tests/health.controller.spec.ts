@@ -1,8 +1,8 @@
 import { ServiceUnavailableException } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
 import { getConnectionToken } from "@nestjs/sequelize";
+import { Test, TestingModule } from "@nestjs/testing";
 
-import { HealthController } from "./health.controller";
+import { HealthController } from "../controllers";
 
 describe("HealthController", () => {
   let controller: HealthController;

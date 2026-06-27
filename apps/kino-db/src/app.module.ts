@@ -2,12 +2,11 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { Comment } from "./comments/models/comments.model";
-import { CommentsModule } from "./comments/comments.module";
+import { Comment, CommentsModule } from "./comments";
 import { Country, CountriesModule } from "./countries";
 import { Film, FilmsModule, FilmPerson, FilmGenre, FilmCountry, Fact } from "./films";
 import { Genre, GenresModule } from "./genres";
-import { HealthController } from "./health.controller";
+import { HealthController } from "./health";
 import { Person, PersonProfession, PersonsModule } from "./persons";
 import { Profession, ProfessionsModule } from "./professions";
 
@@ -47,6 +46,5 @@ import { Profession, ProfessionsModule } from "./professions";
     CommentsModule,
   ],
   controllers: [HealthController],
-  providers: [],
 })
 export class AppModule {}
