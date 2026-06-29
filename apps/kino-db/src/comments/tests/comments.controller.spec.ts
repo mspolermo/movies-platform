@@ -1,33 +1,16 @@
-import type { TCommentResponse } from "@common/types";
+import type {
+  TCommentResponse,
+  TCommentsTreeResponse,
+} from "@common/types";
 
 import { Test, TestingModule } from "@nestjs/testing";
 
 import { CommentsController } from "../controllers/comments.controller";
 import { CommentsService } from "../services/comments.service";
 
-describe("GenresController", () => {
+describe("CommentsController", () => {
   let controller: CommentsController;
-
-  const commentsBased = [
-    {
-      id: 1,
-      header: "This is header",
-      value: "This is value",
-      authorId: 2,
-      parentId: null,
-      filmId: 134,
-      nickName: "Admin",
-    },
-    {
-      id: 2,
-      header: "This is header 2",
-      value: "This is value 2",
-      authorId: 3,
-      parentId: 1,
-      filmId: 134,
-      nickName: "Lover1703",
-    },
-  ];
+  let service: CommentsService;
 
   const mockComment: TCommentResponse = {
     id: 1,
@@ -38,18 +21,40 @@ describe("GenresController", () => {
     filmId: 134,
     nickName: "Admin",
   };
-  const mockCommentDTO = {
+
+  const mockCommentDto = {
     header: "This is header",
     value: "This is value",
     parentId: 3,
     nickName: "Admin",
   };
 
+  const mockCommentsTree: TCommentsTreeResponse = [
+    [
+      {
+        id: 1,
+        header: "Root",
+        value: "Root comment",
+        authorId: 2,
+        parentId: null,
+        filmId: 134,
+        nickName: "Admin",
+      },
+      {
+        id: 2,
+        header: "Reply",
+        value: "Reply comment",
+        authorId: 3,
+        parentId: 1,
+        filmId: 134,
+        nickName: "User",
+      },
+    ],
+  ];
+
   const mockCommentsService = {
-    createComment: jest.fn().mockResolvedValue(mockComment),
-    getAllCommentsByFilmId: jest.fn().mockResolvedValue(commentsBased),
-    create: jest.fn().mockResolvedValue(mockComment),
-    findAll: jest.fn(),
+    createComment: jest.fn(),
+    getCommentsTreeByFilmId: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -63,7 +68,8 @@ describe("GenresController", () => {
       ],
     }).compile();
 
-    controller = module.get<CommentsController>(CommentsController);
+    controller = module.get(CommentsController);
+    service = module.get(CommentsService);
   });
 
   afterEach(() => {
@@ -76,21 +82,35 @@ describe("GenresController", () => {
 
   describe("createComment", () => {
     it("should create comment", async () => {
+      mockCommentsService.createComment.mockResolvedValue(mockComment);
+
       const result = await controller.createComment({
         userId: mockComment.authorId,
-        dto: mockCommentDTO,
         filmId: mockComment.filmId,
+        dto: mockCommentDto,
       });
+
       expect(result).toEqual(mockComment);
-      expect(mockCommentsService.createComment).toHaveBeenCalledTimes(1);
+
+      expect(service.createComment).toHaveBeenCalledWith(
+        mockComment.authorId,
+        mockComment.filmId,
+        mockCommentDto
+      );
     });
   });
+
   describe("getCommentsByFilmId", () => {
-    it("should get array of comments for film with id 134", async () => {
-      expect(await controller.getCommentsByFilmId(134)).toEqual(commentsBased);
-      expect(mockCommentsService.getAllCommentsByFilmId).toHaveBeenCalledTimes(
-        1
+    it("should return comments tree", async () => {
+      mockCommentsService.getCommentsTreeByFilmId.mockResolvedValue(
+        mockCommentsTree
       );
+
+      const result = await controller.getCommentsByFilmId(134);
+
+      expect(result).toEqual(mockCommentsTree);
+
+      expect(service.getCommentsTreeByFilmId).toHaveBeenCalledWith(134);
     });
   });
 });

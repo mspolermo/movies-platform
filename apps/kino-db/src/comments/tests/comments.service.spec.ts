@@ -1,11 +1,22 @@
-import type { TCommentResponse } from "@common/types";
+import type {
+  TCommentResponse,
+  TCommentsTreeResponse,
+} from "@common/types";
 
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 
+import {
+  mapCommentToResponse,
+  mapCommentsToTree,
+} from "../mappers";
 import { Comment } from "../models/comments.model";
 import { CommentsService } from "../services/comments.service";
 
+jest.mock("../mappers", () => ({
+  mapCommentToResponse: jest.fn(),
+  mapCommentsToTree: jest.fn(),
+}));
 
 describe("CommentsService", () => {
   let service: CommentsService;
@@ -19,14 +30,41 @@ describe("CommentsService", () => {
     filmId: 134,
     nickName: "Admin",
   };
-  const mockCommentDTO = {
+
+  const mockCommentDto = {
     header: "This is header",
     value: "This is value",
     parentId: 3,
     nickName: "Admin",
   };
+
+  const comments = [
+    {
+      id: 1,
+      header: "Root",
+      value: "Root comment",
+      authorId: 2,
+      parentId: null,
+      filmId: 134,
+      nickName: "Admin",
+    },
+    {
+      id: 2,
+      header: "Reply",
+      value: "Reply comment",
+      authorId: 3,
+      parentId: 1,
+      filmId: 134,
+      nickName: "User",
+    },
+  ];
+
+  const expectedTree: TCommentsTreeResponse = [
+    [comments[0], comments[1]],
+  ];
+
   const mockCommentsRepository = {
-    create: jest.fn().mockResolvedValue(mockComment),
+    create: jest.fn(),
     findAll: jest.fn(),
   };
 
@@ -41,10 +79,8 @@ describe("CommentsService", () => {
       ],
     }).compile();
 
-    service = module.get<CommentsService>(CommentsService);
-  });
+    service = module.get(CommentsService);
 
-  afterEach(() => {
     jest.clearAllMocks();
   });
 
@@ -54,63 +90,47 @@ describe("CommentsService", () => {
 
   describe("createComment", () => {
     it("should create comment", async () => {
+      mockCommentsRepository.create.mockResolvedValue(mockComment);
+      (mapCommentToResponse as jest.Mock).mockReturnValue(mockComment);
+
       const result = await service.createComment(
         mockComment.authorId,
         mockComment.filmId,
-        mockCommentDTO
+        mockCommentDto
       );
 
       expect(mockCommentsRepository.create).toHaveBeenCalledWith({
+        header: mockCommentDto.header,
+        value: mockCommentDto.value,
         authorId: mockComment.authorId,
+        nickName: mockCommentDto.nickName,
+        parentId: mockCommentDto.parentId,
         filmId: mockComment.filmId,
-        ...mockCommentDTO,
       });
+
+      expect(mapCommentToResponse).toHaveBeenCalledWith(mockComment);
+
       expect(result).toEqual(mockComment);
-      expect(mockCommentsRepository.create).toHaveBeenCalledTimes(1);
     });
   });
 
-  describe("getAllCommentsToFilmById", () => {
-    it("should return an array of comments", async () => {
-      const commentsBased = [
-        {
-          id: 1,
-          header: "This is header",
-          value: "This is value",
-          authorId: 2,
-          parentId: null,
+  describe("getCommentsTreeByFilmId", () => {
+    it("should return comments tree", async () => {
+      mockCommentsRepository.findAll.mockResolvedValue(comments);
+      (mapCommentsToTree as jest.Mock).mockReturnValue(expectedTree);
+
+      const result = await service.getCommentsTreeByFilmId(134);
+
+      expect(mockCommentsRepository.findAll).toHaveBeenCalledWith({
+        where: {
           filmId: 134,
-          nickName: "Admin",
         },
-        {
-          id: 2,
-          header: "This is header 2",
-          value: "This is value 2",
-          authorId: 3,
-          parentId: 1,
-          filmId: 134,
-          nickName: "Lover1703",
-        },
-      ];
+        order: [["createdAt", "ASC"]],
+      });
 
-      const sorting = [];
-      for (let i = 0; i < commentsBased.length; i++) {
-        const childrenComments = [];
+      expect(mapCommentsToTree).toHaveBeenCalledWith(comments);
 
-        if (commentsBased[i].parentId === null) {
-          for (let j = 0; j < commentsBased.length; j++) {
-            if (commentsBased[j].parentId == commentsBased[i].id) {
-              childrenComments.push(commentsBased[j]);
-            }
-          }
-
-          sorting.push([commentsBased[i], ...childrenComments]);
-        }
-      }
-
-      mockCommentsRepository.findAll.mockResolvedValue(commentsBased);
-      expect(await service.getAllCommentsByFilmId(134)).toEqual(sorting);
-      expect(mockCommentsRepository.findAll).toHaveBeenCalledTimes(1);
+      expect(result).toEqual(expectedTree);
     });
   });
 });

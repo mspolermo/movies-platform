@@ -8,7 +8,7 @@ describe("HealthController", () => {
   let controller: HealthController;
 
   const mockSequelize = {
-    authenticate: jest.fn().mockResolvedValue(undefined),
+    authenticate: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -22,7 +22,7 @@ describe("HealthController", () => {
       ],
     }).compile();
 
-    controller = module.get<HealthController>(HealthController);
+    controller = module.get(HealthController);
   });
 
   afterEach(() => {
@@ -41,15 +41,19 @@ describe("HealthController", () => {
 
   describe("health", () => {
     it("should return ok when database is connected", async () => {
+      mockSequelize.authenticate.mockResolvedValue(undefined);
+
       const result = await controller.health();
 
-      expect(mockSequelize.authenticate).toHaveBeenCalled();
+      expect(mockSequelize.authenticate).toHaveBeenCalledTimes(1);
+
       expect(result).toMatchObject({
         status: "ok",
         service: "kino-db",
         database: "connected",
       });
-      expect(result.timestamp).toBeDefined();
+
+      expect(result.timestamp).toEqual(expect.any(String));
     });
 
     it("should throw ServiceUnavailableException when database is down", async () => {
@@ -57,9 +61,17 @@ describe("HealthController", () => {
         new Error("connection refused")
       );
 
-      await expect(controller.health()).rejects.toThrow(
+      await expect(controller.health()).rejects.toBeInstanceOf(
         ServiceUnavailableException
       );
+
+      await expect(controller.health()).rejects.toMatchObject({
+        response: {
+          status: "error",
+          service: "kino-db",
+          database: "disconnected",
+        },
+      });
     });
   });
 });
