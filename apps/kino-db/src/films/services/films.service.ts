@@ -2,7 +2,6 @@ import type {
   TFilmDetailsResponse,
   TFilmListItemResponse,
   TFilmsResponse,
-  TFilmSortBy,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from "@common/types";
@@ -26,6 +25,7 @@ import {
   FILM_CARD_ATTRIBUTES,
   FILM_SORT_ORDER,
 } from "../constants";
+import { FilmFiltersDto } from "../dto";
 import { mapFilmToCardResponse, mapFilmToDetailsResponse } from "../mappers/film.mapping";
 import { Fact, Film } from "../models";
 
@@ -112,17 +112,20 @@ export class FilmsService {
     return films.map(mapFilmToCardResponse);
   }
 
-  async filmFilters(
-    page: number,
-    perPage: number,
-    genres?: string[],
-    countries?: string[],
-    persons?: string[],
-    minRatingKp = 0,
-    minVotesKp = 0,
-    sortBy: TFilmSortBy = "popularity",
-    years?: number[]
-  ): Promise<TFilmsResponse> {
+  async filmFilters(dto: FilmFiltersDto): Promise<TFilmsResponse> {
+
+    const {
+      page,
+      perPage,
+      genres,
+      countries,
+      persons,
+      minRatingKp = 0,
+      minVotesKp = 0,
+      sortBy = "popularity",
+      years,
+    } = dto;
+    
     const order = FILM_SORT_ORDER[sortBy];
 
     const attributes = Array.from(

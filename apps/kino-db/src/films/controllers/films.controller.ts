@@ -1,4 +1,3 @@
-import type { TFilmSortBy } from "@common/types";
 import type { TGetFilmPersonsByProfessionRequest } from "@common/types";
 
 import { Controller } from "@nestjs/common";
@@ -6,6 +5,7 @@ import { MessagePattern, Payload } from "@nestjs/microservices";
 
 import { kinoDbRpc } from "@common/services";
 
+import { FilmFiltersDto } from "../dto";
 import { FilmsService } from "../services";
 
 @Controller("films")
@@ -18,42 +18,8 @@ export class FilmsController {
   }
 
   @MessagePattern(kinoDbRpc.films.filters)
-  async filters(
-    @Payload()
-    data: {
-      page: number;
-      perPage: number;
-      genres?: string[];
-      countries?: string[];
-      persons?: string[];
-      minRatingKp?: number;
-      minVotesKp?: number;
-      sortBy?: TFilmSortBy;
-      years?: number[];
-    }
-  ) {
-    const {
-      page,
-      perPage,
-      genres,
-      countries,
-      persons,
-      minRatingKp,
-      minVotesKp,
-      sortBy,
-      years,
-    } = data;
-    return await this.filmService.filmFilters(
-      page,
-      perPage,
-      genres,
-      countries,
-      persons,
-      minRatingKp,
-      minVotesKp,
-      sortBy,
-      years
-    );
+  filters(@Payload() dto: FilmFiltersDto) {
+    return this.filmService.filmFilters(dto);
   }
 
   @MessagePattern(kinoDbRpc.films.getAllFilmYears)
