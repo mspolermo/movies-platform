@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 
 import { JwtConfigModule } from "../jwt";
 
-import { CommentsController } from "./comments.controller";
-import { CommentsService } from "./comments.service";
+import { CommentsController } from "./controllers";
+import { CommentsService } from "./services";
 
 @Module({
   imports: [JwtConfigModule],

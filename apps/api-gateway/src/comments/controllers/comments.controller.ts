@@ -14,11 +14,10 @@ import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 
 import { CommentDTO } from "@common/dto";
 
-import { JwtAuthGuard } from "../shared/guards";
-import { AuthenticatedRequest } from "../shared/interfaces";
-import { ValidationPipe } from "../shared/pipes";
-
-import { CommentsService } from "./comments.service";
+import { JwtAuthGuard } from "../../shared/guards";
+import { AuthenticatedRequest } from "../../shared/interfaces";
+import { ValidationPipe } from "../../shared/pipes";
+import { CommentsService } from "../services";
 
 @Controller("comments")
 @UseGuards(JwtAuthGuard) // Защищаем весь контроллер
