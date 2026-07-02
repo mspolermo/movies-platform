@@ -6,19 +6,17 @@ import type {
 import { Injectable } from "@nestjs/common";
 
 import { CommentDTO } from "@common/dto";
-
-import { CommentsClient } from "../clients";
+import { kinoDbRpc, RmqService } from "@common/services";
 
 @Injectable()
-export class CommentsService {
-  constructor(
-    private readonly commentsClient: CommentsClient
-  ) {}
+export class CommentsClient {
+  constructor(private readonly rmq: RmqService) {}
 
   getCommentsByFilmId(
     filmId: number
   ): Promise<TCommentsTreeResponse> {
-    return this.commentsClient.getCommentsByFilmId(
+    return this.rmq.sendToFilms(
+      kinoDbRpc.comments.getByFilmId,
       filmId
     );
   }
@@ -28,10 +26,13 @@ export class CommentsService {
     dto: CommentDTO,
     userId: number
   ): Promise<TCommentResponse> {
-    return this.commentsClient.createComment(
-      filmId,
-      dto,
-      userId
+    return this.rmq.sendToFilms(
+      kinoDbRpc.comments.create,
+      {
+        filmId,
+        dto,
+        userId,
+      }
     );
   }
 }

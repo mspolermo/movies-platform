@@ -1,0 +1,1 @@
+export { CommentsClient } from './comments.client'
