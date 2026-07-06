@@ -1,0 +1,66 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 320px;
+  min-height: 180px;
+
+  padding: 20px;
+
+  background: var(--color-background-elements);
+  border-radius: 12px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: 10px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-heading);
+}
+
+.text {
+  display: -webkit-box;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  line-height: 1.5;
+
+  -webkit-box-orient: vertical;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 24px;
+}
+
+.date {
+  font-size: 13px;
+  color: var(--color-purple);
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.likesCount {
+  font-weight: 700;
+  color: var(--color-green);
+}
