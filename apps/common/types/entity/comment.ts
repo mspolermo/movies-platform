@@ -10,3 +10,20 @@ export type TCommentEntity = {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+//TODO: исправить на
+
+export type TComment = {
+  id: string;
+
+  title: string;
+  text: string;
+
+  authorId: number;
+  authorName: string;
+
+  filmId: number;
+  parentId: number | null;
+
+  createdAt: string;
+}
