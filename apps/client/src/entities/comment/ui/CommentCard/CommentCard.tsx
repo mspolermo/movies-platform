@@ -1,14 +1,9 @@
-import type { TCommentResponse } from "@common/types";
+import type { TCommentCardProps } from "./types";
 
 import { SvgIcon } from "@/shared/ui";
 
 import styles from "./CommentCard.module.scss";
 import { formatCommentDate } from "../../lib";
-
-
-type TCommentCardProps = {
-  comment: TCommentResponse;
-}
 
 export const CommentCard = ({ comment }: TCommentCardProps) => {
   return (

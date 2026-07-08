@@ -3,7 +3,7 @@ import type { TCommentEntity } from "../entity";
 /** Ответ API для одного комментария. */
 export type TCommentResponse = Pick<
   TCommentEntity,
-  "id" | "header" | "value" | "authorId" | "nickName" | "parentId" | "filmId"
+  "id" | "header" | "value" | "authorId" | "nickName" | "parentId" | "filmId" | "createdAt"
 >;
 
 /** Ответ API для дерева комментариев фильма. */
