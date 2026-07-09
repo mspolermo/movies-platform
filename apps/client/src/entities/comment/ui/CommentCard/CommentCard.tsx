@@ -24,15 +24,17 @@ export const CommentCard = ({ comment }: TCommentCardProps) => {
         </time>
 
         <div className={styles.likes}>
-          <SvgIcon
-            color="gray"
-            name="like"
-            size="18"
-          />
+          <div className={styles.rating}>
+            <SvgIcon
+              color="gray"
+              name="like"
+              size="18"
+            />
 
-          <span className={styles.likesCount}>
-            0
-          </span>
+            <span className={styles.likesCount}>
+              0
+            </span>
+          </div>
 
           <SvgIcon
             color="gray"
