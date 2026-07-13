@@ -1,0 +1,48 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+
+  color: var(--color-heading);
+
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.count {
+  color: var(--color-purple);
+}
+
+.subtitle {
+  margin: 8px 0 0;
+
+  color: var(--color-text);
+
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.error {
+  color: var(--color-red);
+
+  font-size: 15px;
+  line-height: 22px;
+}

@@ -3,6 +3,7 @@ dist
 node_modules
 /docs
 .next
+*.tsbuildinfo
 /apps/client/node_modules
 /apps/client/.next
 /old-client/

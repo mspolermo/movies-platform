@@ -1,48 +1,53 @@
-import type { TCommentCardProps } from "./types";
+import type { TCommentCardProps } from './types';
 
-import { SvgIcon } from "@/shared/ui";
+import cn from 'classnames';
 
-import styles from "./CommentCard.module.scss";
-import { formatCommentDate } from "../../lib";
+import { SvgIcon } from '@/shared/ui';
 
-export const CommentCard = ({ comment }: TCommentCardProps) => {
+import styles from './CommentCard.module.scss';
+import { formatCommentDate } from '../../lib';
+
+export const CommentCard = ({ comment, isLikePending = false, onLikeClick }: TCommentCardProps) => {
+  const showTitle = Boolean(comment.title?.trim());
+
+  const handleLikeClick = () => {
+    onLikeClick?.(comment.id);
+  };
+
   return (
     <article className={styles.card}>
-      <div className={styles.content}>
-        <h3 className={styles.title}>
-          {comment.header}
-        </h3>
-
-        <p className={styles.text}>
-          {comment.value}
-        </p>
+      <div className={styles.header}>
+        <span className={styles.authorName}>{comment.authorName}</span>
+        <time className={styles.date}>{formatCommentDate(comment.createdAt)}</time>
       </div>
 
-      <footer className={styles.footer}>
-        <time className={styles.date}>
-          {formatCommentDate(comment.createdAt)}
-        </time>
+      <div className={styles.content}>
+        {showTitle && <h3 className={styles.title}>{comment.title}</h3>}
 
-        <div className={styles.likes}>
-          <div className={styles.rating}>
+        <p className={styles.text}>{comment.text}</p>
+      </div>
+
+      <div className={styles.actions}>
+        <span className={styles.likesCount}>{comment.likesCount}</span>
+
+        {onLikeClick && (
+          <button
+            aria-label="Нравится"
+            aria-pressed={Boolean(comment.liked)}
+            className={cn(styles.likeButton, comment.liked && styles.likeButtonActive)}
+            disabled={isLikePending}
+            type="button"
+            onClick={handleLikeClick}
+          >
             <SvgIcon
-              color="gray"
+              color={comment.liked ? 'var(--color-green)' : 'var(--color-purple)'}
+              fill={comment.liked ? 'var(--color-green)' : 'none'}
               name="like"
-              size="18"
+              size={18}
             />
-
-            <span className={styles.likesCount}>
-              0
-            </span>
-          </div>
-
-          <SvgIcon
-            color="gray"
-            name="dislike"
-            size="18"
-          />
-        </div>
-      </footer>
+          </button>
+        )}
+      </div>
     </article>
   );
 };

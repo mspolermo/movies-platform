@@ -1,6 +1,7 @@
 import type {
   TCommentResponse,
-  TCommentsTreeResponse,
+  TCommentsPaginatedResponse,
+  TToggleCommentLikeResponse,
 } from "@common/types";
 
 import { Test, TestingModule } from "@nestjs/testing";
@@ -14,47 +15,60 @@ describe("CommentsController", () => {
 
   const mockComment: TCommentResponse = {
     id: 1,
-    header: "This is header",
-    value: "This is value",
+    title: "This is title",
+    text: "This is text",
     authorId: 2,
-    parentId: 3,
     filmId: 134,
-    nickName: "Admin",
+    authorName: "Admin",
+    likesCount: 0,
+    createdAt: "2021-05-12T16:34:56.833Z",
   };
 
   const mockCommentDto = {
-    header: "This is header",
-    value: "This is value",
-    parentId: 3,
-    nickName: "Admin",
+    title: "This is title",
+    text: "This is text",
   };
 
-  const mockCommentsTree: TCommentsTreeResponse = [
-    [
+  const authorName = "admin";
+
+  const mockCommentsPaginated: TCommentsPaginatedResponse = {
+    items: [
       {
         id: 1,
-        header: "Root",
-        value: "Root comment",
+        title: "Root",
+        text: "Root comment",
         authorId: 2,
-        parentId: null,
         filmId: 134,
-        nickName: "Admin",
+        authorName: "Admin",
+        likesCount: 0,
+        createdAt: "2021-05-12T16:34:56.833Z",
       },
       {
         id: 2,
-        header: "Reply",
-        value: "Reply comment",
+        title: "Reply",
+        text: "Reply comment",
         authorId: 3,
-        parentId: 1,
         filmId: 134,
-        nickName: "User",
+        authorName: "User",
+        likesCount: 0,
+        createdAt: "2021-06-16T16:39:56.833Z",
       },
     ],
-  ];
+    total: 2,
+    page: 1,
+    perPage: 20,
+    hasMore: false,
+  };
+
+  const mockToggleResponse: TToggleCommentLikeResponse = {
+    liked: true,
+    likesCount: 1,
+  };
 
   const mockCommentsService = {
     createComment: jest.fn(),
-    getCommentsTreeByFilmId: jest.fn(),
+    getCommentsPaginatedByFilmId: jest.fn(),
+    toggleCommentLike: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -87,6 +101,7 @@ describe("CommentsController", () => {
       const result = await controller.createComment({
         userId: mockComment.authorId,
         filmId: mockComment.filmId,
+        authorName,
         dto: mockCommentDto,
       });
 
@@ -95,22 +110,48 @@ describe("CommentsController", () => {
       expect(service.createComment).toHaveBeenCalledWith(
         mockComment.authorId,
         mockComment.filmId,
+        authorName,
         mockCommentDto
       );
     });
   });
 
   describe("getCommentsByFilmId", () => {
-    it("should return comments tree", async () => {
-      mockCommentsService.getCommentsTreeByFilmId.mockResolvedValue(
-        mockCommentsTree
+    it("should return paginated comments list", async () => {
+      mockCommentsService.getCommentsPaginatedByFilmId.mockResolvedValue(
+        mockCommentsPaginated
       );
 
-      const result = await controller.getCommentsByFilmId(134);
+      const result = await controller.getCommentsByFilmId({
+        filmId: 134,
+        page: 1,
+        perPage: 20,
+      });
 
-      expect(result).toEqual(mockCommentsTree);
+      expect(result).toEqual(mockCommentsPaginated);
 
-      expect(service.getCommentsTreeByFilmId).toHaveBeenCalledWith(134);
+      expect(service.getCommentsPaginatedByFilmId).toHaveBeenCalledWith({
+        filmId: 134,
+        page: 1,
+        perPage: 20,
+      });
+    });
+  });
+
+  describe("toggleCommentLike", () => {
+    it("should toggle comment like", async () => {
+      mockCommentsService.toggleCommentLike.mockResolvedValue(
+        mockToggleResponse
+      );
+
+      const result = await controller.toggleCommentLike({
+        userId: 2,
+        commentId: 1,
+      });
+
+      expect(result).toEqual(mockToggleResponse);
+
+      expect(service.toggleCommentLike).toHaveBeenCalledWith(2, 1);
     });
   });
 });

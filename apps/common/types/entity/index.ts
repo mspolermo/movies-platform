@@ -5,5 +5,6 @@ export type { TGenreEntity } from './genre';
 export type { TProfessionEntity } from './profession';
 export type { TPersonEntity } from './person';
 export type { TCommentEntity } from './comment';
+export type { TCommentLikeEntity } from './commentLike';
 export type { TRoleEntity } from './role';
 export type { TUserEntity } from './user';

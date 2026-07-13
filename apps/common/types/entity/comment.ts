@@ -1,21 +1,14 @@
-//TODO: исправить что написано
-//TODO: нужно добавить лайки 
-
 /** Доменная сущность комментария с полями, которые реально хранятся в таблице. */
 export type TCommentEntity = {
   id: number;
 
-  header: string; //изменить на title
-  value: string; // изменить на text
+  title: string;
+  text: string;
 
   authorId: number;
-  nickName: string; // изменить на authorName
+  authorName: string;
 
-  parentId: number | null;
   filmId: number;
 
   createdAt: Date;
-  updatedAt?: Date;
-}
-
-
+};

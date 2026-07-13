@@ -1,7 +1,10 @@
-import type { CommentDTO } from "../../../dto"
 import type {
   TCommentResponse,
-  TCommentsTreeResponse,
+  TCommentsPaginatedResponse,
+  TCreateCommentRpcRequest,
+  TGetFilmCommentsRpcRequest,
+  TToggleCommentLikeRequest,
+  TToggleCommentLikeResponse,
   TCountriesListResponse,
   TFilmDetailsResponse,
   TFilmListItemResponse,
@@ -21,8 +24,6 @@ import type {
   TGenresListResponse,
 } from "../../../types";
 
-//TODO: комменты пока не реализованы правильно, при реализации комментов - посмотреть
-
 /**
  * Паттерны сообщений RabbitMQ для микросервиса kino-db.
  * Значения строк не менять без согласования — это контракт с api-gateway.
@@ -34,6 +35,7 @@ export const kinoDbRpc = {
   comments: {
     create: "createComment",
     getByFilmId: "getCommentsByFilmId",
+    toggleLike: "toggleCommentLike",
   },
   countries: {
     getAll: "getAll.countries",
@@ -67,16 +69,16 @@ export type TKinoDbRpcContract = {
     response: true;
   };
   [kinoDbRpc.comments.create]: {
-    request: {
-      userId: number;
-      filmId: number;
-      dto: CommentDTO;
-    };
+    request: TCreateCommentRpcRequest;
     response: TCommentResponse;
   };
   [kinoDbRpc.comments.getByFilmId]: {
-    request: number;
-    response: TCommentsTreeResponse;
+    request: TGetFilmCommentsRpcRequest;
+    response: TCommentsPaginatedResponse;
+  };
+  [kinoDbRpc.comments.toggleLike]: {
+    request: TToggleCommentLikeRequest;
+    response: TToggleCommentLikeResponse;
   };
   [kinoDbRpc.countries.getAll]: {
     request: Record<string, never>;

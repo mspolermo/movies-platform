@@ -1,1 +1,1 @@
-export { mapCommentToResponse, mapCommentsToTree } from './comment.mapping'
+export { mapCommentToResponse, mapCommentsToResponseList } from './comment.mapping';

@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { Comment, CommentsModule } from "./comments";
+import { Comment, CommentLike, CommentsModule } from "./comments";
 import { Country, CountriesModule } from "./countries";
 import { Film, FilmsModule, FilmPerson, FilmGenre, FilmCountry, Fact } from "./films";
 import { Genre, GenresModule } from "./genres";
@@ -34,6 +34,7 @@ import { Profession, ProfessionsModule } from "./professions";
         FilmPerson,
         PersonProfession,
         Comment,
+        CommentLike,
       ],
       autoLoadModels: true,
       synchronize: true,

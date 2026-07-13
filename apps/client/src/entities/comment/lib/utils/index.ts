@@ -1,1 +1,1 @@
-export { formatCommentDate } from './formatCommentDate'
+export { formatCommentDate } from './formatCommentDate';

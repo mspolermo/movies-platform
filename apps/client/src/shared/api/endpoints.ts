@@ -46,4 +46,15 @@ export const API_ENDPOINTS = {
   PERSONS_EX: {
     SEARCH_FIND: '/persons/search',
   },
+
+  // Комментарии
+  COMMENTS: {
+    BY_FILM: (filmId: number) => `/comments/${filmId}`,
+    LIKE: (commentId: number) => `/comments/${commentId}/like`,
+  },
+
+  // Auth
+  AUTH: {
+    LOGIN: '/auth/login',
+  },
 } as const;

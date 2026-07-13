@@ -1,4 +1,8 @@
-import type { TCommentResponse, TCommentsTreeResponse } from "@common/types";
+import type {
+  TCommentResponse,
+  TCommentsPaginatedResponse,
+  TToggleCommentLikeResponse,
+} from "@common/types";
 
 import {
   Controller,
@@ -6,17 +10,20 @@ import {
   Post,
   Param,
   Body,
+  Query,
   UseGuards,
   UsePipes,
   Req,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 
 import { CommentDTO } from "@common/dto";
 
-import { JwtAuthGuard } from "../../shared/guards";
+import { JwtAuthGuard, Public } from "../../shared";
 import { AuthenticatedRequest } from "../../shared/interfaces";
 import { ValidationPipe } from "../../shared/pipes";
+import { GetFilmCommentsQueryDto } from "../dto";
 import { CommentsService } from "../services";
 
 @Controller("comments")
@@ -25,12 +32,21 @@ import { CommentsService } from "../services";
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @Public()
   @ApiOperation({ summary: "Получение комментариев по id фильма" })
   @ApiResponse({ status: 200, description: "Список комментариев" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
   @Get("/:filmId")
-  async getCommentsByFilmId(@Param("filmId") filmId: number): Promise<TCommentsTreeResponse> {
-    return await this.commentsService.getCommentsByFilmId(filmId);
+  async getCommentsByFilmId(
+    @Param("filmId", ParseIntPipe) filmId: number,
+    @Query() query: GetFilmCommentsQueryDto,
+    @Req() req: AuthenticatedRequest
+  ): Promise<TCommentsPaginatedResponse> {
+    return await this.commentsService.getCommentsByFilmId({
+      filmId,
+      page: query.page,
+      perPage: query.perPage,
+      userId: req.user?.id,
+    });
   }
 
   @ApiOperation({ summary: "Создание комментария" })
@@ -39,11 +55,23 @@ export class CommentsController {
   @UsePipes(ValidationPipe)
   @Post("/:filmId")
   async createComment(
-    @Param("filmId") filmId: number,
+    @Param("filmId", ParseIntPipe) filmId: number,
     @Body() dto: CommentDTO,
     @Req() req: AuthenticatedRequest
   ): Promise<TCommentResponse> {
     const userId = req.user.id;
     return await this.commentsService.createComment(filmId, dto, userId);
+  }
+
+  @ApiOperation({ summary: "Toggle лайка комментария" })
+  @ApiResponse({ status: 200, description: "Состояние лайка" })
+  @ApiResponse({ status: 401, description: "Unauthorized" })
+  @Post("/:commentId/like")
+  async toggleCommentLike(
+    @Param("commentId", ParseIntPipe) commentId: number,
+    @Req() req: AuthenticatedRequest
+  ): Promise<TToggleCommentLikeResponse> {
+    const userId = req.user.id;
+    return await this.commentsService.toggleCommentLike(commentId, userId);
   }
 }

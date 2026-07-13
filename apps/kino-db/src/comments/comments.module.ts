@@ -8,7 +8,7 @@ import { Person } from "../persons";
 import { Profession } from "../professions";
 
 import { CommentsController } from "./controllers";
-import { Comment } from "./models";
+import { Comment, CommentLike } from "./models";
 import { CommentsService } from "./services/comments.service";
 
 @Module({
@@ -24,6 +24,7 @@ import { CommentsService } from "./services/comments.service";
       Person,
       Profession,
       Comment,
+      CommentLike,
     ]),
   ],
   controllers: [CommentsController],

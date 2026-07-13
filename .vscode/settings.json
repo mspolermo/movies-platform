@@ -11,5 +11,6 @@
     "typescript",
     "typescriptreact"
   ],
-  "eslint.run": "onType"
+  "eslint.run": "onType",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

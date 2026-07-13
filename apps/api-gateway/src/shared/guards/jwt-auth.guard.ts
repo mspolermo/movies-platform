@@ -38,65 +38,22 @@ export class JwtAuthGuard implements CanActivate {
     ]);
 
     if (isPublic) {
+      const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
+      this.attachUserFromToken(req, true);
       return true;
     }
 
     const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
     try {
-      const authHeader = req.headers.authorization;
-
-      if (!authHeader) {
-        console.log("🔐 JWT Guard: Отсутствует заголовок Authorization");
-        throw new UnauthorizedException({
-          message: "Отсутствует заголовок авторизации",
-        });
+      if (this.attachUserFromToken(req)) {
+        return true;
       }
 
-      const [bearer, token] = authHeader.split(" ");
-
-      if (bearer !== "Bearer" || !token) {
-        console.log("🔐 JWT Guard: Неверный формат заголовка авторизации");
-        throw new UnauthorizedException({
-          message: "Неверный формат заголовка авторизации",
-        });
-      }
-
-      if (!this.jwtService) {
-        console.log("🔐 JWT Guard: JwtService недоступен");
-        throw new UnauthorizedException({
-          message: "Ошибка сервиса аутентификации",
-        });
-      }
-
-      console.log("🔐 JWT Guard: Проверяю токен...");
-
-      // Проверяем токен с новым форматом (только sub и email)
-      const tokenPayload = this.jwtService.verify<{
-        sub: number;
-        email: string;
-      }>(token);
-      console.log(
-        "🔐 JWT Guard: Токен проверен, пользователь ID:",
-        tokenPayload.sub
-      );
-
-      // Валидация данных пользователя
-      if (!tokenPayload.sub || !tokenPayload.email) {
-        console.log("🔐 JWT Guard: Неполные данные пользователя в токене");
-        throw new UnauthorizedException({
-          message: "Неполные данные пользователя в токене",
-        });
-      }
-
-      // Создаем объект пользователя без ролей (роли будут получены позже)
-      const user: TJwtUserRequest = {
-        id: tokenPayload.sub,
-        email: tokenPayload.email,
-      };
-
-      req.user = user;
-      return true;
+      console.log("🔐 JWT Guard: Отсутствует заголовок Authorization");
+      throw new UnauthorizedException({
+        message: "Отсутствует заголовок авторизации",
+      });
     } catch (e) {
       if (e instanceof UnauthorizedException) {
         throw e;
@@ -122,6 +79,65 @@ export class JwtAuthGuard implements CanActivate {
       throw new UnauthorizedException({
         message: "Пользователь не авторизован",
       });
+    }
+  }
+
+  private attachUserFromToken(
+    req: AuthenticatedRequest,
+    optional = false
+  ): boolean {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      return false;
+    }
+
+    const [bearer, token] = authHeader.split(" ");
+
+    if (bearer !== "Bearer" || !token) {
+      return false;
+    }
+
+    if (!this.jwtService) {
+      if (optional) {
+        return false;
+      }
+
+      throw new UnauthorizedException({
+        message: "Ошибка сервиса аутентификации",
+      });
+    }
+
+    try {
+      const tokenPayload = this.jwtService.verify<{
+        sub: number;
+        email: string;
+      }>(token);
+
+      if (!tokenPayload.sub || !tokenPayload.email) {
+        if (optional) {
+          return false;
+        }
+
+        throw new UnauthorizedException({
+          message: "Неполные данные пользователя в токене",
+        });
+      }
+
+      const user: TJwtUserRequest = {
+        id: tokenPayload.sub,
+        email: tokenPayload.email,
+      };
+
+      req.user = user;
+
+      return true;
+    } catch (e) {
+      if (optional) {
+        return false;
+      }
+
+      throw e;
     }
   }
 }

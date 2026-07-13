@@ -13,3 +13,11 @@ export type {
 } from "./person";
 export type { TGetPersonsByProfessionRequest } from "./profession";
 export type { TJwtUserRequest } from "./user";
+export type {
+  TCreateCommentRequest,
+  TCreateCommentRpcRequest,
+  TGetFilmCommentsParams,
+  TGetFilmCommentsRequest,
+  TGetFilmCommentsRpcRequest,
+  TToggleCommentLikeRequest,
+} from "./comment";

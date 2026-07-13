@@ -5,6 +5,7 @@
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
+  margin-bottom: 32px;
 
   @media (max-width: sizes.$bp-tablet) {
     padding-top: 0;

@@ -1,2 +1,2 @@
-export { Comment } from './models'
+export { Comment, CommentLike } from './models'
 export { CommentsModule } from './comments.module'

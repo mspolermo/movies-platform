@@ -25,5 +25,6 @@
         "apps/common/*"
       ]
     }
-  }
+  },
+  "exclude": ["node_modules", "dist", "apps/client", "**/*.spec.ts"]
 }

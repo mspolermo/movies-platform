@@ -21,11 +21,12 @@ run_psql() {
 
 is_schema_ready() {
   run_psql -tA -c "
-    SELECT COUNT(*) = 11
+    SELECT COUNT(*) = 12
     FROM information_schema.tables
     WHERE table_schema = 'public'
       AND table_name IN (
         'Comment',
+        'CommentLike',
         'Country',
         'Fact',
         'Film',
@@ -47,6 +48,7 @@ is_seed_applied() {
 reset_seed_tables() {
   run_psql -c '
     TRUNCATE TABLE
+      public."CommentLike",
       public."Comment",
       public."Fact",
       public."_CountryToFilm",

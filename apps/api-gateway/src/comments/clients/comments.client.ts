@@ -1,6 +1,8 @@
 import type {
   TCommentResponse,
-  TCommentsTreeResponse,
+  TCommentsPaginatedResponse,
+  TGetFilmCommentsRpcRequest,
+  TToggleCommentLikeResponse,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -13,24 +15,39 @@ export class CommentsClient {
   constructor(private readonly rmq: RmqService) {}
 
   getCommentsByFilmId(
-    filmId: number
-  ): Promise<TCommentsTreeResponse> {
+    request: TGetFilmCommentsRpcRequest
+  ): Promise<TCommentsPaginatedResponse> {
     return this.rmq.sendToFilms(
       kinoDbRpc.comments.getByFilmId,
-      filmId
+      request
     );
   }
 
   createComment(
     filmId: number,
     dto: CommentDTO,
-    userId: number
+    userId: number,
+    authorName: string
   ): Promise<TCommentResponse> {
     return this.rmq.sendToFilms(
       kinoDbRpc.comments.create,
       {
         filmId,
         dto,
+        userId,
+        authorName,
+      }
+    );
+  }
+
+  toggleCommentLike(
+    commentId: number,
+    userId: number
+  ): Promise<TToggleCommentLikeResponse> {
+    return this.rmq.sendToFilms(
+      kinoDbRpc.comments.toggleLike,
+      {
+        commentId,
         userId,
       }
     );

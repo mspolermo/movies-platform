@@ -6,11 +6,14 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
 
 import { Film } from "../../films/models/films.model";
+
+import { CommentLike } from "./commentLike.model";
 
 @Table({ tableName: "Comment", timestamps: false })
 export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
@@ -25,22 +28,15 @@ export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
 
   @ApiProperty({ example: "Заголовок", description: "Заголовок комента" })
   @Column({ type: DataType.TEXT })
-  header!: string;
+  title!: string;
 
   @ApiProperty({ example: "Текст", description: "Текст комента" })
   @Column({ type: DataType.TEXT, allowNull: false })
-  value!: string;
+  text!: string;
 
   @ApiProperty({ example: "1", description: "id user который написал комент" })
   @Column({ type: DataType.INTEGER, allowNull: false })
   authorId!: number;
-
-  @ApiProperty({
-    example: "1",
-    description: "id user комента к которому пишется коментт",
-  })
-  @Column({ type: DataType.INTEGER })
-  parentId!: number | null;
 
   @ApiProperty({ description: "дата создания комента" })
   @Column({
@@ -51,9 +47,9 @@ export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
   })
   createdAt!: Date;
 
-  @ApiProperty({ description: "никнейм юзера" })
+  @ApiProperty({ description: "имя автора" })
   @Column({ type: DataType.TEXT, allowNull: false })
-  nickName!: string;
+  authorName!: string;
 
   @ForeignKey(() => Film)
   @Column({ allowNull: false })
@@ -61,4 +57,7 @@ export class Comment extends Model<TCommentOrmModel, TCommentCreationAtt> {
 
   @BelongsTo(() => Film)
   film!: Film;
+
+  @HasMany(() => CommentLike)
+  likes!: CommentLike[];
 }
