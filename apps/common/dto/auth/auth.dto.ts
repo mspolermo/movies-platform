@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsString, Length, MinLength, IsOptional } from "class-validator";
+import { IsEmail, IsString, Length, IsOptional } from "class-validator";
 
 /**
  * Базовый DTO для аутентификации
@@ -10,7 +10,7 @@ export class AuthDto {
   readonly email!: string;
 
   @IsString({ message: "Пароль должен быть строкой" })
-  @Length(4, 16, { message: "Пароль должен быть от 4 до 16 символов" })
+  @Length(6, 16, { message: "Пароль должен быть от 6 до 16 символов" })
   readonly password!: string;
 }
 
@@ -27,7 +27,7 @@ export class CreateUserDto {
 
   @ApiProperty({ example: "123456", description: "Пароль пользователя" })
   @IsString({ message: "Пароль должен быть строкой" })
-  @MinLength(6, { message: "Пароль должен быть не менее 6 символов" })
+  @Length(6, 16, { message: "Пароль должен быть от 6 до 16 символов" })
   readonly password!: string;
 
   @IsOptional()

@@ -2,6 +2,7 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule } from "@nestjs/swagger";
+import cookieParser from "cookie-parser";
 
 import { AppModule } from "./app.module";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
@@ -18,6 +19,8 @@ async function bootstrap() {
 
   // Настройка CORS
   app.enableCors(getCorsConfig(configService));
+
+  app.use(cookieParser());
 
   // для работоспособности DTO
   app.useGlobalPipes(

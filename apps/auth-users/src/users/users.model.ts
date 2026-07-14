@@ -31,6 +31,10 @@ export class User extends Model<TUserOrmModel, TUserCreationAtt> {
   @Column({ type: DataType.STRING, allowNull: false })
   password!: string;
 
+  @ApiProperty({ example: "Иван", description: "имя пользователя" })
+  @Column({ type: DataType.STRING, allowNull: true })
+  name?: string;
+
   @BelongsToMany(() => Role, () => UserRoles)
   roles!: Role[];
 }

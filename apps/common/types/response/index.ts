@@ -31,11 +31,13 @@ export type {
   TPersonListItemResponse,
 } from "./person";
 
-export type { 
+export type {
   TAuthorizedUserResponse,
   TAuthResponse,
   TRegistrationResponse,
-  TCheckTokenResponse,
+  TCurrentUserResponse,
   TRefreshTokenResponse,
-  TAuthUsersRpcAuthResponse
+  TAuthUsersRpcAuthResponse,
+  TAuthUsersRpcRefreshRequest,
+  TAuthUsersRpcLogoutRequest,
 } from "./auth";

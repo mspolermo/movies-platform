@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { CommentCard, CommentsEmptyState, toggleCommentLike } from '@/entities/comment';
-import { hasToken } from '@/shared/lib/auth';
+import { useAuth } from '@/entities/user';
 import { Button, LoadMoreSection, Skeleton } from '@/shared/ui';
 
 import { CreateReviewForm } from './CreateReviewForm';
@@ -31,8 +31,15 @@ export const FilmCommentsSection = ({ filmId, filmName }: TFilmCommentsSectionPr
       filmId,
     });
 
+  const { isAuthenticated, isLoading } = useAuth();
+
   const handleOpenReviewForm = () => {
-    if (!hasToken()) {
+    // Пока bootstrapSession в idle/loading — не считать пользователя гостем
+    if (isLoading) {
+      return;
+    }
+
+    if (!isAuthenticated) {
       router.push('/auth/login');
       return;
     }
@@ -41,7 +48,11 @@ export const FilmCommentsSection = ({ filmId, filmName }: TFilmCommentsSectionPr
   };
 
   const handleLikeClick = async (commentId: number) => {
-    if (!hasToken()) {
+    if (isLoading) {
+      return;
+    }
+
+    if (!isAuthenticated) {
       router.push('/auth/login');
       return;
     }

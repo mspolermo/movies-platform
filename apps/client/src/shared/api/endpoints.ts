@@ -1,6 +1,8 @@
-// API эндпойнты
+/**
+ * Пути REST API (относительно baseURL `/api`).
+ * Функции-пути — для ресурсов с динамическим id.
+ */
 export const API_ENDPOINTS = {
-  // Фильмы
   FILMS: {
     SEARCH: '/films',
     BY_ID: (id: number) => `/films/${id}`,
@@ -8,53 +10,48 @@ export const API_ENDPOINTS = {
     PERSONS_BY_PROFESSION: (id: number) => `/films/${id}/persons-by-profession`,
   },
 
-  // Жанры
   GENRES: {
     LIST: '/genres',
   },
 
-  // Страны
   COUNTRIES: {
     LIST: '/countries',
   },
 
-  // Персоны
   PERSONS: {
     LIST: '/persons',
     BY_ID: (id: number) => `/persons/${id}`,
     FILMOGRAPHY: (id: number) => `/persons/${id}/filmography`,
   },
 
-  // Профессии
   PROFESSIONS: {
     LIST: '/professions',
     PERSONS: (id: number) => `/professions/${id}/persons`,
   },
 
-  // Поиск
   SEARCH: {
     GLOBAL: '/search',
   },
 
-  // Фильтры
   FILTERS: {
     ROOT: '/filters',
     QUICK: '/filters/quick',
   },
 
-  // Расширенные операции для персон
   PERSONS_EX: {
     SEARCH_FIND: '/persons/search',
   },
 
-  // Комментарии
   COMMENTS: {
     BY_FILM: (filmId: number) => `/comments/${filmId}`,
     LIKE: (commentId: number) => `/comments/${commentId}/like`,
   },
 
-  // Auth
   AUTH: {
     LOGIN: '/auth/login',
+    REGISTRATION: '/auth/registration',
+    REFRESH: '/auth/refresh',
+    LOGOUT: '/auth/logout',
+    ME: '/auth/me',
   },
 } as const;

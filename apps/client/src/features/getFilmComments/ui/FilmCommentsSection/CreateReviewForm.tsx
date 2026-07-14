@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { createFilmComment } from '@/entities/comment';
-import { hasToken } from '@/shared/lib/auth';
+import { useAuth } from '@/entities/user';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './CreateReviewForm.module.scss';
@@ -26,10 +26,16 @@ export const CreateReviewForm = ({ filmId, onCancel, onSuccess }: TCreateReviewF
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { isAuthenticated, isLoading } = useAuth();
+
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!hasToken()) {
+    if (isLoading) {
+      return;
+    }
+
+    if (!isAuthenticated) {
       router.push('/auth/login');
       return;
     }

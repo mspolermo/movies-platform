@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
+import { TokensService } from "../../tokens/tokens.service";
 import { UsersController } from "../users.controller";
 import { UsersService } from "../users.service";
 
@@ -76,13 +77,20 @@ describe("UsersController", () => {
     }),
   };
 
+  const mockTokensService = {
+    refresh: jest.fn(),
+    revoke: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
-      providers: [UsersService],
+      providers: [UsersService, TokensService],
     })
       .overrideProvider(UsersService)
       .useValue(mockUsersService)
+      .overrideProvider(TokensService)
+      .useValue(mockTokensService)
       .compile();
 
     controller = module.get<UsersController>(UsersController);
@@ -135,18 +143,16 @@ describe("UsersController", () => {
   });
 
   describe("outRegistration", () => {
-    it("should register a new user if not registered", async () => {
-      await service.oauthCreateUser(mockOauthUserDTO);
+    it("should reject — OAuth is not implemented", async () => {
+      jest
+        .spyOn(service, "oauthCreateUser")
+        .mockRejectedValue(
+          new HttpException("OAuth registration is not implemented", HttpStatus.NOT_IMPLEMENTED)
+        );
 
-      const result = await controller.outRegistration(mockOauthUserDTO);
-
-      expect(service.oauthCreateUser).toHaveBeenCalledWith(mockOauthUserDTO);
-      expect(result).toEqual({
-        user: mockUser,
-        token: {
-          token: "your-token-value",
-        },
-      });
+      await expect(controller.outRegistration(mockOauthUserDTO)).rejects.toThrow(
+        HttpException
+      );
     });
   });
 

@@ -3,12 +3,12 @@ import {
   HttpStatus,
   UnauthorizedException,
 } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as bcrypt from "bcryptjs";
 
 import { RolesService } from "../../roles/roles.service";
+import { TokensService } from "../../tokens/tokens.service";
 import { User } from "../users.model";
 import { UsersService } from "../users.service";
 
@@ -21,9 +21,10 @@ describe("UsersService", () => {
     id: 1,
     email: "test@example.com",
     password: "password",
+    name: "Test",
     createdAt: new Date("2023-05-10T16:34:56.833Z"),
     updatedAt: new Date("2023-05-10T16:34:56.833Z"),
-    roles: [],
+    roles: [{ id: 2, value: "USER", description: "User role" }],
   };
 
   const mockOauthUserDTO = {
@@ -40,7 +41,18 @@ describe("UsersService", () => {
     password: "password",
   };
 
-  const mockRole = { id: 2, value: "USER" };
+  const mockRole = { id: 2, value: "USER", description: "User role" };
+
+  const mockAuthResponse = {
+    user: {
+      id: mockUser.id,
+      email: mockUser.email,
+      name: mockUser.name,
+      roles: mockUser.roles,
+    },
+    accessToken: "access-token",
+    refreshToken: "refresh-token",
+  };
 
   const mockUsersRepository = {
     create: jest.fn().mockResolvedValue(mockUser),
@@ -59,8 +71,8 @@ describe("UsersService", () => {
     getRoleByValue: jest.fn().mockResolvedValue(mockRole),
   };
 
-  const mockJwtService = {
-    signAsync: jest.fn().mockReturnValue("mocked-token"),
+  const mockTokensService = {
+    createTokenPair: jest.fn().mockResolvedValue(mockAuthResponse),
   };
 
   beforeEach(async () => {
@@ -72,13 +84,13 @@ describe("UsersService", () => {
           useValue: mockUsersRepository,
         },
         RolesService,
-        JwtService,
+        TokensService,
       ],
     })
       .overrideProvider(RolesService)
       .useValue(mockRolesService)
-      .overrideProvider(JwtService)
-      .useValue(mockJwtService)
+      .overrideProvider(TokensService)
+      .useValue(mockTokensService)
       .compile();
 
     service = module.get<UsersService>(UsersService);
@@ -90,18 +102,6 @@ describe("UsersService", () => {
 
   it("should be defined", () => {
     expect(service).toBeDefined();
-  });
-
-  describe("generateToken", () => {
-    it("should generate a token for the user", async () => {
-      const result = await service.generateToken(mockUser as unknown as User);
-
-      expect(mockJwtService.signAsync).toHaveBeenCalledWith({
-        sub: mockUser.id,
-        email: mockUser.email,
-      });
-      expect(result).toEqual({ token: "mocked-token" });
-    });
   });
 
   describe("validateUser", () => {
@@ -136,45 +136,36 @@ describe("UsersService", () => {
   });
 
   describe("login", () => {
-    it("should return user and token if login is successful", async () => {
+    it("should return user and tokens if login is successful", async () => {
       jest
         .spyOn(service, "validateUser")
         .mockResolvedValue(mockUser as unknown as User);
-      jest
-        .spyOn(service, "generateToken")
-        .mockResolvedValue({ token: "your-token-value" });
 
       const result = await service.login(mockAuthDto);
 
       expect(service.validateUser).toHaveBeenCalledWith(mockAuthDto);
-      expect(service.generateToken).toHaveBeenCalledWith(mockUser);
-      expect(result).toEqual({
-        user: mockUser,
-        token: { token: "your-token-value" },
-      });
+      expect(mockTokensService.createTokenPair).toHaveBeenCalledWith(mockUser);
+      expect(result).toEqual(mockAuthResponse);
     });
 
     it("should throw UnauthorizedException if login is unsuccessful", async () => {
       jest
         .spyOn(service, "validateUser")
         .mockRejectedValue(new UnauthorizedException());
-      jest.spyOn(service, "generateToken");
+      jest.spyOn(mockTokensService, "createTokenPair");
 
       await expect(service.login(mockAuthDto)).rejects.toThrow(
         UnauthorizedException
       );
       expect(service.validateUser).toHaveBeenCalledWith(mockAuthDto);
-      expect(service.generateToken).not.toHaveBeenCalled();
+      expect(mockTokensService.createTokenPair).not.toHaveBeenCalled();
     });
   });
 
   describe("createUser", () => {
     it('should create a new user with "USER" role if no user with the same email exists', async () => {
       mockUsersRepository.findOne.mockResolvedValue(null);
-      jest.spyOn(service, "createUserWithRole").mockResolvedValue({
-        user: mockUser as unknown as User,
-        token: { token: "your-token-value" },
-      });
+      jest.spyOn(service, "createUserWithRole").mockResolvedValue(mockAuthResponse);
 
       const result = await service.createUser(mockUserDTO);
 
@@ -186,10 +177,7 @@ describe("UsersService", () => {
         mockUserDTO,
         "USER"
       );
-      expect(result).toEqual({
-        user: mockUser,
-        token: { token: "your-token-value" },
-      });
+      expect(result).toEqual(mockAuthResponse);
     });
 
     it("should throw an HttpException if a user with the same email already exists", async () => {
@@ -212,52 +200,10 @@ describe("UsersService", () => {
   });
 
   describe("oauthCreateUser", () => {
-    it('should create a new user with "USER" role if no user with the same email exists', async () => {
-      mockUsersRepository.findOne.mockResolvedValue(null);
-      jest.spyOn(service, "createUserWithRole").mockResolvedValue({
-        user: mockUser as unknown as User,
-        token: { token: "your-token-value" },
-      });
-
-      const result = await service.oauthCreateUser(mockOauthUserDTO);
-
-      expect(mockUsersRepository.findOne).toHaveBeenCalledWith({
-        where: { email: mockOauthUserDTO.email },
-        include: { all: true },
-      });
-      expect(service.createUserWithRole).toHaveBeenCalledWith(
-        mockOauthUserDTO,
-        "USER"
+    it("should reject — OAuth is not implemented", async () => {
+      await expect(service.oauthCreateUser(mockOauthUserDTO)).rejects.toThrow(
+        HttpException
       );
-      expect(result).toEqual({
-        user: mockUser,
-        token: { token: "your-token-value" },
-      });
-    });
-
-    it("should login the user if a user with the same email already exists", async () => {
-      mockUsersRepository.findOne.mockResolvedValue(mockUser);
-      jest.spyOn(service, "login").mockResolvedValue({
-        user: mockUser as unknown as User,
-        token: { token: "your-token-value" },
-      });
-      jest.spyOn(service, "createUserWithRole");
-
-      const result = await service.oauthCreateUser(mockOauthUserDTO);
-
-      expect(mockUsersRepository.findOne).toHaveBeenCalledWith({
-        where: { email: mockOauthUserDTO.email },
-        include: { all: true },
-      });
-      expect(service.login).toHaveBeenCalledWith({
-        email: mockOauthUserDTO.email,
-        password: "SECRET_PASSWORD",
-      });
-      expect(service.createUserWithRole).not.toHaveBeenCalled();
-      expect(result).toEqual({
-        user: mockUser,
-        token: { token: "your-token-value" },
-      });
     });
   });
 });

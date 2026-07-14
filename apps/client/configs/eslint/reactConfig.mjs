@@ -114,6 +114,16 @@ export const reactConfig = [
     languageOptions: { globals: globals.node },
   },
   {
+    // Next server routes + SSR config — process.env
+    files: ['app/**/*.{ts,tsx}', 'src/shared/api/config/**/*.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        process: 'readonly',
+      },
+    },
+  },
+  {
     // next.config, scripts — require() без ошибки
     files: ['next.config.js', 'scripts/**/*.js'],
     languageOptions: { globals: globals.node },

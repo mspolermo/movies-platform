@@ -7,10 +7,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { loginUser } from '@/shared/api';
-import { setToken } from '@/shared/lib/auth';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './LoginForm.module.scss';
+import { applyAuthResponse } from '../../model';
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -26,7 +26,7 @@ export const LoginForm = () => {
 
     try {
       const response = await loginUser({ email, password });
-      setToken(response.token);
+      applyAuthResponse(response);
       router.push('/films');
     } catch {
       setError('Не удалось войти. Проверьте email и пароль.');

@@ -1,3 +1,4 @@
 export * from "./jwt-auth.guard";
 export * from "./roles.guard";
+export * from "./origin.guard";
 export * from "./public.decorator";

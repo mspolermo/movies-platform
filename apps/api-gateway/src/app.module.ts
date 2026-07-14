@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 import { RmqModule } from "@common/services";
 
@@ -20,6 +21,11 @@ import { SearchModule } from "./search";
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ".env",
+    }),
+    // rate limiting (ограничение количества запросов) на брутфорс, спам регистраций, подбор пароля и пр.
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 100,
     }),
     RmqModule,
     JwtConfigModule,

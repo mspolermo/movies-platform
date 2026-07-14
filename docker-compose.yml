@@ -22,7 +22,8 @@ services:
       - USERS_QUEUE=${USERS_QUEUE}
       - FILMS_QUEUE=${FILMS_QUEUE}
       - PRIVATE_KEY=${PRIVATE_KEY}
-      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     networks:
       - default
     restart: unless-stopped
@@ -60,7 +61,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - USERS_QUEUE=${USERS_QUEUE}
       - PRIVATE_KEY=${PRIVATE_KEY}
-      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
     networks:
       - default
     restart: unless-stopped

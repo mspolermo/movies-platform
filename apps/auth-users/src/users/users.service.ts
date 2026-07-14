@@ -1,17 +1,21 @@
+import type { TAuthorizedUserResponse } from "@common/types";
+
 import {
   HttpException,
   HttpStatus,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { InjectModel } from "@nestjs/sequelize";
 import * as bcrypt from "bcryptjs";
 
 import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
 
+import { BCRYPT_ROUNDS } from "../config/jwt.config";
 import { RolesService } from "../roles/roles.service";
+import { TokensService } from "../tokens/tokens.service";
 
+import { toAuthorizedUserResponse } from "./users.mapper";
 import { User } from "./users.model";
 
 @Injectable()
@@ -19,13 +23,12 @@ export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
     private roleService: RolesService,
-    private jwtService: JwtService
+    private tokensService: TokensService
   ) {}
 
   async login(dto: AuthDto) {
     const user = await this.validateUser(dto);
-    const token = await this.generateToken(user);
-    return { user, token };
+    return this.tokensService.createTokenPair(user);
   }
 
   async createUser(dto: CreateUserDto) {
@@ -42,28 +45,19 @@ export class UsersService {
     return this.createUserWithRole(dto, "USER");
   }
 
-  async oauthCreateUser(dto: OauthCreateUserDto) {
-    const candidate = await this.userRepository.findOne({
-      where: { email: dto.email },
-      include: { all: true },
-    });
-    if (candidate) {
-      const authDto: AuthDto = {
-        email: dto.email,
-        password: "SECRET_PASSWORD",
-      };
-      return this.login(authDto);
-    }
-    return this.createUserWithRole(dto, "USER");
+  //TODO: зачем это вообще
+  async oauthCreateUser(dto: OauthCreateUserDto): Promise<never> {
+    console.log(dto);
+    throw new HttpException(
+      "OAuth registration is not implemented",
+      HttpStatus.NOT_IMPLEMENTED
+    );
   }
 
-  async createUserWithRole(
-    dto: CreateUserDto | OauthCreateUserDto,
-    roleName: string
-  ) {
+  async createUserWithRole(dto: CreateUserDto, roleName: string) {
     const hashPassword = await bcrypt.hash(
-      "password" in dto ? dto.password : "SECRET_PASSWORD",
-      5
+      dto.password,
+      BCRYPT_ROUNDS
     );
     const user = await this.userRepository.create({
       ...dto,
@@ -75,8 +69,7 @@ export class UsersService {
     }
     await user.$set("roles", [role.id]);
     user.roles = [role];
-    const token = await this.generateToken(user);
-    return { user, token };
+    return this.tokensService.createTokenPair(user);
   }
 
   async validateUser(dto: AuthDto) {
@@ -85,20 +78,17 @@ export class UsersService {
         where: { email: dto.email },
         include: { all: true },
       });
-
       if (!user) {
         throw new UnauthorizedException({
           message: "Пользователь с таким email не найден",
         });
       }
-
       const passwordEquals = await bcrypt.compare(dto.password, user.password);
       if (!passwordEquals) {
         throw new UnauthorizedException({
           message: "Неверный пароль",
         });
       }
-
       return user;
     } catch (e) {
       if (e instanceof UnauthorizedException) {
@@ -110,30 +100,16 @@ export class UsersService {
     }
   }
 
-  async generateToken(user: User) {
-    // Создаем безопасный payload без ролей
-    const payload = {
-      sub: user.id, // ✅ Только ID пользователя
-      email: user.email, // ✅ Email для логирования
-    };
-
-    return {
-      token: await this.jwtService.signAsync(payload),
-    };
-  }
-
-  async getUserById(userId: number) {
+  async getUserById(userId: number): Promise<TAuthorizedUserResponse> {
     try {
       const user = await this.userRepository.findOne({
         where: { id: userId },
         include: { all: true },
       });
-
       if (!user) {
         throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND);
       }
-
-      return user;
+      return toAuthorizedUserResponse(user);
     } catch (e) {
       if (e instanceof HttpException) {
         throw e;

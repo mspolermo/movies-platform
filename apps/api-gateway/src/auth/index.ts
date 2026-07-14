@@ -1,2 +1,2 @@
-export * from "./auth.module";
-export * from "./auth.service";
+export { AuthModule } from "./auth.module";
+export { AuthService } from "./services";

@@ -6,9 +6,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { registerUser } from '@/shared/api';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './RegisterForm.module.scss';
+import { applyAuthResponse } from '../../model';
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -17,20 +19,27 @@ export const RegisterForm = () => {
     name: '',
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setError(null);
     setLoading(true);
 
-    // Демо: регистрация на сервер не отправляется
-    await new Promise((r) => setTimeout(r, 500));
-    setLoading(false);
-    setSuccess(true);
-    setTimeout(() => {
-      router.push('/auth/login');
-    }, 2000);
+    try {
+      const response = await registerUser({
+        email: formData.email,
+        password: formData.password,
+        name: formData.name || undefined,
+      });
+      applyAuthResponse(response);
+      router.push('/films');
+    } catch {
+      setError('Не удалось зарегистрироваться. Проверьте данные.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,22 +49,11 @@ export const RegisterForm = () => {
     });
   };
 
-  if (success) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.success}>
-          <h1>✅ Форма отправлена (демо)</h1>
-          <p>Регистрация на сервер не выполняется. Перенаправление на страницу входа...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Регистрация</h1>
 
-      <p className={styles.demoNote}>Данные не передаются на сервер — только демонстрация формы.</p>
+      {error && <div className={styles.testInfo}>{error}</div>}
 
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input

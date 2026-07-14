@@ -1,32 +1,38 @@
 import type { TRoleResponse } from "./role";
-import type { TUserBriefResponse, TUserTokenPayloadResponse } from "./user";
+import type { TUserBriefResponse } from "./user";
 
 export type TAuthorizedUserResponse = TUserBriefResponse & {
   roles: TRoleResponse[];
 };
 
+/** Ответ login / registration / refresh. */
 export type TAuthResponse = {
-  email: string;
-  userId: number;
-  role: TRoleResponse[];
-  token: string;
-};
-
-export type TRegistrationResponse = {
   user: TAuthorizedUserResponse;
-  role: TRoleResponse[];
-  token: string;
+  accessToken: string;
 };
 
-export type TCheckTokenResponse = TUserTokenPayloadResponse;
+/** Алиас для registration — тот же контракт, что и login. */
+export type TRegistrationResponse = TAuthResponse;
 
-export type TRefreshTokenResponse = {
-  token: string;
-};
+/** Ответ refresh — тот же контракт. */
+export type TRefreshTokenResponse = TAuthResponse;
 
+/** Текущий пользователь (GET /auth/me). */
+export type TCurrentUserResponse = TAuthorizedUserResponse;
+
+/** Ответ auth-users по RMQ после login / registration. */
 export type TAuthUsersRpcAuthResponse = {
-  user: TUserBriefResponse & {
-    roles?: TRoleResponse[];
-  };
-  token: string;
+  user: TAuthorizedUserResponse;
+  accessToken: string;
+  refreshToken: string;
+};
+
+/** Запрос refresh по RMQ. */
+export type TAuthUsersRpcRefreshRequest = {
+  refreshToken: string;
+};
+
+/** Запрос logout по RMQ. */
+export type TAuthUsersRpcLogoutRequest = {
+  refreshToken: string;
 };

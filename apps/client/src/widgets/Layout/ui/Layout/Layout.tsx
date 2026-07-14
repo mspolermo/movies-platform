@@ -2,6 +2,8 @@
 
 import type { TLayoutProps } from '../types';
 
+import { AuthProvider } from '@/features/auth';
+
 import { QuickFiltersProvider } from '../../models';
 import { Footer } from '../Footer';
 import { Header } from '../Header';
@@ -12,14 +14,16 @@ import styles from './Layout.module.scss';
  */
 export const Layout = ({ children, initialQuickFilters }: TLayoutProps) => {
   return (
-    <QuickFiltersProvider value={initialQuickFilters}>
-      <div className={styles.layout}>
-        <Header />
-        <main className={styles.body}>
-          <div className={styles.main}>{children}</div>
-          <Footer />
-        </main>
-      </div>
-    </QuickFiltersProvider>
+    <AuthProvider>
+      <QuickFiltersProvider value={initialQuickFilters}>
+        <div className={styles.layout}>
+          <Header />
+          <main className={styles.body}>
+            <div className={styles.main}>{children}</div>
+            <Footer />
+          </main>
+        </div>
+      </QuickFiltersProvider>
+    </AuthProvider>
   );
 };

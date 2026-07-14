@@ -1,9 +1,10 @@
 import type { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
-import type { TRoleResponse } from "@common/types";
-import type { TUserOrmModel } from "@common/types/orm";
-import type { TAuthUsersRpcAuthResponse } from "@common/types/response/auth";
-
-//TODO: когда будет авторизация - переделать на правильные типы, сейчас полу-костыль
+import type { TAuthorizedUserResponse, TRoleResponse } from "@common/types";
+import type {
+  TAuthUsersRpcAuthResponse,
+  TAuthUsersRpcLogoutRequest,
+  TAuthUsersRpcRefreshRequest,
+} from "@common/types/response/auth";
 
 /**
  * Паттерны сообщений RabbitMQ для микросервиса auth-users.
@@ -18,6 +19,8 @@ export const authUsersRpc = {
     outRegistration: "outRegistration",
     login: "login",
     getById: "getUserById",
+    refresh: "refresh",
+    logout: "logout",
   },
   roles: {
     create: "createRole",
@@ -43,7 +46,15 @@ export type TAuthUsersRpcContract = {
   };
   [authUsersRpc.users.getById]: {
     request: number;
-    response: TUserOrmModel;
+    response: TAuthorizedUserResponse;
+  };
+  [authUsersRpc.users.refresh]: {
+    request: TAuthUsersRpcRefreshRequest;
+    response: TAuthUsersRpcAuthResponse;
+  };
+  [authUsersRpc.users.logout]: {
+    request: TAuthUsersRpcLogoutRequest;
+    response: true;
   };
   [authUsersRpc.roles.create]: {
     request: {
