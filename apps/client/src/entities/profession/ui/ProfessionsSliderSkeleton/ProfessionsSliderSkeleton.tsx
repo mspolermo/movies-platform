@@ -15,7 +15,7 @@ export const ProfessionsSliderSkeleton = () => {
     <div
       aria-busy="true"
       aria-label="Загрузка фильтра профессий"
-      className={sliderStyles.container}
+      className={sliderStyles.wrapper}
       role="status"
     >
       <div className={sliderStyles.tabs}>

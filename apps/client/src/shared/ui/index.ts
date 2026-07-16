@@ -15,3 +15,4 @@ export { Overlay } from './Overlay';
 export { FilterCardButton } from './FilterCardButton';
 export { ExpandableBlock } from './ExpandableBlock';
 export { SortFilter, type TSortFilterProps } from './SortFilter';
+export { HorizontalCarousel, type THorizontalCarouselHandle } from './HorizontalCarousel';

@@ -3,13 +3,12 @@
 import type { TProfessionsTabsProps } from './types';
 
 import cn from 'classnames';
-import React from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { capitalizeFirst } from '@/shared/lib';
-import { SvgIcon } from '@/shared/ui';
+import { HorizontalCarousel, type THorizontalCarouselHandle } from '@/shared/ui';
 
 import styles from './ProfessionsSlider.module.scss';
-import { useScrollArrows } from '../../lib';
 
 /**
  * UI слайдер профессий для выбора профессии
@@ -20,63 +19,49 @@ export const ProfessionsSlider = ({
   activeProfessionId,
   onProfessionChange,
 }: TProfessionsTabsProps) => {
-  const {
-    containerRef,
-    tabsRef,
-    showLeft,
-    showRight,
-    hoverLeft,
-    hoverRight,
-    onMouseMove,
-    onMouseLeave,
-    scrollLeft,
-    scrollRight,
-  } = useScrollArrows(professions, activeProfessionId);
+  const carouselRef = useRef<THorizontalCarouselHandle>(null);
+
+  const activeIndex = useMemo(() => {
+    if (activeProfessionId === null) {
+      return -1;
+    }
+
+    return professions.findIndex((profession) => profession.id === activeProfessionId);
+  }, [activeProfessionId, professions]);
+
+  useEffect(() => {
+    if (activeIndex === -1) {
+      return;
+    }
+
+    carouselRef.current?.scrollToIndex(activeIndex);
+  }, [activeIndex]);
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.container}
-      onMouseLeave={onMouseLeave}
-      onMouseMove={onMouseMove}
+    <HorizontalCarousel
+      ref={carouselRef}
+      arrows="auto"
+      className={styles.wrapper}
+      scrollStep={200}
+      snapType="none"
+      trackClassName={styles.tabs}
     >
-      <div ref={tabsRef} className={styles.tabs}>
-        {professions.map((p) => {
-          const isActive = activeProfessionId === p.id;
-          return (
-            <button
-              key={p.id}
-              aria-label={`Выбрать профессию ${p.name}`}
-              aria-pressed={isActive}
-              className={cn(styles.tab, isActive && styles.tabActive)}
-              type="button"
-              onClick={() => onProfessionChange(p.id)}
-            >
-              {capitalizeFirst(p.name)}
-            </button>
-          );
-        })}
-      </div>
+      {professions.map((profession) => {
+        const isActive = activeProfessionId === profession.id;
 
-      <button
-        aria-label="Прокрутить влево"
-        className={cn(styles.arrowButton, hoverLeft && styles.visible)}
-        disabled={!showLeft}
-        type="button"
-        onClick={scrollLeft}
-      >
-        <SvgIcon name="arrow-left" size={24} />
-      </button>
-
-      <button
-        aria-label="Прокрутить вправо"
-        className={cn(styles.arrowButton, styles.arrowButtonRight, hoverRight && styles.visible)}
-        disabled={!showRight}
-        type="button"
-        onClick={scrollRight}
-      >
-        <SvgIcon name="arrow-right" size={24} />
-      </button>
-    </div>
+        return (
+          <button
+            key={profession.id}
+            aria-label={`Выбрать профессию ${profession.name}`}
+            aria-pressed={isActive}
+            className={cn(styles.tab, isActive && styles.tabActive)}
+            type="button"
+            onClick={() => onProfessionChange(profession.id)}
+          >
+            {capitalizeFirst(profession.name)}
+          </button>
+        );
+      })}
+    </HorizontalCarousel>
   );
 };
