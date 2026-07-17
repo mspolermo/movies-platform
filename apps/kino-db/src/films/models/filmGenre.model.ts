@@ -1,4 +1,5 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -32,4 +33,8 @@ export class FilmGenre extends Model<FilmGenre> {
     primaryKey: true,
   })
   genreId!: number;
+
+  /** as: "Film" — совпадает с Sequelize.col("Film.ratingKp") в getSimilarFilms. */
+  @BelongsTo(() => Film, { as: "Film", foreignKey: "filmId" })
+  film!: Film;
 }

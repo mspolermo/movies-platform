@@ -15,6 +15,7 @@ import type {
   TGetPersonFilmsRequest,
   TGetPersonsByProfessionRequest,
   TGetPersonsRequest,
+  TGetSimilarFilmsRequest,
   TPaginatedPersonsResponse,
   TPersonFilmsPaginationResponse,
   TPersonListItemResponse,
@@ -47,6 +48,7 @@ export const kinoDbRpc = {
     searchFilmsByName: "searchFilmsByName",
     getFilmProfessions: "getFilmProfessions",
     getFilmPersonsByProfession: "getFilmPersonsByProfession",
+    getSimilar: "getSimilarFilms",
   },
   genres: {
     getAll: "getAll.genres",
@@ -107,6 +109,10 @@ export type TKinoDbRpcContract = {
   [kinoDbRpc.films.getFilmPersonsByProfession]: {
     request: TGetFilmPersonsByProfessionRequest;
     response: TPaginatedPersonsResponse | null;
+  };
+  [kinoDbRpc.films.getSimilar]: {
+    request: TGetSimilarFilmsRequest;
+    response: TFilmListItemResponse[] | null;
   };
   [kinoDbRpc.genres.getAll]: {
     request: Record<string, never>;

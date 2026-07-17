@@ -26,3 +26,9 @@ export type TGetFilmPersonsByProfessionRequest = {
   page?: number;
   limit?: number;
 };
+
+/** Параметры запроса похожих фильмов (по пересечению жанров). */
+export type TGetSimilarFilmsRequest = {
+  filmId: number;
+  limit?: number;
+};

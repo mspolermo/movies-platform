@@ -1,4 +1,7 @@
-import type { TGetFilmPersonsByProfessionRequest } from "@common/types";
+import type {
+  TGetFilmPersonsByProfessionRequest,
+  TGetSimilarFilmsRequest,
+} from "@common/types";
 
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
@@ -43,5 +46,10 @@ export class FilmsController {
   ) {
     const { filmId, profession, page = 1, limit = 20 } = data;
     return await this.filmService.getFilmPersonsByProfession(filmId, profession, page, limit);
+  }
+
+  @MessagePattern(kinoDbRpc.films.getSimilar)
+  async getSimilarFilms(@Payload() data: TGetSimilarFilmsRequest) {
+    return await this.filmService.getSimilarFilms(data);
   }
 }

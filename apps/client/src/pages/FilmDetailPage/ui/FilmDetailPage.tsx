@@ -4,14 +4,14 @@ import type { TFilmDetailPageProps } from './types';
 
 import React from 'react';
 
-import { FilmDetail } from '@/entities/film';
+import { FilmDetail, FilmsCarousel } from '@/entities/film';
 import { SimilarFilmsCarousel } from '@/features/getSimilarFilmsCarousel';
 import { FilmCommentsViewer } from '@/widgets/FilmCommentsViewer';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 import { Page } from '@/widgets/Layout';
 
 /** Страница фильма с блоком создателей и режимом загрузки */
-export const FilmDetailPage = ({ isLoading, film, similarFilms }: TFilmDetailPageProps) => {
+export const FilmDetailPage = ({ isLoading, film, similarFilms = [] }: TFilmDetailPageProps) => {
   const filmName = film?.filmNameRu || film?.filmNameEn || '';
 
   return (
@@ -21,11 +21,11 @@ export const FilmDetailPage = ({ isLoading, film, similarFilms }: TFilmDetailPag
         film={film}
         isLoading={Boolean(isLoading)}
       />
-      <SimilarFilmsCarousel
-        filmName={filmName}
-        films={similarFilms ?? []}
-        isLoading={Boolean(isLoading)}
-      />
+      {isLoading ? (
+        <FilmsCarousel isLoading films={[]} title="" />
+      ) : (
+        <SimilarFilmsCarousel filmName={filmName} films={similarFilms} />
+      )}
       <FilmCommentsViewer filmName={filmName} />
     </Page>
   );

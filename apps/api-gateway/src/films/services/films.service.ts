@@ -1,8 +1,10 @@
 import type {
   TFilmDetailsResponse,
+  TFilmListItemResponse,
   TFilmsResponse,
   TGetFilmPersonsByProfessionRequest,
   TGetFilmProfessionsRequest,
+  TGetSimilarFilmsRequest,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
   TSearchFilmsParams,
@@ -60,6 +62,21 @@ export class FilmsService {
       await this.filmsClient.getFilmPersonsByProfession(
         request
       );
+
+    if (!result) {
+      throw new NotFoundException(
+        `Film with id ${request.filmId} not found`
+      );
+    }
+
+    return result;
+  }
+
+  async getSimilarFilms(
+    request: TGetSimilarFilmsRequest
+  ): Promise<TFilmListItemResponse[]> {
+    const result =
+      await this.filmsClient.getSimilarFilms(request);
 
     if (!result) {
       throw new NotFoundException(

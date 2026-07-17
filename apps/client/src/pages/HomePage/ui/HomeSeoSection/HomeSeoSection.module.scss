@@ -1,0 +1,103 @@
+@use '@/shared/styles/variables/sizes' as sizes;
+
+.section {
+  padding: 24px 0;
+  margin-bottom: 32px;
+}
+
+.inner {
+  @media (min-width: sizes.$bp-tablet) {
+    width: 75%;
+  }
+}
+
+.title {
+  margin: 0 0 12px;
+
+  color: var(--color-heading);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+
+  @media (max-width: sizes.$bp-mobile) {
+    font-size: 16px;
+    font-weight: 400;
+  }
+}
+
+.body {
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+/* max-height вместо -webkit-line-clamp: стабильнее на контейнере с <p>/<ul>. */
+.collapsed {
+  position: relative;
+  max-height: calc(22px * 2);
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 45%, transparent 100%);
+
+  @media (max-width: sizes.$bp-mobile) {
+    max-height: calc(22px * 3);
+  }
+}
+
+.paragraph {
+  margin: 8px 0 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.features {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature {
+  position: relative;
+  margin-top: 8px;
+  margin-left: 12px;
+  padding-left: 16px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--color-text);
+  }
+}
+
+.toggle {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+
+  color: var(--color-gray-light);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+  font-family: inherit;
+
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-heading);
+  }
+}

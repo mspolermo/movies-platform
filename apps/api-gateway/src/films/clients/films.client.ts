@@ -1,7 +1,9 @@
 import type {
   TFilmDetailsResponse,
+  TFilmListItemResponse,
   TFilmsResponse,
   TGetFilmPersonsByProfessionRequest,
+  TGetSimilarFilmsRequest,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
   TSearchFilmsParams,
@@ -55,6 +57,15 @@ export class FilmsClient {
   ): Promise<TPaginatedPersonsResponse | null> {
     return this.rmq.sendToFilms(
       kinoDbRpc.films.getFilmPersonsByProfession,
+      request
+    );
+  }
+
+  getSimilarFilms(
+    request: TGetSimilarFilmsRequest
+  ): Promise<TFilmListItemResponse[] | null> {
+    return this.rmq.sendToFilms(
+      kinoDbRpc.films.getSimilar,
       request
     );
   }

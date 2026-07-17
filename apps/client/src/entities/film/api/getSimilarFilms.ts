@@ -1,27 +1,20 @@
-import type { TFilmDetailsResponse, TFilmListItemResponse } from '@common/types';
+import type { TFilmListItemResponse } from '@common/types';
 
-import { searchFilms } from './searchFilms';
-
-const SIMILAR_FILMS_LIMIT = 20;
+import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
 /**
- * Похожие фильмы по жанрам текущего фильма (исключая сам фильм).
+ * Похожие фильмы по жанрам (бэкенд ранжирует по пересечению).
  */
 export const getSimilarFilms = async (
-  film: Pick<TFilmDetailsResponse, 'id' | 'genres'>
+  filmId: number,
+  limit?: number
 ): Promise<TFilmListItemResponse[]> => {
-  const genreNames =
-    film.genres?.map((genre) => genre.nameRu).filter((name): name is string => Boolean(name)) ?? [];
+  const response = await apiClient.get<TFilmListItemResponse[]>(
+    API_ENDPOINTS.FILMS.SIMILAR(filmId),
+    {
+      params: limit !== undefined ? { limit } : undefined,
+    }
+  );
 
-  if (genreNames.length === 0) {
-    return [];
-  }
-
-  const response = await searchFilms({
-    genres: genreNames,
-    perPage: SIMILAR_FILMS_LIMIT + 1,
-    sortBy: 'rating',
-  });
-
-  return response.films.filter((item) => item.id !== film.id).slice(0, SIMILAR_FILMS_LIMIT);
+  return response.data;
 };

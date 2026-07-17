@@ -44,6 +44,7 @@ describe("FilmsController", () => {
     getAllFilmYears: jest.fn(),
     searchFilmsByName: jest.fn().mockResolvedValue(mockFilm.filmNameRu),
     filmFilters: jest.fn(),
+    getSimilarFilms: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -137,17 +138,7 @@ describe("FilmsController", () => {
 
       const result = await controller.filters(mockData);
 
-      expect(filmFiltersSpy).toHaveBeenCalledWith(
-        mockData.page,
-        mockData.perPage,
-        mockData.genres,
-        mockData.countries,
-        mockData.persons,
-        mockData.minRatingKp,
-        mockData.minVotesKp,
-        mockData.sortBy,
-        mockData.years
-      );
+      expect(filmFiltersSpy).toHaveBeenCalledWith(mockData);
       expect(result).toEqual({
         films: [mockFilm],
         total: 1,
@@ -155,6 +146,22 @@ describe("FilmsController", () => {
         perPage: 10,
         hasMore: false,
       });
+    });
+  });
+
+  describe("getSimilarFilms", () => {
+    it("should call filmService.getSimilarFilms with the provided data", async () => {
+      const request = { filmId: 1, limit: 10 };
+      const similar = [{ id: 2, filmNameRu: "Similar" }];
+
+      const getSimilarSpy = jest
+        .spyOn(service, "getSimilarFilms")
+        .mockResolvedValue(similar as never);
+
+      const result = await controller.getSimilarFilms(request);
+
+      expect(getSimilarSpy).toHaveBeenCalledWith(request);
+      expect(result).toEqual(similar);
     });
   });
 });

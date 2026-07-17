@@ -6,7 +6,7 @@ import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
 import { Profession } from "../../professions/models/professions.model";
-import { Film, Fact } from "../models";
+import { Film, Fact, FilmGenre } from "../models";
 import { FilmsService } from "../services";
 
 describe("FilmsService", () => {
@@ -85,6 +85,10 @@ describe("FilmsService", () => {
       .mockResolvedValue({ rows: [mockPerson], count: 1 }),
   };
 
+  const mockFilmGenreRepository = {
+    findAll: jest.fn().mockResolvedValue([]),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -92,6 +96,10 @@ describe("FilmsService", () => {
         {
           provide: getModelToken(Film),
           useValue: mockFilmsRepository,
+        },
+        {
+          provide: getModelToken(FilmGenre),
+          useValue: mockFilmGenreRepository,
         },
         {
           provide: getModelToken(Person),
@@ -176,17 +184,17 @@ describe("FilmsService", () => {
         .spyOn(mockFilmsRepository, "findAndCountAll")
         .mockResolvedValue({ rows: [mockFilm], count: 1 });
 
-      const result = await service.filmFilters(
-        mockPage,
-        mockPerPage,
-        mockGenres,
-        mockCountries,
-        mockPersons,
-        mockMinRatingKp,
-        mockMinVotesKp,
-        mockSortBy,
-        mockYears
-      );
+      const result = await service.filmFilters({
+        page: mockPage,
+        perPage: mockPerPage,
+        genres: mockGenres,
+        countries: mockCountries,
+        persons: mockPersons,
+        minRatingKp: mockMinRatingKp,
+        minVotesKp: mockMinVotesKp,
+        sortBy: mockSortBy,
+        years: mockYears,
+      });
 
       expect(mockFilmsRepository.findAndCountAll).toHaveBeenCalledWith({
         attributes: [
@@ -257,7 +265,14 @@ describe("FilmsService", () => {
         .spyOn(mockFilmsRepository, "findAndCountAll")
         .mockResolvedValue({ rows: [mockFilm], count: 1 });
 
-      const result = await service.filmFilters(1, 20, ["Biography"], undefined, undefined, 0, 0, "popularity");
+      const result = await service.filmFilters({
+        page: 1,
+        perPage: 20,
+        genres: ["Biography"],
+        minRatingKp: 0,
+        minVotesKp: 0,
+        sortBy: "popularity",
+      });
 
       expect(mockFilmsRepository.findAndCountAll).toHaveBeenCalledWith({
         attributes: [
@@ -451,6 +466,154 @@ describe("FilmsService", () => {
         total: 1,
         hasMore: false,
       });
+    });
+  });
+
+  describe("getSimilarFilms", () => {
+    it("should return null when film is not found", async () => {
+      jest.spyOn(mockFilmsRepository, "findByPk").mockResolvedValue(null);
+
+      const result = await service.getSimilarFilms({ filmId: 999 });
+
+      expect(result).toBeNull();
+      expect(mockFilmGenreRepository.findAll).not.toHaveBeenCalled();
+    });
+
+    it("should return empty array when film has no genres", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest.spyOn(mockFilmGenreRepository, "findAll").mockResolvedValue([]);
+
+      const result = await service.getSimilarFilms({ filmId: 1 });
+
+      expect(result).toEqual([]);
+    });
+
+    it("should rank films by shared genre count and map cards", async () => {
+      const similarFilm = {
+        ...mockFilm,
+        id: 2,
+        ratingKp: 8,
+      };
+
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest
+        .spyOn(mockFilmGenreRepository, "findAll")
+        .mockResolvedValueOnce([{ genreId: 10 }])
+        .mockResolvedValueOnce([{ filmId: 2, sharedCount: "2" }]);
+      jest
+        .spyOn(mockFilmsRepository, "findAll")
+        .mockResolvedValue([similarFilm]);
+
+      const result = await service.getSimilarFilms({ filmId: 1, limit: 20 });
+
+      expect(result).toEqual([
+        {
+          id: 2,
+          filmNameRu: "string",
+          filmNameEn: "string",
+          bigPictureUrl: "string",
+          smallPictureUrl: "string",
+          ratingKp: 8,
+          year: 1,
+          premiereCountry: "string",
+          movieLength: 1,
+        },
+      ]);
+    });
+
+    it("should order by sharedCount then ratingKp before applying limit", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest
+        .spyOn(mockFilmGenreRepository, "findAll")
+        .mockResolvedValueOnce([{ genreId: 10 }])
+        .mockResolvedValueOnce([
+          { filmId: 3, sharedCount: "2" },
+          { filmId: 2, sharedCount: "2" },
+        ]);
+      jest.spyOn(mockFilmsRepository, "findAll").mockResolvedValue([
+        { ...mockFilm, id: 2, ratingKp: 9 },
+        { ...mockFilm, id: 3, ratingKp: 7 },
+      ]);
+
+      await service.getSimilarFilms({ filmId: 1, limit: 20 });
+
+      const rankedCall = mockFilmGenreRepository.findAll.mock.calls[1][0];
+
+      expect(rankedCall.limit).toBe(20);
+      expect(rankedCall.group).toEqual(["FilmGenre.A"]);
+      expect(rankedCall.where).toEqual({
+        genreId: { [Op.in]: [10] },
+        filmId: { [Op.ne]: 1 },
+      });
+      expect(rankedCall.include).toEqual([
+        expect.objectContaining({
+          model: Film,
+          as: "Film",
+          required: true,
+        }),
+      ]);
+      expect(rankedCall.order[0][0]).toEqual(
+        expect.objectContaining({ fn: "COUNT" })
+      );
+      expect(rankedCall.order[1][0]).toEqual(
+        expect.objectContaining({ fn: "MAX" })
+      );
+      expect(rankedCall.order[1][1]).toBe("DESC");
+    });
+
+    it("should preserve SQL rank order when mapping cards", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest
+        .spyOn(mockFilmGenreRepository, "findAll")
+        .mockResolvedValueOnce([{ genreId: 10 }])
+        .mockResolvedValueOnce([
+          { filmId: 3, sharedCount: "2" },
+          { filmId: 2, sharedCount: "2" },
+        ]);
+      jest.spyOn(mockFilmsRepository, "findAll").mockResolvedValue([
+        { ...mockFilm, id: 2, ratingKp: 9 },
+        { ...mockFilm, id: 3, ratingKp: 7 },
+      ]);
+
+      const result = await service.getSimilarFilms({ filmId: 1, limit: 20 });
+
+      expect(result).not.toBeNull();
+      expect(result!.map((film) => film.id)).toEqual([3, 2]);
+    });
+
+    it("should cap limit to max 50 and raise floor to 1", async () => {
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest
+        .spyOn(mockFilmGenreRepository, "findAll")
+        .mockResolvedValueOnce([{ genreId: 10 }])
+        .mockResolvedValueOnce([]);
+
+      await service.getSimilarFilms({ filmId: 1, limit: 100 });
+
+      expect(mockFilmGenreRepository.findAll.mock.calls[1][0].limit).toBe(50);
+
+      jest.clearAllMocks();
+      jest
+        .spyOn(mockFilmsRepository, "findByPk")
+        .mockResolvedValue({ id: 1 });
+      jest
+        .spyOn(mockFilmGenreRepository, "findAll")
+        .mockResolvedValueOnce([{ genreId: 10 }])
+        .mockResolvedValueOnce([]);
+
+      await service.getSimilarFilms({ filmId: 1, limit: 0 });
+
+      expect(mockFilmGenreRepository.findAll.mock.calls[1][0].limit).toBe(1);
     });
   });
 });

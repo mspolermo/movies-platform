@@ -3,6 +3,7 @@ export type {
   TFilmSortBy,
   TGetFilmPersonsByProfessionRequest,
   TGetFilmProfessionsRequest,
+  TGetSimilarFilmsRequest,
   TSearchFilmsParams,
 } from "./film";
 export type {

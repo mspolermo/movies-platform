@@ -6,6 +6,7 @@ export const API_ENDPOINTS = {
   FILMS: {
     SEARCH: '/films',
     BY_ID: (id: number) => `/films/${id}`,
+    SIMILAR: (id: number) => `/films/${id}/similar`,
     PROFESSIONS: (id: number) => `/films/${id}/professions`,
     PERSONS_BY_PROFESSION: (id: number) => `/films/${id}/persons-by-profession`,
   },

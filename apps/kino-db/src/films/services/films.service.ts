@@ -2,6 +2,7 @@ import type {
   TFilmDetailsResponse,
   TFilmListItemResponse,
   TFilmsResponse,
+  TGetSimilarFilmsRequest,
   TPaginatedPersonsResponse,
   TProfessionItemResponse,
 } from "@common/types";
@@ -11,7 +12,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
-import { LIST_DEFAULT_LIMIT } from "@common/constants";
+import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
@@ -23,17 +24,20 @@ import {
 import { Profession } from "../../professions/models/professions.model";
 import {
   FILM_CARD_ATTRIBUTES,
+  FILM_GENRE_DB,
   FILM_SORT_ORDER,
 } from "../constants";
 import { FilmFiltersDto } from "../dto";
 import { mapFilmToCardResponse, mapFilmToDetailsResponse } from "../mappers/film.mapping";
-import { Fact, Film } from "../models";
+import { Fact, Film, FilmGenre } from "../models";
 
 @Injectable()
 export class FilmsService {
   constructor(
     @InjectModel(Film)
     private readonly filmRepository: typeof Film,
+    @InjectModel(FilmGenre)
+    private readonly filmGenreRepository: typeof FilmGenre,
     @InjectModel(Person)
     private readonly personRepository: typeof Person
   ) {}
@@ -84,6 +88,90 @@ export class FilmsService {
     }
 
     return mapFilmToDetailsResponse(film);
+  }
+
+  /**
+   * Похожие фильмы по числу общих жанров (DESC), затем по ratingKp (DESC).
+   * Возвращает null, если исходный фильм не найден.
+   */
+  async getSimilarFilms({
+    filmId,
+    limit = LIST_DEFAULT_LIMIT,
+  }: TGetSimilarFilmsRequest): Promise<TFilmListItemResponse[] | null> {
+    const film = await this.filmRepository.findByPk(filmId, {
+      attributes: ["id"],
+    });
+
+    if (!film) {
+      return null;
+    }
+
+    const sourceGenres = await this.filmGenreRepository.findAll({
+      attributes: ["genreId"],
+      where: { filmId },
+      raw: true,
+    });
+
+    const genreIds = sourceGenres.map((row) => row.genreId);
+
+    if (genreIds.length === 0) {
+      return [];
+    }
+
+    const cappedLimit = Math.min(
+      Math.max(limit, 1),
+      LIST_MAX_LIMIT
+    );
+
+    // ORDER BY sharedCount, ratingKp до LIMIT — иначе tie-break по KP некорректен.
+    // GROUP BY / COUNT — физические колонки A/B (attribute-имена ломают Postgres).
+    const ranked = (await this.filmGenreRepository.findAll({
+      attributes: [
+        "filmId",
+        [
+          Sequelize.fn("COUNT", Sequelize.col(FILM_GENRE_DB.genreId)),
+          "sharedCount",
+        ],
+      ],
+      include: [
+        {
+          model: Film,
+          as: "Film",
+          attributes: [],
+          required: true,
+        },
+      ],
+      where: {
+        genreId: { [Op.in]: genreIds },
+        filmId: { [Op.ne]: filmId },
+      },
+      group: [FILM_GENRE_DB.filmId],
+      order: [
+        [Sequelize.fn("COUNT", Sequelize.col(FILM_GENRE_DB.genreId)), "DESC"],
+        [Sequelize.fn("MAX", Sequelize.col("Film.ratingKp")), "DESC"],
+      ],
+      limit: cappedLimit,
+      subQuery: false,
+      raw: true,
+    })) as unknown as Array<{ filmId: number; sharedCount: string }>;
+
+    if (ranked.length === 0) {
+      return [];
+    }
+
+    const rankedIds = ranked.map((row) => row.filmId);
+
+    const films = await this.filmRepository.findAll({
+      attributes: [...FILM_CARD_ATTRIBUTES],
+      where: { id: { [Op.in]: rankedIds } },
+    });
+
+    const filmsById = new Map(films.map((film) => [film.id, film]));
+
+    return rankedIds
+      .map((id) => filmsById.get(id))
+      .filter((film): film is Film => film !== undefined)
+      .map(mapFilmToCardResponse);
   }
 
   async searchFilmsByName(
