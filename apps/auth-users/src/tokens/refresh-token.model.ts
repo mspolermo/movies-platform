@@ -1,5 +1,3 @@
-import type { TUserEntity } from "@common/types/entity";
-
 import {
   BelongsTo,
   Column,

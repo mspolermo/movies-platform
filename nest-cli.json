@@ -5,6 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
+    "webpackConfigPath": "webpack.config.js",
     "tsConfigPath": "apps/api-gateway/tsconfig.app.json"
   },
   "monorepo": true,
@@ -35,15 +36,6 @@
       "sourceRoot": "apps/kino-db/src",
       "compilerOptions": {
         "tsConfigPath": "apps/kino-db/tsconfig.app.json"
-      }
-    },
-    "common": {
-      "type": "library",
-      "root": "apps/common",
-      "entryFile": "index",
-      "sourceRoot": "apps/common/",
-      "compilerOptions": {
-        "tsConfigPath": "apps/common/tsconfig.app.json"
       }
     }
   }

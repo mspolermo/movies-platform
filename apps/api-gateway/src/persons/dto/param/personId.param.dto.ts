@@ -10,5 +10,5 @@ export class PersonIdParamDto {
   @Type(() => Number)
   @IsInt()
   @Min(1)
-  id: number;
+  id!: number;
 }

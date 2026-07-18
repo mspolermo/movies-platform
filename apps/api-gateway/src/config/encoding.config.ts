@@ -26,7 +26,7 @@ export const getEncodingMiddleware = () => {
                 original: queryValue,
                 decoded: decoded
               });
-            } catch (error) {
+            } catch {
               console.warn(`⚠️ Не удалось декодировать параметр ${key}:`, queryValue);
             }
           }

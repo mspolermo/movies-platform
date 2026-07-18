@@ -7,8 +7,8 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { CountriesService } from "../services/countries.service";
 import { CountryResponseDto } from "../dto";
+import { CountriesService } from "../services/countries.service";
 
 @ApiTags("Countries")
 @Controller("countries")

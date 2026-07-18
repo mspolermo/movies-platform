@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
 
-import { PersonsService } from "./services";
 import { PersonsClient } from "./clients";
 import { PersonsController } from "./controllers";
+import { PersonsService } from "./services";
 
 @Module({
   controllers: [PersonsController],

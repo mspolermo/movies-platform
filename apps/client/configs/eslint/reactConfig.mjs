@@ -8,6 +8,12 @@ import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import nextPlugin from '@next/eslint-plugin-next'
 
+/**
+ * Единственный ESLint-стек клиента (см. eslint.config.mjs).
+ * Парсер — только `@typescript-eslint/parser` v8 из этого файла.
+ * НЕ подключаем `eslint-config-next` (тянет @typescript-eslint@6 и свой parser).
+ * Next-правила — через `@next/eslint-plugin-next` ниже.
+ */
 // TS + React + Next + Prettier; порядок блоков важен (ниже переопределяет выше).
 /** @type {import('eslint').Linter.Config[]} */
 export const reactConfig = [
@@ -79,7 +85,7 @@ export const reactConfig = [
         ignoreReadBeforeAssign: false,
       }],
       // без React.FC — явные пропсы: (props: Props) => …
-      '@typescript-eslint/ban-types': [
+      '@typescript-eslint/no-restricted-types': [
         'error',
         {
           types: {
@@ -128,7 +134,7 @@ export const reactConfig = [
     files: ['next.config.js', 'scripts/**/*.js'],
     languageOptions: { globals: globals.node },
     rules: {
-      '@typescript-eslint/no-var-requires': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {

@@ -17,8 +17,8 @@ import {
 } from "@nestjs/swagger";
 
 import { Public } from "../../shared";
-import { FiltersService } from "../services";
 import { GetFiltersQueryDto } from "../dto";
+import { FiltersService } from "../services";
 
 @Controller("filters")
 @ApiBearerAuth()

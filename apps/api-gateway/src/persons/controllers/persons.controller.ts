@@ -1,12 +1,12 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 
-import { PersonsService } from "../services";
 import { 
   FilmographyQueryDto, 
   FindPersonsQueryDto, 
   GetPersonsQueryDto, 
   PersonIdParamDto 
 } from "../dto";
+import { PersonsService } from "../services";
 
 @Controller("persons")
 export class PersonsController {
