@@ -6,7 +6,8 @@ import { notFound } from 'next/navigation';
 import { getPersonProfile } from '@/entities/person';
 import { PersonDetailPage } from '@/pages/PersonDetailPage';
 
-export default async function PersonPage({ params: { id } }: TPageProps<{ id: string }>) {
+export default async function PersonPage({ params }: TPageProps<{ id: string }>) {
+  const { id } = await params;
   const personId = Number(id);
 
   if (!id || Number.isNaN(personId)) {

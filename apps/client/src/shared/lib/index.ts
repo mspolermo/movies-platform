@@ -1,2 +1,2 @@
-export { capitalizeFirst, isSortOption } from './utils';
+export { capitalizeFirst, isSortOption, shouldSkipImageOptimization } from './utils';
 export { useMediaQuery } from './hooks';

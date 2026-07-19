@@ -1,4 +1,4 @@
-import type { TSearchParams } from '@/shared/types';
+import type { TPageProps, TSearchParams } from '@/shared/types';
 
 import { notFound } from 'next/navigation';
 
@@ -8,16 +8,15 @@ import { resolveInitialProfessionId } from '@/widgets/AllCreatorsViewer';
 
 export default async function ProfessionsPageRoute({
   searchParams,
-}: {
-  searchParams: TSearchParams;
-}) {
+}: TPageProps<Record<string, never>, TSearchParams>) {
   const professions = await fetchAllProfessionsData();
 
   if (professions === null) {
     notFound();
   }
 
-  const initialActiveProfessionId = resolveInitialProfessionId(professions, searchParams);
+  const resolvedSearchParams = await searchParams;
+  const initialActiveProfessionId = resolveInitialProfessionId(professions, resolvedSearchParams);
 
   return (
     <ProfessionsPage

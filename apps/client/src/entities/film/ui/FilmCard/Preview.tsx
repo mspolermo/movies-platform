@@ -4,11 +4,12 @@ import Image from 'next/image';
 import { useState, useCallback } from 'react';
 
 import { ImageIcon } from '@/shared/assets';
+import { shouldSkipImageOptimization } from '@/shared/lib';
 import { Skeleton, SvgIcon } from '@/shared/ui';
 
 import styles from './FilmCard.module.scss';
 
-export const Preview = ({ film }: FilmCardPreviewProps) => {
+export const Preview = ({ film, priority = false }: FilmCardPreviewProps) => {
   const { smallPictureUrl, bigPictureUrl, filmNameRu, filmNameEn } = film;
   const [imageError, setImageError] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
@@ -42,7 +43,7 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
       <Image
         fill
         alt={`Постер фильма ${filmTitle}`}
-        priority={false}
+        priority={priority}
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         src={posterUrl}
         style={{
@@ -50,6 +51,7 @@ export const Preview = ({ film }: FilmCardPreviewProps) => {
           opacity: imageLoading ? 0 : 1,
           transition: 'opacity 0.3s ease',
         }}
+        unoptimized={shouldSkipImageOptimization(posterUrl)}
         onError={handleImageError}
         onLoad={handleImageLoad}
       />

@@ -17,7 +17,8 @@ const loadSimilarFilms = async (filmId: number): Promise<TFilmListItemResponse[]
   }
 };
 
-export default async function FilmPage({ params: { id } }: TPageProps<{ id: string }>) {
+export default async function FilmPage({ params }: TPageProps<{ id: string }>) {
+  const { id } = await params;
   const filmId = Number(id);
 
   if (!id || Number.isNaN(filmId)) {

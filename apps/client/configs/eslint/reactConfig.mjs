@@ -17,7 +17,7 @@ import nextPlugin from '@next/eslint-plugin-next'
 // TS + React + Next + Prettier; порядок блоков важен (ниже переопределяет выше).
 /** @type {import('eslint').Linter.Config[]} */
 export const reactConfig = [
-  { ignores: ['node_modules', '.next', 'dist'] },
+  { ignores: ['node_modules', '.next', 'dist', 'next-env.d.ts'] },
   jsConfig.configs.recommended,
   {
     // база: парсер TS, import resolver, правила стиля кода

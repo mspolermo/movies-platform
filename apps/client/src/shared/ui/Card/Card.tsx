@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
+import { shouldSkipImageOptimization } from '@/shared/lib';
+
 import styles from './Card.module.scss';
 import { SvgIcon } from '../SvgIcon';
 
@@ -86,6 +88,7 @@ export const Card = ({ type = 'small', title, photoUrl, role, onClick }: CardPro
               opacity: imageLoading ? 0 : 1,
               transition: 'opacity 0.3s ease',
             }}
+            unoptimized={shouldSkipImageOptimization(photoUrl)}
             onError={handleImageError}
             onLoad={handleImageLoad}
           />

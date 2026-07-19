@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { ImageIcon } from '@/shared/assets';
+import { shouldSkipImageOptimization } from '@/shared/lib';
 import { SvgIcon, Skeleton } from '@/shared/ui';
 
 import styles from './Poster.module.scss';
@@ -52,6 +53,7 @@ export const Poster = ({ film }: PosterProps) => {
           className={cn(styles.posterImage, imageLoading && styles.posterImageLoading)}
           sizes="(max-width: 768px) 100vw, 600px"
           src={posterUrl}
+          unoptimized={shouldSkipImageOptimization(posterUrl)}
           onError={handleImageError}
           onLoad={handleImageLoad}
         />

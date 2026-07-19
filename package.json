@@ -5,6 +5,9 @@
   "author": "mspolermo",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",

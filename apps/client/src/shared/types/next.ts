@@ -2,12 +2,12 @@
 export type TSearchParams = Record<string, string | string[] | undefined>;
 
 /**
- * Тип пропсов страницы в Next (App Router)
+ * Тип пропсов страницы в Next 16 (App Router).
  */
 export type TPageProps<
   TParams extends Record<string, string> = Record<string, never>,
   TQuery extends TSearchParams = Record<string, never>,
 > = {
-  params: TParams;
-  searchParams: TQuery;
+  params: Promise<TParams>;
+  searchParams: Promise<TQuery>;
 };

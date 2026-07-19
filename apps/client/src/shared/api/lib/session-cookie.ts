@@ -1,6 +1,6 @@
 const HAS_SESSION_COOKIE = 'has_session';
 
-/** UX-хинт: наличие сессии (не security-механизм, см. middleware). */
+/** UX-хинт: наличие сессии (не security-механизм, см. proxy). */
 export const hasSessionCookie = (): boolean => {
   if (typeof document === 'undefined') {
     return false;

@@ -1,5 +1,13 @@
+const path = require('path');
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Корень монорепы: Turbopack не уходит выше (чужой ~/package-lock),
+  // file tracing видит `@common` (apps/common). Оба поля должны совпадать.
+  turbopack: {
+    root: path.join(__dirname, '../..'),
+  },
+  outputFileTracingRoot: path.join(__dirname, '../..'),
   sassOptions: {
     includePaths: ['./src/app/styles'],
   },

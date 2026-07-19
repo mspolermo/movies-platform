@@ -9,8 +9,13 @@ import { HomeSeoSection } from './HomeSeoSection';
 export const HomePage = ({ genreCarousels }: THomePageProps) => {
   return (
     <Page title="MovieLand">
-      {genreCarousels.map((carousel) => (
-        <FilmsCarousel key={carousel.genreKey} films={carousel.films} title={carousel.title} />
+      {genreCarousels.map((carousel, index) => (
+        <FilmsCarousel
+          key={carousel.genreKey}
+          films={carousel.films}
+          priorityCount={index === 0 ? 4 : 0}
+          title={carousel.title}
+        />
       ))}
       <HomeSeoSection />
     </Page>

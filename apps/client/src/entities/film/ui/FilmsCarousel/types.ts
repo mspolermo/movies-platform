@@ -5,4 +5,6 @@ export type TFilmsCarouselProps = {
   films: TFilmListItemResponse[];
   isLoading?: boolean;
   className?: string;
+  /** Сколько первых постеров грузить с priority (LCP). */
+  priorityCount?: number;
 };

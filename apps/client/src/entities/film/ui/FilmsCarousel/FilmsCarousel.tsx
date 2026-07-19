@@ -19,6 +19,7 @@ export const FilmsCarousel = ({
   films,
   isLoading = false,
   className,
+  priorityCount = 0,
 }: TFilmsCarouselProps) => {
   const titleId = useId();
 
@@ -54,9 +55,9 @@ export const FilmsCarousel = ({
                 <FilmCardSkeleton showIcons />
               </div>
             ))
-          : films.map((film) => (
+          : films.map((film, index) => (
               <div key={film.id} className={styles.slide}>
-                <FilmCard showIcons film={film} />
+                <FilmCard showIcons film={film} priority={index < priorityCount} />
               </div>
             ))}
       </HorizontalCarousel>

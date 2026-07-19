@@ -1,7 +1,7 @@
-@import './colors.scss';
-@import './z-index.scss';
-@import './fonts.scss';
-@import './sizes.scss';
+@use './colors';
+@use './z-index';
+@use './fonts';
+@use './sizes';
 
 * {
   box-sizing: border-box;

@@ -11,7 +11,12 @@ import { IconsBlock } from './IconsBlock';
 import { Preview } from './Preview';
 import { formatRating } from '../../lib';
 
-export const FilmCard = ({ film, showIcons = false, isLoading = false }: FilmCardProps) => {
+export const FilmCard = ({
+  film,
+  showIcons = false,
+  isLoading = false,
+  priority = false,
+}: FilmCardProps) => {
   const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
   const [notLike, setNotLike] = useState(false);
@@ -82,7 +87,7 @@ export const FilmCard = ({ film, showIcons = false, isLoading = false }: FilmCar
         <div className={styles.content}>
           <div className={styles.poster}>
             <div className={styles.imageContainer}>
-              <Preview film={film} />
+              <Preview film={film} priority={priority} />
               <div className={styles.imageBackground} />
 
               {showIcons && (
