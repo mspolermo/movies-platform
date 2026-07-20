@@ -12,7 +12,6 @@ import {
   Body,
   Query,
   UseGuards,
-  UsePipes,
   Req,
   ParseIntPipe,
 } from "@nestjs/common";
@@ -22,7 +21,6 @@ import { CommentDTO } from "@common/dto";
 
 import { JwtAuthGuard, Public } from "../../shared";
 import { AuthenticatedRequest } from "../../shared/interfaces";
-import { ValidationPipe } from "../../shared/pipes";
 import { GetFilmCommentsQueryDto } from "../dto";
 import { CommentsService } from "../services";
 
@@ -52,7 +50,6 @@ export class CommentsController {
   @ApiOperation({ summary: "Создание комментария" })
   @ApiResponse({ status: 200, description: "Созданный комментарий" })
   @ApiResponse({ status: 401, description: "Unauthorized" })
-  @UsePipes(ValidationPipe)
   @Post("/:filmId")
   async createComment(
     @Param("filmId", ParseIntPipe) filmId: number,

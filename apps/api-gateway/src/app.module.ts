@@ -23,10 +23,13 @@ import { SearchModule } from "./search";
       envFilePath: ".env",
     }),
     // rate limiting (ограничение количества запросов) на брутфорс, спам регистраций, подбор пароля и пр.
-    ThrottlerModule.forRoot({
-      ttl: 60,
-      limit: 100,
-    }),
+    // Nest throttler v6+: ttl в миллисекундах, forRoot принимает массив throttlers
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60_000,
+        limit: 100,
+      },
+    ]),
     RmqModule,
     JwtConfigModule,
     AuthModule,

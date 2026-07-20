@@ -12,7 +12,6 @@ import {
   Req,
   Res,
   UseGuards,
-  UsePipes,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
@@ -27,7 +26,6 @@ import {
   Public,
 } from "../../shared/guards";
 import { AuthenticatedRequest } from "../../shared/interfaces";
-import { ValidationPipe } from "../../shared/pipes";
 import {
   clearAuthCookies,
   REFRESH_TOKEN_COOKIE,
@@ -51,10 +49,9 @@ export class AuthController {
   }
 
   @Public()
-  @Throttle(5, 60)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @ApiOperation({ summary: "Регистрация" })
   @ApiResponse({ status: 200, description: "Пользователь зарегистрирован" })
-  @UsePipes(ValidationPipe)
   @Post("/registration")
   async registrationUser(
     @Body() dto: CreateUserDto,
@@ -66,10 +63,9 @@ export class AuthController {
   }
 
   @Public()
-  @Throttle(5, 60)
+  @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @ApiOperation({ summary: "Логин" })
   @ApiResponse({ status: 200, description: "Пользователь авторизован" })
-  @UsePipes(ValidationPipe)
   @Post("/login")
   async loginUser(
     @Body() dto: AuthDto,
@@ -82,7 +78,7 @@ export class AuthController {
 
   @Public()
   @UseGuards(OriginGuard)
-  @Throttle(30, 60)
+  @Throttle({ default: { limit: 30, ttl: 60_000 } })
   @ApiOperation({ summary: "Обновление access token по refresh cookie" })
   @ApiResponse({ status: 200, description: "Новая пара токенов" })
   @ApiResponse({ status: 401, description: "Unauthorized" })

@@ -1,6 +1,7 @@
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { SwaggerModule } from "@nestjs/swagger";
 import cookieParser from "cookie-parser";
 
@@ -9,10 +10,11 @@ import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config
 import { GlobalExceptionFilter } from "./shared";
 
 
-let app: INestApplication | null = null;
+let app: NestExpressApplication | null = null;
 
 async function bootstrap() {
-  app = await NestFactory.create(AppModule);
+  // NestExpressApplication нужен для Express 5 query parser (NestJS 11)
+  app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
   const PORT = configService.get("PORT", 5000);
@@ -29,10 +31,8 @@ async function bootstrap() {
       whitelist: true,
     })
   );
-
   // Настройка для правильной обработки query параметров
-  const expressApp = app.getHttpAdapter().getInstance();
-  expressApp.set('query parser', 'extended');
+  app.set("query parser", "extended");
 
   // Middleware для исправления кодировки UTF-8
   app.use(getEncodingMiddleware());
