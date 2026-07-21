@@ -252,7 +252,7 @@ describe("FilmsService", () => {
         col: "id",
       });
       expect(result).toEqual({
-        films: [expectedFilmCard],
+        items: [expectedFilmCard],
         total: 1,
         page: mockPage,
         perPage: mockPerPage,
@@ -310,7 +310,7 @@ describe("FilmsService", () => {
         col: "id",
       });
       expect(result).toEqual({
-        films: [expectedFilmCard],
+        items: [expectedFilmCard],
         total: 1,
         page: 1,
         perPage: 20,
@@ -464,6 +464,8 @@ describe("FilmsService", () => {
           },
         ],
         total: 1,
+        page: 1,
+        perPage: 20,
         hasMore: false,
       });
     });

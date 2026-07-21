@@ -1,5 +1,5 @@
 import type { TFilmEntity } from "../entity";
-import type { TPaginationMeta } from "../shared";
+import type { TPaginatedItemsResponse } from "../shared";
 import type { TCountryItemResponse } from "./country";
 import type { TFilmFactResponse } from "./fact";
 import type { TGenreItemResponse } from "./genre";
@@ -18,12 +18,8 @@ export type TFilmListItemResponse = Pick<
   | "movieLength"
 >;
 
-
-
 /** Ответ API для пагинированного списка фильмов. */
-export type TFilmsResponse = {
-  films: TFilmListItemResponse[];
-} & TPaginationMeta;
+export type TFilmsResponse = TPaginatedItemsResponse<TFilmListItemResponse>;
 
 /** Ответ API для детальной информации о фильме. */
 export type TFilmDetailsResponse = Pick<
@@ -56,6 +52,5 @@ export type TPersonFilmResponse = Pick<
 export type TPersonFilmsListResponse = TPersonFilmResponse[];
 
 /** Ответ API для пагинированного списка фильмов персоны. */
-export type TPersonFilmsPaginationResponse = {
-  items: TPersonFilmsListResponse;
-} & TPaginationMeta;
+export type TPersonFilmsPaginationResponse =
+  TPaginatedItemsResponse<TPersonFilmResponse>;

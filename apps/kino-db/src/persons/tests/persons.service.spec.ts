@@ -100,6 +100,8 @@ describe("PersonsService", () => {
       expect(result).toEqual({
         items: listItemExpectation,
         total: mockPersonArray.length,
+        page: 1,
+        perPage: 20,
         hasMore: false,
       });
     });

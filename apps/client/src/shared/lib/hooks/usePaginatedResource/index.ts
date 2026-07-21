@@ -1,2 +1,1 @@
-export { useMediaQuery } from './useMediaQuery';
 export { usePaginatedResource } from './usePaginatedResource';

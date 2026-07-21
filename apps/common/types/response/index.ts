@@ -1,6 +1,9 @@
 export type { TRoleResponse } from "./role";
 export type { TSearchResultResponse } from "./search";
 
+/** Публичная форма пагинации (meta наружу только через response). */
+export type { TPaginatedItemsResponse } from "../shared";
+
 export type { TFilmFactResponse } from "./fact";
 
 export type { TProfessionItemResponse } from "./profession";

@@ -129,7 +129,7 @@ describe("FilmsController", () => {
       };
 
       const filmFiltersSpy = jest.spyOn(service, "filmFilters").mockResolvedValue({
-        films: [mockFilm],
+        items: [mockFilm],
         total: 1,
         page: 1,
         perPage: 10,
@@ -140,7 +140,7 @@ describe("FilmsController", () => {
 
       expect(filmFiltersSpy).toHaveBeenCalledWith(mockData);
       expect(result).toEqual({
-        films: [mockFilm],
+        items: [mockFilm],
         total: 1,
         page: 1,
         perPage: 10,

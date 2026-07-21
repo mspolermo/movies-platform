@@ -1,6 +1,5 @@
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
-
 /**
  * Нормализует page/limit для пагинированных списков персон.
  * При невалидных значениях подставляет безопасные дефолты.

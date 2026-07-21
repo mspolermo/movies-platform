@@ -1,2 +1,7 @@
-export { capitalizeFirst, isSortOption, shouldSkipImageOptimization } from './utils';
-export { useMediaQuery } from './hooks';
+export {
+  capitalizeFirst,
+  getApiErrorMessage,
+  isSortOption,
+  shouldSkipImageOptimization,
+} from './utils';
+export { useMediaQuery, usePaginatedResource } from './hooks';

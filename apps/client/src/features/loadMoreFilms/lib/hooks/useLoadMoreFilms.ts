@@ -1,10 +1,11 @@
-import type { TFilmListItemResponse, TFilmsResponse, TSearchFilmsParams } from '@common/types';
+import type { TFilmListItemResponse, TSearchFilmsParams } from '@common/types';
 
-import { useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 
 import { searchFilms } from '@/entities/film';
+import { usePaginatedResource } from '@/shared/lib';
 
-import { areSearchFilmsParamsEqual, searchFilmsErrorMessage } from '../utils';
+import { areSearchFilmsParamsEqual } from '../utils';
 
 export interface UseLoadMoreFilmsOptions {
   /** Стартовые параметры поиска (страница перезапишется при загрузке). */
@@ -23,84 +24,43 @@ export const useLoadMoreFilms = ({
   initialParams = {},
   enabled = true,
 }: UseLoadMoreFilmsOptions = {}) => {
-  const [films, setFilms] = useState<TFilmListItemResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
   const [params, setParams] = useState<TSearchFilmsParams>(initialParams);
 
-  const isLoadingRef = useRef(false);
-
-  /** Синхронизация с родителем до `useEffect(reset)`; без сравнения по значению — новая ссылка `initialParams` каждый рендер даёт бесконечный цикл setState. */
+  /** Синхронизация с родителем до reset-эффекта; без сравнения по значению — новая ссылка `initialParams` каждый рендер даёт бесконечный цикл setState. */
   useLayoutEffect(() => {
     setParams((prev) => (areSearchFilmsParamsEqual(prev, initialParams) ? prev : initialParams));
   }, [initialParams]);
 
-  const loadFilms = useCallback(
-    async (page: number, reset = false) => {
-      if (isLoadingRef.current) return;
-
-      isLoadingRef.current = true;
-      setLoading(true);
-      setError(null);
-
-      try {
-        const searchParams: TSearchFilmsParams = {
-          ...params,
-          page,
-          perPage: params.perPage ?? 20,
-        };
-
-        const response: TFilmsResponse = await searchFilms(searchParams);
-
-        if (reset) {
-          setFilms(response.films);
-        } else {
-          setFilms((prev) => [...prev, ...response.films]);
-        }
-
-        setHasMore(response.hasMore);
-        setCurrentPage(page);
-      } catch (err: unknown) {
-        setError(searchFilmsErrorMessage(err));
-      } finally {
-        setLoading(false);
-        isLoadingRef.current = false;
-      }
+  const fetchPage = useCallback(
+    async (page: number) => {
+      return searchFilms({
+        ...params,
+        page,
+        perPage: params.perPage ?? 20,
+      });
     },
     [params]
   );
 
-  const loadMore = useCallback(async () => {
-    if (!hasMore || loading) return;
-    await loadFilms(currentPage + 1, false);
-  }, [hasMore, loading, currentPage, loadFilms]);
-
-  const reset = useCallback(() => {
-    setFilms([]);
-    setCurrentPage(1);
-    setHasMore(true);
-    setError(null);
-    loadFilms(1, true);
-  }, [loadFilms]);
+  const { items, loading, error, hasMore, loadMore, refetch } =
+    usePaginatedResource<TFilmListItemResponse>({
+      fetchPage,
+      resetDeps: [params],
+      enabled,
+      errorFallback: 'Ошибка загрузки фильмов',
+    });
 
   const updateParams = useCallback((newParams: TSearchFilmsParams) => {
     setParams(newParams);
   }, []);
 
-  useEffect(() => {
-    if (!enabled) return;
-    reset();
-  }, [params, reset, enabled]);
-
   return {
-    films,
+    films: items,
     loading,
     error,
     hasMore,
     loadMore,
-    reset,
+    reset: refetch,
     updateParams,
   };
 };

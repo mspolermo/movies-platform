@@ -13,6 +13,7 @@ import { Op } from "sequelize";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
+import { toPaginatedItemsResponse } from "../../common/utils/toPaginatedIemsResponse.util";
 import { Profession } from "../../professions/models/professions.model";
 import {
   mapFilmToPersonFilm,
@@ -20,9 +21,7 @@ import {
   mapPersonToProfile,
 } from "../mappers";
 import { Person } from "../models";
-import {
-  normalizePersonListPagination,
-} from "../utils/persons-pagination.util";
+import { normalizePersonListPagination } from "../utils/persons-pagination.util";
 
 const DEFAULT_FILMOGRAPHY_LIMIT = 10;
 
@@ -36,8 +35,11 @@ export class PersonsService {
     page: number = 1,
     limit: number = LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
-    const { limit: normalizedLimit, offset: normalizedOffset } =
-      normalizePersonListPagination(page, limit);
+    const {
+      page: normalizedPage,
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+    } = normalizePersonListPagination(page, limit);
 
     const { rows, count } = await this.personRepository.findAndCountAll({
       include: [
@@ -57,13 +59,13 @@ export class PersonsService {
 
     const items = rows.map((row) => mapPersonToListItem(row));
     const total = Array.isArray(count) ? count.length : count;
-    const hasMore = normalizedOffset + items.length < total;
 
-    return {
+    return toPaginatedItemsResponse(
       items,
       total,
-      hasMore,
-    };
+      normalizedPage,
+      normalizedLimit
+    );
   }
 
   async getPersonProfile(id: number): Promise<TPersonProfileResponse | null> {
@@ -122,17 +124,9 @@ export class PersonsService {
     });
 
     const items = films.map((film) => mapFilmToPersonFilm(film));
-
     const page = Math.floor(offset / limit) + 1;
-    const hasMore = offset + items.length < total;
 
-    return {
-      items,
-      total,
-      page,
-      perPage: limit,
-      hasMore,
-    };
+    return toPaginatedItemsResponse(items, total, page, limit);
   }
 
   async findPersonsByNameAndProfession(
@@ -194,8 +188,11 @@ export class PersonsService {
     page: number = 1,
     limit: number = LIST_DEFAULT_LIMIT
   ): Promise<TPaginatedPersonsResponse> {
-    const { limit: normalizedLimit, offset: normalizedOffset } =
-      normalizePersonListPagination(page, limit);
+    const {
+      page: normalizedPage,
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+    } = normalizePersonListPagination(page, limit);
 
     const { rows, count } = await this.personRepository.findAndCountAll({
       include: [
@@ -217,12 +214,12 @@ export class PersonsService {
 
     const items = rows.map((row) => mapPersonToListItem(row));
     const total = Array.isArray(count) ? count.length : count;
-    const hasMore = normalizedOffset + items.length < total;
 
-    return {
+    return toPaginatedItemsResponse(
       items,
       total,
-      hasMore,
-    };
+      normalizedPage,
+      normalizedLimit
+    );
   }
 }

@@ -14,13 +14,12 @@ import { Op, Sequelize } from "sequelize";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
+import { toPaginatedItemsResponse } from "../../common/utils/toPaginatedIemsResponse.util";
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
 import { mapPersonToListItem } from "../../persons/mappers";
-import {
-  normalizePersonListPagination,
-} from "../../persons/utils/persons-pagination.util";
+import { normalizePersonListPagination } from "../../persons/utils/persons-pagination.util";
 import { Profession } from "../../professions/models/professions.model";
 import {
   FILM_CARD_ATTRIBUTES,
@@ -304,13 +303,12 @@ export class FilmsService {
       ? count.length
       : count;
 
-    return {
-      films: rows.map(mapFilmToCardResponse),
+    return toPaginatedItemsResponse(
+      rows.map(mapFilmToCardResponse),
       total,
       page,
-      perPage,
-      hasMore: page * perPage < total,
-    };
+      perPage
+    );
   }
 
   async getAllFilmYears(): Promise<number[]> {
@@ -389,8 +387,11 @@ export class FilmsService {
       return null;
     }
 
-    const { limit: normalizedLimit, offset: normalizedOffset } =
-      normalizePersonListPagination(page, limit);
+    const {
+      page: normalizedPage,
+      limit: normalizedLimit,
+      offset: normalizedOffset,
+    } = normalizePersonListPagination(page, limit);
 
     const { rows, count } =
       await this.personRepository.findAndCountAll({
@@ -423,10 +424,11 @@ export class FilmsService {
     const items = rows.map(mapPersonToListItem);
     const total = Array.isArray(count) ? count.length : count;
 
-    return {
+    return toPaginatedItemsResponse(
       items,
       total,
-      hasMore: normalizedOffset + items.length < total,
-    };
+      normalizedPage,
+      normalizedLimit
+    );
   }
 }

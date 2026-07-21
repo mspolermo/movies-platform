@@ -39,14 +39,14 @@ const fetchHomeGenreCarousels = async (): Promise<THomeGenreCarousel[]> => {
           sortBy: 'rating',
         });
 
-        if (response.films.length === 0) {
+        if (!response.items?.length) {
           return null;
         }
 
         return {
           genreKey: genreName,
           title: `Фильмы жанра «${capitalizeFirst(genreName)}»`,
-          films: response.films,
+          films: response.items,
         };
       } catch (error) {
         console.error(`Home carousel failed for genre «${genreName}»`, error);
@@ -66,7 +66,7 @@ const fetchHomeGenreCarousels = async (): Promise<THomeGenreCarousel[]> => {
 export const getHomeGenreCarousels = async (): Promise<THomeGenreCarousel[]> => {
   const dayKey = String(getUtcDaySeed());
 
-  return unstable_cache(fetchHomeGenreCarousels, ['home-genre-carousels', dayKey], {
+  return unstable_cache(fetchHomeGenreCarousels, ['home-genre-carousels', 'items-v1', dayKey], {
     revalidate: HOME_CAROUSELS_REVALIDATE_SECONDS,
   })();
 };

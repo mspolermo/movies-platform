@@ -5,3 +5,8 @@ export type TPaginationMeta = {
   perPage: number;
   hasMore: boolean;
 };
+
+/** Пагинированный список с `items` + meta. */
+export type TPaginatedItemsResponse<T> = {
+  items: T[];
+} & TPaginationMeta;

@@ -1,11 +1,11 @@
 'use client';
 
-import type { TPaginatedPersonsResponse, TPersonListItemResponse } from '@common/types';
+import type { TPersonListItemResponse } from '@common/types';
 
-import { isAxiosError } from 'axios';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 import { getPersonsByProfession } from '@/entities/person';
+import { usePaginatedResource } from '@/shared/lib';
 
 interface UseProfessionPersonsOptions {
   professionId: number | null;
@@ -35,83 +35,39 @@ export const useProfessionPersons = ({
   initialPage = 1,
   initialLimit = 20,
 }: UseProfessionPersonsOptions): UseProfessionPersonsReturn => {
-  const [persons, setPersons] = useState<TPersonListItemResponse[]>([]);
-  /** Пока нет первого ответа по выбранной профессии — считаем загрузку активной (избегаем ложного «пусто» до useEffect). */
-  const [loading, setLoading] = useState(() => Boolean(professionId));
-  const [error, setError] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [limit] = useState(initialLimit);
-
-  const isLoadingRef = useRef(false);
-
-  const loadPersons = useCallback(
-    async (page: number, reset = false) => {
-      if (isLoadingRef.current || !professionId) return;
-
-      isLoadingRef.current = true;
-      setLoading(true);
-      setError(null);
-
-      try {
-        const response: TPaginatedPersonsResponse = await getPersonsByProfession({
-          professionId,
+  const fetchPage = useCallback(
+    async (page: number) => {
+      // `enabled` не даёт сюда попасть без id; early-return — страховка для типов.
+      if (professionId == null) {
+        return {
+          items: [],
+          hasMore: false,
+          total: 0,
           page,
-          limit,
-        });
-
-        if (reset) {
-          setPersons(response.items);
-        } else {
-          setPersons((prev) => [...prev, ...response.items]);
-        }
-
-        setHasMore(response.hasMore);
-        setCurrentPage(page);
-      } catch (err: unknown) {
-        const fallback = 'Ошибка загрузки персон';
-        const msg =
-          isAxiosError(err) &&
-          err.response?.data &&
-          typeof err.response.data === 'object' &&
-          err.response.data !== null &&
-          'message' in err.response.data &&
-          typeof (err.response.data as { message: unknown }).message === 'string'
-            ? (err.response.data as { message: string }).message
-            : fallback;
-        setError(msg);
-      } finally {
-        setLoading(false);
-        isLoadingRef.current = false;
+          perPage: initialLimit,
+        };
       }
+
+      return getPersonsByProfession({
+        professionId,
+        page,
+        limit: initialLimit,
+      });
     },
-    [professionId, limit]
+    [professionId, initialLimit]
   );
 
-  const loadMore = useCallback(async () => {
-    if (!hasMore || loading || !professionId) return;
-    await loadPersons(currentPage + 1, false);
-  }, [hasMore, loading, currentPage, loadPersons, professionId]);
-
-  // Загрузка при изменении professionId
-  useEffect(() => {
-    if (professionId) {
-      setPersons([]);
-      setCurrentPage(initialPage);
-      setHasMore(true);
-      setError(null);
-      loadPersons(initialPage, true);
-    } else {
-      setPersons([]);
-      setHasMore(false);
-      setError(null);
-      setLoading(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [professionId]);
+  const { items, loading, error, hasMore, loadMore } =
+    usePaginatedResource<TPersonListItemResponse>({
+      fetchPage,
+      resetDeps: [professionId],
+      enabled: Boolean(professionId),
+      initialPage,
+      errorFallback: 'Ошибка загрузки персон',
+    });
 
   return {
-    persons,
+    persons: items,
     loading,
     error,
     hasMore,
