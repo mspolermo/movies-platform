@@ -21,7 +21,7 @@ import {
   mapPersonToProfile,
 } from "../mappers";
 import { Person } from "../models";
-import { normalizePersonListPagination } from "../utils/persons-pagination.util";
+import { normalizePersonListPagination } from "../utils/personsPagination.util";
 
 const DEFAULT_FILMOGRAPHY_LIMIT = 10;
 

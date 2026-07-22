@@ -15,7 +15,13 @@ import {
   FilmGenre,
   FilmPerson,
 } from "./models";
-import { FilmsService } from "./services";
+import {
+  FilmCastService,
+  FilmCatalogService,
+  FilmDetailsService,
+  FilmSimilarService,
+  FilmsService,
+} from "./services";
 
 @Module({
   imports: [
@@ -37,7 +43,13 @@ import { FilmsService } from "./services";
     ProfessionsModule,
   ],
   controllers: [FilmsController],
-  providers: [FilmsService],
+  providers: [
+    FilmDetailsService,
+    FilmCatalogService,
+    FilmSimilarService,
+    FilmCastService,
+    FilmsService,
+  ],
   exports: [FilmsService],
 })
 export class FilmsModule {}
