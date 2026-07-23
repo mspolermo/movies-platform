@@ -4,6 +4,7 @@ import { unstable_cache } from 'next/cache';
 
 import { searchFilms } from '@/entities/film';
 import { getGenresList } from '@/entities/genre';
+import { DEFAULT_REVALIDATE_SECONDS } from '@/shared/constants';
 import { capitalizeFirst } from '@/shared/lib';
 
 import { shuffleFisherYates } from './shuffleFisherYates';
@@ -12,9 +13,8 @@ import { shuffleFisherYates } from './shuffleFisherYates';
 
 const HOME_GENRE_CAROUSELS_COUNT = 10;
 const HOME_FILMS_PER_GENRE = 20;
-/** Кэш набора каруселей (сек). Seed жанров — по UTC-дню. */
-const HOME_CAROUSELS_REVALIDATE_SECONDS = 3600;
 
+/** Seed жанров по UTC-дню — набор каруселей стабилен в пределах суток. */
 const getUtcDaySeed = (): number => Math.floor(Date.now() / 86_400_000);
 
 const fetchHomeGenreCarousels = async (): Promise<THomeGenreCarousel[]> => {
@@ -67,6 +67,6 @@ export const getHomeGenreCarousels = async (): Promise<THomeGenreCarousel[]> => 
   const dayKey = String(getUtcDaySeed());
 
   return unstable_cache(fetchHomeGenreCarousels, ['home-genre-carousels', 'items-v1', dayKey], {
-    revalidate: HOME_CAROUSELS_REVALIDATE_SECONDS,
+    revalidate: DEFAULT_REVALIDATE_SECONDS,
   })();
 };

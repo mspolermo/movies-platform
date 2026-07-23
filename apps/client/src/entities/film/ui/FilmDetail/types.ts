@@ -12,7 +12,6 @@ export type FilmDetailProps = {
 export type FilmDetailSectionProps = Required<Pick<FilmDetailProps, 'film'>>;
 
 export type FactsProps = FilmDetailSectionProps;
-export type PosterProps = FilmDetailSectionProps;
 export type SloganProps = FilmDetailSectionProps;
 export type RatingProps = FilmDetailSectionProps;
 export type SummaryProps = FilmDetailSectionProps;

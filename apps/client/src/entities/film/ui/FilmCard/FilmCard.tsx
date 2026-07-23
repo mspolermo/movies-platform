@@ -5,11 +5,12 @@ import type { FilmCardProps } from '../types';
 import { useRouter } from 'next/navigation';
 import React, { useState, useCallback } from 'react';
 
+import { RemotePoster } from '@/shared/ui';
+
 import styles from './FilmCard.module.scss';
 import { FilmCardSkeleton } from './FilmCardSkeleton';
 import { IconsBlock } from './IconsBlock';
-import { Preview } from './Preview';
-import { formatRating } from '../../lib';
+import { formatRating, resolveFilmPosterUrl } from '../../lib';
 
 export const FilmCard = ({
   film,
@@ -87,7 +88,12 @@ export const FilmCard = ({
         <div className={styles.content}>
           <div className={styles.poster}>
             <div className={styles.imageContainer}>
-              <Preview film={film} priority={priority} />
+              <RemotePoster
+                alt={`Постер фильма ${filmTitle}`}
+                priority={priority}
+                size="m"
+                src={resolveFilmPosterUrl(film, 'small')}
+              />
               <div className={styles.imageBackground} />
 
               {showIcons && (

@@ -2,10 +2,11 @@
 
 import type { FilmDetailProps } from './types';
 
-import { ExpandableBlock, Skeleton } from '@/shared/ui';
+import { ExpandableBlock, RemotePoster, Skeleton } from '@/shared/ui';
 
 import styles from './FilmDetail.module.scss';
-import { QualityInfo, Description, Facts, Poster, Rating, Slogan, Summary, Trailer } from './ui';
+import { QualityInfo, Description, Facts, Rating, Slogan, Summary, Trailer } from './ui';
+import { resolveFilmPosterUrl } from '../../lib';
 
 /** Детальная информация фильма:
  * постер, рейтинг, описание, факты, трейлер.
@@ -33,10 +34,22 @@ export const FilmDetail = (props: FilmDetailProps) => {
     );
   }
 
+  const filmTitle = film.filmNameRu || film.filmNameEn || '';
+
   return (
     <div className={styles.container}>
       <div className={styles.preview}>
-        <Poster film={film} />
+        <div className={styles.posterSlot}>
+          <RemotePoster
+            priority
+            alt={filmTitle}
+            className={styles.poster}
+            imageClassName={styles.posterImage}
+            size="l"
+            skeletonClassName={styles.posterSkeleton}
+            src={resolveFilmPosterUrl(film, 'big')}
+          />
+        </div>
         <Slogan film={film} />
         <Rating film={film} />
       </div>

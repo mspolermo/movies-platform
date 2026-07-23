@@ -13,11 +13,6 @@ export interface FilmCardSkeletonProps {
   showIcons?: boolean;
 }
 
-export interface FilmCardPreviewProps {
-  film: TFilmListItemResponse;
-  priority?: boolean;
-}
-
 export interface IconsBlockProps {
   isFavorite: boolean;
   notLike: boolean;

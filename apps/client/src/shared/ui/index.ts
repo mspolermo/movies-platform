@@ -10,6 +10,7 @@ export { Logo } from './Logo';
 export { Loader } from './Loader';
 export type { LoaderProps } from './Loader';
 export { Card } from './Card';
+export { RemotePoster, type RemotePosterProps, type RemotePosterSize } from './RemotePoster';
 export { QualityTag } from './QualityTag';
 export { Overlay } from './Overlay';
 export { FilterCardButton } from './FilterCardButton';

@@ -1,3 +1,3 @@
-import type { TAllCreatorsViewerProps } from '@/widgets/AllCreatorsViewer/models';
+import type { TAllCreatorsViewerProps } from '@/widgets/AllCreatorsViewer';
 
 export type TProfessionsPageProps = TAllCreatorsViewerProps;

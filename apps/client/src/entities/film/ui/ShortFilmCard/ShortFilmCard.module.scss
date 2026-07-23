@@ -48,48 +48,6 @@
   height: 100%;
 }
 
-.posterImg {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.posterImgVisible {
-  opacity: 1;
-}
-
-.posterFallback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 6px;
-  text-align: center;
-  color: color-mix(in srgb, var(--color-input-text) 75%, transparent);
-  background: color-mix(in srgb, var(--color-background-elements) 92%, var(--color-heading));
-}
-
-.posterFallbackIcon {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  opacity: 0.65;
-}
-
-.posterFallbackText {
-  font-size: 10px;
-  line-height: 12px;
-  font-weight: 600;
-}
-
 .details {
   display: flex;
   min-width: 0;

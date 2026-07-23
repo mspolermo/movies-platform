@@ -1,12 +1,11 @@
 'use client';
 
-import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
-import { shouldSkipImageOptimization } from '@/shared/lib';
-
 import styles from './Card.module.scss';
-import { SvgIcon } from '../SvgIcon';
+import { RemotePoster } from '../RemotePoster';
+
+//TODO: выпилить БЭМ
 
 interface CardProps {
   type?: 'small' | 'big';
@@ -22,20 +21,8 @@ export const Card = ({ type = 'small', title, photoUrl, role, onClick }: CardPro
   const [bodyClass, setBodyClass] = useState(styles.card__body);
   const [textClass, setTextClass] = useState(styles.card__text);
   const [titleArray, setTitleArray] = useState(['']);
-  const [imageLoading, setImageLoading] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    // Сбрасываем состояние загрузки при изменении photoUrl
-    if (photoUrl) {
-      setImageLoading(true);
-      setImageError(false);
-    } else {
-      setImageLoading(false);
-      setImageError(true);
-    }
-  }, [photoUrl]);
-
+  //TODO: юс эффекты на стили? что за бред? полностью переделать
   useEffect(() => {
     switch (type) {
       case 'small':
@@ -55,52 +42,20 @@ export const Card = ({ type = 'small', title, photoUrl, role, onClick }: CardPro
     }
   }, [type, title]);
 
-  const handleImageLoad = () => {
-    setImageLoading(false);
-    setImageError(false);
-  };
-
-  const handleImageError = () => {
-    setImageLoading(false);
-    setImageError(true);
-  };
-
-  const renderImageContent = () => {
-    // Если нет URL - показываем ошибку
-    if (!photoUrl || imageError) {
-      return (
-        <div className={styles.imageError}>
-          <SvgIcon color="var(--color-text)" name="image-icon" size={24} />
-        </div>
-      );
-    }
-
-    return (
-      <>
-        <div className={imgClass} style={{ position: 'relative' }}>
-          <Image
-            fill
-            alt={title ?? ''}
-            sizes="(max-width: 768px) 100vw, 300px"
-            src={photoUrl}
-            style={{
-              objectFit: 'cover',
-              opacity: imageLoading ? 0 : 1,
-              transition: 'opacity 0.3s ease',
-            }}
-            unoptimized={shouldSkipImageOptimization(photoUrl)}
-            onError={handleImageError}
-            onLoad={handleImageLoad}
-          />
-        </div>
-        {imageLoading && <div className={styles.skeleton}></div>}
-      </>
-    );
-  };
-
   return (
     <div className={cardClass} onClick={onClick}>
-      <div className={bodyClass}>{renderImageContent()}</div>
+      <div className={bodyClass}>
+        <RemotePoster
+          alt={title ?? ''}
+          className={imgClass}
+          fallbackClassName={styles.imageError}
+          fallbackIconSize={24}
+          fallbackLabel=""
+          size="s"
+          skeletonBorderRadius="inherit"
+          src={photoUrl}
+        />
+      </div>
       <div>
         {title && !titleArray[1] && <p className={textClass}>{title}</p>}
 

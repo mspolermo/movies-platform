@@ -23,6 +23,39 @@
   gap: 16px;
 }
 
+.posterSlot {
+  width: 100%;
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--color-background-elements);
+}
+
+.poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  z-index: 10;
+}
+
+.posterImage {
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.posterSkeleton {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 5;
+}
+
 .info {
   display: flex;
   flex-direction: column;

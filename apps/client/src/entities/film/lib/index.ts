@@ -4,4 +4,5 @@ export {
   getKinopoiskUrl,
   formatVotes,
   formatDuration,
+  resolveFilmPosterUrl,
 } from './utils';
