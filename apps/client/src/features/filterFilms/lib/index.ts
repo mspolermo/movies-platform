@@ -9,4 +9,5 @@ export {
   areFiltersDefault,
   getMobileFilmsSelectionSummary,
   parseSettingsFromNextSearchParams,
+  parseSettingsFromURL,
 } from './utils';

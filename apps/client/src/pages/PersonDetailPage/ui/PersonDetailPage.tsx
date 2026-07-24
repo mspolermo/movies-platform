@@ -5,10 +5,11 @@ import type { TPersonDetailPageProps } from './types';
 import { Page } from '@/widgets/Layout';
 import { PersonDetail } from '@/widgets/PersonDetail';
 
-/** Страница персоны: обёртка `Page` с «назад» и виджет детальной информации о
- * персоне с проффессиями и фильмами */
+import { buildPersonBreadcrumbs } from '../lib';
+
+/** Страница персоны: обёртка `Page` с крошками и виджет детальной информации */
 export const PersonDetailPage = ({ isLoading, person }: TPersonDetailPageProps) => (
-  <Page withBackButton>
+  <Page breadcrumbs={buildPersonBreadcrumbs(person)}>
     <PersonDetail isLoading={Boolean(isLoading)} person={person} />
   </Page>
 );

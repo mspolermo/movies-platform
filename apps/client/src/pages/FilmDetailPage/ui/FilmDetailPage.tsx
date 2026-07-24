@@ -10,12 +10,14 @@ import { FilmCommentsViewer } from '@/widgets/FilmCommentsViewer';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 import { Page } from '@/widgets/Layout';
 
+import { buildFilmBreadcrumbs } from '../lib';
+
 /** Страница фильма с блоком создателей и режимом загрузки */
 export const FilmDetailPage = ({ isLoading, film, similarFilms = [] }: TFilmDetailPageProps) => {
   const filmName = film?.filmNameRu || film?.filmNameEn || '';
 
   return (
-    <Page>
+    <Page breadcrumbs={buildFilmBreadcrumbs(film)}>
       <FilmDetail
         creatorsViewer={<FilmCreatorsViewer />}
         film={film}

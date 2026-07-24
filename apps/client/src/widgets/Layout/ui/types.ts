@@ -1,3 +1,4 @@
+import type { TBreadcrumbItem } from '@/shared/ui';
 import type { TQuickFiltersResponse } from '@common/types';
 
 import type { ReactNode } from 'react';
@@ -8,10 +9,11 @@ export type TLayoutProps = {
   initialQuickFilters: TQuickFiltersResponse;
 };
 
-/** Контент страницы внутри main: заголовок, назад, дети. */
+/** Контент страницы внутри main: заголовок, назад, крошки, дети. */
 export type TPageProps = {
   children: ReactNode;
   title?: string;
   onlyLaptopTitle?: boolean;
   withBackButton?: boolean;
+  breadcrumbs?: TBreadcrumbItem[];
 };

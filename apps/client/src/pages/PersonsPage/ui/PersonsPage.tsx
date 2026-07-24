@@ -5,11 +5,16 @@ import type { TPersonsPageProps } from './types';
 import { AllPersonsList } from '@/features/getAllPersons';
 import { Page } from '@/widgets/Layout';
 
-export const PersonsPage = ({ isLoading, initialPersonsPage }: TPersonsPageProps) => (
-  <Page title="Персоны">
-    <AllPersonsList
-      initialData={isLoading ? undefined : initialPersonsPage}
-      isLoading={Boolean(isLoading)}
-    />
-  </Page>
-);
+export const PersonsPage = ({ isLoading, initialPersonsPage }: TPersonsPageProps) => {
+  const title = 'Персоны';
+  const breadcrumbs = [{ label: 'Главная', href: '/' }, { label: title }];
+  
+  return (
+    <Page breadcrumbs={breadcrumbs} title={title}>
+      <AllPersonsList
+        initialData={isLoading ? undefined : initialPersonsPage}
+        isLoading={Boolean(isLoading)}
+      />
+    </Page>
+  )
+};

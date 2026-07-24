@@ -1,0 +1,1 @@
+export { buildFilmBreadcrumbs } from './buildFilmBreadcrumbs';
