@@ -1,0 +1,1 @@
+export { RateFilmProvider } from './RateFilmProvider';

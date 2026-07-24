@@ -1,30 +1,20 @@
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--color-modal-overlay);
+  inset: 0;
   z-index: var(--z-modal);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding-top: 100px;
-  /* Не скроллим фон за оверлеем */
+  padding: 24px;
   overflow: hidden;
+  background: var(--color-modal-overlay);
 }
 
 .content {
+  /* Positioning wrapper only — scroll/chrome в Modal / потребителе */
   display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--color-background-elements);
-  border-radius: 12px;
-  padding: 16px 20px;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 20px;
-  /* Скроллим только контент, если он выше экрана */
-  max-height: calc(100vh - 140px);
-  overflow: auto;
+  flex-direction: column;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }

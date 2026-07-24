@@ -11,6 +11,7 @@ import styles from './FilmCard.module.scss';
 import { FilmCardSkeleton } from './FilmCardSkeleton';
 import { IconsBlock } from './IconsBlock';
 import { formatRating, resolveFilmPosterUrl } from '../../lib';
+import { useFilmGradeAction } from '../../model';
 
 export const FilmCard = ({
   film,
@@ -19,6 +20,7 @@ export const FilmCard = ({
   priority = false,
 }: FilmCardProps) => {
   const router = useRouter();
+  const openGradeFilm = useFilmGradeAction();
   const [isFavorite, setIsFavorite] = useState(false);
   const [notLike, setNotLike] = useState(false);
 
@@ -36,10 +38,13 @@ export const FilmCard = ({
     setNotLike((prev) => !prev);
   }, []);
 
-  const handleGradeClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    // TODO: Implement grade functionality
-  }, []);
+  const handleGradeClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      openGradeFilm?.(film.id);
+    },
+    [openGradeFilm, film.id]
+  );
 
   const handleSimilarClick = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();

@@ -1,0 +1,1 @@
+export { submitFilmGrade } from './submitFilmGrade';

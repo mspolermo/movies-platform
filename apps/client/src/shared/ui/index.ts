@@ -13,6 +13,7 @@ export { Card } from './Card';
 export { RemotePoster, type RemotePosterProps, type RemotePosterSize } from './RemotePoster';
 export { QualityTag } from './QualityTag';
 export { Overlay } from './Overlay';
+export { Modal } from './Modal';
 export { FilterCardButton } from './FilterCardButton';
 export { ExpandableBlock } from './ExpandableBlock';
 export { SortFilter, type TSortFilterProps } from './SortFilter';

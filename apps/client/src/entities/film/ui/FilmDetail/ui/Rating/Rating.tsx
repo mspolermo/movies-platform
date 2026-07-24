@@ -1,3 +1,5 @@
+'use client';
+
 import type { RatingProps } from '../../types';
 
 import type { MouseEvent } from 'react';
@@ -8,19 +10,23 @@ import { Button } from '@/shared/ui';
 
 import styles from './Rating.module.scss';
 import { formatVotes, getKinopoiskUrl } from '../../../../lib';
+import { useFilmGradeAction } from '../../../../model';
 
 /**
- * Блок рейтинга фильма с переходом на Кинопоиск.
+ * Блок рейтинга фильма с переходом на Кинопоиск и кнопкой «Оценить».
  */
-export const Rating = ({ film: { ratingKp, votesKp, filmNameRu, filmNameEn } }: RatingProps) => {
+export const Rating = ({
+  film: { id, ratingKp, votesKp, filmNameRu, filmNameEn },
+}: RatingProps) => {
+  const openGradeFilm = useFilmGradeAction();
   const filmName = filmNameRu || filmNameEn || '';
   const rating = ratingKp ? Math.round(ratingKp * 10) / 10 : 0;
   const isHigh = ratingKp != null && ratingKp >= 7;
 
-  const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleRateClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    // TODO: логика "Оценить"
+    openGradeFilm?.(id);
   };
 
   return (
@@ -44,7 +50,7 @@ export const Rating = ({ film: { ratingKp, votesKp, filmNameRu, filmNameEn } }: 
       </div>
 
       <div className={styles.action}>
-        <Button size="small" variant="outline" onClick={handleButtonClick}>
+        <Button size="small" variant="outline" onClick={handleRateClick}>
           Оценить
         </Button>
       </div>
