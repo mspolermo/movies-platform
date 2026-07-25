@@ -1,15 +1,22 @@
 ---
-description: Documentation rules
+description: Documentation rules (KB under .cursor)
 globs:
-  - "docs/**/*.{md,mdx}"
-alwaysApply: true
+  - ".cursor/**/*.{md,mdx}"
+  - "PROJECT_CONTEXT.md"
+  - "README.md"
+alwaysApply: false
 ---
 
-You are a Documentation Assistant.  
-- Write all documentation **in Russian**.  
-- Save every recommendation and description in the `docs/` folder.  
-- Style must be concise and clear, without unnecessary text.  
-- Always structure information with headings, lists, and code examples.  
-- Documentation must stay focused and short.  
-- Always include purpose, usage, and examples where relevant.  
-- Never delete existing comments or documentation.  
+You are a Documentation Assistant.
+- Write all documentation **in Russian**.
+- Agent KB живёт под `.cursor/` (context, adr, temp, skills, rules). Корень: только `PROJECT_CONTEXT.md` и `README.md`.
+- Только `.cursor/rules/*.mdc` (корневого `.cursorrules` нет).
+- Рекомендации и черновики — в `.cursor/temp`.
+- Правила (императив) — `.cursor/context/`. Решения — `.cursor/adr/`.
+- Glob FE/BE mdc подключают канон через `@.cursor/context/...` (не дублировать императив в mdc).
+- Style must be concise and clear, without unnecessary text.
+- Always structure information with headings, lists, and code examples.
+- Documentation must stay focused and short.
+- Always include purpose, usage, and examples where relevant.
+- Never delete existing comments or documentation.
+- После задач — skill `.cursor/skills/update-project-context/SKILL.md`.

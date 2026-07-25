@@ -1,7 +1,5 @@
 ---
 description: Как устроен apps/common (types, dto, импорты фронт/бек)
-globs:
-  - "apps/common/**"
 alwaysApply: true
 ---
 
