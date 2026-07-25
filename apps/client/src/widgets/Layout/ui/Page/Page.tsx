@@ -15,6 +15,7 @@ import styles from './Page.module.scss';
 export const Page = ({
   children,
   title,
+  titleVisuallyHidden,
   onlyLaptopTitle,
   withBackButton,
   breadcrumbs,
@@ -23,7 +24,15 @@ export const Page = ({
     {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
     {withBackButton && <BackButton />}
     {title && (
-      <h1 className={cn(styles.title, onlyLaptopTitle && styles.title_onlyLaptop)}>{title}</h1>
+      <h1
+        className={cn(
+          styles.title,
+          titleVisuallyHidden && styles.titleVisuallyHidden,
+          onlyLaptopTitle && !titleVisuallyHidden && styles.title_onlyLaptop
+        )}
+      >
+        {title}
+      </h1>
     )}
     {children}
   </>

@@ -151,6 +151,7 @@ Legacy: `old-client/` — не использовать.
 | Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user` | users, roles, refresh_tokens |
 | Search / Filters | gateway aggregation | `features/search*`, `filterFilms` | — |
 | Ratings (KP) | поля Film | `features/rateFilm` (UI) | нет user-ratings таблицы |
+| Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |
 
 ---
 
@@ -176,6 +177,8 @@ Legacy: `old-client/` — не использовать.
 | API клиент | `apps/client/src/shared/api` |
 | Пагинация (shared hook) | `apps/client/src/shared/lib/hooks/usePaginatedResource` |
 | UI-kit | `apps/client/src/shared/ui` |
+| Home promo banners | `apps/client/src/widgets/PromoBannerSlider` |
+| Horizontal carousel (shared) | `apps/client/src/shared/ui/HorizontalCarousel` |
 | Docker / seed | `docker-compose.yml`, `devops/` |
 | Auth ADR | `.cursor/adr/001-jwt-access-opaque-refresh.md` |
 | Правила | `.cursor/context/` |

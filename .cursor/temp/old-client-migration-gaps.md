@@ -80,7 +80,7 @@
 
 | # | Что | Как | Не делать |
 |---|-----|-----|-----------|
-| 10 | **Promo / hero** | Свой контент (CMS/статика проекта) + RSC carousel | Хардкод баннеров ivi.ru |
+| 10 | ~~**Promo / hero**~~ | ~~Свой контент + carousel~~ → сделано: `widgets/PromoBannerSlider` (WebP, loop+dots+autoplay в виджете) | Хардкод баннеров ivi.ru |
 | 11 | **Top-N / подборки** | API подборок или curated ids с backend | Статичные картинки Top-10 из OLD |
 | 12 | **Header mega-menus** | Свои разделы (`HEADER_SECTIONS`) под реальные роуты | Меню-ссылки на ivi (Series/Mults/Subscribe/Notify) |
 
@@ -124,6 +124,7 @@
 - Similar films, comment likes, `usePaginatedResource`  
 - Плоские отзывы без дерева — канон ([ADR-002](../adr/002-flat-film-reviews.md))  
 - `@common/types`, FSD boundaries, SCSS Modules, RSC/ISR  
+- Home promo: `widgets/PromoBannerSlider` (свои WebP; loop/dots/autoplay в виджете, не в shared)  
 
 ---
 
@@ -134,7 +135,7 @@
 2. Заглушки продукта: скрыть или API для favorites + ratings
 3. Admin (если да) на правильном auth/RBAC
 4. Film UX: share / fullscreen trailer / PlayerPanel — по приоритету дизайна
-5. Home promo/Top-N — только со своими данными
+5. ~~Home promo~~ / Top-N — только со своими данными (promo: `widgets/PromoBannerSlider`)
 6. i18n
 7. Vitest smoke
 8. Удалить old-client/ из репо

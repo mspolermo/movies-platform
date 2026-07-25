@@ -13,6 +13,8 @@ export type TLayoutProps = {
 export type TPageProps = {
   children: ReactNode;
   title?: string;
+  /** h1 в DOM для a11y, без визуала. */
+  titleVisuallyHidden?: boolean;
   onlyLaptopTitle?: boolean;
   withBackButton?: boolean;
   breadcrumbs?: TBreadcrumbItem[];
