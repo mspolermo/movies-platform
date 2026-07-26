@@ -3,14 +3,10 @@
 import { useEffect, useState } from 'react';
 
 import { useAuth } from '@/entities/user';
-import { applyAuthResponse, logout } from '@/features/auth';
-import {
-  getAccessToken,
-  getApiBaseUrl,
-  getCurrentUser,
-  hasSessionCookie,
-  refreshSession,
-} from '@/shared/api';
+import { logout } from '@/features/auth';
+import { getCurrentUser, refreshSession } from '@/shared/api';
+import { getAccessToken, hasSessionCookie } from '@/shared/api/session';
+import { getApiBaseUrl } from '@/shared/lib';
 import { Button } from '@/shared/ui';
 import { Page } from '@/widgets/Layout';
 
@@ -109,8 +105,7 @@ export const DebugPage = () => {
     setActionBusy(true);
 
     try {
-      const response = await refreshSession();
-      applyAuthResponse(response);
+      await refreshSession();
       setTick((n) => n + 1);
     } catch {
       setActionError('refresh failed');

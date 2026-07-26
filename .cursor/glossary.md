@@ -19,8 +19,10 @@
 | **FSD** | Feature-Sliced Design на клиенте |
 | **access token** | Короткий JWT; на клиенте только in-memory |
 | **refresh token** | Opaque; HttpOnly cookie; hash в `refresh_tokens` |
-| **has_session** | Не HttpOnly cookie — UX-хинт для `proxy.ts` / UI, не security |
-| **proxy.ts** | Next 16 edge-proxy: UX-редиректы `/profile` и `/auth/*` по `has_session` |
+| **has_session** | Не HttpOnly cookie — UX-хинт для `proxy.ts` / UI, не security; `HAS_SESSION_*` в `shared/api/session/constants` |
+| **proxy.ts** | Next 16 thin proxy: `@/shared/api/session` (без axios) + `resolveSessionRedirect`; `matcher` — static literals |
+| **apiClient** | Axios + refresh interceptor; `shared/api/session/apiClient` → default из `@/shared/api` |
+| **AppProviders** | FSD `src/app/providers`: `AuthProvider` → `FilmActionsProvider` |
 | **usePaginatedResource** | Shared-хук infinite/pagination; база для load-more features |
 | **Orphan RPC** | Pattern есть в MS, но gateway HTTP/client его не вызывает |
 | **OriginGuard** | Проверка Origin на refresh/logout в production |

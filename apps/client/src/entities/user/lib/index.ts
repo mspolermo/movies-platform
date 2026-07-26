@@ -1,2 +1,2 @@
-export { useAuth } from './useAuth';
+export { useAuth } from './hooks';
 export { buildLoginHref } from './utils';

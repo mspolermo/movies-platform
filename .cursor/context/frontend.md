@@ -7,7 +7,8 @@
 
 | Слой | Можно импортировать |
 |------|---------------------|
-| `app/` (routes) | pages, shared |
+| Next `app/` (routes) | FSD `src/app`, pages, widgets, features, entities, shared (thin wiring) |
+| FSD `src/app` | pages, widgets, features, entities, shared |
 | `pages` | widgets, features, entities, shared |
 | `widgets` | features, entities, shared |
 | `features` | entities, shared |
@@ -17,6 +18,7 @@
 - Нарушения ловит `eslint-plugin-boundaries` / `@feature-sliced`.
 - Публичный API слайса — через `index.ts`.
 - Роуты Next (`app/**/page.tsx`) — тонкие; UI-логика в `src/pages`.
+- FSD `src/app`: `styles/` + `providers/` (composition root). Next `app/` лежит в корне клиента (не `_app`) — осознанный deviation от гайда FSD×Next.
 
 ## React / Next
 
@@ -28,11 +30,11 @@
 ## Данные и state
 
 - **Нет React Query** — не добавлять без ADR.
-- HTTP: `shared/api` (axios), endpoints централизованно.
-- Access token — module-scope memory (`shared/api/lib`), **не** localStorage / не zustand.
+- HTTP: `@/shared/api` (axios + `auth/*` + `endpoints.ts`); path/session primitives — `@/shared/api/session`.
+- Access token — module-scope memory (`session/accessToken`), **не** localStorage / не zustand.
 - Zustand — один store `useUserStore` (`entities/user`); не складывать туда токены.
 - Пагинация/infinite — `usePaginatedResource` + feature-hooks (`useLoadMoreFilms`, `useFilmComments`, …).
-- UX-редиректы сессии: `apps/client/proxy.ts` (не `middleware.ts`).
+- Auth/session layout, proxy, ESLint dual-entry — [ADR-001](../adr/001-jwt-access-opaque-refresh.md).
 - Server Actions сейчас: только `getCountriesList`, `getGenresList`, `getFilmsFilters`.
 
 ## Типы
@@ -59,7 +61,16 @@
 - Props и связанные публичные типы компонента — в `ui/<Component>/types.ts` рядом с `.tsx`.
 - В `.tsx` только `import type { T…Props } from './types'`.
 - Локальные union’ы шага/стейта UI (`'idle' | 'copied'`, `'rate' | 'success'`) можно оставить в `.tsx`, если наружу не отдаются.
-- Запрещено: объявлять `T*Props` внутри `Component.tsx`.
+- Запрещено: объявлять кастомный `T*Props` внутри `Component.tsx`.
+- **Исключение:** если у компонента **только** `children` — не заводить `T*Props` / `types.ts`; использовать `PropsWithChildren` из React:
+
+```tsx
+import type { PropsWithChildren } from 'react';
+
+export const AuthProvider = ({ children }: PropsWithChildren) => children;
+```
+
+- Как только появляется хотя бы одно своё поле помимо `children` — обычный `T*Props` в `types.ts` (можно `PropsWithChildren<{ … }>`).
 
 ## Структура `lib` в слайсе
 
@@ -101,5 +112,5 @@ lib/utils/
 
 ## Auth UX
 
-- `has_session` — только хинт для proxy/UI, не security.
-- После failed refresh — очистить access + UX-cookie, редирект на login.
+Кратко: `has_session` — только UX-хинт; identity — `@/entities/user`; сценарии — `@/features/auth`.  
+Канон (endpoints, dual-entry `api`/`session`, ESLint allowlist, logout vs `buildLoginHref`, proxy) — [ADR-001](../adr/001-jwt-access-opaque-refresh.md).

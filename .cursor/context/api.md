@@ -31,10 +31,10 @@
 
 ## Клиентский API-слой
 
-- Browser: `baseURL: '/api'`, `withCredentials: true`.
-- SSR: `API_GATEWAY_URL`.
-- Endpoints — `shared/api/endpoints.ts` (или аналог); не хардкодить URL по компонентам.
-- 401 → single-flight refresh → retry; провал → logout UX.
+- Browser: `baseURL` = `BROWSER_API_BASE_URL` (`/api`), `withCredentials: true`.
+- SSR: `API_GATEWAY_URL` или `DEFAULT_SSR_API_BASE_URL` — через `getApiBaseUrl` (`shared/lib`).
+- Пути REST + base URL consts — **только** `shared/api/endpoints.ts` (не хардкод в UI, не `shared/constants`). Зачем — [ADR-001](../adr/001-jwt-access-opaque-refresh.md) (§ «endpoints.ts»).
+- 401 → single-flight refresh → retry; провал → `sessionBridge.onSessionExpired`. Детали session/ESLint — тот же ADR.
 
 ## Запреты
 

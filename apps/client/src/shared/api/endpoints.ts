@@ -1,5 +1,14 @@
 /**
- * Пути REST API (относительно baseURL `/api`).
+ * Same-origin rewrite в браузере (Next → gateway).
+ * Пути ниже — относительно этого baseURL.
+ */
+export const BROWSER_API_BASE_URL = '/api';
+
+/** SSR fallback, если нет `API_GATEWAY_URL`. */
+export const DEFAULT_SSR_API_BASE_URL = 'http://localhost:5001';
+
+/**
+ * Пути REST API (относительно {@link BROWSER_API_BASE_URL}).
  * Функции-пути — для ресурсов с динамическим id.
  */
 export const API_ENDPOINTS = {

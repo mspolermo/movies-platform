@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+import { AUTH_LOGIN_PATH } from '@/shared/api/session';
+
 import { buildLoginHref } from './buildLoginHref';
 
 describe('buildLoginHref', () => {
@@ -16,7 +18,7 @@ describe('buildLoginHref', () => {
     });
 
     expect(buildLoginHref()).toBe(
-      `/auth/login?returnUrl=${encodeURIComponent('/films/12?tab=reviews')}`
+      `${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent('/films/12?tab=reviews')}`
     );
   });
 
@@ -28,6 +30,8 @@ describe('buildLoginHref', () => {
       },
     });
 
-    expect(buildLoginHref()).toBe(`/auth/login?returnUrl=${encodeURIComponent('/films?q=a&b=1')}`);
+    expect(buildLoginHref()).toBe(
+      `${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent('/films?q=a&b=1')}`
+    );
   });
 });

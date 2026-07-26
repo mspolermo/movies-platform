@@ -148,7 +148,7 @@ Legacy: `old-client/` — не использовать.
 | Persons | `kino-db/persons` | `entities/person`, `features/getAllPersons*` | Person, M:N |
 | Genres / Countries / Professions | `kino-db/*` | `entities/genre\|country\|profession` | словари |
 | Comments | `kino-db/comments` | `entities/comment`, `features/getFilmComments` | Comment, CommentLike |
-| Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user` | users, roles, refresh_tokens |
+| Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user`, `src/app/providers` | users, roles, refresh_tokens |
 | Search / Filters | gateway aggregation | `features/search*`, `filterFilms` | — |
 | Ratings (KP) | поля Film | `features/openFilmActions` (UI grade stub) | нет user-ratings таблицы |
 | Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004 | favorite stub до F3 |
@@ -173,9 +173,14 @@ Legacy: `old-client/` — не использовать.
 | Мапперы ORM→Response | `apps/kino-db/src/*/mappers`, `apps/auth-users/src/users/users.mapper.ts` |
 | Frontend страницы (UI) | `apps/client/src/pages` |
 | Frontend роуты (Next) | `apps/client/app` |
-| UX proxy (session redirects) | `apps/client/proxy.ts` |
+| UX proxy (session redirects) | `apps/client/proxy.ts` (`@/shared/api/session` edge-safe; `matcher` — static literals) |
+| App providers (auth composition) | `apps/client/src/app/providers` |
+| Auth session actions | `apps/client/src/features/auth/lib/authActions` |
+| Session modules | `apps/client/src/shared/api/session/{accessToken,apiClient,sessionCookie,sessionBridge,sessionBootstrap,resolveSessionRedirect}` + `constants.ts` |
+| API endpoints + base URL consts | `apps/client/src/shared/api/endpoints.ts` (`API_ENDPOINTS`, `BROWSER_API_BASE_URL`, `DEFAULT_SSR_API_BASE_URL`) |
+| getApiBaseUrl | `apps/client/src/shared/lib/utils/getApiBaseUrl` (читает consts из `endpoints`) |
 | Entities / Features / Widgets | `apps/client/src/{entities,features,widgets}` |
-| API клиент | `apps/client/src/shared/api` |
+| API публичный barrel | `apps/client/src/shared/api` (узкий surface; app-код сюда) |
 | Пагинация (shared hook) | `apps/client/src/shared/lib/hooks/usePaginatedResource` |
 | UI-kit | `apps/client/src/shared/ui` |
 | Home promo banners | `apps/client/src/widgets/PromoBannerSlider` |

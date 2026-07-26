@@ -1,5 +1,5 @@
-import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
+import apiClient from '../session/apiClient';
 
 /** Завершить сессию: отозвать refresh token на бэке и очистить cookie. */
 export const logoutUser = async (): Promise<void> => {

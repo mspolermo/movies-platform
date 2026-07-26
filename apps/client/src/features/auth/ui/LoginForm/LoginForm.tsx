@@ -7,11 +7,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { loginUser } from '@/shared/api';
+import { AUTH_REGISTER_PATH } from '@/shared/api/session';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './LoginForm.module.scss';
-import { resolveAuthReturnUrl } from '../../lib';
-import { applyAuthResponse } from '../../model';
+import { applyAuthResponse, resolveAuthReturnUrl } from '../../lib';
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -21,6 +21,11 @@ export const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const returnUrl = searchParams?.get('returnUrl');
+  const registerHref = returnUrl
+    ? `${AUTH_REGISTER_PATH}?returnUrl=${encodeURIComponent(returnUrl)}`
+    : AUTH_REGISTER_PATH;
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -29,7 +34,7 @@ export const LoginForm = () => {
     try {
       const response = await loginUser({ email, password });
       applyAuthResponse(response);
-      router.push(resolveAuthReturnUrl(searchParams?.get('returnUrl')));
+      router.push(resolveAuthReturnUrl(returnUrl));
     } catch {
       setError('Не удалось войти. Проверьте email и пароль.');
     } finally {
@@ -72,7 +77,7 @@ export const LoginForm = () => {
       <div className={styles.registerLink}>
         <p>
           Нет аккаунта?{' '}
-          <Link className={styles.link} href="/auth/register">
+          <Link className={styles.link} href={registerHref}>
             Зарегистрироваться
           </Link>
         </p>

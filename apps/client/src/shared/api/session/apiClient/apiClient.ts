@@ -2,23 +2,15 @@ import type { TAuthResponse } from '@common/types';
 
 import axios, { isAxiosError, type InternalAxiosRequestConfig } from 'axios';
 
-import { getApiBaseUrl } from './config';
-import {
-  clearAccessToken,
-  clearHasSessionCookie,
-  getAccessToken,
-  notifyAuthenticated,
-  notifyUnauthenticated,
-  setAccessToken,
-  waitForSessionBootstrap,
-  isSessionBootstrapping,
-} from './lib';
+import { getApiBaseUrl } from '../../../lib';
+import { clearAccessToken, getAccessToken, setAccessToken } from '../accessToken';
+import { waitForSessionBootstrap, isSessionBootstrapping } from '../sessionBootstrap';
+import { notifyAuthenticated, notifyUnauthenticated, notifySessionExpired } from '../sessionBridge';
+import { clearHasSessionCookie, hasSessionCookie } from '../sessionCookie';
 
 type RetryableRequestConfig = InternalAxiosRequestConfig & {
   _retry?: boolean;
 };
-
-// --- Axios instance ---
 
 /** Общий HTTP-клиент: same-origin `/api`, cookies, Bearer access token. */
 const apiClient = axios.create({
@@ -43,8 +35,6 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// --- Token refresh (single-flight) ---
-
 let refreshPromise: Promise<TAuthResponse> | null = null;
 
 const isAuthEndpoint = (url?: string): boolean => {
@@ -66,9 +56,23 @@ const resetSession = (): void => {
   notifyUnauthenticated();
 };
 
+const readAuthorization = (headers: InternalAxiosRequestConfig['headers']): string | undefined => {
+  if (!headers) {
+    return undefined;
+  }
+
+  if (typeof headers.get === 'function') {
+    const value = headers.get('Authorization');
+    return typeof value === 'string' ? value : undefined;
+  }
+
+  const value = (headers as { Authorization?: unknown }).Authorization;
+  return typeof value === 'string' ? value : undefined;
+};
+
 /**
  * Обновление access token по refresh cookie.
- * Bootstrap и 401-интерцептор делят один in-flight запрос — иначе reuse-детект на бэке.
+ * Bootstrap и 401-интерцептор делят один in-flight — иначе reuse-детект на бэке.
  */
 export const performTokenRefresh = (): Promise<TAuthResponse> => {
   if (refreshPromise) {
@@ -93,8 +97,6 @@ export const performTokenRefresh = (): Promise<TAuthResponse> => {
   return refreshPromise;
 };
 
-// --- 401 interceptor: один retry через refresh ---
-
 apiClient.interceptors.response.use(
   (response) => response,
   async (error: unknown) => {
@@ -115,17 +117,31 @@ apiClient.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
+      const failedAuthorization = readAuthorization(originalRequest.headers);
       await waitForSessionBootstrap();
+
+      // Bootstrap / параллельный refresh уже подменил access — retry без второй ротации.
+      const token = getAccessToken();
+      const nextAuthorization = token ? `Bearer ${token}` : undefined;
+      if (nextAuthorization && nextAuthorization !== failedAuthorization) {
+        originalRequest.headers.Authorization = nextAuthorization;
+        return apiClient(originalRequest);
+      }
+
+      // Bootstrap упал / сессии нет — не бить refresh повторно.
+      if (!hasSessionCookie()) {
+        if (!isSessionBootstrapping()) {
+          notifySessionExpired();
+        }
+        return Promise.reject(error);
+      }
+
       const data = await performTokenRefresh();
       originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
       return apiClient(originalRequest);
     } catch (refreshError) {
-      if (
-        typeof window !== 'undefined' &&
-        !isSessionBootstrapping() &&
-        !window.location.pathname.startsWith('/auth/')
-      ) {
-        window.location.assign('/auth/login');
+      if (!isSessionBootstrapping()) {
+        notifySessionExpired();
       }
 
       return Promise.reject(refreshError);

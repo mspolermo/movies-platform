@@ -3,16 +3,19 @@
 import type { FormEvent, ChangeEvent } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { registerUser } from '@/shared/api';
+import { AUTH_LOGIN_PATH } from '@/shared/api/session';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './RegisterForm.module.scss';
-import { applyAuthResponse } from '../../model';
+import { resolveAuthReturnUrl, applyAuthResponse } from '../../lib';
 
 export const RegisterForm = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,7 +23,11 @@ export const RegisterForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+
+  const returnUrl = searchParams?.get('returnUrl');
+  const loginHref = returnUrl
+    ? `${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent(returnUrl)}`
+    : AUTH_LOGIN_PATH;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -34,7 +41,7 @@ export const RegisterForm = () => {
         name: formData.name || undefined,
       });
       applyAuthResponse(response);
-      router.push('/films');
+      router.push(resolveAuthReturnUrl(returnUrl));
     } catch {
       setError('Не удалось зарегистрироваться. Проверьте данные.');
     } finally {
@@ -95,7 +102,7 @@ export const RegisterForm = () => {
       <div className={styles.loginLink}>
         <p>
           Уже есть аккаунт?{' '}
-          <Link className={styles.link} href="/auth/login">
+          <Link className={styles.link} href={loginHref}>
             Войти
           </Link>
         </p>

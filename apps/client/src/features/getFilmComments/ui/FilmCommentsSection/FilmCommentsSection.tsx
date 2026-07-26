@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 import { CommentCard, CommentsEmptyState, toggleCommentLike } from '@/entities/comment';
-import { useAuth } from '@/entities/user';
+import { buildLoginHref, useAuth } from '@/entities/user';
 import { Button, LoadMoreSection, Skeleton } from '@/shared/ui';
 
 import { CreateReviewForm } from './CreateReviewForm';
@@ -40,7 +40,7 @@ export const FilmCommentsSection = ({ filmId, filmName }: TFilmCommentsSectionPr
     }
 
     if (!isAuthenticated) {
-      router.push('/auth/login');
+      router.push(buildLoginHref());
       return;
     }
 
@@ -53,7 +53,7 @@ export const FilmCommentsSection = ({ filmId, filmName }: TFilmCommentsSectionPr
     }
 
     if (!isAuthenticated) {
-      router.push('/auth/login');
+      router.push(buildLoginHref());
       return;
     }
 
@@ -94,7 +94,7 @@ export const FilmCommentsSection = ({ filmId, filmName }: TFilmCommentsSectionPr
       updateCommentLike(commentId, previousCount, previousLiked);
 
       if (isAxiosError(err) && err.response?.status === 401) {
-        router.push('/auth/login');
+        router.push(buildLoginHref());
       }
     } finally {
       if (likeRequestIdRef.current.get(commentId) === requestId) {

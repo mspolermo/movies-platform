@@ -1,9 +1,11 @@
+import { DEFAULT_POST_AUTH_PATH } from '@/shared/api/session';
+
 /**
  * Безопасный returnUrl после логина: только same-origin relative path.
  */
 export const resolveAuthReturnUrl = (raw: string | null | undefined): string => {
   if (!raw) {
-    return '/films';
+    return DEFAULT_POST_AUTH_PATH;
   }
 
   const value = raw.trim();
@@ -15,7 +17,7 @@ export const resolveAuthReturnUrl = (raw: string | null | undefined): string => 
     value.includes('\\') ||
     value.startsWith('/auth/')
   ) {
-    return '/films';
+    return DEFAULT_POST_AUTH_PATH;
   }
 
   return value;

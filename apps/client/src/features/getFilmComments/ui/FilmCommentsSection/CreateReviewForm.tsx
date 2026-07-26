@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { createFilmComment } from '@/entities/comment';
-import { useAuth } from '@/entities/user';
+import { buildLoginHref, useAuth } from '@/entities/user';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './CreateReviewForm.module.scss';
@@ -36,7 +36,7 @@ export const CreateReviewForm = ({ filmId, onCancel, onSuccess }: TCreateReviewF
     }
 
     if (!isAuthenticated) {
-      router.push('/auth/login');
+      router.push(buildLoginHref());
       return;
     }
 

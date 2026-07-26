@@ -1,6 +1,7 @@
 export {
   capitalizeFirst,
   debugStubLog,
+  getApiBaseUrl,
   getApiErrorMessage,
   isSortOption,
   shouldSkipImageOptimization,

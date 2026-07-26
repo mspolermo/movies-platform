@@ -5,12 +5,12 @@
 | Область | Инструмент | Статус |
 |---------|------------|--------|
 | Backend | Jest (+ Nest testing) | Unit/controller specs в kino-db, auth-users; частично gateway |
-| Frontend | Vitest + Testing Library | **0** тестов в `src/`; `vitest.config` → `src/test/setup.ts` **отсутствует** |
+| Frontend | Vitest + Testing Library | Unit рядом с модулем (`*.test.ts`); config: `configs/vitest/` (+ path aliases `@/*`) |
 | api-gateway | Jest | Только films (2 specs); auth/search/filters/comments — пробел |
 | E2E | Playwright / Cypress | **Нет** — не добавлять без ADR |
 | HTTP integration | Supertest | В deps, в коде **не используется** |
 
-Backend всего ≈23 `*.spec.ts` (kino-db ~17, auth-users 4, gateway 2). Не покрыто: `tokens`, mappers, весь client, e2e.
+Backend всего ≈23 `*.spec.ts` (kino-db ~17, auth-users 4, gateway 2). Client: utils/auth/session primitives (Vitest). Не покрыто e2e.
 
 ## Backend
 
@@ -22,8 +22,8 @@ Backend всего ≈23 `*.spec.ts` (kino-db ~17, auth-users 4, gateway 2). Н�
 
 ## Frontend
 
-- Запуск: `cd apps/client && npm test` (Vitest).
-- Тестировать: чистые utils, hooks (RTL), критичные UI-состояния auth.
+- Запуск: `cd apps/client && npm test` (Vitest, `configs/vitest/vitest.config.ts`).
+- Тестировать: чистые utils, session modules под `shared/api/session/<name>/`, authActions, `resolveSessionRedirect`.
 - Не снапшотить огромные страницы без нужды.
 - Моки API: не ходить в gateway в unit.
 

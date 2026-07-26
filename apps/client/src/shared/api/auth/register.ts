@@ -1,8 +1,8 @@
 import type { TRegisterParams } from './types';
 import type { TRegistrationResponse } from '@common/types';
 
-import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
+import apiClient from '../session/apiClient';
 
 /** Регистрация: возвращает user + accessToken. */
 export const registerUser = async (params: TRegisterParams): Promise<TRegistrationResponse> => {

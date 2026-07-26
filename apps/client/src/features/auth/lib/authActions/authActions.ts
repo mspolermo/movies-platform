@@ -1,17 +1,25 @@
 import type { TAuthResponse } from '@common/types';
 
 import { useUserStore } from '@/entities/user';
+import { logoutUser, refreshSession } from '@/shared/api';
 import {
   clearAccessToken,
   clearHasSessionCookie,
   hasSessionCookie,
-  logoutUser,
-  refreshSession,
   runSessionBootstrap,
   setAccessToken,
-} from '@/shared/api';
+} from '@/shared/api/session';
 
-/** Применить ответ login/register/refresh: token в память + user в store. */
+/** Локальный wipe: access + UX-cookie + zustand (без HTTP). */
+const clearLocalSession = (): void => {
+  clearAccessToken();
+  clearHasSessionCookie();
+  useUserStore.getState().reset();
+};
+
+/** Применить ответ login/register: token в память + user в store.
+ * `has_session` ставит gateway через Set-Cookie — здесь не трогаем.
+ */
 export const applyAuthResponse = (response: TAuthResponse): void => {
   setAccessToken(response.accessToken);
   useUserStore.getState().setUser(response.user);
@@ -29,12 +37,10 @@ const runBootstrap = async (): Promise<void> => {
   setStatus('loading');
 
   try {
-    const response = await refreshSession();
-    applyAuthResponse(response);
+    // store обновляется через session-bridge внутри performTokenRefresh
+    await refreshSession();
   } catch {
-    clearAccessToken();
-    clearHasSessionCookie();
-    useUserStore.getState().reset();
+    clearLocalSession();
 
     try {
       await logoutUser();
@@ -45,8 +51,8 @@ const runBootstrap = async (): Promise<void> => {
 };
 
 /**
- * Восстановить сессию при старте приложения (AuthProvider).
- * По `has_session` → refresh; при ошибке — полный сброс локального состояния.
+ * Восстановить сессию при старте (AuthProvider).
+ * По has_session → refresh; при ошибке — полный локальный сброс.
  */
 export const bootstrapSession = (): Promise<void> => {
   const { status } = useUserStore.getState();
@@ -58,15 +64,13 @@ export const bootstrapSession = (): Promise<void> => {
   return runSessionBootstrap(runBootstrap);
 };
 
-/** Выход: revoke на бэке + очистка token, cookie и store (идемпотентно). */
+/** Выход: revoke на бэке + локальный wipe (идемпотентно). */
 export const logout = async (): Promise<void> => {
   try {
     await logoutUser();
   } catch {
     // logout идемпотентен
   } finally {
-    clearAccessToken();
-    clearHasSessionCookie();
-    useUserStore.getState().reset();
+    clearLocalSession();
   }
 };

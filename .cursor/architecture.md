@@ -113,16 +113,18 @@ Access token: только in-memory на клиенте.
 
 | Слой | Путь | Правило |
 |------|------|---------|
-| Routes | `apps/client/app/` | Тонкие RSC-обёртки |
+| Routes | `apps/client/app/` | Тонкие RSC-обёртки + `AppProviders` |
+| App (FSD) | `src/app/` | `styles/` + `providers/` (composition) |
 | Pages | `src/pages/` | Композиция widgets |
-| Widgets | `src/widgets/` | Крупные блоки UI |
+| Widgets | `src/widgets/` | Крупные блоки UI (chrome; без global auth providers) |
 | Features | `src/features/` | Сценарии пользователя |
 | Entities | `src/entities/` | Домен + api + ui |
-| Shared | `src/shared/` | api, ui-kit, lib |
+| Shared | `src/shared/` | api, ui-kit, lib, constants |
 
 Данные: **нет React Query**. SSR/RSC + Server Actions (`getCountriesList` / `getGenresList` / `getFilmsFilters`) + axios + `usePaginatedResource` / feature-hooks.  
 State: Zustand только `useUserStore` (`entities/user`).  
-UX redirects: `apps/client/proxy.ts` по cookie `has_session` (не security).
+HTTP/session: `shared/api` (`endpoints` + `auth/*` + `session/*`); app → `@/shared/api`; proxy → `@/shared/api/session` (edge-safe, без axios).  
+UX redirects: thin `proxy.ts` → `resolveSessionRedirect` + `has_session` (не security); `matcher` — static literals. Auth composition: `src/app/providers`.
 
 ---
 

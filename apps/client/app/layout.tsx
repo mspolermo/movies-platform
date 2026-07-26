@@ -5,8 +5,8 @@ import type { ReactNode } from 'react';
 
 import { Inter } from 'next/font/google';
 
+import { AppProviders } from '@/app/providers';
 import '@/app/styles/globals.scss';
-
 import { DEFAULT_FILTERS_LOCALE } from '@/shared/constants';
 import { getQuickFilters, Layout } from '@/widgets/Layout';
 
@@ -35,7 +35,9 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="ru">
       <body className={inter.className}>
-        <Layout initialQuickFilters={initialQuickFilters}>{children}</Layout>
+        <AppProviders>
+          <Layout initialQuickFilters={initialQuickFilters}>{children}</Layout>
+        </AppProviders>
       </body>
     </html>
   );

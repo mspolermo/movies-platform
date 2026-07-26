@@ -1,8 +1,8 @@
-import { useUserStore } from '../model';
+import { useUserStore } from '../../../model';
 
 /**
- * Состояние сессии из zustand: user, status и удобные флаги для UI.
- * Не делает запросов — bootstrap выполняется в AuthProvider.
+ * Сессия из zustand: user, status и флаги для UI.
+ * Сеть не дергает — bootstrap в AuthProvider.
  */
 export const useAuth = () => {
   const user = useUserStore((state) => state.user);

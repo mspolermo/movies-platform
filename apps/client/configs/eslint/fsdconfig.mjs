@@ -12,11 +12,17 @@ const publicApi = require('@feature-sliced/eslint-config/rules/public-api')
 
 const publicApiAllow = publicApi.rules['import/no-internal-modules'][1].allow
 
-// shared: только index слайса - @/shared и @/shared/<папка> (index), без @/shared/x/y/
+// shared: index слайса + session barrel (edge-safe, без axios).
+// Зачем второй entry / apiClient deep — ADR-001 (§ «два публичных входа API + ESLint»).
 const sharedPublicApiAllow = [
   '**/shared/index.{ts,tsx}',
   '**/shared/*/index.{ts,tsx}',
+  '**/shared/api/session',
+  '**/shared/api/session/index.{ts,tsx}',
 ]
+
+// session/apiClient — единственный deep-entry (axios); session/index остаётся edge-safe без него
+const apiClientDeepAllow = ['**/session/apiClient', '**/session/apiClient/**']
 
 // стили рядом с компонентом
 const styleAllow = ['**/*.module.scss', '**/*.scss', '**/*.css']
@@ -51,7 +57,12 @@ const publicApiFlat = {
     'import/no-internal-modules': [
       'error',
       {
-        allow: [...publicApiAllow, ...sharedPublicApiAllow, ...styleAllow],
+        allow: [
+          ...publicApiAllow,
+          ...sharedPublicApiAllow,
+          ...apiClientDeepAllow,
+          ...styleAllow,
+        ],
       },
     ],
   },

@@ -1,18 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
-import { logout, useAuth } from '@/features/auth';
+import { buildLoginHref, useAuth } from '@/entities/user';
+import { logout } from '@/features/auth';
+import { AUTH_LOGIN_PATH } from '@/shared/api/session';
 import { Button } from '@/shared/ui';
 
 import styles from './ProfileSection.module.scss';
 
 export const ProfileSection = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const [loginHref, setLoginHref] = useState(AUTH_LOGIN_PATH);
+
+  useEffect(() => {
+    setLoginHref(buildLoginHref());
+  }, []);
 
   const handleLogout = async () => {
     await logout();
-    window.location.assign('/auth/login');
+    // без returnUrl — иначе после повторного логина вернёт на страницу, с которой вышли
+    window.location.assign(AUTH_LOGIN_PATH);
   };
 
   if (isLoading) {
@@ -27,7 +36,7 @@ export const ProfileSection = () => {
     return (
       <div className={styles.container}>
         <p className={styles.placeholder}>Вы не авторизованы</p>
-        <Link className={styles.link} href="/auth/login">
+        <Link className={styles.link} href={loginHref}>
           Войти
         </Link>
       </div>

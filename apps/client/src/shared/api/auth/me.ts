@@ -1,7 +1,7 @@
 import type { TCurrentUserResponse } from '@common/types';
 
-import apiClient from '../client';
 import { API_ENDPOINTS } from '../endpoints';
+import apiClient from '../session/apiClient';
 
 /** Текущий пользователь по access token (GET /auth/me). */
 export const getCurrentUser = async (): Promise<TCurrentUserResponse> => {

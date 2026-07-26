@@ -3,7 +3,9 @@
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-import { logout, useAuth } from '@/features/auth';
+import { buildLoginHref, useAuth } from '@/entities/user';
+import { logout } from '@/features/auth';
+import { AUTH_LOGIN_PATH } from '@/shared/api/session';
 import { Button } from '@/shared/ui';
 import { Page } from '@/widgets/Layout';
 
@@ -15,13 +17,14 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.replace('/auth/login');
+      router.replace(buildLoginHref());
     }
   }, [isAuthenticated, isLoading, router]);
 
   const handleLogout = async () => {
     await logout();
-    window.location.assign('/auth/login');
+    // без returnUrl — иначе после повторного логина вернёт на профиль
+    window.location.assign(AUTH_LOGIN_PATH);
   };
 
   if (isLoading) {
