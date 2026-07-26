@@ -130,14 +130,6 @@ export const reactConfig = [
     },
   },
   {
-    // next.config, scripts — require() без ошибки
-    files: ['next.config.js', 'scripts/**/*.js'],
-    languageOptions: { globals: globals.node },
-    rules: {
-      '@typescript-eslint/no-require-imports': 'off',
-    },
-  },
-  {
     // React: recommended + jsx-runtime + hooks + сортировка пропсов
     files: ['**/*.{js,ts,jsx,tsx}'],
     languageOptions: {
@@ -185,5 +177,13 @@ export const reactConfig = [
   },
   // отключает правила, конфликтующие с Prettier
   prettierConfig,
+  {
+    // next.config — Node globals; не FSD (корневой wiring → configs/next)
+    files: ['**/next.config.js', '**/next.config.ts', '**/next.config.mjs', 'scripts/**/*.js'],
+    languageOptions: { globals: globals.node },
+    rules: {
+      '@typescript-eslint/no-require-imports': 'off',
+      'import/no-internal-modules': 'off',
+    },
+  },
 ]
-

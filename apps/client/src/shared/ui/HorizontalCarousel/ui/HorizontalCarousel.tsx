@@ -6,7 +6,7 @@ import cn from 'classnames';
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
 import { useMediaQuery } from '@/shared/lib';
-import { SvgIcon } from '@/shared/ui/SvgIcon';
+import { SvgIcon } from '@/shared/ui';
 
 import styles from './HorizontalCarousel.module.scss';
 import { useHorizontalScroll } from '../lib';
@@ -98,7 +98,7 @@ export const HorizontalCarousel = forwardRef<THorizontalCarouselHandle, THorizon
               type="button"
               onClick={scrollPrev}
             >
-              <SvgIcon name="arrow-left" size={24} />
+              <SvgIcon icon="arrowLeft" size={24} />
             </button>
 
             <button
@@ -112,7 +112,7 @@ export const HorizontalCarousel = forwardRef<THorizontalCarouselHandle, THorizon
               type="button"
               onClick={scrollNext}
             >
-              <SvgIcon name="arrow-right" size={24} />
+              <SvgIcon icon="arrowRight" size={24} />
             </button>
           </>
         )}

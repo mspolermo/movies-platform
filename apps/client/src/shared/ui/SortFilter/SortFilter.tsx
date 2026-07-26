@@ -39,13 +39,13 @@ export const SortFilter = ({ selectedSort, onUpdateSort }: TSortFilterProps) => 
         type="button"
         onClick={() => setIsOpen((v) => !v)}
       >
-        <SvgIcon name="sort" size={16} />
+        <SvgIcon icon="sort" size={16} />
 
         <span className={styles.label}>{SORT_LABELS[selectedSort]}</span>
 
         <SvgIcon
           className={cn(styles.chevron, isOpen && styles.chevronOpen)}
-          name="chevron"
+          icon="chevron"
           size={20}
         />
       </button>

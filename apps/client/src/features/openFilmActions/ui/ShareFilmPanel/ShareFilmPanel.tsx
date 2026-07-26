@@ -6,7 +6,6 @@ import cn from 'classnames';
 import { useEffect, useState } from 'react';
 
 import { formatDuration } from '@/entities/film';
-import { CopyIcon, ShareIcon } from '@/shared/assets';
 import { RemotePoster, SvgIcon } from '@/shared/ui';
 
 import styles from './ShareFilmPanel.module.scss';
@@ -143,7 +142,7 @@ export const ShareFilmPanel = ({ payload }: TShareFilmPanelProps) => {
             <span className={styles.rowTitle}>{copyTitle}</span>
             <span className={styles.rowHint}>{url}</span>
           </span>
-          <SvgIcon className={styles.rowIcon} icon={CopyIcon} size={20} />
+          <SvgIcon className={styles.rowIcon} icon="copy" size={20} />
         </button>
 
         {nativeAvailable && (
@@ -157,7 +156,7 @@ export const ShareFilmPanel = ({ payload }: TShareFilmPanelProps) => {
               <span className={styles.rowTitle}>{shareTitle}</span>
               <span className={styles.rowHint}>Через приложения устройства</span>
             </span>
-            <SvgIcon className={styles.rowIcon} icon={ShareIcon} size={20} />
+            <SvgIcon className={styles.rowIcon} icon="share" size={20} />
           </button>
         )}
       </div>

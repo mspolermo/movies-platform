@@ -6,8 +6,6 @@ import cn from 'classnames';
 import { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
-import { CloseIcon } from '@/shared/assets';
-
 import { Overlay } from '../Overlay';
 import { SvgIcon } from '../SvgIcon';
 import styles from './Modal.module.scss';
@@ -128,7 +126,7 @@ export const Modal = ({
                 type="button"
                 onClick={onClose}
               >
-                <SvgIcon icon={CloseIcon} size={24} />
+                <SvgIcon icon="close" size={24} />
               </button>
             )}
           </div>

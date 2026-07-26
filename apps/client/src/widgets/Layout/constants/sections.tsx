@@ -32,5 +32,5 @@ export const FOOTER_SECTIONS_MOBILE = [
   { label: 'Каталог', icon: 'devices', url: '/films' },
   { label: 'Поиск', icon: 'search', url: '/search' },
   { label: 'ТВ', icon: 'tv', url: '/tv' },
-  { label: 'Страны', icon: 'dots-horizontal', url: '/countries' },
-];
+  { label: 'Страны', icon: 'dotsHorizontal', url: '/countries' },
+] as const;

@@ -47,7 +47,7 @@ export const FilmsListToolbar = ({
                 styles.filtersToggleIcon,
                 hasActiveFilters && styles.filtersToggleIcon_active
               )}
-              name="filters"
+              icon="filters"
               size={24}
             />
           }

@@ -2,6 +2,8 @@ import type { TResetButtonProps } from '../../../../model';
 
 import { useCallback } from 'react';
 
+import { SvgIcon } from '@/shared/ui';
+
 import styles from './styles/LaptopResetButton.module.scss';
 import { DEFAULT_FILTERS } from '../../../../constants';
 import { areFiltersDefault } from '../../../../lib';
@@ -17,14 +19,7 @@ export const LaptopResetButton = ({ selectedFilters, onChange }: TResetButtonPro
     <div className={styles.root}>
       <button className={styles.button} disabled={isDisabled} type="button" onClick={handleReset}>
         <span className={styles.icon}>
-          <svg fill="none" height="20" viewBox="0 0 20 20" width="20">
-            <path
-              d="M15 5L5 15M5 5L15 15"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeWidth="2"
-            />
-          </svg>
+          <SvgIcon icon="close" size={20} />
         </span>
 
         <span className={styles.text}>Сбросить фильтры</span>

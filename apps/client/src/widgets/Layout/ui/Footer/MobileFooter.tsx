@@ -23,7 +23,7 @@ export const MobileFooter = () => {
                 className={styles.navItem}
                 href={item.url}
               >
-                <SvgIcon name={item.icon} size={20} />
+                <SvgIcon icon={item.icon} size={20} />
                 <span className={styles.label}>{item.label}</span>
               </Link>
             </li>

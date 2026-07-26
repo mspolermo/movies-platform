@@ -6,7 +6,6 @@ import cn from 'classnames';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { ImageIcon } from '@/shared/assets';
 import { shouldSkipImageOptimization } from '@/shared/lib';
 
 import styles from './RemotePoster.module.scss';
@@ -91,7 +90,7 @@ const RemotePosterInner = ({
           aria-hidden
           className={cn(styles.fallbackIcon, showLabel && styles.fallbackIconWithLabel)}
         >
-          <SvgIcon icon={ImageIcon} size={fallbackIconSize} />
+          <SvgIcon icon="image" size={fallbackIconSize} />
         </div>
         {showLabel && <div className={styles.fallbackLabel}>{fallbackLabel}</div>}
       </div>

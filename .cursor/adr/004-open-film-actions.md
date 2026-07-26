@@ -64,7 +64,7 @@ OLD: SharePanel — chrome без handlers; соцкнопки (WA/TG/VK/…) �
 
 Клиент: `apps/client/src/features/openFilmActions`.  
 Entity extension: `entities/film/model/` — `types.ts` + `context/` (`FilmActionsContext`, `FilmCardActionsContext`).  
-Иконка: `shared/assets/svg-icons/RateIcon.tsx`.
+Иконка: `shared/ui/SvgIcon/assets/rate.svg` (через `<SvgIcon icon="rate" />`).
 
 ## Последствия
 

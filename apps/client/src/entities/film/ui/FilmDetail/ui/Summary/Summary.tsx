@@ -54,7 +54,7 @@ export const Summary = ({
             className={styles.link}
             onClick={() => navigate(`genres=${genre.nameEn}`)}
           >
-            <SvgIcon name="circle-filled" size={4} />
+            <SvgIcon icon="circleFilled" size={4} />
             {genre.nameRu}
           </button>
         ))}
@@ -63,13 +63,13 @@ export const Summary = ({
       <div className={styles.meta}>
         <QualityTag quality="FullHD" />
 
-        <SvgIcon name="volume-down" size={22} />
+        <SvgIcon icon="volumeDown" size={22} />
         <span>Рус</span>
         <span className={styles.dot} />
 
         <span>Eng</span>
 
-        <SvgIcon name="keyboard" size={18} strokeWidth={2} />
+        <SvgIcon icon="keyboard" size={18} />
         <span>Рус</span>
         <span className={styles.dot} />
         <span>Eng</span>

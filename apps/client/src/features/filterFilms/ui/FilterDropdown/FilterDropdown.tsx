@@ -3,6 +3,8 @@ import type { TFilterDropdownProps } from '../../model';
 import cn from 'classnames';
 import { useCallback, useRef } from 'react';
 
+import { SvgIcon } from '@/shared/ui';
+
 import styles from './FilterDropdown.module.scss';
 import { useCloseOnOutsideClick } from '../../lib';
 import { useFiltersDropdown } from '../../model';
@@ -56,15 +58,7 @@ export const FilterDropdown = ({
               [styles.arrowOpen]: open,
             })}
           >
-            <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
-              <path
-                d="M4 6L8 10L12 6"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-              />
-            </svg>
+            <SvgIcon icon="chevron" size={16} />
           </div>
         </div>
 

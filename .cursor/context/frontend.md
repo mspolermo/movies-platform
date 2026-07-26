@@ -46,6 +46,7 @@
 
 - Стили: SCSS Modules рядом с компонентом.
 - UI-kit: `shared/ui`; не плодить дубли Button/Input.
+- Иконки: только `<SvgIcon icon="camelCaseKey" />` из `shared/ui`; чистые `.svg` в `SvgIcon/assets`, регистрация в `IconsLibrary`; цвет через CSS-токены (`currentColor`), не пропы.
 - A11y: keyboard + aria на интерактивных элементах.
 
 ## Структура UI в слайсе

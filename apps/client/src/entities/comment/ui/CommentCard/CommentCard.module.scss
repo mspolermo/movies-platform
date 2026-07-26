@@ -90,11 +90,22 @@
 
   padding: 0;
 
+  color: var(--color-purple);
+
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .likeButtonActive {
-  opacity: 1;
+  color: var(--color-green);
+
+  // stroke-иконка: CSS fill перекрывает fill="none" на корне SVG
+  svg {
+    fill: currentColor;
+
+    path {
+      fill: currentColor;
+    }
+  }
 }

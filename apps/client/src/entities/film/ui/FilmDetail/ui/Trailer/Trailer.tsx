@@ -2,7 +2,6 @@ import type { TrailerProps } from '../../types';
 
 import React, { useState, useEffect } from 'react';
 
-import { ImageIcon } from '@/shared/assets';
 import { SvgIcon, Skeleton } from '@/shared/ui';
 
 import styles from './Trailer.module.scss';
@@ -58,7 +57,7 @@ export const Trailer = ({ film }: TrailerProps) => {
         {/* placeholder */}
         {showPlaceholder && (
           <div className={styles.placeholder}>
-            <SvgIcon icon={ImageIcon} size={48} />
+            <SvgIcon icon="image" size={48} />
             <span>Нет трейлера</span>
           </div>
         )}

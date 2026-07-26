@@ -13,7 +13,7 @@ export const LoginButton = ({ onOpen }: { onOpen: () => void }) => {
   if (isLoading) {
     return (
       <span aria-label="Загрузка сессии" className={styles.root}>
-        <SvgIcon className={styles.icon} name="person" size={20} />
+        <SvgIcon className={styles.icon} icon="person" size={20} />
       </span>
     );
   }
@@ -23,7 +23,7 @@ export const LoginButton = ({ onOpen }: { onOpen: () => void }) => {
 
   return (
     <Link aria-label={label} className={styles.root} href={href} onMouseEnter={onOpen}>
-      <SvgIcon className={styles.icon} name="person" size={20} />
+      <SvgIcon className={styles.icon} icon="person" size={20} />
     </Link>
   );
 };

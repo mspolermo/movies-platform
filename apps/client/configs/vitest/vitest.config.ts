@@ -6,7 +6,26 @@ const configDir = path.dirname(fileURLToPath(import.meta.url));
 const clientRoot = path.resolve(configDir, '../..');
 const monorepoRoot = path.resolve(clientRoot, '../..');
 
+/** SVG → React-компонент (как SVGR в configs/next/svgr). */
+const svgAsReactPlugin = {
+  name: 'svg-as-react',
+  enforce: 'pre' as const,
+  load(id: string) {
+    if (!id.endsWith('.svg')) return null;
+    return {
+      code: `
+        import { createElement } from 'react';
+        export default function SvgIcon(props) {
+          return createElement('svg', props);
+        }
+      `,
+      map: null,
+    };
+  },
+};
+
 export default defineConfig({
+  plugins: [svgAsReactPlugin],
   resolve: {
     alias: {
       '@': path.join(clientRoot, 'src'),

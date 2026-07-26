@@ -2,7 +2,7 @@ import styles from './RateFilmSuccess.module.scss';
 
 /**
  * Экран подтверждения после выставления оценки.
- * Галочка — декоративный background (не SvgIcon: у него глобальный hover/cursor).
+ * Галочка — CSS-mask (декор)
  */
 export const RateFilmSuccess = () => {
   return (

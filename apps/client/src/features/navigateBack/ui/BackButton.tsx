@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 
-import { BackArrowIcon } from '@/shared/assets';
 import { SvgIcon } from '@/shared/ui';
 
 import styles from './BackButton.module.scss';
@@ -21,7 +20,7 @@ export const BackButton = () => {
       type="button"
       onClick={handleBackClick}
     >
-      <SvgIcon className={styles.backIcon} icon={BackArrowIcon} size={40} />
+      <SvgIcon className={styles.backIcon} icon="backArrow" size={40} />
       <span className={styles.backText}>Назад</span>
     </button>
   );

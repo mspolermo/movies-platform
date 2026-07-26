@@ -27,6 +27,14 @@ const apiClientDeepAllow = ['**/session/apiClient', '**/session/apiClient/**']
 // стили рядом с компонентом
 const styleAllow = ['**/*.module.scss', '**/*.scss', '**/*.css']
 
+// Базовый allow для public API (без SVG — их только SvgIcon)
+const publicApiAllowList = [
+  ...publicApiAllow,
+  ...sharedPublicApiAllow,
+  ...apiClientDeepAllow,
+  ...styleAllow,
+]
+
 // порядок импортов (FSD)
 const importOrderFlat = {
   files: ['**/*.{js,ts,jsx,tsx}'],
@@ -57,12 +65,23 @@ const publicApiFlat = {
     'import/no-internal-modules': [
       'error',
       {
-        allow: [
-          ...publicApiAllow,
-          ...sharedPublicApiAllow,
-          ...apiClientDeepAllow,
-          ...styleAllow,
-        ],
+        allow: publicApiAllowList,
+      },
+    ],
+  },
+}
+
+// SvgIcon: relative `../assets/*.svg` / `./*.svg` (глоб **/shared/... не матчит relative path)
+const svgIconAssetsFlat = {
+  files: ['**/shared/ui/SvgIcon/**/*.{js,ts,jsx,tsx}'],
+  plugins: {
+    import: importPlugin,
+  },
+  rules: {
+    'import/no-internal-modules': [
+      'error',
+      {
+        allow: [...publicApiAllowList, '**/*.svg', './*.svg', '../assets/*.svg'],
       },
     ],
   },
@@ -103,7 +122,8 @@ const publicApiExport = {
 export const fsdConfig = [
   importOrderFlat,
   publicApiFlat,
+  svgIconAssetsFlat,
   layersSlicesFlat,
   pageIndexBarrel,
-  publicApiExport
+  publicApiExport,
 ]

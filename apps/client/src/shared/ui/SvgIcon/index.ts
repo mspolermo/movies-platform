@@ -1,2 +1,2 @@
-export { SvgIcon } from './SvgIcon';
-export type { SvgIconProps } from './SvgIcon';
+export { SvgIcon } from './ui';
+export type { TSvgIconName, TSvgIconProps } from './model';

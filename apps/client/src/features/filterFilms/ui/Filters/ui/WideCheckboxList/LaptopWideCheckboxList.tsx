@@ -2,6 +2,8 @@ import type { TWideCheckboxListViewProps } from './types';
 
 import cn from 'classnames';
 
+import { SvgIcon } from '@/shared/ui';
+
 import styles from './styles/LaptopWideCheckboxList.module.scss';
 
 export const LaptopWideCheckboxList = ({
@@ -30,15 +32,7 @@ export const LaptopWideCheckboxList = ({
                     [styles.checkmarkVisible]: active,
                   })}
                 >
-                  <svg fill="none" height="16" viewBox="0 0 16 16" width="16">
-                    <path
-                      d="M13.5 4.5L6 12L2.5 8.5"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                    />
-                  </svg>
+                  <SvgIcon icon="checkmark" size={16} />
                 </span>
               </button>
             );

@@ -8,7 +8,6 @@ import cn from 'classnames';
 import { useState } from 'react';
 
 import { useFilmActions, resolveFilmPosterUrl } from '@/entities/film';
-import { BookmarkFilledIcon, BookmarkIcon, RateIcon, ShareIcon } from '@/shared/assets';
 import { debugStubLog } from '@/shared/lib';
 import { SvgIcon, Tooltip } from '@/shared/ui';
 
@@ -79,7 +78,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
           >
             <SvgIcon
               className={cn(styles.iconSvg, isFavorite ? styles.iconActive : styles.iconDefault)}
-              icon={isFavorite ? BookmarkFilledIcon : BookmarkIcon}
+              icon={isFavorite ? 'bookmarkFilled' : 'bookmark'}
               size={ICON_SIZE}
             />
           </button>
@@ -94,7 +93,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
           >
             <SvgIcon
               className={cn(styles.iconSvg, styles.iconDefault)}
-              icon={RateIcon}
+              icon="rate"
               size={ICON_SIZE}
             />
           </button>
@@ -109,7 +108,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
           >
             <SvgIcon
               className={cn(styles.iconSvg, styles.iconDefault)}
-              icon={ShareIcon}
+              icon="share"
               size={ICON_SIZE}
             />
           </button>
@@ -129,7 +128,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
       >
         <SvgIcon
           className={styles.detailIcon}
-          icon={isFavorite ? BookmarkFilledIcon : BookmarkIcon}
+          icon={isFavorite ? 'bookmarkFilled' : 'bookmark'}
           size={ICON_SIZE}
         />
         <span className={styles.detailLabel}>{isFavorite ? 'В избранном' : 'Избранное'}</span>
@@ -141,7 +140,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
         type="button"
         onClick={handleRate}
       >
-        <SvgIcon className={styles.detailIcon} icon={RateIcon} size={ICON_SIZE} />
+        <SvgIcon className={styles.detailIcon} icon="rate" size={ICON_SIZE} />
         <span className={styles.detailLabel}>Оценить</span>
       </button>
 
@@ -151,7 +150,7 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
         type="button"
         onClick={handleShare}
       >
-        <SvgIcon className={styles.detailIcon} icon={ShareIcon} size={ICON_SIZE} />
+        <SvgIcon className={styles.detailIcon} icon="share" size={ICON_SIZE} />
         <span className={styles.detailLabel}>Поделиться</span>
       </button>
     </div>

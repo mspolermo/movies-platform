@@ -53,7 +53,7 @@ export const LaptopFooter = () => {
           {/* CTA */}
           <Link className={styles.column} href="/">
             <div className={styles.bigButton}>
-              <SvgIcon aria-hidden name="mute" size={56} />
+              <SvgIcon aria-hidden icon="mute" size={56} />
             </div>
 
             <p className={styles.ctaText}>Смотрите фильмы, сериалы и мультфильмы без рекламы</p>

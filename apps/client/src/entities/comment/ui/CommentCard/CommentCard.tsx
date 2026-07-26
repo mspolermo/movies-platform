@@ -39,12 +39,7 @@ export const CommentCard = ({ comment, isLikePending = false, onLikeClick }: TCo
             type="button"
             onClick={handleLikeClick}
           >
-            <SvgIcon
-              color={comment.liked ? 'var(--color-green)' : 'var(--color-purple)'}
-              fill={comment.liked ? 'var(--color-green)' : 'none'}
-              name="like"
-              size={18}
-            />
+            <SvgIcon icon="like" size={18} />
           </button>
         )}
       </div>
