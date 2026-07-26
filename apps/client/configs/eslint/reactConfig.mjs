@@ -116,7 +116,7 @@ export const reactConfig = [
   },
   {
     // vitest — node globals
-    files: ['vitest.config.ts'],
+    files: ['configs/vitest/vitest.config.ts'],
     languageOptions: { globals: globals.node },
   },
   {

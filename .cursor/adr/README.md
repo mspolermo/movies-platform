@@ -39,3 +39,4 @@
 | [001](./001-jwt-access-opaque-refresh.md) | JWT access + opaque refresh (HttpOnly cookie) | Accepted |
 | [002](./002-flat-film-reviews.md) | Плоские отзывы к фильму (без дерева) | Accepted |
 | [003](./003-home-promo-banner-slider.md) | Рекламный слайдер на Home (статика, без перехода) | Accepted |
+| [004](./004-open-film-actions.md) | Действия фильма: `openFilmActions` (rate + share + panel) | Accepted |

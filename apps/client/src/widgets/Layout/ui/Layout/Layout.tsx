@@ -3,7 +3,7 @@
 import type { TLayoutProps } from '../types';
 
 import { AuthProvider } from '@/features/auth';
-import { RateFilmProvider } from '@/features/rateFilm';
+import { FilmActionsProvider } from '@/features/openFilmActions';
 
 import { QuickFiltersProvider } from '../../models';
 import { Footer } from '../Footer';
@@ -16,7 +16,7 @@ import styles from './Layout.module.scss';
 export const Layout = ({ children, initialQuickFilters }: TLayoutProps) => {
   return (
     <AuthProvider>
-      <RateFilmProvider>
+      <FilmActionsProvider>
         <QuickFiltersProvider value={initialQuickFilters}>
           <div className={styles.layout}>
             <Header />
@@ -26,7 +26,7 @@ export const Layout = ({ children, initialQuickFilters }: TLayoutProps) => {
             </main>
           </div>
         </QuickFiltersProvider>
-      </RateFilmProvider>
+      </FilmActionsProvider>
     </AuthProvider>
   );
 };

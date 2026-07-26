@@ -6,6 +6,8 @@ export type FilmDetailProps = {
   isLoading?: boolean;
   film?: TFilmDetailsResponse;
   creatorsViewer?: ReactNode;
+  /** Панель действий (favorite/rate/share) — инжект из feature. */
+  actionsPanel?: ReactNode;
 };
 
 /** Секции деталки получают film только после guard в FilmDetail (не loading и film задан). */

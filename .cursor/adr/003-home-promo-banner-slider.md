@@ -56,7 +56,7 @@
 - Новые баннеры — WebP в `widgets/PromoBannerSlider/assets` + запись в `PROMO_BANNERS`
 - Цвета только из `apps/client/src/app/styles/colors.scss`
 - Не возвращать кликабельные баннеры и не тащить promo-фичи в `HorizontalCarousel` без ADR
-- Gap миграции OLD promo закрыт при своих ассетах (см. `.cursor/temp/old-client-migration-gaps.md`)
+- Gap миграции OLD promo закрыт при своих ассетах (см. `.cursor/temp/backlog.md` F12)
 
 ## Альтернативы
 

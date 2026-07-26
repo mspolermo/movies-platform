@@ -1,5 +1,6 @@
 export {
   capitalizeFirst,
+  debugStubLog,
   getApiErrorMessage,
   isSortOption,
   shouldSkipImageOptimization,

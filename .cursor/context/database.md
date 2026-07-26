@@ -40,4 +40,4 @@
 
 **users:** User N—M Role; User 1—M RefreshToken.
 
-Подробнее: [`../project-index.md`](../project-index.md). Долг схемы: [`../temp/technical-debt.md`](../temp/technical-debt.md).
+Подробнее: [`../project-index.md`](../project-index.md). Долг схемы: [`../temp/backlog.md`](../temp/backlog.md) (B1).

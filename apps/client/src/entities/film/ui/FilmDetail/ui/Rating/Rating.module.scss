@@ -75,12 +75,6 @@
   color: var(--color-text);
 }
 
-.action {
-  display: flex;
-  align-items: center;
-  max-width: 100px;
-}
-
 /* 📱 tablet */
 @media (max-width: sizes.$bp-tablet) {
   .badge {
@@ -97,11 +91,6 @@
 @media (max-width: sizes.$bp-mobile) {
   .content {
     flex: 1 0 60%;
-  }
-
-  .action {
-    flex: 0 1 30%;
-    max-width: 90px;
   }
 
   .title,

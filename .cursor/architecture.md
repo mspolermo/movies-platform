@@ -84,7 +84,7 @@ Access token: только in-memory на клиенте.
 ```
 
 Решение auth: [ADR-001](./adr/001-jwt-access-opaque-refresh.md).  
-Известный долг: [temp/technical-debt.md](./temp/technical-debt.md).
+Известный долг / бэклог: [temp/backlog.md](./temp/backlog.md).
 
 ---
 

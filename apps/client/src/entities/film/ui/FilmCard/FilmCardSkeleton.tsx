@@ -25,7 +25,7 @@ export const FilmCardSkeleton = ({ showIcons = false }: FilmCardSkeletonProps) =
                 <div className={styles.overlay}>
                   <div className={styles.overlayContent}>
                     <div className={styles.iconsContainer}>
-                      {Array.from({ length: 4 }).map((_, index) => (
+                      {Array.from({ length: 3 }).map((_, index) => (
                         <Skeleton
                           key={index}
                           animation="pulse"

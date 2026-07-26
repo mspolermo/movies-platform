@@ -42,7 +42,8 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 5. Access token — in-memory; refresh — HttpOnly cookie; `has_session` — UX (`proxy.ts`). См. [ADR-001](.cursor/adr/001-jwt-access-opaque-refresh.md).
 6. Отзывы к фильму — плоский список, без дерева/`parentId`. См. [ADR-002](.cursor/adr/002-flat-film-reviews.md).
 7. Home promo — статика в `widgets/PromoBannerSlider` (не в `HorizontalCarousel`); без клика/API; CMS/админка — отдельный ADR. См. [ADR-003](.cursor/adr/003-home-promo-banner-slider.md).
-8. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
+8. Действия фильма (rate/share/panel) — одна feature `openFilmActions`; entity context + card actions renderer; без соц-stubs. См. [ADR-004](.cursor/adr/004-open-film-actions.md).
+9. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
 
 ## Не путать
 

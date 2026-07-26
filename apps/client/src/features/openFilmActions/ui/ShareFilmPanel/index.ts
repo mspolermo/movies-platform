@@ -1,0 +1,1 @@
+export { ShareFilmPanel } from './ShareFilmPanel';

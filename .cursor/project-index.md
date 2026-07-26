@@ -150,7 +150,8 @@ Legacy: `old-client/` — не использовать.
 | Comments | `kino-db/comments` | `entities/comment`, `features/getFilmComments` | Comment, CommentLike |
 | Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user` | users, roles, refresh_tokens |
 | Search / Filters | gateway aggregation | `features/search*`, `filterFilms` | — |
-| Ratings (KP) | поля Film | `features/rateFilm` (UI) | нет user-ratings таблицы |
+| Ratings (KP) | поля Film | `features/openFilmActions` (UI grade stub) | нет user-ratings таблицы |
+| Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004 | favorite stub до F3 |
 | Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |
 
 ---
@@ -182,4 +183,4 @@ Legacy: `old-client/` — не использовать.
 | Docker / seed | `docker-compose.yml`, `devops/` |
 | Auth ADR | `.cursor/adr/001-jwt-access-opaque-refresh.md` |
 | Правила | `.cursor/context/` |
-| Техдолг | `.cursor/temp/technical-debt.md` |
+| Бэклог (FE/BE/Infra) | `.cursor/temp/backlog.md` |

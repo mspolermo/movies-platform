@@ -11,10 +11,10 @@ import { resolveFilmPosterUrl } from '../../lib';
 /** Детальная информация фильма:
  * постер, рейтинг, описание, факты, трейлер.
  * Отображение скелетона при загрузке.
- * Принимает готовый блок создателей(персон).
+ * Принимает готовый блок создателей(персон) и панель действий.
  * */
 export const FilmDetail = (props: FilmDetailProps) => {
-  const { film, creatorsViewer, isLoading } = props;
+  const { film, creatorsViewer, actionsPanel, isLoading } = props;
 
   if (isLoading || !film) {
     return (
@@ -50,6 +50,7 @@ export const FilmDetail = (props: FilmDetailProps) => {
             src={resolveFilmPosterUrl(film, 'big')}
           />
         </div>
+        {actionsPanel ? <div className={styles.actionsPanel}>{actionsPanel}</div> : null}
         <Slogan film={film} />
         <Rating film={film} />
       </div>

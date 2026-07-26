@@ -19,6 +19,6 @@
 
 ## Удалено как дубли
 
-- `docs/PROJECT_ARCHITECTURE.md` → канон `.cursor/architecture.md` + index; долг → `technical-debt.md`
+- `docs/PROJECT_ARCHITECTURE.md` → канон `.cursor/architecture.md` + index; долг → `temp/backlog.md`
 - `docs/auth-architecture.md` → ADR-001
 - `docs/tooling.md` → `.cursor/context/tooling.md`

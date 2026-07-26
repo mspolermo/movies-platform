@@ -3,17 +3,19 @@
 import type { FormEvent, ChangeEvent } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 import { loginUser } from '@/shared/api';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './LoginForm.module.scss';
+import { resolveAuthReturnUrl } from '../../lib';
 import { applyAuthResponse } from '../../model';
 
 export const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +29,7 @@ export const LoginForm = () => {
     try {
       const response = await loginUser({ email, password });
       applyAuthResponse(response);
-      router.push('/films');
+      router.push(resolveAuthReturnUrl(searchParams?.get('returnUrl')));
     } catch {
       setError('Не удалось войти. Проверьте email и пароль.');
     } finally {

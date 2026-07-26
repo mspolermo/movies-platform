@@ -3,15 +3,14 @@
 import type { FilmCardProps } from '../types';
 
 import { useRouter } from 'next/navigation';
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import { RemotePoster } from '@/shared/ui';
 
 import styles from './FilmCard.module.scss';
 import { FilmCardSkeleton } from './FilmCardSkeleton';
-import { IconsBlock } from './IconsBlock';
-import { formatRating, resolveFilmPosterUrl } from '../../lib';
-import { useFilmGradeAction } from '../../model';
+import { formatDuration, formatRating, resolveFilmPosterUrl } from '../../lib';
+import { useFilmCardActions } from '../../model';
 
 export const FilmCard = ({
   film,
@@ -20,36 +19,11 @@ export const FilmCard = ({
   priority = false,
 }: FilmCardProps) => {
   const router = useRouter();
-  const openGradeFilm = useFilmGradeAction();
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [notLike, setNotLike] = useState(false);
+  const renderCardActions = useFilmCardActions();
 
   const handleCardClick = useCallback(() => {
     router.push(`/films/${film.id}`);
   }, [router, film.id]);
-
-  const handleFavoritesClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFavorite((prev) => !prev);
-  }, []);
-
-  const handleNotLikeClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setNotLike((prev) => !prev);
-  }, []);
-
-  const handleGradeClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation();
-      openGradeFilm?.(film.id);
-    },
-    [openGradeFilm, film.id]
-  );
-
-  const handleSimilarClick = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    // TODO: Implement similar films functionality
-  }, []);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -61,11 +35,6 @@ export const FilmCard = ({
     [handleCardClick]
   );
 
-  const formatDuration = useCallback((minutes?: number) => {
-    if (!minutes) return '';
-    return `${minutes} мин`;
-  }, []);
-
   const formatFilmDetails = useCallback(() => {
     const parts = [];
     if (film.year) parts.push(film.year);
@@ -74,8 +43,9 @@ export const FilmCard = ({
   }, [film.year, film.premiereCountry]);
 
   const filmTitle = film.filmNameRu || film.filmNameEn || 'Без названия';
+  const actions = renderCardActions?.(film) ?? null;
+  const durationLabel = film.movieLength ? formatDuration(film.movieLength) : '';
 
-  // Показываем скелетон во время загрузки
   if (isLoading) {
     return <FilmCardSkeleton showIcons={showIcons} />;
   }
@@ -104,16 +74,7 @@ export const FilmCard = ({
               {showIcons && (
                 <div className={styles.overlay}>
                   <div className={styles.overlayContent}>
-                    <div className={styles.iconsContainer}>
-                      <IconsBlock
-                        handleFavoritesClick={handleFavoritesClick}
-                        handleGradeClick={handleGradeClick}
-                        handleNotLikeClick={handleNotLikeClick}
-                        handleSimilarClick={handleSimilarClick}
-                        isFavorite={isFavorite}
-                        notLike={notLike}
-                      />
-                    </div>
+                    {actions ? <div className={styles.iconsContainer}>{actions}</div> : null}
 
                     <div className={styles.filmInfo}>
                       <div className={styles.rating}>
@@ -122,7 +83,7 @@ export const FilmCard = ({
                         </span>
                       </div>
                       <div className={styles.filmDetails}>{formatFilmDetails()}</div>
-                      <div className={styles.duration}>{formatDuration(film.movieLength)}</div>
+                      <div className={styles.duration}>{durationLabel}</div>
                     </div>
                   </div>
                 </div>

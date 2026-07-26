@@ -2,32 +2,18 @@
 
 import type { RatingProps } from '../../types';
 
-import type { MouseEvent } from 'react';
-
 import cn from 'classnames';
-
-import { Button } from '@/shared/ui';
 
 import styles from './Rating.module.scss';
 import { formatVotes, getKinopoiskUrl } from '../../../../lib';
-import { useFilmGradeAction } from '../../../../model';
 
 /**
- * Блок рейтинга фильма с переходом на Кинопоиск и кнопкой «Оценить».
+ * Блок рейтинга фильма с переходом на Кинопоиск.
  */
-export const Rating = ({
-  film: { id, ratingKp, votesKp, filmNameRu, filmNameEn },
-}: RatingProps) => {
-  const openGradeFilm = useFilmGradeAction();
+export const Rating = ({ film: { ratingKp, votesKp, filmNameRu, filmNameEn } }: RatingProps) => {
   const filmName = filmNameRu || filmNameEn || '';
   const rating = ratingKp ? Math.round(ratingKp * 10) / 10 : 0;
   const isHigh = ratingKp != null && ratingKp >= 7;
-
-  const handleRateClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openGradeFilm?.(id);
-  };
 
   return (
     <a
@@ -47,12 +33,6 @@ export const Rating = ({
           <span className={styles.source}>Кинопоиск</span>
           <span className={styles.votes}>{formatVotes(votesKp)}</span>
         </div>
-      </div>
-
-      <div className={styles.action}>
-        <Button size="small" variant="outline" onClick={handleRateClick}>
-          Оценить
-        </Button>
       </div>
     </a>
   );
