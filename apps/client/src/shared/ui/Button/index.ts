@@ -1,1 +1,2 @@
-export { Button } from './Button';
+export { Button } from './ui';
+export type { TButtonProps } from './model';

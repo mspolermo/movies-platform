@@ -15,7 +15,7 @@ export const CountryCard = ({ country }: TCountryCardProps) => {
 
   return (
     <Link href={`/films?countries=${countryName}`}>
-      <FilterCardButton ariaLabel={`Открыть фильмы страны ${countryName}`}>
+      <FilterCardButton>
         <h3 className={styles.countryName}>{countryName}</h3>
       </FilterCardButton>
     </Link>

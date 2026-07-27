@@ -1,2 +1,2 @@
-export { RemotePoster } from './RemotePoster';
-export type { RemotePosterProps, RemotePosterSize } from './RemotePoster';
+export { RemotePoster } from './ui';
+export type { TRemotePosterProps, TRemotePosterSize } from './model';

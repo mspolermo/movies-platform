@@ -24,6 +24,10 @@ lerna-debug.log*
 /coverage
 /.nyc_output
 
+# Storybook
+/apps/client/storybook-static
+storybook-static
+
 # IDEs and editors
 /.idea
 .project

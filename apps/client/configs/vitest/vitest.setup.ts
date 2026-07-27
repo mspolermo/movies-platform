@@ -1,1 +1,7 @@
-// Vitest setup (jsdom). Extend here when global mocks are needed.
+import '@testing-library/jest-dom/vitest';
+import { vi } from 'vitest';
+
+vi.mock('next/image', async () => {
+  const { default: NextImage } = await import('../mocks/next-image');
+  return { default: NextImage };
+});

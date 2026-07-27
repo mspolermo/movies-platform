@@ -1,0 +1,51 @@
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-background-elements) 25%,
+    color-mix(in srgb, var(--color-background-elements) 95%, white) 50%,
+    var(--color-background-elements) 75%
+  );
+  background-size: 200% 100%;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton.rectangular {
+  border-radius: 4px;
+}
+
+.skeleton.circular {
+  border-radius: 50%;
+}
+
+.skeleton.pulse {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton.wave {
+  animation: skeleton-wave 1.5s ease-in-out infinite;
+}
+
+.skeleton.none {
+  animation: none;
+}
+
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes skeleton-wave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

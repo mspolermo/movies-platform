@@ -1,2 +1,2 @@
-export { Breadcrumbs } from './Breadcrumbs';
-export type { TBreadcrumbItem, TBreadcrumbsProps } from './types';
+export { Breadcrumbs } from './ui';
+export type { TBreadcrumbItem, TBreadcrumbsProps } from './model';

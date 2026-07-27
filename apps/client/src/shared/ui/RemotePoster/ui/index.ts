@@ -1,0 +1,1 @@
+export { RemotePoster } from './RemotePoster';

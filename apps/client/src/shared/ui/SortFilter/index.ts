@@ -1,2 +1,2 @@
-export { SortFilter } from './SortFilter';
-export type { TSortFilterProps } from './types';
+export { SortFilter } from './ui';
+export type { TSortFilterProps } from './model';

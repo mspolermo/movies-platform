@@ -182,7 +182,10 @@ Legacy: `old-client/` — не использовать.
 | Entities / Features / Widgets | `apps/client/src/{entities,features,widgets}` |
 | API публичный barrel | `apps/client/src/shared/api` (узкий surface; app-код сюда) |
 | Пагинация (shared hook) | `apps/client/src/shared/lib/hooks/usePaginatedResource` |
-| UI-kit | `apps/client/src/shared/ui` |
+| UI-kit | `apps/client/src/shared/ui` (`ui/`+`model/`+`stories/`+`tests/`; эталон SvgIcon) |
+| Vitest | `apps/client/configs/vitest` (`npm test`); Vite 6 + `@vitejs/plugin-react`; typecheck tooling — `tsconfig.tooling.json` |
+| Storybook | `apps/client/configs/storybook` (`npm run storybook`); mock `next/image` — `configs/mocks/` |
+
 | Home promo banners | `apps/client/src/widgets/PromoBannerSlider` |
 | Horizontal carousel (shared) | `apps/client/src/shared/ui/HorizontalCarousel` |
 | Docker / seed | `docker-compose.yml`, `devops/` |

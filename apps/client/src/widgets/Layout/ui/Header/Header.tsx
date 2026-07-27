@@ -53,8 +53,8 @@ export const Header = () => {
             [styles.barActive]: openDropdownCount > 0,
           })}
         >
-          <Link className={styles.logo} href="/">
-            <Logo />
+          <Link aria-label="На главную" className={styles.logo} href="/">
+            <Logo aria-hidden />
           </Link>
 
           <nav aria-label="Main navigation" className={styles.nav}>

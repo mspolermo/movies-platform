@@ -1,2 +1,2 @@
-export { Modal } from './Modal';
-export type { TModalProps } from './types';
+export { Modal } from './ui';
+export type { TModalProps } from './model';

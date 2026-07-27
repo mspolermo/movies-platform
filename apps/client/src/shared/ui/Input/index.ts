@@ -1,1 +1,2 @@
-export { Input } from './Input';
+export { Input } from './ui';
+export type { TInputProps } from './model';

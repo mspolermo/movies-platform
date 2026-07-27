@@ -17,7 +17,7 @@ import nextPlugin from '@next/eslint-plugin-next'
 // TS + React + Next + Prettier; порядок блоков важен (ниже переопределяет выше).
 /** @type {import('eslint').Linter.Config[]} */
 export const reactConfig = [
-  { ignores: ['node_modules', '.next', 'dist', 'next-env.d.ts'] },
+  { ignores: ['node_modules', '.next', 'dist', 'next-env.d.ts', 'storybook-static'] },
   jsConfig.configs.recommended,
   {
     // база: парсер TS, import resolver, правила стиля кода
@@ -115,9 +115,12 @@ export const reactConfig = [
     },
   },
   {
-    // vitest — node globals
-    files: ['configs/vitest/vitest.config.ts'],
+    // vitest + shared tooling mocks — node globals; не FSD
+    files: ['configs/vitest/**/*.{ts,tsx}', 'configs/mocks/**/*.{ts,tsx}'],
     languageOptions: { globals: globals.node },
+    rules: {
+      'import/no-internal-modules': 'off',
+    },
   },
   {
     // Next server routes + SSR config — process.env
@@ -179,11 +182,18 @@ export const reactConfig = [
   prettierConfig,
   {
     // next.config — Node globals; не FSD (корневой wiring → configs/next)
-    files: ['**/next.config.js', '**/next.config.ts', '**/next.config.mjs', 'scripts/**/*.js'],
+    files: ['**/next.config.js', '**/next.config.ts', '**/next.config.mjs', 'scripts/**/*.js', 'configs/storybook/**/*.{ts,tsx}'],
     languageOptions: { globals: globals.node },
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
       'import/no-internal-modules': 'off',
+    },
+  },
+  {
+    // Storybook CSF — default export meta/stories
+    files: ['**/stories/**/*.stories.@(ts|tsx)'],
+    rules: {
+      'import/no-default-export': 'off',
     },
   },
 ]

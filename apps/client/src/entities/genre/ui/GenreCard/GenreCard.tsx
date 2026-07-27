@@ -15,7 +15,7 @@ export const GenreCard = ({ genre }: TGenreCardProps) => {
 
   return (
     <Link href={`/films?genres=${nameRu}`}>
-      <FilterCardButton ariaLabel={`Открыть фильмы жанра ${nameRu}`}>
+      <FilterCardButton>
         <h3 className={styles.genreName}>{nameRu}</h3>
         {genre.nameEn && <p className={styles.genreDescription}>{nameEn}</p>}
       </FilterCardButton>

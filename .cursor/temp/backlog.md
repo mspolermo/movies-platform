@@ -44,8 +44,8 @@
 | # | Что | Статус | Как |
 |---|-----|--------|-----|
 | F13 | i18n | open | next-intl / аналог; LanguageSwitcher |
-| F14 | Client tests | **partial** | `configs/vitest/setup.ts` + utils (`openFilmActions`, `resolveAuthReturnUrl`) есть; дальше — smoke auth/filters/comments |
-| F15 | Storybook | opt | для `shared/ui` |
+| F14 | Client tests | **partial** | `shared/ui` kit: поведенческие + a11y-контракт (Modal/Overlay/Input/Tooltip/…); дальше — smoke auth/filters/comments |
+| F15 | Storybook | **partial** | kit stories densified (Button/Input/Skeleton/Card/SortFilter); дальше — argTypes у оставшегося kit |
 | F16 | E2E Playwright | open | login → profile → logout |
 | F17 | Удалить `old-client/` | open | локальная папка gitignored; снести диск + доки/ссылки после закрытия нужных P0 |
 
@@ -127,7 +127,7 @@
 - [x] F7 / F9 / F10 / F11 — **не делаем** (fullscreen trailer, tab-shell, Top-N, mega-menus)
 - [ ] F13 i18n
 - [ ] F14 Client tests — **partial** (setup + utils; нужны smoke)
-- [ ] F15 Storybook
+- [x] F15 Storybook
 - [ ] F16 E2E Playwright
 - [ ] F17 Remove `old-client/` (есть локально, в git уже ignore)
 

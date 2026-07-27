@@ -1,0 +1,1 @@
+export { useModalFocusTrap } from './hooks';

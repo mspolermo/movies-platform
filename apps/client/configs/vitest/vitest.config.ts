@@ -1,3 +1,4 @@
+import react from '@vitejs/plugin-react';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
@@ -25,16 +26,10 @@ const svgAsReactPlugin = {
 };
 
 export default defineConfig({
-  plugins: [svgAsReactPlugin],
+  plugins: [svgAsReactPlugin, react()],
   resolve: {
     alias: {
       '@': path.join(clientRoot, 'src'),
-      '@/shared': path.join(clientRoot, 'src/shared'),
-      '@/entities': path.join(clientRoot, 'src/entities'),
-      '@/features': path.join(clientRoot, 'src/features'),
-      '@/widgets': path.join(clientRoot, 'src/widgets'),
-      '@/pages': path.join(clientRoot, 'src/pages'),
-      '@/app': path.join(clientRoot, 'src/app'),
       '@common': path.join(monorepoRoot, 'apps/common'),
     },
   },

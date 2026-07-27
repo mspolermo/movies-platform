@@ -12,7 +12,7 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 | Слой | Технологии |
 |------|------------|
 | Backend | NestJS 11, Sequelize, PostgreSQL ×2, RabbitMQ, JWT, Swagger |
-| Frontend | Next.js 16 (App Router), React 19, FSD, Zustand, Axios, SCSS Modules |
+| Frontend | Next.js 16 (App Router), React 19, FSD, Zustand, Axios, SCSS Modules, Storybook 10, Vitest |
 | Shared | `apps/common` — types, dto, RMQ, constants |
 | Infra | Docker Compose, PgAdmin, RabbitMQ management |
 
@@ -49,7 +49,7 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 
 - `packages/` нет — shared = `apps/common`.
 - React Query нет — axios + Server Actions + `usePaginatedResource`.
-- Playwright/Cypress нет — Jest (backend), Vitest (client).
+- Playwright/Cypress нет — Jest (backend), Vitest + Storybook (client). E2E без ADR не добавлять.
 - Agent KB целиком под `.cursor/` (кроме этого файла и `README.md`).
 - `README.md` — витрина GitHub, не канон для агентов (этот файл — вход).
 - Auto-rules: только `.cursor/rules/*.mdc` (корневого `.cursorrules` нет).

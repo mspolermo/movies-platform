@@ -1,12 +1,12 @@
 'use client';
 
-import type { THorizontalCarouselHandle, THorizontalCarouselProps } from './types';
+import type { THorizontalCarouselHandle, THorizontalCarouselProps } from '../model';
 
 import cn from 'classnames';
 import React, { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
 import { useMediaQuery } from '@/shared/lib';
-import { SvgIcon } from '@/shared/ui';
+import { SvgIcon } from '@/shared/ui/SvgIcon';
 
 import styles from './HorizontalCarousel.module.scss';
 import { useHorizontalScroll } from '../lib';

@@ -1,2 +1,2 @@
-export { default as Loader } from './Loader';
-export type { LoaderProps } from './Loader';
+export { Loader } from './ui';
+export type { TLoaderProps } from './model';

@@ -2,7 +2,7 @@ import type { FactsProps } from '../../types';
 
 import { useMemo } from 'react';
 
-import { ExpandableBlock } from '@/shared/ui/ExpandableBlock';
+import { ExpandableBlock } from '@/shared/ui';
 
 import styles from './Facts.module.scss';
 import { checkIsCartoon } from '../../../../lib';

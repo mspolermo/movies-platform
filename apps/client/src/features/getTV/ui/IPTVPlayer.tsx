@@ -150,7 +150,7 @@ export const IPTVPlayer = () => {
         <div className={styles.sort}>
           <Button
             size="small"
-            variant={sort === 'popularity' ? 'gray' : 'default'}
+            variant={sort === 'popularity' ? 'default' : 'outline'}
             onClick={() => setSort('popularity')}
           >
             🔥 Популярные
@@ -158,7 +158,7 @@ export const IPTVPlayer = () => {
 
           <Button
             size="small"
-            variant={sort === 'name' ? 'gray' : 'default'}
+            variant={sort === 'name' ? 'default' : 'outline'}
             onClick={() => setSort('name')}
           >
             A–Z

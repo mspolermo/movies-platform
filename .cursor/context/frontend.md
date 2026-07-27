@@ -45,12 +45,63 @@
 ## UI
 
 - Стили: SCSS Modules рядом с компонентом.
-- UI-kit: `shared/ui`; не плодить дубли Button/Input.
+- UI-kit: `shared/ui`; не плодить дубли Button/Input. Структура слайса — см. **shared/ui kit** ниже (не путать с «Структура UI в слайсе»).
 - Иконки: только `<SvgIcon icon="camelCaseKey" />` из `shared/ui`; чистые `.svg` в `SvgIcon/assets`, регистрация в `IconsLibrary`; цвет через CSS-токены (`currentColor`), не пропы.
 - A11y: keyboard + aria на интерактивных элементах.
 
+## Configs
+
+Тяжёлая логика тулинга — в `apps/client/configs/`:
+
+| Папка | Назначение |
+|-------|------------|
+| `next/` | NextConfig (images, rewrites, SVGR) |
+| `eslint/` | flat ESLint (FSD + React/Next) |
+| `vitest/` | Vitest + setup |
+| `storybook/` | Storybook 10 (`main`/`preview`, SVGR); mock `next/image` — `configs/mocks/` |
+
+
+В корне клиента — только тонкие entry (`next.config.ts`, `eslint.config.mjs`), если инструмент требует файл в root.  
+Скрипты: `npm run storybook`, `npm run build-storybook`, `npm test` (явный `--config configs/vitest/...`).  
+`npm run type-check` = app `tsc` + `tsconfig.tooling.json` (vitest/storybook/mocks).
+
+## shared/ui kit
+
+Эталон: `apps/client/src/shared/ui/SvgIcon`. Один компонент на слайс.
+
+```
+shared/ui/<Name>/
+  ui/
+    <Name>.tsx
+    <Name>.module.scss
+    index.ts
+  model/
+    types.ts          # T*Props
+    index.ts
+  lib/                # только если нужны hooks/utils
+    hooks/ | utils/
+    index.ts
+  stories/
+    <Name>.stories.tsx
+  tests/
+    <Name>.test.tsx
+  index.ts            # только публичное: компонент + нужные T*
+```
+
+Правила:
+
+- Корневой `shared/ui/index.ts` — компоненты + только типы, которые реально импортят снаружи (`TBreadcrumbItem`, `TSortFilterProps`, …). Не тащить все `T*Props` в root.
+- Slice `index.ts`: компонент + `T*Props` (и связанные типы, нужные снаружи слайса, напр. `TBreadcrumbItem`). Variant/Size — в `model/`, в barrel слайса только если нужны потребителю.
+- Props: `T*Props` в `model/types.ts` (не объявлять в `.tsx`). Без legacy aliases (`LoaderProps` и т.п.).
+- Не экспортировать `stories/`, `tests/`, внутренний `lib/`, `iconsLibrary`.
+- Между kit-слайсами: импорт `@/shared/ui/<Name>`, не deep в `ui/`.
+- Жирный UI → вынести хуки в `lib/hooks/<name>/`, утилиты в `lib/utils/<name>/`; в `ui/` остаётся wiring.
+- Новый слайс: `npm run cc <Name> shared/ui`.
+- Для `features`/`widgets`/`entities` с несколькими компонентами — см. **Структура UI в слайсе** (вложенный `ui/<Component>/`).
+
 ## Структура UI в слайсе
 
+- Область: `features` / `widgets` / составные `entities/*/ui` (не UI-kit `shared/ui` — там см. **shared/ui kit**).
 - В `ui/` каждый компонент/виджет слайса — **своя подпапка** + `index.ts` (barrel).
 - Рядом: `Component.tsx`, `Component.module.scss`, `types.ts` (props и публичные типы UX).
 - Сегмент `ui/index.ts` реэкспортирует только публичное.

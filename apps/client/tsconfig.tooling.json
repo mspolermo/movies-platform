@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "plugins": [],
+    "types": ["node", "vite/client"]
+  },
+  "include": [
+    "configs/vitest/**/*.ts",
+    "configs/vitest/**/*.tsx",
+    "configs/storybook/**/*.ts",
+    "configs/storybook/**/*.tsx",
+    "configs/mocks/**/*.ts",
+    "configs/mocks/**/*.tsx",
+    "types/**/*.d.ts"
+  ],
+  "exclude": ["node_modules", "storybook-static"]
+}

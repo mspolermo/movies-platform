@@ -1,3 +1,3 @@
-export type { THorizontalCarouselHandle } from './ui';
+export type { THorizontalCarouselHandle, THorizontalCarouselProps } from './model';
 
 export { HorizontalCarousel } from './ui';
