@@ -1,0 +1,1 @@
+export { AdminPersonsPanel } from './ui';

@@ -1,12 +1,21 @@
 @use '@/shared/styles/variables/sizes' as sizes;
 
 .title {
+  margin: 0;
   font-size: 40px;
   line-height: 44px;
   font-weight: 700;
   padding: 24px;
   text-align: center;
   color: var(--color-heading);
+}
+
+.titleStart {
+  margin: 0;
+  font-size: 28px;
+  line-height: 32px;
+  padding: 16px 0 20px;
+  text-align: start;
 }
 
 .titleVisuallyHidden {

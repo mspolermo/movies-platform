@@ -196,6 +196,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 COPY public.roles (id, value, "createdAt", "updatedAt") FROM stdin;
 1	ADMIN	2023-05-10 16:34:56.833+00	2023-05-10 16:34:56.833+00
 2	USER	2023-05-10 16:34:56.833+00	2023-05-10 16:34:56.833+00
+3	MANAGER	2023-05-10 16:34:56.833+00	2023-05-10 16:34:56.833+00
 \.
 
 
@@ -206,6 +207,7 @@ COPY public.roles (id, value, "createdAt", "updatedAt") FROM stdin;
 --
 
 COPY public.user_roles (id, "roleId", "userId") FROM stdin;
+1	1	1
 \.
 
 
@@ -215,8 +217,15 @@ COPY public.user_roles (id, "roleId", "userId") FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: root
 --
 
-COPY public.users (id, email, password, "createdAt", "updatedAt") FROM stdin;
+-- Local admin (ADR-005): admin@gmail.com / Ms123456 / Admin; bcrypt rounds=10
+COPY public.users (id, email, password, name, "createdAt", "updatedAt") FROM stdin;
+1	admin@gmail.com	$2b$10$AtOLyJ1sY7pzm4xQMF.XBeI84nFqUFqIptUMFoolxxleIFVe/pyOO	Admin	2023-05-10 16:34:56.833+00	2023-05-10 16:34:56.833+00
 \.
+
+-- COPY with explicit ids does not advance sequences; without setval the next INSERT collides on PK.
+SELECT pg_catalog.setval('public.roles_id_seq', (SELECT MAX(id) FROM public.roles));
+SELECT pg_catalog.setval('public.user_roles_id_seq', (SELECT MAX(id) FROM public.user_roles));
+SELECT pg_catalog.setval('public.users_id_seq', (SELECT MAX(id) FROM public.users));
 
 --
 -- TOC entry 3190 (class 2606 OID 16403)

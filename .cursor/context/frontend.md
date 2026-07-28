@@ -35,6 +35,7 @@
 - Zustand — один store `useUserStore` (`entities/user`); не складывать туда токены.
 - Пагинация/infinite — `usePaginatedResource` + feature-hooks (`useLoadMoreFilms`, `useFilmComments`, …).
 - Auth/session layout, proxy, ESLint dual-entry — [ADR-001](../adr/001-jwt-access-opaque-refresh.md).
+- Admin B2C `/admin/*` — [ADR-005](../adr/005-admin-in-b2c.md): `pages/AdminRootLayout` gate (soft-404 = `NotFoundPage` UI через `shared/ui/NotFoundView`) + `AdminLayout` shell + `manage*` stubs; `API_ENDPOINTS.ADMIN` forward; stubs **не** вызывают `apiClient`; proxy `/admin/:path*`.
 - Server Actions сейчас: только `getCountriesList`, `getGenresList`, `getFilmsFilters`.
 
 ## Типы

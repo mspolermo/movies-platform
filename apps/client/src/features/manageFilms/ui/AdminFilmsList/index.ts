@@ -1,0 +1,1 @@
+export { AdminFilmsList } from './AdminFilmsList';

@@ -1,0 +1,14 @@
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 32px;
+}
+
+.missing {
+  color: var(--color-text);
+}
+
+.error {
+  margin: 0 0 16px;
+  color: var(--color-red);
+}

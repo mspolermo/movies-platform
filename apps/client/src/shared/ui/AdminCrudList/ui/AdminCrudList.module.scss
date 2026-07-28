@@ -1,0 +1,65 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/**
+ * Обёртка вокруг Input: className у Input вешается на внутренний .input,
+ * а не на wrapper — flex/width нельзя вешать через Input.className.
+ */
+.search {
+  flex: 1 1 200px;
+  max-width: 320px;
+  min-width: 0;
+}
+
+.empty {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 14px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--color-background-elements);
+  border: 1px solid var(--color-split-line);
+}
+
+.label {
+  color: var(--color-heading);
+  font-size: 14px;
+  line-height: 1.4;
+  min-width: 0;
+  flex: 1 1 180px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  flex-shrink: 0;
+}

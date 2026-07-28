@@ -1,0 +1,1 @@
+export { isAdminNavActive } from './isAdminNavActive';

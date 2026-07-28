@@ -1,0 +1,1 @@
+export { useAdminCrudPanel } from './useAdminCrudPanel';

@@ -15,17 +15,16 @@ import { SearchButton } from './SearchButton';
 import { HEADER_SECTIONS_LAPTOP } from '../../constants';
 
 /**
- * Основной хедер приложения.
- * Отвечает за навигацию и отображение dropdown-меню.
- * Активирует фон хедера, если открыт хотя бы один dropdown.
+ * Основной хедер: навигация и выпадающее меню профиля.
+ * Ссылки админки — внутри «Разделы» (только ADMIN), не отдельный пункт меню.
  */
 export const Header = () => {
-  /** Количество открытых dropdown внутри хедера */
+  /** Количество открытых выпадающих меню внутри хедера. */
   const [openDropdownCount, setOpenDropdownCount] = useState(0);
 
   /**
-   * Обработчик изменения состояния dropdown.
-   * Используется для синхронизации состояния фона хедера.
+   * Обработчик изменения состояния выпадающего меню.
+   * Нужен для синхронизации фона хедера.
    */
   const handleDropdownOpenChange = (isOpen: boolean) => {
     setOpenDropdownCount((prev) => {

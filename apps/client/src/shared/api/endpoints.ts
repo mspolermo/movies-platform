@@ -1,10 +1,10 @@
 /**
- * Same-origin rewrite в браузере (Next → gateway).
- * Пути ниже — относительно этого baseURL.
+ * Проксирование same-origin запросов в браузере (Next → gateway).
+ * Пути ниже задаются относительно этого baseURL.
  */
 export const BROWSER_API_BASE_URL = '/api';
 
-/** SSR fallback, если нет `API_GATEWAY_URL`. */
+/** Запасной base URL для SSR, если нет `API_GATEWAY_URL`. */
 export const DEFAULT_SSR_API_BASE_URL = 'http://localhost:5001';
 
 /**
@@ -63,5 +63,32 @@ export const API_ENDPOINTS = {
     REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
     ME: '/auth/me',
+  },
+
+  ADMIN: {
+    FILMS: {
+      LIST: '/admin/films',
+      BY_ID: (id: number) => `/admin/films/${id}`,
+    },
+    GENRES: {
+      LIST: '/admin/genres',
+      BY_ID: (id: number) => `/admin/genres/${id}`,
+    },
+    COUNTRIES: {
+      LIST: '/admin/countries',
+      BY_ID: (id: number) => `/admin/countries/${id}`,
+    },
+    PROFESSIONS: {
+      LIST: '/admin/professions',
+      BY_ID: (id: number) => `/admin/professions/${id}`,
+    },
+    PERSONS: {
+      LIST: '/admin/persons',
+      BY_ID: (id: number) => `/admin/persons/${id}`,
+    },
+    USERS: {
+      LIST: '/admin/users',
+      BY_ID: (id: number) => `/admin/users/${id}`,
+    },
   },
 } as const;

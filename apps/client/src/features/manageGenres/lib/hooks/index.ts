@@ -1,0 +1,1 @@
+export { useAdminGenres } from './useAdminGenres';

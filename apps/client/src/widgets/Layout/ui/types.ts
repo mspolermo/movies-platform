@@ -18,4 +18,5 @@ export type TPageProps = {
   onlyLaptopTitle?: boolean;
   withBackButton?: boolean;
   breadcrumbs?: TBreadcrumbItem[];
+  titleAlign?: 'center' | 'start';
 };

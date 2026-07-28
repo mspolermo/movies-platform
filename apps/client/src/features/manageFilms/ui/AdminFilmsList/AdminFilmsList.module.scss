@@ -1,0 +1,21 @@
+.hint {
+  margin: 8px 0 0;
+  font-size: 13px;
+
+  a {
+    color: var(--color-text);
+
+    &:hover {
+      color: var(--color-heading);
+    }
+  }
+}
+
+.label {
+  color: var(--color-heading);
+}
+
+.error {
+  margin: 0;
+  color: var(--color-red);
+}

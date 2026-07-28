@@ -40,3 +40,4 @@
 | [002](./002-flat-film-reviews.md) | Плоские отзывы к фильму (без дерева) | Accepted |
 | [003](./003-home-promo-banner-slider.md) | Рекламный слайдер на Home (статика, без перехода) | Accepted |
 | [004](./004-open-film-actions.md) | Действия фильма: `openFilmActions` (rate + share + panel) | Accepted |
+| [005](./005-admin-in-b2c.md) | Admin в B2C (`/admin/*`): FE stubs + контракт BE | Accepted |

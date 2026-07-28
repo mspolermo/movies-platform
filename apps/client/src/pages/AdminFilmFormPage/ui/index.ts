@@ -1,0 +1,1 @@
+export { AdminFilmFormPage } from './AdminFilmFormPage';

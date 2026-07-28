@@ -153,6 +153,7 @@ Legacy: `old-client/` — не использовать.
 | Ratings (KP) | поля Film | `features/openFilmActions` (UI grade stub) | нет user-ratings таблицы |
 | Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004 | favorite stub до F3 |
 | Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |
+| Admin (B2C) | BE later (`/admin/*` + RolesGuard) | `pages/AdminRootLayout` (gate), `widgets/AdminLayout`, `pages/Admin*`, `features/manage*`; stubs; ADR-005 | seed `admin@gmail.com` в `devops/users-db` |
 
 ---
 
@@ -188,7 +189,13 @@ Legacy: `old-client/` — не использовать.
 
 | Home promo banners | `apps/client/src/widgets/PromoBannerSlider` |
 | Horizontal carousel (shared) | `apps/client/src/shared/ui/HorizontalCarousel` |
+| Admin shell / pages | `apps/client/src/pages/AdminRootLayout`, `apps/client/src/widgets/AdminLayout`, `apps/client/src/pages/Admin*`, `apps/client/app/admin` |
+| Admin manage features | `apps/client/src/features/manage{Films,Genres,Countries,Professions,Persons,Users}` (`useAdminFilm` в manageFilms) |
+| Admin shared UI | `shared/ui/AdminCrudList` (+ `useAdminCrudPanel`, `filterByQuery`), `shared/ui/NotFoundView`, `shared/ui/Select`; nav: `shared/constants` `ADMIN_NAV_ITEMS` |
+| Admin types / endpoints | `apps/common/types/{request,response}/admin.ts`, `API_ENDPOINTS.ADMIN` |
+| Users DB seed | `devops/users-db/users-init-dump.sql` |
 | Docker / seed | `docker-compose.yml`, `devops/` |
 | Auth ADR | `.cursor/adr/001-jwt-access-opaque-refresh.md` |
+| Admin ADR | `.cursor/adr/005-admin-in-b2c.md` |
 | Правила | `.cursor/context/` |
 | Бэклог (FE/BE/Infra) | `.cursor/temp/backlog.md` |

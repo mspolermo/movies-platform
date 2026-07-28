@@ -44,3 +44,12 @@ export type {
   TAuthUsersRpcRefreshRequest,
   TAuthUsersRpcLogoutRequest,
 } from "./auth";
+
+export type {
+  TAdminFilmItemResponse,
+  TGenreAdminItemResponse,
+  TCountryAdminItemResponse,
+  TProfessionAdminItemResponse,
+  TPersonAdminItemResponse,
+  TAdminUserItemResponse,
+} from "./admin";

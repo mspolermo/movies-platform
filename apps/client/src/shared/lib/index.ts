@@ -3,6 +3,7 @@ export {
   debugStubLog,
   getApiBaseUrl,
   getApiErrorMessage,
+  isNonProduction,
   isSortOption,
   shouldSkipImageOptimization,
 } from './utils';

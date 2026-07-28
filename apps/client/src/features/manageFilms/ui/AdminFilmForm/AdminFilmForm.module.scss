@@ -1,0 +1,58 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 800px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--color-background-elements);
+  border: 1px solid var(--color-split-line);
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 16px;
+  color: var(--color-heading);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.textareaLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 8px;
+  resize: vertical;
+  font: inherit;
+  color: var(--color-input-text-dark);
+  background: var(--color-input-background);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.error {
+  margin: 0;
+  color: var(--color-red);
+}

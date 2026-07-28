@@ -1,7 +1,10 @@
 .root {
   display: inline-flex;
   align-items: center;
+  align-self: center;
   gap: 8px;
+  height: auto;
+  padding: 10px 0;
 
   text-decoration: none;
   color: var(--color-text);

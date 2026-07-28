@@ -23,8 +23,21 @@ describe('resolveSessionRedirect', () => {
     ).toBe(`${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent('/profile/settings?tab=1')}`);
   });
 
-  it('does not treat /profilex as protected', () => {
-    expect(resolveSessionRedirect({ pathname: '/profilex', hasSession: false })).toBeNull();
+  it('redirects guest from /admin to login with returnUrl', () => {
+    expect(resolveSessionRedirect({ pathname: '/admin', hasSession: false })).toBe(
+      `${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent('/admin')}`
+    );
+    expect(
+      resolveSessionRedirect({
+        pathname: '/admin/films',
+        search: '?q=1',
+        hasSession: false,
+      })
+    ).toBe(`${AUTH_LOGIN_PATH}?returnUrl=${encodeURIComponent('/admin/films?q=1')}`);
+  });
+
+  it('does not treat /administration as protected', () => {
+    expect(resolveSessionRedirect({ pathname: '/administration', hasSession: false })).toBeNull();
   });
 
   it('redirects session user away from auth pages', () => {

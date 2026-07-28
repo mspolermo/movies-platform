@@ -1,0 +1,181 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+}
+
+.wrapper--small {
+  .control,
+  .multi {
+    min-height: 32px;
+  }
+
+  .native {
+    font-size: 13px;
+    padding: 6px 32px 6px 8px;
+  }
+
+  .option {
+    min-height: 32px;
+    padding: 4px 8px;
+    font-size: 13px;
+  }
+}
+
+.wrapper--medium {
+  .native {
+    font-size: 15px;
+    padding: 10px 36px 10px 10px;
+  }
+}
+
+.wrapper--large {
+  .native {
+    font-size: 16px;
+    padding: 12px 40px 12px 12px;
+  }
+
+  .option {
+    min-height: 40px;
+    padding: 8px 12px;
+  }
+}
+
+.wrapper--error {
+  .control,
+  .multi {
+    box-shadow: 0 0 0 1px var(--color-red);
+  }
+}
+
+.wrapper--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.required {
+  color: var(--color-red);
+  margin-left: 2px;
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border-radius: 5px;
+  background-color: var(--color-input-background);
+}
+
+.native {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--color-input-text-dark);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-transparent-red);
+  }
+}
+
+.chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--color-input-text-dark);
+  border-bottom: 2px solid var(--color-input-text-dark);
+  transform: translateY(-65%) rotate(45deg);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.multi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: auto;
+  padding: 4px;
+  border-radius: 5px;
+  background-color: var(--color-input-background);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-icon-default) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: var(--color-icon-default);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: var(--color-input-text-dark);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-icon-default) 35%, transparent);
+  }
+}
+
+.option--checked {
+  background: color-mix(in srgb, var(--color-icon-default) 55%, transparent);
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--color-red);
+  cursor: pointer;
+}
+
+.optionLabel {
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.empty {
+  margin: 0;
+  padding: 10px;
+  color: var(--color-input-text-dark);
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+.error {
+  font-size: 12px;
+  color: var(--color-red);
+}

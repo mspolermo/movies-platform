@@ -25,7 +25,7 @@ export const proxy = (request: NextRequest) => {
   return NextResponse.next();
 };
 
-/** На каких маршрутах запускать proxy (sync с SESSION_PROTECTED / AUTH paths). */
+/** На каких маршрутах запускать proxy (синхронно с SESSION_PROTECTED / AUTH paths). */
 export const config = {
-  matcher: ['/profile/:path*', '/auth/login', '/auth/register'],
+  matcher: ['/profile/:path*', '/admin/:path*', '/auth/login', '/auth/register'],
 };

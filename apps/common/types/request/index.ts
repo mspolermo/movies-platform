@@ -22,3 +22,18 @@ export type {
   TGetFilmCommentsRpcRequest,
   TToggleCommentLikeRequest,
 } from "./comment";
+export type {
+  TAppRole,
+  TAdminFilmFields,
+  TCreateFilmRequest,
+  TUpdateFilmRequest,
+  TCreateGenreRequest,
+  TUpdateGenreRequest,
+  TCreateCountryRequest,
+  TUpdateCountryRequest,
+  TCreateProfessionRequest,
+  TUpdateProfessionRequest,
+  TCreatePersonRequest,
+  TUpdatePersonRequest,
+  TUpdateUserRoleRequest,
+} from "./admin";

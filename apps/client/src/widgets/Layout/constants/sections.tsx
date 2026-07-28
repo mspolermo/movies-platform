@@ -7,7 +7,6 @@ export const HEADER_SECTIONS_LAPTOP: THeaderMenuItem[] = [
   { label: 'Фильмы', url: '/films', content: 'qickFiltersList' },
   { label: 'Разделы', url: 'professions', content: 'chaptersSection' },
   { label: 'Телевидение', url: '/tv' },
-  { label: 'Debug', url: '/debug' },
 ];
 
 /**

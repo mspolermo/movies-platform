@@ -1,0 +1,47 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  th,
+  td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-split-line);
+  }
+
+  th {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  td {
+    color: var(--color-heading);
+  }
+}
+
+.error {
+  margin: 0;
+  color: var(--color-red);
+  font-size: 13px;
+}
+
+.note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-text);
+}
+
+.caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: 8px;
+  font-size: 13px;
+  color: var(--color-text);
+}

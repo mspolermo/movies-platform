@@ -1,0 +1,1 @@
+export { AdminCrudList } from './AdminCrudList';

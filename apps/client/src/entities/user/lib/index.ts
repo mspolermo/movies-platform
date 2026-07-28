@@ -1,2 +1,2 @@
 export { useAuth } from './hooks';
-export { buildLoginHref } from './utils';
+export { buildLoginHref, hasAdminRole, isAdminNavActive } from './utils';

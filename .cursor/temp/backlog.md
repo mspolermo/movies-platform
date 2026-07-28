@@ -4,7 +4,7 @@
 Канон архитектуры: [`.cursor/architecture.md`](../architecture.md). Канон клиента: только `apps/client` (`old-client/` — legacy, gitignored).
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
-Обновлено: 2026-07-25 (после `openFilmActions` / ADR-004).
+Обновлено: 2026-07-28 (F1 Admin FE / ADR-005).
 
 ## Легенда
 
@@ -25,7 +25,7 @@
 
 | # | Что | Статус | Как | Не делать |
 |---|-----|--------|-----|-----------|
-| F1 | **Admin CRUD** фильмов/жанров | open | ADR: admin в B2C или отдельный app. Если да — `app/admin` + FSD `manageFilms`/`manageGenres`, RBAC через gateway, API только `shared/api` + `@common/types`, token in-memory | Порт DOM/Redux-админки; Bearer из localStorage |
+| F1 | **Admin CRUD** фильмов/жанров/… | **FE in progress** / BE open | [ADR-005](../adr/005-admin-in-b2c.md): B2C `/admin/*`, FSD `manage*`, stubs; BE `/admin` + RolesGuard (B5) later | Порт DOM/Redux-админки; Bearer из localStorage |
 | F2 | **OAuth** Google + VK | open / skip? | Только если продукт требует: gateway OAuth, env client IDs | VK SDK + hardcoded clientId из OLD |
 | F3 | **Избранное / bookmark** | open | Backend entity + RPC + `features/toggleFilmFavorite` (← B12). UI stub в `openFilmActions` ок до API | Fake store без пути к API; «вечный» console.log-stub |
 | F4 | **Оценка фильма 1–10** | open | User ratings entity (← B11) → заменить `submitFilmGrade` stub в `openFilmActions` | GradeBlock DOM-хаки из OLD |
@@ -115,7 +115,7 @@
 ## Чеклист статуса
 
 ### Frontend
-- [ ] F1 Admin (или deprecate + ADR)
+- [ ] F1 Admin — FE in progress ([ADR-005](../adr/005-admin-in-b2c.md)); BE open
 - [ ] F2 OAuth (или skip)
 - [ ] F3 Favorites API (UI stub в `openFilmActions` — временно ок)
 - [ ] F4 Ratings API (вместо `submitFilmGrade` stub)

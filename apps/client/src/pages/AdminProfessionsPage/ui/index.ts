@@ -1,0 +1,1 @@
+export { AdminProfessionsPage } from './AdminProfessionsPage';

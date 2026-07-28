@@ -1,0 +1,1 @@
+export { AdminPersonsPage } from './ui';

@@ -1,3 +1,10 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 48px;
+}
+
 .grid {
   display: grid;
 
@@ -42,5 +49,9 @@
 
   &:first-letter {
     text-transform: uppercase;
+  }
+
+  &[aria-current='page'] {
+    color: var(--color-heading);
   }
 }

@@ -3,13 +3,15 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { buildLoginHref, useAuth } from '@/entities/user';
+import { buildLoginHref, hasAdminRole, useAuth } from '@/entities/user';
 import { logout } from '@/features/auth';
 import { AUTH_LOGIN_PATH } from '@/shared/api/session';
+import { isNonProduction } from '@/shared/lib';
 import { Button } from '@/shared/ui';
 
 import styles from './ProfileSection.module.scss';
 
+/** Выпадающее меню профиля: профиль, админка (роль), Debug (не prod), выход. */
 export const ProfileSection = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [loginHref, setLoginHref] = useState(AUTH_LOGIN_PATH);
@@ -53,6 +55,16 @@ export const ProfileSection = () => {
       <Link className={styles.link} href="/profile">
         Открыть профиль
       </Link>
+      {hasAdminRole(user) && (
+        <Link className={styles.link} href="/admin">
+          Администрирование
+        </Link>
+      )}
+      {isNonProduction && (
+        <Link className={styles.link} href="/debug">
+          Debug
+        </Link>
+      )}
       <Button type="button" variant="red" onClick={handleLogout}>
         Выйти
       </Button>

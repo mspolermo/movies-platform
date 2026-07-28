@@ -1,0 +1,1 @@
+export { useAdminProfessions } from './useAdminProfessions';

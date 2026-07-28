@@ -1,21 +1,13 @@
 import type { TNotFoundPageProps } from './types';
 
+import { NotFoundView } from '@/shared/ui';
 import { Page } from '@/widgets/Layout';
 
-import styles from './NotFoundPage.module.scss';
-
 /**
- * Cтраница 404
+ * Страница 404 (app/not-found). Мягкий 404 админки использует тот же NotFoundView и Page.
  */
-export const NotFoundPage = ({
-  description = 'К сожалению, по вашему запросу ничего не найдено',
-}: TNotFoundPageProps) => {
-  return (
-    <Page title="Страница не найдена">
-      <div className={styles.container}>
-        <h1 className={styles.title}>404</h1>
-        <p className={styles.description}>{description}</p>
-      </div>
-    </Page>
-  );
-};
+export const NotFoundPage = ({ description }: TNotFoundPageProps) => (
+  <Page title="Страница не найдена">
+    <NotFoundView description={description} />
+  </Page>
+);

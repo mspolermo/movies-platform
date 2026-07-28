@@ -19,6 +19,7 @@ export const Page = ({
   onlyLaptopTitle,
   withBackButton,
   breadcrumbs,
+  titleAlign = 'center',
 }: TPageProps) => (
   <>
     {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
@@ -27,6 +28,7 @@ export const Page = ({
       <h1
         className={cn(
           styles.title,
+          titleAlign === 'start' && styles.titleStart,
           titleVisuallyHidden && styles.titleVisuallyHidden,
           onlyLaptopTitle && !titleVisuallyHidden && styles.title_onlyLaptop
         )}

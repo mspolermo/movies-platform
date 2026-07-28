@@ -1,0 +1,1 @@
+export { useAdminFilm } from './useAdminFilm';

@@ -1,0 +1,1 @@
+export { useAdminPersons } from './hooks';

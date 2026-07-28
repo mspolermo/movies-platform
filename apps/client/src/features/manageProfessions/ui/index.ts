@@ -1,0 +1,1 @@
+export { AdminProfessionsPanel } from './AdminProfessionsPanel';
