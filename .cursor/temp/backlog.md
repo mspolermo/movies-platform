@@ -4,7 +4,7 @@
 Канон архитектуры: [`.cursor/architecture.md`](../architecture.md). Канон клиента: только `apps/client`.
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
-Обновлено: 2026-07-29 (F2 skip / ADR-006; F17 old-client removed).
+Обновлено: 2026-07-29 (F1 done FE+BE, B5 done, B6 закрыт — ADR-007; F2 skip / ADR-006; F17 old-client removed).
 
 ## Легенда
 
@@ -25,7 +25,7 @@
 
 | # | Что | Статус | Как | Не делать |
 |---|-----|--------|-----|-----------|
-| F1 | **Admin CRUD** фильмов/жанров/… | **FE in progress** / BE open | [ADR-005](../adr/005-admin-in-b2c.md): B2C `/admin/*`, FSD `manage*`, stubs; BE `/admin` + RolesGuard (B5) later | Порт DOM/Redux-админки; Bearer из localStorage |
+| F1 | **Admin CRUD** фильмов/жанров/… | **done (FE+BE)** | [ADR-005](../adr/005-admin-in-b2c.md) + [ADR-007](../adr/007-admin-be-implementation.md): `/admin/*` на gateway (RolesGuard), admin RPC в kino-db/auth-users, FE без стабов, пагинация всех списков | Порт DOM/Redux-админки; Bearer из localStorage |
 | F2 | **OAuth** Google + VK | **skip** | — | Social login; stub снят ([ADR-006](../adr/006-no-oauth.md)) |
 | F3 | **Избранное / bookmark** | open | Backend entity + RPC + `features/toggleFilmFavorite` (← B12). UI stub в `openFilmActions` ок до API | Fake store без пути к API; «вечный» console.log-stub |
 | F4 | **Оценка фильма 1–10** | open | User ratings entity (← B11) → заменить `submitFilmGrade` stub в `openFilmActions` | GradeBlock DOM-хаки из OLD |
@@ -66,8 +66,8 @@
 |---|----------|--------|----------|
 | B3 | Синхронный RMQ RPC | Нет timeout/retry/circuit breaker | **M**: timeout, retry, DLQ, correlation id |
 | B4 | Два HTTP-порта у МС | auth-users/kino-db: HTTP ≈ только health | — |
-| B5 | `UserRolesModule` / RolesGuard | RBAC по сути не используется | **M**: проводка или deprecate |
-| B6 | Orphan RPC | `createRole` — нет gateway-клиента | **M** |
+| B5 | ~~`UserRolesModule` / RolesGuard~~ | **done**: проведён на `/admin/*` (`@Roles("ADMIN")`, ADR-007) | — |
+| B6 | ~~Orphan RPC~~ | **закрыт**: `createRole` удалён (роли только из посева, ADR-007) | — |
 | B7 | TODO комментарии / professionId / PersonProfession A/B | `kino-db.rpc.ts`, DTO, model | **S** |
 | B8 | `GET /auth/checkToken` deprecated | удалить после миграции потребителей | **S** |
 | B9 | Слабое покрытие gateway | только films specs | **S–M** |
@@ -103,7 +103,7 @@
 1. B1 миграции вместо synchronize          (P0 infra/BE)
 2. ADR: admin?                             (F1 — ADR-005; F2 OAuth — skip, ADR-006)
 3. Favorites + ratings: API                (F3/F4 ← B11/B12)
-4. Admin на RBAC (если да)                 (F1 ← B5)
+4. ~~Admin на RBAC~~                        done — F1+B5+B6, ADR-007
 5. ~~Film UX: share / panel (F6, F8)~~     done — ADR-004
 6. I1 client в compose · F14 smoke · F16 E2E
 7. B3 RMQ resilience · B14/B15 observability
@@ -115,7 +115,7 @@
 ## Чеклист статуса
 
 ### Frontend
-- [ ] F1 Admin — FE in progress ([ADR-005](../adr/005-admin-in-b2c.md)); BE open
+- [x] F1 Admin — done FE+BE ([ADR-005](../adr/005-admin-in-b2c.md), [ADR-007](../adr/007-admin-be-implementation.md))
 - [x] F2 OAuth — **не делаем** ([ADR-006](../adr/006-no-oauth.md)); stub удалён
 - [ ] F3 Favorites API (UI stub в `openFilmActions` — временно ок)
 - [ ] F4 Ratings API (вместо `submitFilmGrade` stub)
@@ -134,7 +134,7 @@
 ### Backend / Infra
 - [ ] B1 Sequelize migrations
 - [ ] B3 RMQ timeout/retry/DLQ
-- [ ] B5/B6 RBAC / orphan RPC
+- [x] B5/B6 RBAC / orphan RPC — done (ADR-007)
 - [ ] B8 удалить checkToken
 - [ ] B11/B12 ratings + favorites entities
 - [ ] I1 Client в compose

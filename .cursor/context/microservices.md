@@ -26,7 +26,13 @@
   4. Обновить [project-index](../project-index.md)
 - Не менять строковые значения pattern без lockstep-деплоя обоих концов.
 - Не доверять RMQ payload как публичному API: gateway уже аутентифицировал; всё равно валидировать форму данных.
-- Orphan RPC (есть handler, нет gateway-вызова): `createRole` — не использовать «тихо» с клиента; либо проводка через gateway + docs, либо deprecate.
+- Orphan RPC не заводить: есть handler → есть gateway-клиент (прецедент `createRole` удалён, ADR-007).
+
+## Ошибки RPC (ADR-007)
+
+- MS в admin/новых хендлерах бросают `RpcException({ statusCode, message })` — не HttpException.
+- Gateway переводит через `throwHttpFromRpcError` (`api-gateway/src/shared/helpers`) — понимает оба формата (payload `statusCode` и сериализованный `HttpException`), fallback 500; фразы не парсить.
+- Отсутствующий id → `RpcException 404` (не `null` с успешным ответом).
 
 ## Resilience (ожидание)
 

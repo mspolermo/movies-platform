@@ -87,8 +87,21 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | GET | `/comments/:filmId` | JWT | Комментарии |
 | POST | `/comments/:filmId` | JWT | Создать комментарий |
 | POST | `/comments/:commentId/like` | JWT | Лайк комментария |
+| GET/POST | `/admin/films` | ADMIN | Пагинированный список (`?q=`) / создание |
+| GET/PATCH/DELETE | `/admin/films/:id` | ADMIN | Скаляры фильма; DELETE — cascade (ADR-007) |
+| GET/POST | `/admin/genres` | ADMIN | Список с id / создание (409 дубликат имени) |
+| PATCH/DELETE | `/admin/genres/:id` | ADMIN | DELETE — restrict 409 при привязке |
+| GET/POST | `/admin/countries` | ADMIN | Аналогично genres |
+| PATCH/DELETE | `/admin/countries/:id` | ADMIN | Аналогично genres |
+| GET/POST | `/admin/professions` | ADMIN | Аналогично genres (restrict — по персонам) |
+| PATCH/DELETE | `/admin/professions/:id` | ADMIN | |
+| GET/POST | `/admin/persons` | ADMIN | Пагинация + `?q=`; `professionIds` |
+| GET/PATCH/DELETE | `/admin/persons/:id` | ADMIN | DELETE — restrict 409 если в фильмах |
+| GET | `/admin/users` | ADMIN | Пагинированный список с ролями |
+| PATCH | `/admin/users/:id` | ADMIN | `{ role }`; последний ADMIN → 409 |
 
-\* JWT на gateway; клиент шлёт Bearer после login/refresh.
+\* JWT на gateway; клиент шлёт Bearer после login/refresh.  
+ADMIN = `JwtAuthGuard + RolesGuard + @Roles("ADMIN")`; списки — `TPaginatedItemsResponse` (ADR-007).
 
 ---
 
@@ -120,6 +133,11 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | `createComment` | comments |
 | `getCommentsByFilmId` | comments |
 | `toggleCommentLike` | comments |
+| `admin.films.{list,getById,create,update,delete}` | films (admin) |
+| `admin.genres.{list,create,update,delete}` | genres (admin) |
+| `admin.countries.{list,create,update,delete}` | countries (admin) |
+| `admin.professions.{list,create,update,delete}` | professions (admin) |
+| `admin.persons.{list,getById,create,update,delete}` | persons (admin) |
 
 ## auth-users (`users_queue`)
 
@@ -131,9 +149,10 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | `getUserById` | users |
 | `refresh` | users |
 | `logout` | users |
-| `createRole` | roles |
+| `admin.users.list` | users (admin) |
+| `admin.users.setRole` | users (admin) |
 
-**Orphan (MS есть, HTTP/gateway client нет):** `createRole`.
+Orphan `createRole` удалён (B6, ADR-007) — роли только из посева.
 
 ---
 
@@ -150,7 +169,7 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | Ratings (KP) | поля Film | `features/openFilmActions` (UI grade stub) | нет user-ratings таблицы |
 | Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004 | favorite stub до F3 |
 | Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |
-| Admin (B2C) | BE later (`/admin/*` + RolesGuard) | `pages/AdminRootLayout` (gate), `widgets/AdminLayout`, `pages/Admin*`, `features/manage*`; stubs; ADR-005 | seed `admin@gmail.com` в `devops/users-db` |
+| Admin (B2C) | gateway `src/admin` + `*Admin`-сервисы в kino-db/auth-users (ADR-005/007) | `pages/AdminRootLayout` (gate), `widgets/AdminLayout`, `pages/Admin*`, `features/manage*` (apiClient, без стабов) | seed `admin@gmail.com` в `devops/users-db` |
 
 ---
 
@@ -168,7 +187,11 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | RMQ контракты | `apps/common/services/rmq/messaging` |
 | Публичные типы | `apps/common/types/{request,response}` |
 | DTO валидация | `apps/common/dto`, `apps/*/dto` |
-| Мапперы ORM→Response | `apps/kino-db/src/*/mappers`, `apps/auth-users/src/users/users.mapper.ts` |
+| Мапперы ORM→Response | `apps/kino-db/src/*/mappers`, `apps/auth-users/src/*/mappers` |
+| Admin gateway | `apps/api-gateway/src/admin/{controllers,services,clients}`; guards: `shared/guards/roles.decorator.ts` + `roles.guard.ts`; RPC-ошибки: `shared/helpers/rpc-error.helper.ts` |
+| Admin MS-сервисы | `apps/kino-db/src/*/{controllers,services}/*Admin*`, `apps/auth-users/src/users/{controllers,services}/usersAdmin*` |
+| Admin DTO | `apps/common/dto/admin` (`OptionalStrict`/`OptionalNullable` — decorators.ts) |
+| Пагинация utils (BE) | `apps/common/utils/{toPaginatedItemsResponse,toAdminListParams}.util.ts` |
 | Frontend страницы (UI) | `apps/client/src/pages` |
 | Frontend роуты (Next) | `apps/client/app` |
 | UX proxy (session redirects) | `apps/client/proxy.ts` (`@/shared/api/session` edge-safe; `matcher` — static literals) |
@@ -187,12 +210,12 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | Home promo banners | `apps/client/src/widgets/PromoBannerSlider` |
 | Horizontal carousel (shared) | `apps/client/src/shared/ui/HorizontalCarousel` |
 | Admin shell / pages | `apps/client/src/pages/AdminRootLayout`, `apps/client/src/widgets/AdminLayout`, `apps/client/src/pages/Admin*`, `apps/client/app/admin` |
-| Admin manage features | `apps/client/src/features/manage{Films,Genres,Countries,Professions,Persons,Users}` (`useAdminFilm` в manageFilms) |
+| Admin manage features | `apps/client/src/features/manage{Films,Genres,Countries,Professions,Persons,Users}` (`api/*Api.ts` на apiClient; `useAdminFilm` в manageFilms) |
 | Admin shared UI | `shared/ui/AdminCrudList` (+ `useAdminCrudPanel`, `filterByQuery`), `shared/ui/NotFoundView`, `shared/ui/Select`; nav: `shared/constants` `ADMIN_NAV_ITEMS` |
 | Admin types / endpoints | `apps/common/types/{request,response}/admin.ts`, `API_ENDPOINTS.ADMIN` |
 | Users DB seed | `devops/users-db/users-init-dump.sql` |
 | Docker / seed | `docker-compose.yml`, `devops/` |
 | Auth ADR | `.cursor/adr/001-jwt-access-opaque-refresh.md` |
-| Admin ADR | `.cursor/adr/005-admin-in-b2c.md` |
+| Admin ADR | `.cursor/adr/005-admin-in-b2c.md`, `.cursor/adr/007-admin-be-implementation.md` |
 | Правила | `.cursor/context/` |
 | Бэклог (FE/BE/Infra) | `.cursor/temp/backlog.md` |

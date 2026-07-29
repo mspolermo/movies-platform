@@ -10,6 +10,26 @@
 - Контроллер тонкий: валидация входа, вызов сервиса, без бизнес-логики.
 - На gateway: `Controller → Service → *Client (RMQ)` — без прямого Sequelize.
 
+## Структура модуля (канон kino-db)
+
+Все MS (kino-db, auth-users) держат одинаковый layout доменного модуля:
+
+```
+src/<domain>/
+  controllers/   # *.controller.ts + index.ts (@MessagePattern-хендлеры)
+  services/      # *.service.ts + index.ts
+  mappers/       # *.mapping.ts / *.mapper.ts + index.ts (ORM → T*Response)
+  models/        # Sequelize-модели + index.ts
+  dto/           # локальные DTO модуля (если нужны)
+  queries/       # тяжёлая SQL-сборка (опционально, как в films)
+  tests/         # *.spec.ts
+  <domain>.module.ts
+```
+
+- Импорты между модулями — через барреллы (`../users/services`), не по файлам напрямую.
+- Admin-функциональность — отдельные `*Admin`-контроллер/сервис **в том же** доменном модуле (`filmsAdmin.controller.ts` и т.п.), не отдельный admin-модуль в MS (ADR-007).
+- На gateway admin — отдельный модуль `src/admin/` (`controllers/ services/ clients/`), все контроллеры под `JwtAuthGuard + RolesGuard + @Roles("ADMIN")`.
+
 ## Mapper / Response
 
 - **Всегда** маппить ORM → `T*Response` перед возвратом из MS.

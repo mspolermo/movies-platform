@@ -72,6 +72,20 @@ FiltersService
 → объединение в ответ фильтров
 ```
 
+### Пример: admin CRUD (ADR-007)
+
+```
+Client (features/manage*) → PATCH /admin/genres/:id (Bearer)
+API Gateway AdminGenresController
+↓ JwtAuthGuard → RolesGuard (@Roles("ADMIN") → RPC getUserById за ролями)
+↓ AdminGenresService (throwHttpFromRpcError)
+↓ AdminKinoDbClient → films_queue "admin.genres.update"
+kino-db GenresAdminController → GenresAdminService
+↓ уникальность имени / 404 → RpcException {statusCode, message}
+↓ mapGenreToAdminItem → TGenreAdminItemResponse
+admin.users.* — аналогично через users_queue → auth-users UsersAdminController
+```
+
 ---
 
 ## Compile-time зависимости apps
@@ -155,4 +169,4 @@ Client вне compose.
 
 ## Orphan RPC
 
-- `createRole` — handler в auth-users есть; с gateway не вызывается.
+Нет (orphan `createRole` удалён — B6, ADR-007).
