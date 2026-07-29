@@ -1,11 +1,12 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
+import { FilmPerson } from "../films/models";
 import { Profession, ProfessionsModule } from "../professions";
 
-import { PersonsController } from "./controllers";
+import { PersonsAdminController, PersonsController } from "./controllers";
 import { Person, PersonProfession } from "./models";
-import { PersonsService } from "./services";
+import { PersonsAdminService, PersonsService } from "./services";
 
 @Module({
   imports: [
@@ -13,11 +14,12 @@ import { PersonsService } from "./services";
       Person,
       Profession,
       PersonProfession,
+      FilmPerson,
     ]),
     ProfessionsModule,
   ],
-  controllers: [PersonsController],
-  providers: [PersonsService],
+  controllers: [PersonsController, PersonsAdminController],
+  providers: [PersonsService, PersonsAdminService],
   exports: [PersonsService],
 })
 export class PersonsModule {}

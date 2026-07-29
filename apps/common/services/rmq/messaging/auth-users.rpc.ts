@@ -1,5 +1,11 @@
 import type { AuthDto, CreateUserDto } from "@common/dto";
-import type { TAuthorizedUserResponse, TRoleResponse } from "@common/types";
+import type {
+  TAuthorizedUserResponse,
+  TAdminListRequest,
+  TAdminSetUserRoleRpcRequest,
+  TAdminUserItemResponse,
+  TAdminUsersListResponse,
+} from "@common/types";
 import type {
   TAuthUsersRpcAuthResponse,
   TAuthUsersRpcLogoutRequest,
@@ -21,8 +27,12 @@ export const authUsersRpc = {
     refresh: "refresh",
     logout: "logout",
   },
-  roles: {
-    create: "createRole",
+  /** Admin (ADR-005/ADR-007): гейтвей проверяет роль ADMIN до вызова. */
+  admin: {
+    users: {
+      list: "admin.users.list",
+      setRole: "admin.users.setRole",
+    },
   },
 } as const;
 
@@ -51,11 +61,12 @@ export type TAuthUsersRpcContract = {
     request: TAuthUsersRpcLogoutRequest;
     response: true;
   };
-  [authUsersRpc.roles.create]: {
-    request: {
-      value: string;
-      description: string;
-    };
-    response: TRoleResponse;
+  [authUsersRpc.admin.users.list]: {
+    request: TAdminListRequest;
+    response: TAdminUsersListResponse;
+  };
+  [authUsersRpc.admin.users.setRole]: {
+    request: TAdminSetUserRoleRpcRequest;
+    response: TAdminUserItemResponse;
   };
 };

@@ -1,18 +1,24 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { ProfessionsController } from "./controllers";
+import { PersonProfession } from "../persons/models";
+
+import {
+  ProfessionsAdminController,
+  ProfessionsController,
+} from "./controllers";
 import { Profession } from "./models";
-import { ProfessionsService } from "./services";
+import { ProfessionsAdminService, ProfessionsService } from "./services";
 
 @Module({
   imports: [
     SequelizeModule.forFeature([
       Profession,
+      PersonProfession,
     ]),
   ],
-  controllers: [ProfessionsController],
-  providers: [ProfessionsService],
+  controllers: [ProfessionsController, ProfessionsAdminController],
+  providers: [ProfessionsService, ProfessionsAdminService],
   exports: [ProfessionsService],
 })
 export class ProfessionsModule {}

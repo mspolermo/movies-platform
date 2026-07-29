@@ -8,7 +8,7 @@ import { InjectModel } from "@nestjs/sequelize";
 
 import { LIST_DEFAULT_LIMIT } from "@common/constants";
 
-import { toPaginatedItemsResponse } from "../../common/utils/toPaginatedIemsResponse.util";
+import { toPaginatedItemsResponse } from "@common/utils";
 import { Person } from "../../persons";
 import { mapPersonToListItem } from "../../persons/mappers";
 import { normalizePersonListPagination } from "../../persons/utils/personsPagination.util";

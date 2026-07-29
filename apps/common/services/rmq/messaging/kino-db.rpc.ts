@@ -23,6 +23,27 @@ import type {
   TProfessionItemResponse,
   TSearchFilmsParams,
   TGenresListResponse,
+  TAdminListRequest,
+  TAdminFilmItemResponse,
+  TAdminFilmsListResponse,
+  TAdminUpdateFilmRpcRequest,
+  TCreateFilmRequest,
+  TGenreAdminItemResponse,
+  TAdminGenresListResponse,
+  TAdminUpdateGenreRpcRequest,
+  TCreateGenreRequest,
+  TCountryAdminItemResponse,
+  TAdminCountriesListResponse,
+  TAdminUpdateCountryRpcRequest,
+  TCreateCountryRequest,
+  TProfessionAdminItemResponse,
+  TAdminProfessionsListResponse,
+  TAdminUpdateProfessionRpcRequest,
+  TCreateProfessionRequest,
+  TPersonAdminItemResponse,
+  TAdminPersonsListResponse,
+  TAdminUpdatePersonRpcRequest,
+  TCreatePersonRequest,
 } from "../../../types";
 
 /**
@@ -62,6 +83,41 @@ export const kinoDbRpc = {
   },
   professions: {
     getAll: "getAll.professions",
+  },
+  /** Admin CRUD (ADR-005/ADR-007): гейтвей проверяет роль ADMIN до вызова. */
+  admin: {
+    films: {
+      list: "admin.films.list",
+      getById: "admin.films.getById",
+      create: "admin.films.create",
+      update: "admin.films.update",
+      delete: "admin.films.delete",
+    },
+    genres: {
+      list: "admin.genres.list",
+      create: "admin.genres.create",
+      update: "admin.genres.update",
+      delete: "admin.genres.delete",
+    },
+    countries: {
+      list: "admin.countries.list",
+      create: "admin.countries.create",
+      update: "admin.countries.update",
+      delete: "admin.countries.delete",
+    },
+    professions: {
+      list: "admin.professions.list",
+      create: "admin.professions.create",
+      update: "admin.professions.update",
+      delete: "admin.professions.delete",
+    },
+    persons: {
+      list: "admin.persons.list",
+      getById: "admin.persons.getById",
+      create: "admin.persons.create",
+      update: "admin.persons.update",
+      delete: "admin.persons.delete",
+    },
   },
 } as const;
 
@@ -141,5 +197,93 @@ export type TKinoDbRpcContract = {
   [kinoDbRpc.professions.getAll]: {
     request: Record<string, never>;
     response: TProfessionItemResponse[];
+  };
+  [kinoDbRpc.admin.films.list]: {
+    request: TAdminListRequest;
+    response: TAdminFilmsListResponse;
+  };
+  [kinoDbRpc.admin.films.getById]: {
+    request: number;
+    response: TAdminFilmItemResponse;
+  };
+  [kinoDbRpc.admin.films.create]: {
+    request: TCreateFilmRequest;
+    response: TAdminFilmItemResponse;
+  };
+  [kinoDbRpc.admin.films.update]: {
+    request: TAdminUpdateFilmRpcRequest;
+    response: TAdminFilmItemResponse;
+  };
+  [kinoDbRpc.admin.films.delete]: {
+    request: number;
+    response: true;
+  };
+  [kinoDbRpc.admin.genres.list]: {
+    request: TAdminListRequest;
+    response: TAdminGenresListResponse;
+  };
+  [kinoDbRpc.admin.genres.create]: {
+    request: TCreateGenreRequest;
+    response: TGenreAdminItemResponse;
+  };
+  [kinoDbRpc.admin.genres.update]: {
+    request: TAdminUpdateGenreRpcRequest;
+    response: TGenreAdminItemResponse;
+  };
+  [kinoDbRpc.admin.genres.delete]: {
+    request: number;
+    response: true;
+  };
+  [kinoDbRpc.admin.countries.list]: {
+    request: TAdminListRequest;
+    response: TAdminCountriesListResponse;
+  };
+  [kinoDbRpc.admin.countries.create]: {
+    request: TCreateCountryRequest;
+    response: TCountryAdminItemResponse;
+  };
+  [kinoDbRpc.admin.countries.update]: {
+    request: TAdminUpdateCountryRpcRequest;
+    response: TCountryAdminItemResponse;
+  };
+  [kinoDbRpc.admin.countries.delete]: {
+    request: number;
+    response: true;
+  };
+  [kinoDbRpc.admin.professions.list]: {
+    request: TAdminListRequest;
+    response: TAdminProfessionsListResponse;
+  };
+  [kinoDbRpc.admin.professions.create]: {
+    request: TCreateProfessionRequest;
+    response: TProfessionAdminItemResponse;
+  };
+  [kinoDbRpc.admin.professions.update]: {
+    request: TAdminUpdateProfessionRpcRequest;
+    response: TProfessionAdminItemResponse;
+  };
+  [kinoDbRpc.admin.professions.delete]: {
+    request: number;
+    response: true;
+  };
+  [kinoDbRpc.admin.persons.list]: {
+    request: TAdminListRequest;
+    response: TAdminPersonsListResponse;
+  };
+  [kinoDbRpc.admin.persons.getById]: {
+    request: number;
+    response: TPersonAdminItemResponse;
+  };
+  [kinoDbRpc.admin.persons.create]: {
+    request: TCreatePersonRequest;
+    response: TPersonAdminItemResponse;
+  };
+  [kinoDbRpc.admin.persons.update]: {
+    request: TAdminUpdatePersonRpcRequest;
+    response: TPersonAdminItemResponse;
+  };
+  [kinoDbRpc.admin.persons.delete]: {
+    request: number;
+    response: true;
   };
 };

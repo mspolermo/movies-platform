@@ -1,15 +1,17 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { CountriesController } from "./controllers";
+import { FilmCountry } from "../films/models";
+
+import { CountriesAdminController, CountriesController } from "./controllers";
 import { Country } from "./models";
-import { CountriesService } from "./services"
+import { CountriesAdminService, CountriesService } from "./services"
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([Country]),
+    SequelizeModule.forFeature([Country, FilmCountry]),
   ],
-  controllers: [CountriesController],
-  providers: [CountriesService],
+  controllers: [CountriesController, CountriesAdminController],
+  providers: [CountriesService, CountriesAdminService],
 })
 export class CountriesModule {}

@@ -24,6 +24,8 @@ export type {
 } from "./comment";
 export type {
   TAppRole,
+  TNullablePartial,
+  TAdminListRequest,
   TAdminFilmFields,
   TCreateFilmRequest,
   TUpdateFilmRequest,
@@ -36,4 +38,10 @@ export type {
   TCreatePersonRequest,
   TUpdatePersonRequest,
   TUpdateUserRoleRequest,
+  TAdminUpdateFilmRpcRequest,
+  TAdminUpdateGenreRpcRequest,
+  TAdminUpdateCountryRpcRequest,
+  TAdminUpdateProfessionRpcRequest,
+  TAdminUpdatePersonRpcRequest,
+  TAdminSetUserRoleRpcRequest,
 } from "./admin";

@@ -52,4 +52,10 @@ export type {
   TProfessionAdminItemResponse,
   TPersonAdminItemResponse,
   TAdminUserItemResponse,
+  TAdminFilmsListResponse,
+  TAdminGenresListResponse,
+  TAdminCountriesListResponse,
+  TAdminProfessionsListResponse,
+  TAdminPersonsListResponse,
+  TAdminUsersListResponse,
 } from "./admin";

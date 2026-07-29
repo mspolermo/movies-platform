@@ -7,10 +7,8 @@ describe("RolesController", () => {
   let controller: RolesController;
 
   const mockRole = { id: 1, value: "ADMIN" };
-  const mockRoleDto = { value: "ADMIN" };
 
   const mockRolesService = {
-    createRole: jest.fn().mockResolvedValue(mockRole),
     getRoleByValue: jest.fn().mockResolvedValue(mockRole),
   };
 
@@ -34,13 +32,6 @@ describe("RolesController", () => {
 
   it("should be defined", () => {
     expect(controller).toBeDefined();
-  });
-
-  describe("registration", () => {
-    it("should create role", async () => {
-      expect(await controller.registration(mockRoleDto)).toEqual(mockRole);
-      expect(mockRolesService.createRole).toHaveBeenCalledTimes(1);
-    });
   });
 
   describe("getByValue", () => {

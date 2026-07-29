@@ -1,19 +1,11 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { MessagePattern, Payload } from "@nestjs/microservices";
 
-import { authUsersRpc } from "@common/services";
-
-import { CreateRoleDto } from "./dto/createRoleDto";
 import { RolesService } from "./roles.service";
 
+/** Роли только из посева (ADR-007): CRUD ролей нет, только чтение. */
 @Controller("roles")
 export class RolesController {
   constructor(private roleService: RolesService) {}
-
-  @MessagePattern(authUsersRpc.roles.create)
-  async registration(@Payload() dto: CreateRoleDto) {
-    return await this.roleService.createRole(dto);
-  }
 
   @Get("/:value")
   getByValue(@Param("value") value: string) {

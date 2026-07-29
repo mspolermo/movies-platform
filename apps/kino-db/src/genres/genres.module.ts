@@ -3,9 +3,9 @@ import { SequelizeModule } from "@nestjs/sequelize";
 
 import { FilmGenre, Film } from "../films";
 
-import { GenresController } from "./controllers";
+import { GenresAdminController, GenresController } from "./controllers";
 import { Genre } from "./models";
-import { GenresService } from "./services";
+import { GenresAdminService, GenresService } from "./services";
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { GenresService } from "./services";
       FilmGenre,
     ])
   ],
-  providers: [GenresService],
-  controllers: [GenresController],
+  providers: [GenresService, GenresAdminService],
+  controllers: [GenresController, GenresAdminController],
 })
 export class GenresModule {}

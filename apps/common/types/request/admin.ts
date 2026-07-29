@@ -4,10 +4,18 @@ import type { TGenreEntity } from "../entity";
 import type { TPersonEntity } from "../entity";
 import type { TProfessionEntity } from "../entity";
 
-//TODO: предположительные типы, создано во время разработки клиента на фейках, если что-то не так, то нужно исправить
-
 /** Роли приложения (ADR-005). */
 export type TAppRole = "ADMIN" | "USER" | "MANAGER";
+
+/** Частичное обновление, где `null` = «очистить поле» (PATCH админки, ADR-007). */
+export type TNullablePartial<T> = { [K in keyof T]?: T[K] | null };
+
+/** Параметры admin-списков: пагинация + поиск (`q` — films/persons). */
+export type TAdminListRequest = {
+  page?: number;
+  perPage?: number;
+  q?: string;
+};
 
 /** Скаляры фильма для админского CRUD; даты в JSON — строка ISO. */
 export type TAdminFilmFields = Omit<TFilmEntity, "id" | "premiereWorldDate"> & {
@@ -16,8 +24,11 @@ export type TAdminFilmFields = Omit<TFilmEntity, "id" | "premiereWorldDate"> & {
 
 /** Создание фильма (админка). */
 export type TCreateFilmRequest = TAdminFilmFields;
-/** Частичное обновление фильма (админка). */
-export type TUpdateFilmRequest = Partial<TAdminFilmFields>;
+/** Частичное обновление фильма; `null` — очистить опциональное поле. */
+export type TUpdateFilmRequest = TNullablePartial<
+  Omit<TAdminFilmFields, "filmNameRu">
+> &
+  Partial<Pick<TAdminFilmFields, "filmNameRu">>;
 
 /** Создание жанра. */
 export type TCreateGenreRequest = Pick<TGenreEntity, "nameRu" | "nameEn">;
@@ -44,10 +55,51 @@ export type TCreatePersonRequest = Pick<
 > & {
   professionIds: number[];
 };
-/** Обновление персоны. */
-export type TUpdatePersonRequest = Partial<TCreatePersonRequest>;
+/** Обновление персоны; `photoUrl: null` — очистить фото. */
+export type TUpdatePersonRequest = Partial<
+  Pick<TPersonEntity, "nameRu" | "nameEn">
+> &
+  TNullablePartial<Pick<TPersonEntity, "photoUrl">> & {
+    professionIds?: number[];
+  };
 
 /** Смена роли пользователя (одна активная роль). */
 export type TUpdateUserRoleRequest = {
   role: TAppRole;
+};
+
+/** RPC: обновление фильма по id (админка). */
+export type TAdminUpdateFilmRpcRequest = {
+  id: number;
+  data: TUpdateFilmRequest;
+};
+
+/** RPC: обновление жанра по id (админка). */
+export type TAdminUpdateGenreRpcRequest = {
+  id: number;
+  data: TUpdateGenreRequest;
+};
+
+/** RPC: обновление страны по id (админка). */
+export type TAdminUpdateCountryRpcRequest = {
+  id: number;
+  data: TUpdateCountryRequest;
+};
+
+/** RPC: обновление профессии по id (админка). */
+export type TAdminUpdateProfessionRpcRequest = {
+  id: number;
+  data: TUpdateProfessionRequest;
+};
+
+/** RPC: обновление персоны по id (админка). */
+export type TAdminUpdatePersonRpcRequest = {
+  id: number;
+  data: TUpdatePersonRequest;
+};
+
+/** RPC: смена роли пользователя по id (админка). */
+export type TAdminSetUserRoleRpcRequest = {
+  id: number;
+  data: TUpdateUserRoleRequest;
 };

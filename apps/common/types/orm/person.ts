@@ -2,7 +2,8 @@
 import { TFilmEntity, TPersonEntity, TProfessionEntity } from "../entity";
 
 /** Атрибуты для Sequelize.create персоны. */
-export type TPersonCreationAtt = Pick<TPersonEntity, "nameRu" | "nameEn">;
+export type TPersonCreationAtt = Pick<TPersonEntity, "nameRu" | "nameEn"> &
+  Partial<Pick<TPersonEntity, "photoUrl">>;
 
 /** Sequelize-тип персоны с опционально загруженными связями. */
 export type TPersonOrmModel = TPersonEntity & {

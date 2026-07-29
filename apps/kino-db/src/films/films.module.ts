@@ -1,13 +1,14 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
+import { CommentLike } from "../comments/models/commentLike.model";
 import { Comment } from "../comments/models/comments.model";
 import { Country, CountriesModule } from "../countries";
 import { Genre, GenresModule } from "../genres";
 import { Person, PersonsModule } from "../persons";
 import { Profession, ProfessionsModule } from "../professions";
 
-import { FilmsController } from "./controllers";
+import { FilmsAdminController, FilmsController } from "./controllers";
 import {
   Fact,
   Film,
@@ -20,6 +21,7 @@ import {
   FilmCatalogService,
   FilmDetailsService,
   FilmSimilarService,
+  FilmsAdminService,
   FilmsService,
 } from "./services";
 
@@ -36,19 +38,21 @@ import {
       Person,
       Profession,
       Comment,
+      CommentLike,
     ]),
     PersonsModule,
     CountriesModule,
     GenresModule,
     ProfessionsModule,
   ],
-  controllers: [FilmsController],
+  controllers: [FilmsController, FilmsAdminController],
   providers: [
     FilmDetailsService,
     FilmCatalogService,
     FilmSimilarService,
     FilmCastService,
     FilmsService,
+    FilmsAdminService,
   ],
   exports: [FilmsService],
 })

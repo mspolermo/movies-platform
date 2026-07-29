@@ -1,7 +1,8 @@
 import { TCommentEntity, TCountryEntity, TFactEntity, TFilmEntity, TGenreEntity, TPersonEntity } from "../entity";
 
-/** Тип для создания фильма */
-export type TFilmCreationAtt = Pick<TFilmEntity, "filmNameRu">;
+/** Тип для создания фильма: обязательное имя + любые скаляры entity. */
+export type TFilmCreationAtt = Pick<TFilmEntity, "filmNameRu"> &
+  Partial<Omit<TFilmEntity, "id" | "filmNameRu">>;
 
 /** Sequelize-тип фильма с опционально загруженными связями. */
 export type TFilmOrmModel = TFilmEntity & {
