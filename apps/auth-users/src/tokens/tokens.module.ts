@@ -3,10 +3,10 @@ import { JwtModule } from "@nestjs/jwt";
 import { SequelizeModule } from "@nestjs/sequelize";
 
 import { getJwtModuleConfig } from "../config/jwt.config";
-import { User } from "../users/users.model";
+import { User } from "../users/models";
 
-import { RefreshToken } from "./refresh-token.model";
-import { TokensService } from "./tokens.service";
+import { RefreshToken } from "./models";
+import { TokensService } from "./services";
 
 @Module({
   imports: [

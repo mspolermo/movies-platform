@@ -7,10 +7,10 @@ import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as bcrypt from "bcryptjs";
 
-import { RolesService } from "../../roles/roles.service";
-import { TokensService } from "../../tokens/tokens.service";
-import { User } from "../users.model";
-import { UsersService } from "../users.service";
+import { RolesService } from "../../roles/services";
+import { TokensService } from "../../tokens/services";
+import { User } from "../models";
+import { UsersService } from "../services";
 
 jest.mock("bcryptjs");
 

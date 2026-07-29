@@ -1,12 +1,11 @@
 import { Module } from "@nestjs/common";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { User } from "../users/users.model";
+import { User } from "../users/models";
 
-import { RolesController } from "./roles.controller";
-import { Role } from "./roles.model";
-import { RolesService } from "./roles.service";
-import { UserRoles } from "./user-role";
+import { RolesController } from "./controllers";
+import { Role, UserRoles } from "./models";
+import { RolesService } from "./services";
 
 
 

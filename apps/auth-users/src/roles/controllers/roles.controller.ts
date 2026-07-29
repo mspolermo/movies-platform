@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from "@nestjs/common";
 
-import { RolesService } from "./roles.service";
+import { RolesService } from "../services";
 
 /** Роли только из посева (ADR-007): CRUD ролей нет, только чтение. */
 @Controller("roles")

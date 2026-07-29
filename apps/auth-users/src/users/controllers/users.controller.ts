@@ -9,9 +9,8 @@ import { MessagePattern, Payload } from "@nestjs/microservices";
 import { AuthDto, CreateUserDto } from "@common/dto";
 import { authUsersRpc } from "@common/services";
 
-import { TokensService } from "../tokens/tokens.service";
-
-import { UsersService } from "./users.service";
+import { TokensService } from "../../tokens/services";
+import { UsersService } from "../services";
 
 @Controller("users")
 export class UsersController {

@@ -11,12 +11,11 @@ import * as bcrypt from "bcryptjs";
 
 import { AuthDto, CreateUserDto } from "@common/dto";
 
-import { BCRYPT_ROUNDS } from "../config/jwt.config";
-import { RolesService } from "../roles/roles.service";
-import { TokensService } from "../tokens/tokens.service";
-
-import { toAuthorizedUserResponse } from "./users.mapper";
-import { User } from "./users.model";
+import { BCRYPT_ROUNDS } from "../../config/jwt.config";
+import { RolesService } from "../../roles/services";
+import { TokensService } from "../../tokens/services";
+import { toAuthorizedUserResponse } from "../mappers";
+import { User } from "../models";
 
 @Injectable()
 export class UsersService {

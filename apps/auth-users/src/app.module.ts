@@ -2,13 +2,10 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
-import { HealthController } from "./health.controller";
-import { Role } from "./roles/roles.model";
-import { RolesModule } from "./roles/roles.module";
-import { UserRoles } from "./roles/user-role";
-import { RefreshToken } from "./tokens/refresh-token.model";
-import { User } from "./users/users.model";
-import { UsersModule } from "./users/users.module";
+import { HealthController } from "./health";
+import { Role, UserRoles, RolesModule } from "./roles";
+import { RefreshToken } from "./tokens";
+import { User, UsersModule } from "./users";
 
 @Module({
   providers: [],

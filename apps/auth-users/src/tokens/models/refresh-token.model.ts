@@ -7,7 +7,7 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { User } from "../users/users.model";
+import { User } from "../../users/models/users.model";
 
 type TRefreshTokenEntity = {
   id: number;

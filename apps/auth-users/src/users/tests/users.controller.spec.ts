@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { TokensService } from "../../tokens/tokens.service";
-import { UsersController } from "../users.controller";
-import { UsersService } from "../users.service";
+import { TokensService } from "../../tokens/services";
+import { UsersController } from "../controllers";
+import { UsersService } from "../services";
 
 
 jest.mock(

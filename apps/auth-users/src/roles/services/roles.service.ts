@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 
-import { Role } from "./roles.model";
+import { Role } from "../models";
 
 /** Чтение ролей; создание/редактирование не поддерживается — посев (ADR-007). */
 @Injectable()

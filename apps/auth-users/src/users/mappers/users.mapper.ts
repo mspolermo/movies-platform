@@ -1,7 +1,7 @@
 import type { TAuthorizedUserResponse } from "@common/types";
 
-import { Role } from "../roles/roles.model";
-import { User } from "../users/users.model";
+import { Role } from "../../roles/models/roles.model";
+import { User } from "../models/users.model";
 
 export const toAuthorizedUserResponse = (user: User): TAuthorizedUserResponse => ({
   id: user.id,

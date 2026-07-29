@@ -9,8 +9,8 @@ import {
   Table,
 } from "sequelize-typescript";
 
-import { Role } from "../roles/roles.model";
-import { UserRoles } from "../roles/user-role";
+import { Role } from "../../roles/models/roles.model";
+import { UserRoles } from "../../roles/models/user-role.model";
 
 @Table({ tableName: "users" })
 export class User extends Model<TUserOrmModel, TUserCreationAtt> {
