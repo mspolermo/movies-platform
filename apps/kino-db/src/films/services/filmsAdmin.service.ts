@@ -15,8 +15,8 @@ import { Sequelize } from "sequelize-typescript";
 
 import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
 
-import { Comment } from "../../comments/models/comments.model";
 import { CommentLike } from "../../comments/models/commentLike.model";
+import { Comment } from "../../comments/models/comments.model";
 import { mapFilmToAdminItem } from "../mappers";
 import { Fact, Film, FilmCountry, FilmGenre, FilmPerson } from "../models";
 

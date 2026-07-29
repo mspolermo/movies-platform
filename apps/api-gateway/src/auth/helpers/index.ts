@@ -13,4 +13,7 @@ export {
   clearAuthCookies,
   toAuthResponse,
 } from "./auth-cookie.helper";
-export { extractRpcErrorMessage, rpcMessageIncludes } from "./rpc-error.helper";
+export {
+  extractRpcErrorMessage,
+  rpcMessageIncludes,
+} from "../../shared/helpers";

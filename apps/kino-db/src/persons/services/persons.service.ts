@@ -12,8 +12,8 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
-
 import { toPaginatedItemsResponse } from "@common/utils";
+
 import { Profession } from "../../professions/models/professions.model";
 import {
   mapFilmToPersonFilm,

@@ -4,6 +4,7 @@ import { ThrottlerModule } from "@nestjs/throttler";
 
 import { RmqModule } from "@common/services";
 
+import { AdminModule } from "./admin";
 import { AppController } from "./app.controller";
 import { AuthModule } from "./auth";
 import { CommentsModule } from "./comments";
@@ -41,6 +42,7 @@ import { SearchModule } from "./search";
     FiltersModule,
     CountriesModule,
     ProfessionsModule,
+    AdminModule,
   ],
   controllers: [AppController],
 })

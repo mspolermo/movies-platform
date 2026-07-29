@@ -5,6 +5,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
 import { toPaginatedItemsResponse } from "@common/utils";
+
 import { FILM_CARD_ATTRIBUTES } from "../constants";
 import { FilmFiltersDto } from "../dto";
 import { mapFilmToCardResponse } from "../mappers/film.mapping";

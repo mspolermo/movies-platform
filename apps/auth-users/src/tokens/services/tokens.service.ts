@@ -13,7 +13,6 @@ import { InjectModel } from "@nestjs/sequelize";
 import { REFRESH_TOKEN_TTL_MS } from "../../config/jwt.config";
 import { toAuthorizedUserResponse } from "../../users/mappers";
 import { User } from "../../users/models";
-
 import { RefreshToken } from "../models";
 
 const REFRESH_TOKEN_BYTES = 64;
