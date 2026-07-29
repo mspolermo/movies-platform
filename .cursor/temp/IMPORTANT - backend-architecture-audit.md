@@ -178,7 +178,7 @@ constants/     → LIST_*, JWT
 | DTO ↔ response | Auth: `CreateUserDto` → `TAuthUsersRpcAuthResponse` → gateway strips refresh → `TAuthResponse` — согласовано |
 | Рассинхрон front/back | Общий barrel снижает риск; **пагинация persons** (`TPaginatedPersonsResponse` без `page`/`perPage`) vs films/comments (`TPaginationMeta`) — клиент вынужден ветвиться |
 | Лишние типы | `TRegistrationResponse` / `TRefreshTokenResponse` = алиасы `TAuthResponse` — harmless noise |
-| OAuth stub | `OauthCreateUserDto` + `outRegistration` RPC — мёртвый контракт |
+| OAuth stub | ~~`OauthCreateUserDto` + `outRegistration`~~ — удалён ([ADR-006](../adr/006-no-oauth.md))
 
 ### Границы common
 
@@ -336,7 +336,7 @@ constants/     → LIST_*, JWT
 | RabbitMQ как транспорт для sync CRUD | Нет async advantage; добавлена ops-сложность |
 | Три процесса + две БД при одном продукте/команде | Граница auth оправдана слабее, чем стоимость |
 | `UserRolesService` + RolesGuard без применения | Абстракция без use-case |
-| OAuth RPC stub | Контракт без реализации |
+| OAuth RPC stub | ~~Контракт без реализации~~ — удалён ([ADR-006](../adr/006-no-oauth.md))
 | Алиасы `TRegistrationResponse` / `TRefreshTokenResponse` | Шум |
 | JwtAuthGuard на классе + `@Public` на всех методах films | Ритуал без эффекта |
 | Locale label mapping на gateway для filters | Можно в kino-db одним ответом |
@@ -347,7 +347,7 @@ constants/     → LIST_*, JWT
 
 1. Monolith (или modular monolith) + optional extract auth later.
 2. Один `getCatalogFilters` RPC.
-3. Удалить мёртвый OAuth/Roles wiring или довести до конца.
+3. Удалить мёртвый Roles wiring или довести до конца (OAuth stub снят — [ADR-006](../adr/006-no-oauth.md)).
 4. Унифицировать пагинацию на `TPaginationMeta`.
 
 ---

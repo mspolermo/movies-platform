@@ -1,4 +1,4 @@
-import type { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
+import type { AuthDto, CreateUserDto } from "@common/dto";
 import type { TAuthorizedUserResponse, TRoleResponse } from "@common/types";
 import type {
   TAuthUsersRpcAuthResponse,
@@ -16,7 +16,6 @@ export const authUsersRpc = {
   },
   users: {
     registration: "registration",
-    outRegistration: "outRegistration",
     login: "login",
     getById: "getUserById",
     refresh: "refresh",
@@ -34,10 +33,6 @@ export type TAuthUsersRpcContract = {
   };
   [authUsersRpc.users.registration]: {
     request: CreateUserDto;
-    response: TAuthUsersRpcAuthResponse;
-  };
-  [authUsersRpc.users.outRegistration]: {
-    request: OauthCreateUserDto;
     response: TAuthUsersRpcAuthResponse;
   };
   [authUsersRpc.users.login]: {

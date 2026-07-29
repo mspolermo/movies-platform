@@ -6,7 +6,7 @@ import type {
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
-import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
+import { AuthDto, CreateUserDto } from "@common/dto";
 import { authUsersRpc } from "@common/services";
 
 import { TokensService } from "../tokens/tokens.service";
@@ -23,11 +23,6 @@ export class UsersController {
   @MessagePattern(authUsersRpc.users.registration)
   async registration(@Payload() dto: CreateUserDto) {
     return await this.usersService.createUser(dto);
-  }
-
-  @MessagePattern(authUsersRpc.users.outRegistration)
-  async outRegistration(@Payload() dto: OauthCreateUserDto) {
-    return await this.usersService.oauthCreateUser(dto);
   }
 
   @MessagePattern(authUsersRpc.users.login)

@@ -148,7 +148,6 @@ Client вне compose.
 
 ## Запрещённые зависимости
 
-- Любой app → `old-client`
 - Client → Nest runtime / dto / orm / entity / services
 - Gateway → Postgres
 - Микросервисы → друг другу (только через gateway + RMQ контракт)
@@ -156,4 +155,4 @@ Client вне compose.
 
 ## Orphan RPC
 
-- `outRegistration`, `createRole` — handlers в auth-users есть; с gateway не вызываются.
+- `createRole` — handler в auth-users есть; с gateway не вызывается.

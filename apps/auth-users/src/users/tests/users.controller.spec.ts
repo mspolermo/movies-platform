@@ -11,7 +11,6 @@ jest.mock(
   () => ({
     AuthDto: class {},
     CreateUserDto: class {},
-    OauthCreateUserDto: class {},
   }),
   { virtual: true }
 );
@@ -25,10 +24,6 @@ describe("UsersController", () => {
     email: "test@example.com",
     password: "password",
     roles: [],
-  };
-
-  const mockOauthUserDTO = {
-    email: "test@example.com",
   };
 
   const mockUserDTO = {
@@ -54,17 +49,6 @@ describe("UsersController", () => {
       },
     }),
     login: jest.fn().mockResolvedValue({
-      user: {
-        id: 1,
-        email: "test@example.com",
-        password: "password",
-        roles: [],
-      },
-      token: {
-        token: "your-token-value",
-      },
-    }),
-    oauthCreateUser: jest.fn().mockResolvedValue({
       user: {
         id: 1,
         email: "test@example.com",
@@ -139,20 +123,6 @@ describe("UsersController", () => {
         )
       );
       expect(service.createUser).toHaveBeenCalledWith(mockUserDTO);
-    });
-  });
-
-  describe("outRegistration", () => {
-    it("should reject — OAuth is not implemented", async () => {
-      jest
-        .spyOn(service, "oauthCreateUser")
-        .mockRejectedValue(
-          new HttpException("OAuth registration is not implemented", HttpStatus.NOT_IMPLEMENTED)
-        );
-
-      await expect(controller.outRegistration(mockOauthUserDTO)).rejects.toThrow(
-        HttpException
-      );
     });
   });
 

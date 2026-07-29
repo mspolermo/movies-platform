@@ -9,7 +9,7 @@ import {
 import { InjectModel } from "@nestjs/sequelize";
 import * as bcrypt from "bcryptjs";
 
-import { AuthDto, CreateUserDto, OauthCreateUserDto } from "@common/dto";
+import { AuthDto, CreateUserDto } from "@common/dto";
 
 import { BCRYPT_ROUNDS } from "../config/jwt.config";
 import { RolesService } from "../roles/roles.service";
@@ -43,15 +43,6 @@ export class UsersService {
       );
     }
     return this.createUserWithRole(dto, "USER");
-  }
-
-  //TODO: зачем это вообще
-  async oauthCreateUser(dto: OauthCreateUserDto): Promise<never> {
-    console.log(dto);
-    throw new HttpException(
-      "OAuth registration is not implemented",
-      HttpStatus.NOT_IMPLEMENTED
-    );
   }
 
   async createUserWithRole(dto: CreateUserDto, roleName: string) {

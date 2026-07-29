@@ -33,4 +33,3 @@
 | **Public / JWT** | Декораторы/guards доступа на gateway |
 | **rateFilm** | UI-фича отображения/оценки; отдельной user-ratings таблицы нет |
 | **отзыв (comment)** | Плоская запись к `filmId` (`title`+`text`); без `parentId`/тредов. См. [ADR-002](./adr/002-flat-film-reviews.md) |
-| **old-client** | Legacy UI; не развивать |

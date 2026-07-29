@@ -34,12 +34,3 @@ export class CreateUserDto {
   @IsString({ message: "Имя должно быть строкой" })
   readonly name?: string;
 }
-
-/**
- * DTO для OAuth создания пользователя
- */
-export class OauthCreateUserDto {
-  @IsString({ message: "Email должен быть строкой" })
-  @IsEmail({}, { message: "Некорректный email" })
-  readonly email!: string;
-}

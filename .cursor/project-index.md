@@ -35,8 +35,6 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | client | `apps/client` | Next.js FSD UI |
 | common | `apps/common` | Types, DTO, RMQ, constants (Nest lib) |
 
-Legacy: `old-client/` — не использовать.
-
 ---
 
 # Все пакеты
@@ -129,14 +127,13 @@ Legacy: `old-client/` — не использовать.
 |---------|-------|
 | `health.ping` | health |
 | `registration` | users |
-| `outRegistration` | users (OAuth-like) |
 | `login` | users |
 | `getUserById` | users |
 | `refresh` | users |
 | `logout` | users |
 | `createRole` | roles |
 
-**Orphan (MS есть, HTTP/gateway client нет):** `outRegistration`, `createRole`.
+**Orphan (MS есть, HTTP/gateway client нет):** `createRole`.
 
 ---
 

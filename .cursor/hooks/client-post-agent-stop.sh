@@ -49,6 +49,9 @@ npm run type-check >"$TSC_LOG" 2>&1
 TSC_EXIT=$?
 set -e
 
+# incremental cache tsc (*.tsbuildinfo) — local only, gitignored
+rm -f "$CLIENT"/*.tsbuildinfo
+
 if [ "$LINT_EXIT" -eq 0 ] && [ "$TSC_EXIT" -eq 0 ]; then
   no_followup
   exit 0

@@ -44,7 +44,8 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 7. Home promo — статика в `widgets/PromoBannerSlider` (не в `HorizontalCarousel`); без клика/API; CMS/админка — отдельный ADR. См. [ADR-003](.cursor/adr/003-home-promo-banner-slider.md).
 8. Действия фильма (rate/share/panel) — одна feature `openFilmActions`; entity context + card actions renderer; без соц-stubs. См. [ADR-004](.cursor/adr/004-open-film-actions.md).
 9. Admin B2C `/admin/*` — FE stubs + soft-404; BE `/admin` + RolesGuard — later. См. [ADR-005](.cursor/adr/005-admin-in-b2c.md).
-10. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
+10. Auth — только email/password JWT; OAuth не делаем. См. [ADR-006](.cursor/adr/006-no-oauth.md).
+11. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
 
 ## Не путать
 

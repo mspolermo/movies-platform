@@ -19,7 +19,7 @@
 - `timestamps: false` на контентных таблицах kino; ручные `createdAt` у Film/Comment/CommentLike. Auth — Sequelize timestamps (кроме `user_roles`).
 - Сейчас `synchronize: true` — **не полагаться** на это в prod; новые изменения схемы фиксировать в seed/SQL и документации.
 - FK users↔comments **нет** (разные БД) — целостность на уровне приложения.
-- Не редактировать исторические dump-файлы «на месте» без необходимости; новые seed-шаги — append в `devops/kino-db/seed/`.
+- Новые seed-шаги — append в `devops/kino-db/seed/` (не править applied SQL «на месте» без необходимости).
 
 ## Индексы и запросы
 

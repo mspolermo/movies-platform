@@ -27,10 +27,6 @@ describe("UsersService", () => {
     roles: [{ id: 2, value: "USER", description: "User role" }],
   };
 
-  const mockOauthUserDTO = {
-    email: "test@example.com",
-  };
-
   const mockUserDTO = {
     email: "test@example.com",
     password: "password",
@@ -196,14 +192,6 @@ describe("UsersService", () => {
         include: { all: true },
       });
       expect(service.createUserWithRole).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("oauthCreateUser", () => {
-    it("should reject — OAuth is not implemented", async () => {
-      await expect(service.oauthCreateUser(mockOauthUserDTO)).rejects.toThrow(
-        HttpException
-      );
     });
   });
 });
