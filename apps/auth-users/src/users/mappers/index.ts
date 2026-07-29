@@ -1,1 +1,1 @@
-export { toAuthorizedUserResponse } from "./users.mapper";
+export { toAuthorizedUserResponse, toAdminUserItem } from "./users.mapper";
