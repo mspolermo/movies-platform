@@ -1,9 +1,33 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import type { UsePaginatedResourceReturn } from '@/shared/lib/hooks';
+import type { TAdminFilmItemResponse } from '@common/types';
 
-import { getFilmsSnapshot, subscribeFilms } from '../../api';
+import { useEffect, useState } from 'react';
 
-/** React-подписка на список фильмов (заглушка). */
-export const useAdminFilms = () =>
-  useSyncExternalStore(subscribeFilms, getFilmsSnapshot, getFilmsSnapshot);
+import { usePaginatedResource } from '@/shared/lib/hooks';
+
+import { listFilms } from '../../api';
+
+const SEARCH_DEBOUNCE_MS = 300;
+
+/**
+ * Пагинированный список фильмов админки с серверным поиском (debounce 300ms).
+ * После мутаций вызывать `refetch`.
+ */
+export const useAdminFilms = (query = ''): UsePaginatedResourceReturn<TAdminFilmItemResponse> => {
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => setDebouncedQuery(query), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(timeoutId);
+  }, [query]);
+
+  const q = debouncedQuery.trim() || undefined;
+
+  return usePaginatedResource<TAdminFilmItemResponse>({
+    fetchPage: (page) => listFilms({ page, q }),
+    resetDeps: [q],
+    errorFallback: 'Не удалось загрузить фильмы',
+  });
+};

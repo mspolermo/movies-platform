@@ -4,10 +4,11 @@ import type { TAppRole } from '@common/types';
 
 import { useRef, useState } from 'react';
 
-import { Select } from '@/shared/ui';
+import { getApiErrorMessage } from '@/shared/lib';
+import { LoadMoreSection, Select } from '@/shared/ui';
 
 import styles from './AdminUsersPanel.module.scss';
-import { updateUserRoleStub } from '../../api';
+import { setUserRole } from '../../api';
 import { useAdminUsers } from '../../lib';
 
 const ROLE_OPTIONS = [
@@ -19,7 +20,7 @@ const ROLE_OPTIONS = [
 const isAppRole = (value: string): value is TAppRole =>
   value === 'ADMIN' || value === 'USER' || value === 'MANAGER';
 
-/** Таблица пользователей и смена роли (заглушка). */
+/** Таблица пользователей и смена роли (PATCH /admin/users/:id). */
 export const AdminUsersPanel = () => {
   const users = useAdminUsers();
   const [pendingId, setPendingId] = useState<number | null>(null);
@@ -31,12 +32,11 @@ export const AdminUsersPanel = () => {
     setPendingId(userId);
     setError(null);
     try {
-      const updated = await updateUserRoleStub(userId, { role });
-      if (!updated) {
-        setError('Пользователь не найден');
-      }
-    } catch {
-      setError('Не удалось сменить роль');
+      await setUserRole(userId, { role });
+      await users.refetch();
+    } catch (err) {
+      // 409 «последний ADMIN» и прочие ошибки бэка — текстом из ответа
+      setError(getApiErrorMessage(err, 'Не удалось сменить роль'));
     } finally {
       if (pendingIdRef.current === userId) {
         pendingIdRef.current = null;
@@ -52,43 +52,54 @@ export const AdminUsersPanel = () => {
           {error}
         </p>
       )}
-      <table className={styles.table}>
-        <caption className={styles.caption}>Пользователи (stub)</caption>
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Роль</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.email}</td>
-              <td>{user.name ?? '—'}</td>
-              <td>
-                <Select
-                  aria-label={`Роль ${user.email}`}
-                  disabled={pendingId === user.id}
-                  options={[...ROLE_OPTIONS]}
-                  size="small"
-                  value={user.role}
-                  onChange={(role) => {
-                    if (isAppRole(role)) {
-                      void handleRoleChange(user.id, role);
-                    }
-                  }}
-                />
-              </td>
+      {users.error && (
+        <p className={styles.error} role="alert">
+          {users.error}
+        </p>
+      )}
+      <LoadMoreSection
+        hasMore={users.hasMore}
+        isLoading={users.loading}
+        onLoadMore={() => void users.loadMore()}
+      >
+        <table className={styles.table}>
+          <caption className={styles.caption}>Пользователи</caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">Имя</th>
+              <th scope="col">Роль</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {users.items.map((user) => (
+              <tr key={user.id}>
+                <td>{user.id}</td>
+                <td>{user.email}</td>
+                <td>{user.name ?? '—'}</td>
+                <td>
+                  <Select
+                    aria-label={`Роль ${user.email}`}
+                    disabled={pendingId === user.id}
+                    options={[...ROLE_OPTIONS]}
+                    size="small"
+                    value={user.role}
+                    onChange={(role) => {
+                      if (isAppRole(role)) {
+                        void handleRoleChange(user.id, role);
+                      }
+                    }}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </LoadMoreSection>
       <p className={styles.note}>
-        Список stub (не из auth-users). Смена роли только в памяти до F1-BE. Last-ADMIN guard — на
-        сервере.
+        Пользователь имеет одну активную роль. Снять роль ADMIN с последнего администратора нельзя —
+        сервер вернёт ошибку.
       </p>
     </div>
   );

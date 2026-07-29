@@ -4,7 +4,7 @@ import type { TAdminFilmItemResponse } from '@common/types';
 
 import { useEffect, useState } from 'react';
 
-import { getFilmByIdStub } from '../../../api';
+import { getFilmById } from '../../../api';
 
 /** Состояние загрузки одного фильма для формы редактирования. */
 export type TAdminFilmLoadState =
@@ -15,7 +15,7 @@ export type TAdminFilmLoadState =
   | { status: 'error'; message: string };
 
 /**
- * Загрузка фильма по id (заглушка); в режиме create — статус idle.
+ * Загрузка фильма по id (GET /admin/films/:id); в режиме create — статус idle.
  * `reloadToken` — увеличить для повтора после ошибки.
  */
 export const useAdminFilm = (
@@ -41,7 +41,7 @@ export const useAdminFilm = (
     let cancelled = false;
     setState({ status: 'loading' });
 
-    getFilmByIdStub(filmId)
+    getFilmById(filmId)
       .then((result) => {
         if (cancelled) return;
         setState(result ? { status: 'ready', film: result } : { status: 'missing' });

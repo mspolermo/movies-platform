@@ -1,9 +1,1 @@
-export {
-  subscribeGenres,
-  getGenresSnapshot,
-  resetGenresStub,
-  listGenresStub,
-  createGenreStub,
-  updateGenreStub,
-  deleteGenreStub,
-} from './genresStubApi';
+export { listGenres, createGenre, updateGenre, deleteGenre } from './genresApi';

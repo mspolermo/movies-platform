@@ -21,7 +21,7 @@ export const AdminFilmFormPage = ({ mode, filmId }: TAdminFilmFormPageProps) => 
         <p className={styles.missing}>
           {filmId == null || Number.isNaN(filmId)
             ? 'Некорректный идентификатор.'
-            : 'Нет записи в stub-хранилище.'}
+            : 'Фильм с таким id не найден.'}
         </p>
       </Page>
     );

@@ -4,58 +4,66 @@ import type { TAdminFilmItemResponse } from '@common/types';
 
 import { useRouter } from 'next/navigation';
 
-import { AdminCrudList, Button, filterByQuery, Modal, useAdminCrudPanel } from '@/shared/ui';
+import { AdminCrudList, Button, LoadMoreSection, Modal, useAdminCrudPanel } from '@/shared/ui';
 
 import styles from './AdminFilmsList.module.scss';
-import { deleteFilmStub } from '../../api';
+import { deleteFilm } from '../../api';
 import { useAdminFilms } from '../../lib';
 
-/** Список фильмов админки: поиск, переход в форму, подтверждение удаления. */
+/** Список фильмов админки: серверный поиск, переход в форму, подтверждение удаления. */
 export const AdminFilmsList = () => {
   const router = useRouter();
-  const films = useAdminFilms();
   const panel = useAdminCrudPanel<TAdminFilmItemResponse>();
-
-  const filtered = filterByQuery(
-    films,
-    panel.query,
-    (f, q) =>
-      f.filmNameRu.toLowerCase().includes(q) || (f.filmNameEn?.toLowerCase().includes(q) ?? false)
-  );
+  const films = useAdminFilms(panel.query);
 
   const handleDelete = async () => {
     if (panel.deleting == null) return;
     const ok = await panel.runPending(
       async () => {
-        await deleteFilmStub(panel.deleting!.id);
+        await deleteFilm(panel.deleting!.id);
       },
       { scope: 'delete' }
     );
-    if (ok) panel.cancelDelete();
+    if (ok) {
+      panel.cancelDelete();
+      void films.refetch();
+    }
   };
 
   return (
     <>
-      <AdminCrudList
-        addLabel="Создать фильм"
-        emptyText="Фильмы не найдены"
-        getActionLabel={(item) => item.filmNameRu}
-        getKey={(item) => item.id}
-        items={filtered}
-        renderLabel={(item) => (
-          <span className={styles.label}>
-            <strong>{item.filmNameRu}</strong>
-            {item.filmNameEn ? ` / ${item.filmNameEn}` : ''}
-            {item.year != null ? ` (${item.year})` : ''}
-          </span>
-        )}
-        searchPlaceholder="Поиск по названию"
-        searchQuery={panel.query}
-        onAdd={() => router.push('/admin/films/new')}
-        onDelete={panel.requestDelete}
-        onEdit={(item) => router.push(`/admin/films/${item.id}`)}
-        onSearchChange={panel.setQuery}
-      />
+      {films.error && (
+        <p className={styles.error} role="alert">
+          {films.error}
+        </p>
+      )}
+
+      <LoadMoreSection
+        hasMore={films.hasMore}
+        isLoading={films.loading}
+        onLoadMore={() => void films.loadMore()}
+      >
+        <AdminCrudList
+          addLabel="Создать фильм"
+          emptyText={films.loading ? 'Загрузка…' : 'Фильмы не найдены'}
+          getActionLabel={(item) => item.filmNameRu}
+          getKey={(item) => item.id}
+          items={films.items}
+          renderLabel={(item) => (
+            <span className={styles.label}>
+              <strong>{item.filmNameRu}</strong>
+              {item.filmNameEn ? ` / ${item.filmNameEn}` : ''}
+              {item.year != null ? ` (${item.year})` : ''}
+            </span>
+          )}
+          searchPlaceholder="Поиск по названию"
+          searchQuery={panel.query}
+          onAdd={() => router.push('/admin/films/new')}
+          onDelete={panel.requestDelete}
+          onEdit={(item) => router.push(`/admin/films/${item.id}`)}
+          onSearchChange={panel.setQuery}
+        />
+      </LoadMoreSection>
 
       <Modal
         footer={
@@ -82,7 +90,10 @@ export const AdminFilmsList = () => {
             {panel.error}
           </p>
         )}
-        <p>«{panel.deleting?.filmNameRu}» будет удалён из stub-хранилища (без запроса к API).</p>
+        <p>
+          «{panel.deleting?.filmNameRu}» будет удалён безвозвратно вместе со связями и
+          комментариями.
+        </p>
       </Modal>
     </>
   );

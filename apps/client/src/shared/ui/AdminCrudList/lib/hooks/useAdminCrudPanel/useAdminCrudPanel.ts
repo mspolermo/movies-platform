@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 
+import { getApiErrorMessage } from '@/shared/lib';
+
 /** Общее состояние модалок и списка для админских CRUD-панелей (создание/редактирование/удаление). */
 export const useAdminCrudPanel = <T extends { id: number }>() => {
   const [query, setQuery] = useState('');
@@ -83,8 +85,9 @@ export const useAdminCrudPanel = <T extends { id: number }>() => {
           ? session === deleteSessionRef.current
           : session === formSessionRef.current;
       return sessionMatches;
-    } catch {
-      setError(options?.errorMessage ?? 'Не удалось выполнить действие');
+    } catch (err) {
+      // Текст ошибки API (409-инварианты и т.п.) важнее generic-сообщения
+      setError(getApiErrorMessage(err, options?.errorMessage ?? 'Не удалось выполнить действие'));
       return false;
     } finally {
       pendingRef.current = false;

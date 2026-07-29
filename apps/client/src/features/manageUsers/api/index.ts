@@ -1,7 +1,1 @@
-export {
-  subscribeUsers,
-  getUsersSnapshot,
-  listUsersStub,
-  updateUserRoleStub,
-  resetUsersStub,
-} from './usersStubApi';
+export { listUsers, setUserRole } from './usersApi';

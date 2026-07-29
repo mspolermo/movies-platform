@@ -6,21 +6,29 @@ import type { FormEvent } from 'react';
 
 import { useState } from 'react';
 
-import { AdminCrudList, Button, filterByQuery, Input, Modal, useAdminCrudPanel } from '@/shared/ui';
+import {
+  AdminCrudList,
+  Button,
+  filterByQuery,
+  Input,
+  LoadMoreSection,
+  Modal,
+  useAdminCrudPanel,
+} from '@/shared/ui';
 
 import styles from './AdminCountriesPanel.module.scss';
-import { createCountryStub, deleteCountryStub, updateCountryStub } from '../../api';
+import { createCountry, deleteCountry, updateCountry } from '../../api';
 import { useAdminCountries } from '../../lib';
 
-/** CRUD стран через модалку и хранилище-заглушку. */
+/** CRUD стран через модалку и /admin/countries. */
 export const AdminCountriesPanel = () => {
-  const items = useAdminCountries();
+  const countries = useAdminCountries();
   const panel = useAdminCrudPanel<TCountryAdminItemResponse>();
   const [countryName, setCountryName] = useState('');
   const [countryNameEn, setCountryNameEn] = useState('');
 
   const filtered = filterByQuery(
-    items,
+    countries.items,
     panel.query,
     (x, q) => x.countryName.toLowerCase().includes(q) || x.countryNameEn.toLowerCase().includes(q)
   );
@@ -50,38 +58,57 @@ export const AdminCountriesPanel = () => {
     };
 
     const ok = await panel.runPending(async () => {
-      if (panel.creating) await createCountryStub(payload);
-      else if (panel.editing) await updateCountryStub(panel.editing.id, payload);
+      if (panel.creating) await createCountry(payload);
+      else if (panel.editing) await updateCountry(panel.editing.id, payload);
     });
 
-    if (ok) panel.closeForm();
+    if (ok) {
+      panel.closeForm();
+      void countries.refetch();
+    }
   };
 
   const handleDelete = async () => {
     if (panel.deleting == null) return;
     const ok = await panel.runPending(
       async () => {
-        await deleteCountryStub(panel.deleting!.id);
+        await deleteCountry(panel.deleting!.id);
       },
       { scope: 'delete' }
     );
-    if (ok) panel.cancelDelete();
+    if (ok) {
+      panel.cancelDelete();
+      void countries.refetch();
+    }
   };
 
   return (
     <>
-      <AdminCrudList
-        addLabel="Добавить страну"
-        getActionLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
-        getKey={(item) => item.id}
-        items={filtered}
-        renderLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
-        searchQuery={panel.query}
-        onAdd={openCreate}
-        onDelete={panel.requestDelete}
-        onEdit={openEdit}
-        onSearchChange={panel.setQuery}
-      />
+      {countries.error && (
+        <p className={styles.error} role="alert">
+          {countries.error}
+        </p>
+      )}
+
+      <LoadMoreSection
+        hasMore={countries.hasMore}
+        isLoading={countries.loading}
+        onLoadMore={() => void countries.loadMore()}
+      >
+        <AdminCrudList
+          addLabel="Добавить страну"
+          emptyText={countries.loading ? 'Загрузка…' : 'Нет записей'}
+          getActionLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
+          getKey={(item) => item.id}
+          items={filtered}
+          renderLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
+          searchQuery={panel.query}
+          onAdd={openCreate}
+          onDelete={panel.requestDelete}
+          onEdit={openEdit}
+          onSearchChange={panel.setQuery}
+        />
+      </LoadMoreSection>
 
       <Modal
         footer={
@@ -150,8 +177,8 @@ export const AdminCountriesPanel = () => {
           </p>
         )}
         <p>
-          «{panel.deleting?.countryName} / {panel.deleting?.countryNameEn}» будет удалена из
-          stub-хранилища.
+          «{panel.deleting?.countryName} / {panel.deleting?.countryNameEn}» будет удалена. Если
+          страна привязана к фильмам, сервер отклонит удаление.
         </p>
       </Modal>
     </>

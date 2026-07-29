@@ -2,17 +2,17 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useAdminFilm } from './useAdminFilm';
-import { getFilmByIdStub } from '../../../api';
+import { getFilmById } from '../../../api';
 
 vi.mock('../../../api', () => ({
-  getFilmByIdStub: vi.fn(),
+  getFilmById: vi.fn(),
 }));
 
-const getFilmByIdStubMock = vi.mocked(getFilmByIdStub);
+const getFilmByIdMock = vi.mocked(getFilmById);
 
 describe('useAdminFilm', () => {
   beforeEach(() => {
-    getFilmByIdStubMock.mockReset();
+    getFilmByIdMock.mockReset();
   });
 
   it('returns idle for create mode', () => {
@@ -21,7 +21,7 @@ describe('useAdminFilm', () => {
   });
 
   it('loads film in edit mode', async () => {
-    getFilmByIdStubMock.mockResolvedValue({
+    getFilmByIdMock.mockResolvedValue({
       id: 1,
       filmNameRu: 'Матрица',
     });
@@ -35,16 +35,16 @@ describe('useAdminFilm', () => {
     });
   });
 
-  it('sets missing when stub returns null', async () => {
-    getFilmByIdStubMock.mockResolvedValue(null);
+  it('sets missing when api returns null (404)', async () => {
+    getFilmByIdMock.mockResolvedValue(null);
 
     const { result } = renderHook(() => useAdminFilm('edit', 42));
 
     await waitFor(() => expect(result.current.status).toBe('missing'));
   });
 
-  it('sets error when stub rejects', async () => {
-    getFilmByIdStubMock.mockRejectedValue(new Error('network'));
+  it('sets error when api rejects', async () => {
+    getFilmByIdMock.mockRejectedValue(new Error('network'));
 
     const { result } = renderHook(() => useAdminFilm('edit', 1));
 
@@ -56,7 +56,7 @@ describe('useAdminFilm', () => {
   });
 
   it('retries when reloadToken bumps', async () => {
-    getFilmByIdStubMock.mockRejectedValueOnce(new Error('network')).mockResolvedValueOnce({
+    getFilmByIdMock.mockRejectedValueOnce(new Error('network')).mockResolvedValueOnce({
       id: 1,
       filmNameRu: 'Ok',
     });

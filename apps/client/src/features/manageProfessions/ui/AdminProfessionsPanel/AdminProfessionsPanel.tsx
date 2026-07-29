@@ -6,19 +6,29 @@ import type { FormEvent } from 'react';
 
 import { useState } from 'react';
 
-import { AdminCrudList, Button, filterByQuery, Input, Modal, useAdminCrudPanel } from '@/shared/ui';
+import {
+  AdminCrudList,
+  Button,
+  filterByQuery,
+  Input,
+  LoadMoreSection,
+  Modal,
+  useAdminCrudPanel,
+} from '@/shared/ui';
 
 import styles from './AdminProfessionsPanel.module.scss';
-import { createProfessionStub, deleteProfessionStub, updateProfessionStub } from '../../api';
+import { createProfession, deleteProfession, updateProfession } from '../../api';
 import { useAdminProfessions } from '../../lib';
 
-/** CRUD профессий через модалку и хранилище-заглушку. */
+/** CRUD профессий через модалку и /admin/professions. */
 export const AdminProfessionsPanel = () => {
-  const items = useAdminProfessions();
+  const professions = useAdminProfessions();
   const panel = useAdminCrudPanel<TProfessionAdminItemResponse>();
   const [name, setName] = useState('');
 
-  const filtered = filterByQuery(items, panel.query, (x, q) => x.name.toLowerCase().includes(q));
+  const filtered = filterByQuery(professions.items, panel.query, (x, q) =>
+    x.name.toLowerCase().includes(q)
+  );
 
   const openCreate = () => {
     panel.openCreate();
@@ -38,38 +48,57 @@ export const AdminProfessionsPanel = () => {
     }
 
     const ok = await panel.runPending(async () => {
-      if (panel.creating) await createProfessionStub({ name: name.trim() });
-      else if (panel.editing) await updateProfessionStub(panel.editing.id, { name: name.trim() });
+      if (panel.creating) await createProfession({ name: name.trim() });
+      else if (panel.editing) await updateProfession(panel.editing.id, { name: name.trim() });
     });
 
-    if (ok) panel.closeForm();
+    if (ok) {
+      panel.closeForm();
+      void professions.refetch();
+    }
   };
 
   const handleDelete = async () => {
     if (panel.deleting == null) return;
     const ok = await panel.runPending(
       async () => {
-        await deleteProfessionStub(panel.deleting!.id);
+        await deleteProfession(panel.deleting!.id);
       },
       { scope: 'delete' }
     );
-    if (ok) panel.cancelDelete();
+    if (ok) {
+      panel.cancelDelete();
+      void professions.refetch();
+    }
   };
 
   return (
     <>
-      <AdminCrudList
-        addLabel="Добавить профессию"
-        getActionLabel={(item) => item.name}
-        getKey={(item) => item.id}
-        items={filtered}
-        renderLabel={(item) => item.name}
-        searchQuery={panel.query}
-        onAdd={openCreate}
-        onDelete={panel.requestDelete}
-        onEdit={openEdit}
-        onSearchChange={panel.setQuery}
-      />
+      {professions.error && (
+        <p className={styles.error} role="alert">
+          {professions.error}
+        </p>
+      )}
+
+      <LoadMoreSection
+        hasMore={professions.hasMore}
+        isLoading={professions.loading}
+        onLoadMore={() => void professions.loadMore()}
+      >
+        <AdminCrudList
+          addLabel="Добавить профессию"
+          emptyText={professions.loading ? 'Загрузка…' : 'Нет записей'}
+          getActionLabel={(item) => item.name}
+          getKey={(item) => item.id}
+          items={filtered}
+          renderLabel={(item) => item.name}
+          searchQuery={panel.query}
+          onAdd={openCreate}
+          onDelete={panel.requestDelete}
+          onEdit={openEdit}
+          onSearchChange={panel.setQuery}
+        />
+      </LoadMoreSection>
 
       <Modal
         footer={
@@ -126,7 +155,10 @@ export const AdminProfessionsPanel = () => {
             {panel.error}
           </p>
         )}
-        <p>«{panel.deleting?.name}» будет удалена из stub-хранилища.</p>
+        <p>
+          «{panel.deleting?.name}» будет удалена. Если профессия используется персонами, сервер
+          отклонит удаление.
+        </p>
       </Modal>
     </>
   );

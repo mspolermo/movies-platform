@@ -1,9 +1,15 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import type { UsePaginatedResourceReturn } from '@/shared/lib/hooks';
+import type { TCountryAdminItemResponse } from '@common/types';
 
-import { getCountriesSnapshot, subscribeCountries } from '../../api';
+import { usePaginatedResource } from '@/shared/lib/hooks';
 
-/** React-подписка на список стран (заглушка). */
-export const useAdminCountries = () =>
-  useSyncExternalStore(subscribeCountries, getCountriesSnapshot, getCountriesSnapshot);
+import { listCountries } from '../../api';
+
+/** Пагинированный список стран админки; после мутаций вызывать `refetch`. */
+export const useAdminCountries = (): UsePaginatedResourceReturn<TCountryAdminItemResponse> =>
+  usePaginatedResource<TCountryAdminItemResponse>({
+    fetchPage: (page) => listCountries({ page }),
+    errorFallback: 'Не удалось загрузить страны',
+  });

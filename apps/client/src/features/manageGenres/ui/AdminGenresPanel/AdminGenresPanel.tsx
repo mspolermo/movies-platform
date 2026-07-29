@@ -6,21 +6,29 @@ import type { FormEvent } from 'react';
 
 import { useState } from 'react';
 
-import { AdminCrudList, Button, filterByQuery, Input, Modal, useAdminCrudPanel } from '@/shared/ui';
+import {
+  AdminCrudList,
+  Button,
+  filterByQuery,
+  Input,
+  LoadMoreSection,
+  Modal,
+  useAdminCrudPanel,
+} from '@/shared/ui';
 
 import styles from './AdminGenresPanel.module.scss';
-import { createGenreStub, deleteGenreStub, updateGenreStub } from '../../api';
+import { createGenre, deleteGenre, updateGenre } from '../../api';
 import { useAdminGenres } from '../../lib';
 
-/** CRUD жанров через модалку и хранилище-заглушку. */
+/** CRUD жанров через модалку и /admin/genres. */
 export const AdminGenresPanel = () => {
-  const items = useAdminGenres();
+  const genres = useAdminGenres();
   const panel = useAdminCrudPanel<TGenreAdminItemResponse>();
   const [nameRu, setNameRu] = useState('');
   const [nameEn, setNameEn] = useState('');
 
   const filtered = filterByQuery(
-    items,
+    genres.items,
     panel.query,
     (x, q) => x.nameRu.toLowerCase().includes(q) || x.nameEn.toLowerCase().includes(q)
   );
@@ -46,40 +54,59 @@ export const AdminGenresPanel = () => {
 
     const ok = await panel.runPending(async () => {
       if (panel.creating) {
-        await createGenreStub({ nameRu: nameRu.trim(), nameEn: nameEn.trim() });
+        await createGenre({ nameRu: nameRu.trim(), nameEn: nameEn.trim() });
       } else if (panel.editing) {
-        await updateGenreStub(panel.editing.id, { nameRu: nameRu.trim(), nameEn: nameEn.trim() });
+        await updateGenre(panel.editing.id, { nameRu: nameRu.trim(), nameEn: nameEn.trim() });
       }
     });
 
-    if (ok) panel.closeForm();
+    if (ok) {
+      panel.closeForm();
+      void genres.refetch();
+    }
   };
 
   const handleDelete = async () => {
     if (panel.deleting == null) return;
     const ok = await panel.runPending(
       async () => {
-        await deleteGenreStub(panel.deleting!.id);
+        await deleteGenre(panel.deleting!.id);
       },
       { scope: 'delete' }
     );
-    if (ok) panel.cancelDelete();
+    if (ok) {
+      panel.cancelDelete();
+      void genres.refetch();
+    }
   };
 
   return (
     <>
-      <AdminCrudList
-        addLabel="Добавить жанр"
-        getActionLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
-        getKey={(item) => item.id}
-        items={filtered}
-        renderLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
-        searchQuery={panel.query}
-        onAdd={openCreate}
-        onDelete={panel.requestDelete}
-        onEdit={openEdit}
-        onSearchChange={panel.setQuery}
-      />
+      {genres.error && (
+        <p className={styles.error} role="alert">
+          {genres.error}
+        </p>
+      )}
+
+      <LoadMoreSection
+        hasMore={genres.hasMore}
+        isLoading={genres.loading}
+        onLoadMore={() => void genres.loadMore()}
+      >
+        <AdminCrudList
+          addLabel="Добавить жанр"
+          emptyText={genres.loading ? 'Загрузка…' : 'Нет записей'}
+          getActionLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
+          getKey={(item) => item.id}
+          items={filtered}
+          renderLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
+          searchQuery={panel.query}
+          onAdd={openCreate}
+          onDelete={panel.requestDelete}
+          onEdit={openEdit}
+          onSearchChange={panel.setQuery}
+        />
+      </LoadMoreSection>
 
       <Modal
         footer={
@@ -148,7 +175,8 @@ export const AdminGenresPanel = () => {
           </p>
         )}
         <p>
-          «{panel.deleting?.nameRu} / {panel.deleting?.nameEn}» будет удалена из stub-хранилища.
+          «{panel.deleting?.nameRu} / {panel.deleting?.nameEn}» будет удалён. Если жанр привязан к
+          фильмам, сервер отклонит удаление.
         </p>
       </Modal>
     </>

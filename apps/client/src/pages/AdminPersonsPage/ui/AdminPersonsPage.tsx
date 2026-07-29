@@ -4,13 +4,13 @@ import { AdminPersonsPanel } from '@/features/managePersons';
 import { useAdminProfessions } from '@/features/manageProfessions';
 import { Page } from '@/widgets/Layout';
 
-/** Страница CRUD персон и список опций профессий. */
+/** Страница CRUD персон и список опций профессий (словарь целиком в первой странице). */
 export const AdminPersonsPage = () => {
-  const professionOptions = useAdminProfessions();
+  const professions = useAdminProfessions();
 
   return (
     <Page title="Персоны" titleAlign="start">
-      <AdminPersonsPanel professionOptions={professionOptions} />
+      <AdminPersonsPanel professionOptions={professions.items} />
     </Page>
   );
 };

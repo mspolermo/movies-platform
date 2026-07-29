@@ -10,21 +10,21 @@ import { useState } from 'react';
 import {
   AdminCrudList,
   Button,
-  filterByQuery,
   Input,
+  LoadMoreSection,
   Modal,
   Select,
   useAdminCrudPanel,
 } from '@/shared/ui';
 
 import styles from './AdminPersonsPanel.module.scss';
-import { createPersonStub, deletePersonStub, updatePersonStub } from '../../api';
+import { createPerson, deletePerson, updatePerson } from '../../api';
 import { useAdminPersons } from '../../lib';
 
-/** CRUD персон; опции профессий приходят со страницы (композиция). */
+/** CRUD персон (серверный поиск); опции профессий приходят со страницы (композиция). */
 export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps) => {
-  const items = useAdminPersons();
   const panel = useAdminCrudPanel<TPersonAdminItemResponse>();
+  const persons = useAdminPersons(panel.query);
   const [nameRu, setNameRu] = useState('');
   const [nameEn, setNameEn] = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
@@ -35,12 +35,6 @@ export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps
     value: String(p.id),
     label: p.name,
   }));
-
-  const filtered = filterByQuery(
-    items,
-    panel.query,
-    (x, q) => x.nameRu.toLowerCase().includes(q) || x.nameEn.toLowerCase().includes(q)
-  );
 
   const openCreate = () => {
     panel.openCreate();
@@ -58,7 +52,6 @@ export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps
     setProfessionIds([...item.professionIds]);
   };
 
-  //TODO: почему тип FormEvent?
   const handleSave = async (e: FormEvent) => {
     e.preventDefault();
     if (!nameRu.trim() || !nameEn.trim()) {
@@ -66,57 +59,87 @@ export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps
       return;
     }
 
-    const payload = {
-      nameRu: nameRu.trim(),
-      nameEn: nameEn.trim(),
-      photoUrl: photoUrl.trim(),
-      professionIds,
-    };
-
     const ok = await panel.runPending(async () => {
-      if (panel.creating) await createPersonStub(payload);
-      else if (panel.editing) await updatePersonStub(panel.editing.id, payload);
+      if (panel.creating) {
+        await createPerson({
+          nameRu: nameRu.trim(),
+          nameEn: nameEn.trim(),
+          photoUrl: photoUrl.trim(),
+          professionIds,
+        });
+      } else if (panel.editing) {
+        // Опустевший photoUrl в edit-режиме → null («очистить», ADR-007)
+        await updatePerson(panel.editing.id, {
+          nameRu: nameRu.trim(),
+          nameEn: nameEn.trim(),
+          photoUrl: photoUrl.trim() || null,
+          professionIds,
+        });
+      }
     });
 
-    if (ok) panel.closeForm();
+    if (ok) {
+      panel.closeForm();
+      void persons.refetch();
+    }
   };
 
   const handleDelete = async () => {
     if (panel.deleting == null) return;
     const ok = await panel.runPending(
       async () => {
-        await deletePersonStub(panel.deleting!.id);
+        await deletePerson(panel.deleting!.id);
       },
       { scope: 'delete' }
     );
-    if (ok) panel.cancelDelete();
+    if (ok) {
+      panel.cancelDelete();
+      void persons.refetch();
+    }
   };
 
   return (
     <>
-      <AdminCrudList
-        addLabel="Добавить персону"
-        getActionLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
-        getKey={(item) => item.id}
-        items={filtered}
-        renderLabel={(item) => (
-          <span>
-            {item.nameRu} / {item.nameEn}
-            {item.professionIds.length > 0 && (
-              <span className={styles.meta}>
-                {' '}
-                ({item.professionIds.map((id) => professionNameById.get(id) ?? `#${id}`).join(', ')}
-                )
-              </span>
-            )}
-          </span>
-        )}
-        searchQuery={panel.query}
-        onAdd={openCreate}
-        onDelete={panel.requestDelete}
-        onEdit={openEdit}
-        onSearchChange={panel.setQuery}
-      />
+      {persons.error && (
+        <p className={styles.error} role="alert">
+          {persons.error}
+        </p>
+      )}
+
+      <LoadMoreSection
+        hasMore={persons.hasMore}
+        isLoading={persons.loading}
+        onLoadMore={() => void persons.loadMore()}
+      >
+        <AdminCrudList
+          addLabel="Добавить персону"
+          emptyText={persons.loading ? 'Загрузка…' : 'Персоны не найдены'}
+          getActionLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
+          getKey={(item) => item.id}
+          items={persons.items}
+          renderLabel={(item) => (
+            <span>
+              {item.nameRu} / {item.nameEn}
+              {item.professionIds.length > 0 && (
+                <span className={styles.meta}>
+                  {' '}
+                  (
+                  {item.professionIds
+                    .map((id) => professionNameById.get(id) ?? `#${id}`)
+                    .join(', ')}
+                  )
+                </span>
+              )}
+            </span>
+          )}
+          searchPlaceholder="Поиск по имени"
+          searchQuery={panel.query}
+          onAdd={openCreate}
+          onDelete={panel.requestDelete}
+          onEdit={openEdit}
+          onSearchChange={panel.setQuery}
+        />
+      </LoadMoreSection>
 
       <Modal
         footer={
@@ -193,7 +216,8 @@ export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps
           </p>
         )}
         <p>
-          «{panel.deleting?.nameRu} / {panel.deleting?.nameEn}» будет удалена из stub-хранилища.
+          «{panel.deleting?.nameRu} / {panel.deleting?.nameEn}» будет удалена. Если персона
+          участвует в фильмах, сервер отклонит удаление.
         </p>
       </Modal>
     </>

@@ -1,9 +1,1 @@
-export {
-  subscribePersons,
-  getPersonsSnapshot,
-  resetPersonsStub,
-  listPersonsStub,
-  createPersonStub,
-  updatePersonStub,
-  deletePersonStub,
-} from './personsStubApi';
+export { listPersons, createPerson, updatePerson, deletePerson } from './personsApi';

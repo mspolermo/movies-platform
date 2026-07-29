@@ -1,9 +1,1 @@
-export {
-  subscribeCountries,
-  getCountriesSnapshot,
-  resetCountriesStub,
-  listCountriesStub,
-  createCountryStub,
-  updateCountryStub,
-  deleteCountryStub,
-} from './countriesStubApi';
+export { listCountries, createCountry, updateCountry, deleteCountry } from './countriesApi';

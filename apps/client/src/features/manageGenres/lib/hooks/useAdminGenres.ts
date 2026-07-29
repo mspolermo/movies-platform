@@ -1,9 +1,15 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import type { UsePaginatedResourceReturn } from '@/shared/lib/hooks';
+import type { TGenreAdminItemResponse } from '@common/types';
 
-import { getGenresSnapshot, subscribeGenres } from '../../api';
+import { usePaginatedResource } from '@/shared/lib/hooks';
 
-/** React-подписка на список жанров (заглушка). */
-export const useAdminGenres = () =>
-  useSyncExternalStore(subscribeGenres, getGenresSnapshot, getGenresSnapshot);
+import { listGenres } from '../../api';
+
+/** Пагинированный список жанров админки; после мутаций вызывать `refetch`. */
+export const useAdminGenres = (): UsePaginatedResourceReturn<TGenreAdminItemResponse> =>
+  usePaginatedResource<TGenreAdminItemResponse>({
+    fetchPage: (page) => listGenres({ page }),
+    errorFallback: 'Не удалось загрузить жанры',
+  });

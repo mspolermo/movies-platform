@@ -1,17 +1,18 @@
 'use client';
 
 import type { TAdminFilmFormProps } from './types';
-import type { TAdminFilmItemResponse, TCreateFilmRequest } from '@common/types';
+import type { TAdminFilmItemResponse, TCreateFilmRequest, TUpdateFilmRequest } from '@common/types';
 
 import type { FormEvent } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { getApiErrorMessage } from '@/shared/lib';
 import { Button, Input } from '@/shared/ui';
 
 import styles from './AdminFilmForm.module.scss';
-import { createFilmStub, updateFilmStub } from '../../api';
+import { createFilm, updateFilm } from '../../api';
 
 const emptyForm = (): TCreateFilmRequest => ({
   filmNameRu: '',
@@ -56,8 +57,8 @@ const optionalString = (value: string | undefined): string | undefined => {
   return trimmed ? trimmed : undefined;
 };
 
-/** Пустые необязательные строки → undefined (под будущий ValidationPipe). */
-const toPayload = (form: TCreateFilmRequest): TCreateFilmRequest => ({
+/** Пустые необязательные строки → undefined (create: поле не отправляется). */
+const toCreatePayload = (form: TCreateFilmRequest): TCreateFilmRequest => ({
   ...form,
   filmNameRu: form.filmNameRu.trim(),
   filmNameEn: optionalString(form.filmNameEn),
@@ -72,7 +73,22 @@ const toPayload = (form: TCreateFilmRequest): TCreateFilmRequest => ({
   premiereWorldDate: optionalString(form.premiereWorldDate),
 });
 
-/** Форма создания/редактирования скаляров фильма (сохранение в заглушку). */
+/**
+ * Edit-режим: опустевшие опциональные поля → `null` («очистить», ADR-007);
+ * `undefined` в JSON просто пропадает и PATCH не очистил бы значение.
+ */
+const toUpdatePayload = (form: TCreateFilmRequest): TUpdateFilmRequest => {
+  const payload = toCreatePayload(form);
+
+  return Object.fromEntries(
+    Object.entries(payload).map(([key, value]) => [
+      key,
+      key !== 'filmNameRu' && value === undefined ? null : value,
+    ])
+  ) as TUpdateFilmRequest;
+};
+
+/** Форма создания/редактирования скаляров фильма (POST/PATCH /admin/films). */
 export const AdminFilmForm = ({ mode, initial }: TAdminFilmFormProps) => {
   const router = useRouter();
   const [form, setForm] = useState<TCreateFilmRequest>(() => toForm(initial));
@@ -93,12 +109,10 @@ export const AdminFilmForm = ({ mode, initial }: TAdminFilmFormProps) => {
       return;
     }
 
-    const payload = toPayload(form);
-
     setPending(true);
     try {
       if (mode === 'create') {
-        await createFilmStub(payload);
+        await createFilm(toCreatePayload(form));
         router.push('/admin/films');
         return;
       }
@@ -108,15 +122,10 @@ export const AdminFilmForm = ({ mode, initial }: TAdminFilmFormProps) => {
         return;
       }
 
-      const updated = await updateFilmStub(initial.id, payload);
-      if (!updated) {
-        setError('Фильм не найден');
-        return;
-      }
-
+      await updateFilm(initial.id, toUpdatePayload(form));
       router.push('/admin/films');
-    } catch {
-      setError('Не удалось сохранить (stub)');
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Не удалось сохранить фильм'));
     } finally {
       setPending(false);
     }
