@@ -10,7 +10,6 @@ import { isAxiosError } from 'axios';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
-/** GET `/admin/films` — пагинированный список с серверным поиском `q`. */
 export const listFilms = async (
   params: TAdminListRequest = {}
 ): Promise<TAdminFilmsListResponse> => {
@@ -20,7 +19,6 @@ export const listFilms = async (
   return data;
 };
 
-/** GET `/admin/films/:id`; 404 → `null` (контракт формы редактирования). */
 export const getFilmById = async (id: number): Promise<TAdminFilmItemResponse | null> => {
   try {
     const { data } = await apiClient.get<TAdminFilmItemResponse>(
@@ -33,7 +31,6 @@ export const getFilmById = async (id: number): Promise<TAdminFilmItemResponse | 
   }
 };
 
-/** POST `/admin/films` — создание фильма. */
 export const createFilm = async (payload: TCreateFilmRequest): Promise<TAdminFilmItemResponse> => {
   const { data } = await apiClient.post<TAdminFilmItemResponse>(
     API_ENDPOINTS.ADMIN.FILMS.LIST,
@@ -42,7 +39,6 @@ export const createFilm = async (payload: TCreateFilmRequest): Promise<TAdminFil
   return data;
 };
 
-/** PATCH `/admin/films/:id`; `null` в поле — очистить значение (ADR-007). */
 export const updateFilm = async (
   id: number,
   payload: TUpdateFilmRequest
@@ -54,7 +50,6 @@ export const updateFilm = async (
   return data;
 };
 
-/** DELETE `/admin/films/:id` — каскадное удаление фильма. */
 export const deleteFilm = async (id: number): Promise<void> => {
   await apiClient.delete(API_ENDPOINTS.ADMIN.FILMS.BY_ID(id));
 };

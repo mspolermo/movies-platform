@@ -5,7 +5,6 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 import { OptionalStrict } from "./decorators";
 
-/** Создание жанра (админка). */
 export class CreateGenreDto implements TCreateGenreRequest {
   @ApiProperty({ description: "Название на русском" })
   @IsString()
@@ -18,7 +17,6 @@ export class CreateGenreDto implements TCreateGenreRequest {
   nameEn!: string;
 }
 
-/** Частичное обновление жанра (админка). */
 export class UpdateGenreDto implements TUpdateGenreRequest {
   @ApiPropertyOptional({ description: "Название на русском" })
   @OptionalStrict()

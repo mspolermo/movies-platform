@@ -13,7 +13,6 @@ import { kinoDbRpc } from "@common/services";
 
 import { FilmsAdminService } from "../services";
 
-/** RPC-хендлеры admin CRUD фильмов; авторизация — на gateway (ADR-005). */
 @Controller("admin-films")
 export class FilmsAdminController {
   constructor(private readonly filmsAdminService: FilmsAdminService) {}

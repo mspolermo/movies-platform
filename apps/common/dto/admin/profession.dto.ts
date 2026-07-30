@@ -8,7 +8,6 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 import { OptionalStrict } from "./decorators";
 
-/** Создание профессии (админка). */
 export class CreateProfessionDto implements TCreateProfessionRequest {
   @ApiProperty({ description: "Название профессии" })
   @IsString()
@@ -16,7 +15,6 @@ export class CreateProfessionDto implements TCreateProfessionRequest {
   name!: string;
 }
 
-/** Частичное обновление профессии (админка). */
 export class UpdateProfessionDto implements TUpdateProfessionRequest {
   @ApiPropertyOptional({ description: "Название профессии" })
   @OptionalStrict()

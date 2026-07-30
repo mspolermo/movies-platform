@@ -20,7 +20,6 @@ import { AdminListQueryDto, UpdateUserRoleDto } from "@common/dto";
 import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
 import { AdminUsersService } from "../services";
 
-/** Admin-операции над пользователями; только роль ADMIN (ADR-005). */
 @Controller("admin/users")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles("ADMIN")

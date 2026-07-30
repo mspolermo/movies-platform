@@ -47,10 +47,10 @@ export type {
 
 export type {
   TAdminFilmItemResponse,
-  TGenreAdminItemResponse,
-  TCountryAdminItemResponse,
-  TProfessionAdminItemResponse,
-  TPersonAdminItemResponse,
+  TAdminGenreItemResponse,
+  TAdminCountryItemResponse,
+  TAdminProfessionItemResponse,
+  TAdminPersonItemResponse,
   TAdminUserItemResponse,
   TAdminFilmsListResponse,
   TAdminGenresListResponse,

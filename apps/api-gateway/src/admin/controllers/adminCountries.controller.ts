@@ -1,6 +1,6 @@
 import type {
   TAdminCountriesListResponse,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
 } from "@common/types";
 
 import {
@@ -26,7 +26,6 @@ import {
 import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
 import { AdminCountriesService } from "../services";
 
-/** Admin CRUD стран; только роль ADMIN (ADR-005). */
 @Controller("admin/countries")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles("ADMIN")
@@ -34,7 +33,7 @@ import { AdminCountriesService } from "../services";
 export class AdminCountriesController {
   constructor(private readonly adminCountriesService: AdminCountriesService) {}
 
-  @ApiOperation({ summary: "Список стран (пагинация, с id)" })
+  @ApiOperation({ summary: "Список стран (пагинация + поиск q)" })
   @ApiResponse({ status: 200, description: "Пагинированный список стран" })
   @Get()
   listCountries(
@@ -49,7 +48,7 @@ export class AdminCountriesController {
   @Post()
   createCountry(
     @Body() dto: CreateCountryDto
-  ): Promise<TCountryAdminItemResponse> {
+  ): Promise<TAdminCountryItemResponse> {
     return this.adminCountriesService.createCountry(dto);
   }
 
@@ -61,7 +60,7 @@ export class AdminCountriesController {
   updateCountry(
     @Param("id", ParseIntPipe) id: number,
     @Body() dto: UpdateCountryDto
-  ): Promise<TCountryAdminItemResponse> {
+  ): Promise<TAdminCountryItemResponse> {
     return this.adminCountriesService.updateCountry(id, dto);
   }
 

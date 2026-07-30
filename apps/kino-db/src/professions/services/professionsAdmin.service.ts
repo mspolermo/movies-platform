@@ -2,7 +2,7 @@ import type {
   TAdminListRequest,
   TAdminProfessionsListResponse,
   TCreateProfessionRequest,
-  TProfessionAdminItemResponse,
+  TAdminProfessionItemResponse,
   TUpdateProfessionRequest,
 } from "@common/types";
 
@@ -13,6 +13,7 @@ import { Op, col, fn, where } from "sequelize";
 
 import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
 
+import { rethrowUniqueAsConflict } from "../../common/utils";
 import { PersonProfession } from "../../persons/models";
 import { mapProfessionToAdminItem } from "../mappers";
 import { Profession } from "../models";
@@ -50,25 +51,40 @@ export class ProfessionsAdminService {
   /** Создание профессии; дубликат name (без учёта регистра) → 409. */
   async createProfession(
     dto: TCreateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     await this.ensureNameIsFree(dto.name);
-    const profession = await this.professionRepository.create({ ...dto });
-    return mapProfessionToAdminItem(profession);
+
+    try {
+      const profession = await this.professionRepository.create({ ...dto });
+      return mapProfessionToAdminItem(profession);
+    } catch (error) {
+      rethrowUniqueAsConflict(
+        error,
+        "Профессия с таким названием уже существует"
+      );
+    }
   }
 
   /** Частичное обновление профессии; 404 если не найдена, дубликат имени → 409. */
   async updateProfession(
     id: number,
     data: TUpdateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     const profession = await this.findProfessionOrFail(id);
 
     if (data.name !== undefined) {
       await this.ensureNameIsFree(data.name, id);
     }
 
-    await profession.update({ ...data });
-    return mapProfessionToAdminItem(profession);
+    try {
+      await profession.update({ ...data });
+      return mapProfessionToAdminItem(profession);
+    } catch (error) {
+      rethrowUniqueAsConflict(
+        error,
+        "Профессия с таким названием уже существует"
+      );
+    }
   }
 
   /** Удаление профессии; используется персонами → 409 (Restrict, ADR-007). */

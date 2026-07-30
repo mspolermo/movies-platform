@@ -8,54 +8,34 @@ import type {
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminKinoDbClient } from "../clients";
 
-/** Admin CRUD фильмов: делегирует в kino-db, RPC-ошибки → HttpException. */
+/** Admin CRUD фильмов (kino-db RPC). */
 @Injectable()
 export class AdminFilmsService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  async listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
-    try {
-      return await this.client.listFilms(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
+    return fromRpc(this.client.listFilms(request));
   }
 
-  async getFilmById(id: number): Promise<TAdminFilmItemResponse> {
-    try {
-      return await this.client.getFilmById(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  getFilmById(id: number): Promise<TAdminFilmItemResponse> {
+    return fromRpc(this.client.getFilmById(id));
   }
 
-  async createFilm(dto: TCreateFilmRequest): Promise<TAdminFilmItemResponse> {
-    try {
-      return await this.client.createFilm(dto);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  createFilm(dto: TCreateFilmRequest): Promise<TAdminFilmItemResponse> {
+    return fromRpc(this.client.createFilm(dto));
   }
 
-  async updateFilm(
+  updateFilm(
     id: number,
     data: TUpdateFilmRequest
   ): Promise<TAdminFilmItemResponse> {
-    try {
-      return await this.client.updateFilm(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+    return fromRpc(this.client.updateFilm(id, data));
   }
 
-  async deleteFilm(id: number): Promise<true> {
-    try {
-      return await this.client.deleteFilm(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  deleteFilm(id: number): Promise<true> {
+    return fromRpc(this.client.deleteFilm(id));
   }
 }

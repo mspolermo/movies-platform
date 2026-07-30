@@ -1,6 +1,6 @@
 import type {
   TAdminGenresListResponse,
-  TGenreAdminItemResponse,
+  TAdminGenreItemResponse,
 } from "@common/types";
 
 import {
@@ -30,7 +30,7 @@ import { AdminGenresService } from "../services";
 export class AdminGenresController {
   constructor(private readonly adminGenresService: AdminGenresService) {}
 
-  @ApiOperation({ summary: "Список жанров (пагинация, с id)" })
+  @ApiOperation({ summary: "Список жанров (пагинация + поиск q)" })
   @ApiResponse({ status: 200, description: "Пагинированный список жанров" })
   @Get()
   listGenres(
@@ -43,7 +43,7 @@ export class AdminGenresController {
   @ApiResponse({ status: 201, description: "Созданный жанр" })
   @ApiResponse({ status: 409, description: "Дубликат названия" })
   @Post()
-  createGenre(@Body() dto: CreateGenreDto): Promise<TGenreAdminItemResponse> {
+  createGenre(@Body() dto: CreateGenreDto): Promise<TAdminGenreItemResponse> {
     return this.adminGenresService.createGenre(dto);
   }
 
@@ -55,7 +55,7 @@ export class AdminGenresController {
   updateGenre(
     @Param("id", ParseIntPipe) id: number,
     @Body() dto: UpdateGenreDto
-  ): Promise<TGenreAdminItemResponse> {
+  ): Promise<TAdminGenreItemResponse> {
     return this.adminGenresService.updateGenre(id, dto);
   }
 

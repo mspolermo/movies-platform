@@ -89,12 +89,12 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | POST | `/comments/:commentId/like` | JWT | Лайк комментария |
 | GET/POST | `/admin/films` | ADMIN | Пагинированный список (`?q=`) / создание |
 | GET/PATCH/DELETE | `/admin/films/:id` | ADMIN | Скаляры фильма; DELETE — cascade (ADR-007) |
-| GET/POST | `/admin/genres` | ADMIN | Список с id / создание (409 дубликат имени) |
+| GET/POST | `/admin/genres` | ADMIN | Пагинация + `?q=` / создание (409 дубликат имени) |
 | PATCH/DELETE | `/admin/genres/:id` | ADMIN | DELETE — restrict 409 при привязке |
-| GET/POST | `/admin/countries` | ADMIN | Аналогично genres |
+| GET/POST | `/admin/countries` | ADMIN | Пагинация + `?q=`; аналогично genres |
 | PATCH/DELETE | `/admin/countries/:id` | ADMIN | Аналогично genres |
-| GET/POST | `/admin/professions` | ADMIN | Аналогично genres (restrict — по персонам) |
-| PATCH/DELETE | `/admin/professions/:id` | ADMIN | |
+| GET/POST | `/admin/professions` | ADMIN | Пагинация (client search — словарь ~9) |
+| PATCH/DELETE | `/admin/professions/:id` | ADMIN | restrict — по персонам |
 | GET/POST | `/admin/persons` | ADMIN | Пагинация + `?q=`; `professionIds` |
 | GET/PATCH/DELETE | `/admin/persons/:id` | ADMIN | DELETE — restrict 409 если в фильмах |
 | GET | `/admin/users` | ADMIN | Пагинированный список с ролями |
@@ -188,7 +188,7 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Публичные типы | `apps/common/types/{request,response}` |
 | DTO валидация | `apps/common/dto`, `apps/*/dto` |
 | Мапперы ORM→Response | `apps/kino-db/src/*/mappers`, `apps/auth-users/src/*/mappers` |
-| Admin gateway | `apps/api-gateway/src/admin/{controllers,services,clients}`; guards: `shared/guards/roles.decorator.ts` + `roles.guard.ts`; RPC-ошибки: `shared/helpers/rpc-error.helper.ts` |
+| Admin gateway | `apps/api-gateway/src/admin/{controllers,services,clients}`; guards: `shared/guards/roles.decorator.ts` + `roles.guard.ts`; RPC-ошибки: `shared/helpers/rpcError.helper.ts` (`fromRpc`, `throwHttpFromRpcError`) |
 | Admin MS-сервисы | `apps/kino-db/src/*/{controllers,services}/*Admin*`, `apps/auth-users/src/users/{controllers,services}/usersAdmin*` |
 | Admin DTO | `apps/common/dto/admin` (`OptionalStrict`/`OptionalNullable` — decorators.ts) |
 | Пагинация utils (BE) | `apps/common/utils/{toPaginatedItemsResponse,toAdminListParams}.util.ts` |
@@ -203,6 +203,7 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Entities / Features / Widgets | `apps/client/src/{entities,features,widgets}` |
 | API публичный barrel | `apps/client/src/shared/api` (узкий surface; app-код сюда) |
 | Пагинация (shared hook) | `apps/client/src/shared/lib/hooks/usePaginatedResource` |
+| Debounce (shared hook) | `apps/client/src/shared/lib/hooks/useDebouncedValue` |
 | UI-kit | `apps/client/src/shared/ui` (`ui/`+`model/`+`stories/`+`tests/`; эталон SvgIcon) |
 | Vitest | `apps/client/configs/vitest` (`npm test`); Vite 6 + `@vitejs/plugin-react`; typecheck tooling — `tsconfig.tooling.json` |
 | Storybook | `apps/client/configs/storybook` (`npm run storybook`); mock `next/image` — `configs/mocks/` |
@@ -211,8 +212,9 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Horizontal carousel (shared) | `apps/client/src/shared/ui/HorizontalCarousel` |
 | Admin shell / pages | `apps/client/src/pages/AdminRootLayout`, `apps/client/src/widgets/AdminLayout`, `apps/client/src/pages/Admin*`, `apps/client/app/admin` |
 | Admin manage features | `apps/client/src/features/manage{Films,Genres,Countries,Professions,Persons,Users}` (`api/*Api.ts` на apiClient; `useAdminFilm` в manageFilms) |
-| Admin shared UI | `shared/ui/AdminCrudList` (+ `useAdminCrudPanel`, `filterByQuery`), `shared/ui/NotFoundView`, `shared/ui/Select`; nav: `shared/constants` `ADMIN_NAV_ITEMS` |
-| Admin types / endpoints | `apps/common/types/{request,response}/admin.ts`, `API_ENDPOINTS.ADMIN` |
+| Admin shared UI | `shared/ui/AdminCrudList` (+ `useAdminCrudPanel`, `filterByQuery` для professions), `shared/ui/NotFoundView`, `shared/ui/Select`; nav: `shared/constants` `ADMIN_NAV_ITEMS` |
+| Admin types / endpoints | `apps/common/types/{request,response}/admin.ts` (`TAdmin*ItemResponse`), `API_ENDPOINTS.ADMIN` |
+| Admin utils | `@common/utils` (`toAdminListParams`, `toILikeContains`, `toPaginatedItemsResponse`); kino-db `src/common/utils` (`rethrowUniqueAsConflict`) |
 | Users DB seed | `devops/users-db/users-init-dump.sql` |
 | Docker / seed | `docker-compose.yml`, `devops/` |
 | Auth ADR | `.cursor/adr/001-jwt-access-opaque-refresh.md` |

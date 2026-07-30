@@ -2,54 +2,36 @@ import type {
   TAdminGenresListResponse,
   TAdminListRequest,
   TCreateGenreRequest,
-  TGenreAdminItemResponse,
+  TAdminGenreItemResponse,
   TUpdateGenreRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminKinoDbClient } from "../clients";
 
-/** Admin CRUD жанров: делегирует в kino-db, RPC-ошибки → HttpException. */
+/** Admin CRUD жанров (kino-db RPC). */
 @Injectable()
 export class AdminGenresService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  async listGenres(
-    request: TAdminListRequest
-  ): Promise<TAdminGenresListResponse> {
-    try {
-      return await this.client.listGenres(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  listGenres(request: TAdminListRequest): Promise<TAdminGenresListResponse> {
+    return fromRpc(this.client.listGenres(request));
   }
 
-  async createGenre(dto: TCreateGenreRequest): Promise<TGenreAdminItemResponse> {
-    try {
-      return await this.client.createGenre(dto);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  createGenre(dto: TCreateGenreRequest): Promise<TAdminGenreItemResponse> {
+    return fromRpc(this.client.createGenre(dto));
   }
 
-  async updateGenre(
+  updateGenre(
     id: number,
     data: TUpdateGenreRequest
-  ): Promise<TGenreAdminItemResponse> {
-    try {
-      return await this.client.updateGenre(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminGenreItemResponse> {
+    return fromRpc(this.client.updateGenre(id, data));
   }
 
-  async deleteGenre(id: number): Promise<true> {
-    try {
-      return await this.client.deleteGenre(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  deleteGenre(id: number): Promise<true> {
+    return fromRpc(this.client.deleteGenre(id));
   }
 }

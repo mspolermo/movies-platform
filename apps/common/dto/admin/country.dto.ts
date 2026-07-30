@@ -8,7 +8,6 @@ import { IsNotEmpty, IsString } from "class-validator";
 
 import { OptionalStrict } from "./decorators";
 
-/** Создание страны (админка). */
 export class CreateCountryDto implements TCreateCountryRequest {
   @ApiProperty({ description: "Название на русском" })
   @IsString()
@@ -21,7 +20,6 @@ export class CreateCountryDto implements TCreateCountryRequest {
   countryNameEn!: string;
 }
 
-/** Частичное обновление страны (админка). */
 export class UpdateCountryDto implements TUpdateCountryRequest {
   @ApiPropertyOptional({ description: "Название на русском" })
   @OptionalStrict()

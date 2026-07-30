@@ -3,7 +3,7 @@ import type {
   TAdminProfessionsListResponse,
   TAdminUpdateProfessionRpcRequest,
   TCreateProfessionRequest,
-  TProfessionAdminItemResponse,
+  TAdminProfessionItemResponse,
 } from "@common/types";
 
 import { Controller } from "@nestjs/common";
@@ -13,7 +13,6 @@ import { kinoDbRpc } from "@common/services";
 
 import { ProfessionsAdminService } from "../services";
 
-/** RPC-хендлеры admin CRUD профессий; авторизация — на gateway (ADR-005). */
 @Controller("admin-professions")
 export class ProfessionsAdminController {
   constructor(
@@ -30,14 +29,14 @@ export class ProfessionsAdminController {
   @MessagePattern(kinoDbRpc.admin.professions.create)
   createProfession(
     @Payload() dto: TCreateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.professionsAdminService.createProfession(dto);
   }
 
   @MessagePattern(kinoDbRpc.admin.professions.update)
   updateProfession(
     @Payload() request: TAdminUpdateProfessionRpcRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.professionsAdminService.updateProfession(
       request.id,
       request.data

@@ -1,14 +1,13 @@
 import type {
   TAdminCountriesListResponse,
   TAdminListRequest,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
   TCreateCountryRequest,
   TUpdateCountryRequest,
 } from '@common/types';
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
-/** GET `/admin/countries` — пагинированный список стран с id. */
 export const listCountries = async (
   params: TAdminListRequest = {}
 ): Promise<TAdminCountriesListResponse> => {
@@ -19,30 +18,27 @@ export const listCountries = async (
   return data;
 };
 
-/** POST `/admin/countries` — создание страны (409 при дубликате имени). */
 export const createCountry = async (
   payload: TCreateCountryRequest
-): Promise<TCountryAdminItemResponse> => {
-  const { data } = await apiClient.post<TCountryAdminItemResponse>(
+): Promise<TAdminCountryItemResponse> => {
+  const { data } = await apiClient.post<TAdminCountryItemResponse>(
     API_ENDPOINTS.ADMIN.COUNTRIES.LIST,
     payload
   );
   return data;
 };
 
-/** PATCH `/admin/countries/:id` — обновление страны. */
 export const updateCountry = async (
   id: number,
   payload: TUpdateCountryRequest
-): Promise<TCountryAdminItemResponse> => {
-  const { data } = await apiClient.patch<TCountryAdminItemResponse>(
+): Promise<TAdminCountryItemResponse> => {
+  const { data } = await apiClient.patch<TAdminCountryItemResponse>(
     API_ENDPOINTS.ADMIN.COUNTRIES.BY_ID(id),
     payload
   );
   return data;
 };
 
-/** DELETE `/admin/countries/:id` (409, если страна привязана к фильмам). */
 export const deleteCountry = async (id: number): Promise<void> => {
   await apiClient.delete(API_ENDPOINTS.ADMIN.COUNTRIES.BY_ID(id));
 };

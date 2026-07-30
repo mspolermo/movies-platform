@@ -7,7 +7,6 @@ import type {
 
 import apiClient, { API_ENDPOINTS } from '@/shared/api';
 
-/** GET `/admin/users` — пагинированный список пользователей с ролями. */
 export const listUsers = async (
   params: TAdminListRequest = {}
 ): Promise<TAdminUsersListResponse> => {
@@ -17,7 +16,6 @@ export const listUsers = async (
   return data;
 };
 
-/** PATCH `/admin/users/:id` — смена роли (409 при снятии последнего ADMIN). */
 export const setUserRole = async (
   id: number,
   payload: TUpdateUserRoleRequest

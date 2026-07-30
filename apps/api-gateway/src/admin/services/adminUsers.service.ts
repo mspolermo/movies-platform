@@ -7,30 +7,22 @@ import type {
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminUsersClient } from "../clients";
 
-/** Admin-операции над пользователями: делегирует в auth-users, RPC-ошибки → HttpException. */
+/** Admin: список пользователей и смена роли (auth-users RPC). */
 @Injectable()
 export class AdminUsersService {
   constructor(private readonly client: AdminUsersClient) {}
 
-  async listUsers(request: TAdminListRequest): Promise<TAdminUsersListResponse> {
-    try {
-      return await this.client.listUsers(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  listUsers(request: TAdminListRequest): Promise<TAdminUsersListResponse> {
+    return fromRpc(this.client.listUsers(request));
   }
 
-  async setUserRole(
+  setUserRole(
     id: number,
     data: TUpdateUserRoleRequest
   ): Promise<TAdminUserItemResponse> {
-    try {
-      return await this.client.setUserRole(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+    return fromRpc(this.client.setUserRole(id, data));
   }
 }

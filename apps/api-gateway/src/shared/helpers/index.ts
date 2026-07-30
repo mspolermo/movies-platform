@@ -1,5 +1,6 @@
 export {
   extractRpcErrorMessage,
+  fromRpc,
   rpcMessageIncludes,
   throwHttpFromRpcError,
-} from "./rpc-error.helper";
+} from "./rpcError.helper";

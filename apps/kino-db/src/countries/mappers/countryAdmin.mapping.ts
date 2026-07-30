@@ -1,12 +1,12 @@
 import type { Country } from "../models";
-import type { TCountryAdminItemResponse } from "@common/types";
+import type { TAdminCountryItemResponse } from "@common/types";
 
 /**
  * Преобразует ORM-модель страны в admin-ответ (с id).
  */
 export function mapCountryToAdminItem(
   country: Country
-): TCountryAdminItemResponse {
+): TAdminCountryItemResponse {
   return {
     id: country.id,
     countryName: country.countryName,

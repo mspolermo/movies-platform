@@ -1,6 +1,6 @@
 'use client';
 
-import type { TProfessionAdminItemResponse } from '@common/types';
+import type { TAdminProfessionItemResponse } from '@common/types';
 
 import type { FormEvent } from 'react';
 
@@ -20,10 +20,10 @@ import styles from './AdminProfessionsPanel.module.scss';
 import { createProfession, deleteProfession, updateProfession } from '../../api';
 import { useAdminProfessions } from '../../lib';
 
-/** CRUD профессий через модалку и /admin/professions. */
+/** CRUD профессий через модалку (клиентский поиск — словарь ~9 записей, ADR-007). */
 export const AdminProfessionsPanel = () => {
   const professions = useAdminProfessions();
-  const panel = useAdminCrudPanel<TProfessionAdminItemResponse>();
+  const panel = useAdminCrudPanel<TAdminProfessionItemResponse>();
   const [name, setName] = useState('');
 
   const filtered = filterByQuery(professions.items, panel.query, (x, q) =>
@@ -35,7 +35,7 @@ export const AdminProfessionsPanel = () => {
     setName('');
   };
 
-  const openEdit = (item: TProfessionAdminItemResponse) => {
+  const openEdit = (item: TAdminProfessionItemResponse) => {
     panel.openEdit(item);
     setName(item.name);
   };

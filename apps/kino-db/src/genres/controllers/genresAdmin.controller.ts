@@ -3,7 +3,7 @@ import type {
   TAdminListRequest,
   TAdminUpdateGenreRpcRequest,
   TCreateGenreRequest,
-  TGenreAdminItemResponse,
+  TAdminGenreItemResponse,
 } from "@common/types";
 
 import { Controller } from "@nestjs/common";
@@ -13,7 +13,6 @@ import { kinoDbRpc } from "@common/services";
 
 import { GenresAdminService } from "../services";
 
-/** RPC-хендлеры admin CRUD жанров; авторизация — на gateway (ADR-005). */
 @Controller("admin-genres")
 export class GenresAdminController {
   constructor(private readonly genresAdminService: GenresAdminService) {}
@@ -28,14 +27,14 @@ export class GenresAdminController {
   @MessagePattern(kinoDbRpc.admin.genres.create)
   createGenre(
     @Payload() dto: TCreateGenreRequest
-  ): Promise<TGenreAdminItemResponse> {
+  ): Promise<TAdminGenreItemResponse> {
     return this.genresAdminService.createGenre(dto);
   }
 
   @MessagePattern(kinoDbRpc.admin.genres.update)
   updateGenre(
     @Payload() request: TAdminUpdateGenreRpcRequest
-  ): Promise<TGenreAdminItemResponse> {
+  ): Promise<TAdminGenreItemResponse> {
     return this.genresAdminService.updateGenre(request.id, request.data);
   }
 

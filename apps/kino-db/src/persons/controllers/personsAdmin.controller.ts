@@ -3,7 +3,7 @@ import type {
   TAdminPersonsListResponse,
   TAdminUpdatePersonRpcRequest,
   TCreatePersonRequest,
-  TPersonAdminItemResponse,
+  TAdminPersonItemResponse,
 } from "@common/types";
 
 import { Controller } from "@nestjs/common";
@@ -13,7 +13,6 @@ import { kinoDbRpc } from "@common/services";
 
 import { PersonsAdminService } from "../services";
 
-/** RPC-хендлеры admin CRUD персон; авторизация — на gateway (ADR-005). */
 @Controller("admin-persons")
 export class PersonsAdminController {
   constructor(private readonly personsAdminService: PersonsAdminService) {}
@@ -26,21 +25,21 @@ export class PersonsAdminController {
   }
 
   @MessagePattern(kinoDbRpc.admin.persons.getById)
-  getPersonById(@Payload() id: number): Promise<TPersonAdminItemResponse> {
+  getPersonById(@Payload() id: number): Promise<TAdminPersonItemResponse> {
     return this.personsAdminService.getPersonById(id);
   }
 
   @MessagePattern(kinoDbRpc.admin.persons.create)
   createPerson(
     @Payload() dto: TCreatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.personsAdminService.createPerson(dto);
   }
 
   @MessagePattern(kinoDbRpc.admin.persons.update)
   updatePerson(
     @Payload() request: TAdminUpdatePersonRpcRequest
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.personsAdminService.updatePerson(request.id, request.data);
   }
 

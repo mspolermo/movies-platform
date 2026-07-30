@@ -82,7 +82,7 @@ API Gateway AdminGenresController
 ↓ AdminKinoDbClient → films_queue "admin.genres.update"
 kino-db GenresAdminController → GenresAdminService
 ↓ уникальность имени / 404 → RpcException {statusCode, message}
-↓ mapGenreToAdminItem → TGenreAdminItemResponse
+↓ mapGenreToAdminItem → TAdminGenreItemResponse
 admin.users.* — аналогично через users_queue → auth-users UsersAdminController
 ```
 

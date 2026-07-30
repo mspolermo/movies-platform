@@ -120,7 +120,7 @@ describe("PersonsAdminService", () => {
       expect(mockPersonRepository.create).not.toHaveBeenCalled();
     });
 
-    it("creates person and sets professions", async () => {
+    it("creates person and sets professions in one transaction", async () => {
       mockProfessionRepository.count.mockResolvedValue(1);
       mockPersonRepository.create.mockResolvedValue(mockPerson);
       mockPersonRepository.findByPk.mockResolvedValue(mockPerson);
@@ -132,14 +132,24 @@ describe("PersonsAdminService", () => {
         professionIds: [2],
       });
 
-      expect(mockPerson.$set).toHaveBeenCalledWith("professions", [2]);
+      expect(mockSequelize.transaction).toHaveBeenCalled();
+      expect(mockPersonRepository.create).toHaveBeenCalledWith(
+        {
+          nameRu: "Киану Ривз",
+          nameEn: "Keanu Reeves",
+          photoUrl: "",
+        },
+        { transaction: mockTransaction }
+      );
+      expect(mockPerson.$set).toHaveBeenCalledWith("professions", [2], {
+        transaction: mockTransaction,
+      });
       expect(result.professionIds).toEqual([2]);
     });
   });
 
   describe("updatePerson", () => {
     it("validates professionIds before $set", async () => {
-      mockPersonRepository.findByPk.mockResolvedValue(mockPerson);
       mockProfessionRepository.count.mockResolvedValue(0);
 
       const error = await getRpcError(
@@ -147,7 +157,29 @@ describe("PersonsAdminService", () => {
       );
 
       expect(error.statusCode).toBe(HttpStatus.BAD_REQUEST);
+      expect(mockSequelize.transaction).not.toHaveBeenCalled();
       expect(mockPerson.$set).not.toHaveBeenCalled();
+    });
+
+    it("updates scalars and professions in one transaction", async () => {
+      mockProfessionRepository.count.mockResolvedValue(1);
+      mockPersonRepository.findByPk
+        .mockResolvedValueOnce(mockPerson)
+        .mockResolvedValueOnce(mockPerson);
+
+      await service.updatePerson(1, {
+        nameRu: "Новое имя",
+        professionIds: [2],
+      });
+
+      expect(mockSequelize.transaction).toHaveBeenCalled();
+      expect(mockPerson.update).toHaveBeenCalledWith(
+        { nameRu: "Новое имя" },
+        { transaction: mockTransaction }
+      );
+      expect(mockPerson.$set).toHaveBeenCalledWith("professions", [2], {
+        transaction: mockTransaction,
+      });
     });
   });
 

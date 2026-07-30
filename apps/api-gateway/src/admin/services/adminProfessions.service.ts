@@ -2,56 +2,40 @@ import type {
   TAdminListRequest,
   TAdminProfessionsListResponse,
   TCreateProfessionRequest,
-  TProfessionAdminItemResponse,
+  TAdminProfessionItemResponse,
   TUpdateProfessionRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminKinoDbClient } from "../clients";
 
-/** Admin CRUD профессий: делегирует в kino-db, RPC-ошибки → HttpException. */
+/** Admin CRUD профессий (kino-db RPC). */
 @Injectable()
 export class AdminProfessionsService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  async listProfessions(
+  listProfessions(
     request: TAdminListRequest
   ): Promise<TAdminProfessionsListResponse> {
-    try {
-      return await this.client.listProfessions(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+    return fromRpc(this.client.listProfessions(request));
   }
 
-  async createProfession(
+  createProfession(
     dto: TCreateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
-    try {
-      return await this.client.createProfession(dto);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminProfessionItemResponse> {
+    return fromRpc(this.client.createProfession(dto));
   }
 
-  async updateProfession(
+  updateProfession(
     id: number,
     data: TUpdateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
-    try {
-      return await this.client.updateProfession(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminProfessionItemResponse> {
+    return fromRpc(this.client.updateProfession(id, data));
   }
 
-  async deleteProfession(id: number): Promise<true> {
-    try {
-      return await this.client.deleteProfession(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  deleteProfession(id: number): Promise<true> {
+    return fromRpc(this.client.deleteProfession(id));
   }
 }

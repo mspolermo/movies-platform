@@ -1,57 +1,41 @@
 import type {
   TAdminCountriesListResponse,
   TAdminListRequest,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
   TCreateCountryRequest,
   TUpdateCountryRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminKinoDbClient } from "../clients";
 
-/** Admin CRUD стран: делегирует в kino-db, RPC-ошибки → HttpException. */
+/** Admin CRUD стран (kino-db RPC). */
 @Injectable()
 export class AdminCountriesService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  async listCountries(
+  listCountries(
     request: TAdminListRequest
   ): Promise<TAdminCountriesListResponse> {
-    try {
-      return await this.client.listCountries(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+    return fromRpc(this.client.listCountries(request));
   }
 
-  async createCountry(
+  createCountry(
     dto: TCreateCountryRequest
-  ): Promise<TCountryAdminItemResponse> {
-    try {
-      return await this.client.createCountry(dto);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminCountryItemResponse> {
+    return fromRpc(this.client.createCountry(dto));
   }
 
-  async updateCountry(
+  updateCountry(
     id: number,
     data: TUpdateCountryRequest
-  ): Promise<TCountryAdminItemResponse> {
-    try {
-      return await this.client.updateCountry(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminCountryItemResponse> {
+    return fromRpc(this.client.updateCountry(id, data));
   }
 
-  async deleteCountry(id: number): Promise<true> {
-    try {
-      return await this.client.deleteCountry(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  deleteCountry(id: number): Promise<true> {
+    return fromRpc(this.client.deleteCountry(id));
   }
 }

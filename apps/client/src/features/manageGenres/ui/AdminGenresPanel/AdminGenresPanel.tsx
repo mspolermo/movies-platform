@@ -1,6 +1,6 @@
 'use client';
 
-import type { TGenreAdminItemResponse } from '@common/types';
+import type { TAdminGenreItemResponse } from '@common/types';
 
 import type { FormEvent } from 'react';
 
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import {
   AdminCrudList,
   Button,
-  filterByQuery,
   Input,
   LoadMoreSection,
   Modal,
@@ -20,18 +19,12 @@ import styles from './AdminGenresPanel.module.scss';
 import { createGenre, deleteGenre, updateGenre } from '../../api';
 import { useAdminGenres } from '../../lib';
 
-/** CRUD жанров через модалку и /admin/genres. */
+/** CRUD жанров через модалку и /admin/genres (серверный поиск). */
 export const AdminGenresPanel = () => {
-  const genres = useAdminGenres();
-  const panel = useAdminCrudPanel<TGenreAdminItemResponse>();
+  const panel = useAdminCrudPanel<TAdminGenreItemResponse>();
+  const genres = useAdminGenres(panel.query);
   const [nameRu, setNameRu] = useState('');
   const [nameEn, setNameEn] = useState('');
-
-  const filtered = filterByQuery(
-    genres.items,
-    panel.query,
-    (x, q) => x.nameRu.toLowerCase().includes(q) || x.nameEn.toLowerCase().includes(q)
-  );
 
   const openCreate = () => {
     panel.openCreate();
@@ -39,7 +32,7 @@ export const AdminGenresPanel = () => {
     setNameEn('');
   };
 
-  const openEdit = (item: TGenreAdminItemResponse) => {
+  const openEdit = (item: TAdminGenreItemResponse) => {
     panel.openEdit(item);
     setNameRu(item.nameRu);
     setNameEn(item.nameEn);
@@ -98,8 +91,9 @@ export const AdminGenresPanel = () => {
           emptyText={genres.loading ? 'Загрузка…' : 'Нет записей'}
           getActionLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
           getKey={(item) => item.id}
-          items={filtered}
+          items={genres.items}
           renderLabel={(item) => `${item.nameRu} / ${item.nameEn}`}
+          searchPlaceholder="Поиск по названию"
           searchQuery={panel.query}
           onAdd={openCreate}
           onDelete={panel.requestDelete}

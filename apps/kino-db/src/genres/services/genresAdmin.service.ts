@@ -2,7 +2,7 @@ import type {
   TAdminGenresListResponse,
   TAdminListRequest,
   TCreateGenreRequest,
-  TGenreAdminItemResponse,
+  TAdminGenreItemResponse,
   TUpdateGenreRequest,
 } from "@common/types";
 
@@ -11,8 +11,13 @@ import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, col, fn, where } from "sequelize";
 
-import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
+import {
+  toAdminListParams,
+  toILikeContains,
+  toPaginatedItemsResponse,
+} from "@common/utils";
 
+import { rethrowUniqueAsConflict } from "../../common/utils";
 import { FilmGenre } from "../../films/models";
 import { mapGenreToAdminItem } from "../mappers";
 import { Genre } from "../models";
@@ -26,13 +31,28 @@ export class GenresAdminService {
     private readonly filmGenreRepository: typeof FilmGenre
   ) {}
 
-  /** Пагинированный список жанров с id. */
+  /** Пагинированный список жанров с опциональным поиском по названиям. */
   async listGenres(
     request: TAdminListRequest
   ): Promise<TAdminGenresListResponse> {
-    const { page, perPage, offset } = toAdminListParams(request);
+    const { page, perPage, offset, q } = toAdminListParams(request);
+
+    const like = q ? toILikeContains(q) : undefined;
+    if (q && !like) {
+      return toPaginatedItemsResponse([], 0, page, perPage);
+    }
+
+    const whereClause = like
+      ? {
+          [Op.or]: [
+            { nameRu: { [Op.iLike]: like } },
+            { nameEn: { [Op.iLike]: like } },
+          ],
+        }
+      : undefined;
 
     const { rows, count } = await this.genreRepository.findAndCountAll({
+      where: whereClause,
       order: [["nameRu", "ASC"]],
       limit: perPage,
       offset,
@@ -46,28 +66,40 @@ export class GenresAdminService {
     );
   }
 
-  /** Создание жанра; дубликат nameRu (без учёта регистра) → 409. */
+  /** Создание жанра; дубликат nameRu/nameEn (без учёта регистра) → 409. */
   async createGenre(
     dto: TCreateGenreRequest
-  ): Promise<TGenreAdminItemResponse> {
-    await this.ensureNameIsFree(dto.nameRu);
-    const genre = await this.genreRepository.create({ ...dto });
-    return mapGenreToAdminItem(genre);
+  ): Promise<TAdminGenreItemResponse> {
+    await this.ensureNamesAreFree({ nameRu: dto.nameRu, nameEn: dto.nameEn });
+
+    try {
+      const genre = await this.genreRepository.create({ ...dto });
+      return mapGenreToAdminItem(genre);
+    } catch (error) {
+      rethrowUniqueAsConflict(error, "Жанр с таким названием уже существует");
+    }
   }
 
   /** Частичное обновление жанра; 404 если не найден, дубликат имени → 409. */
   async updateGenre(
     id: number,
     data: TUpdateGenreRequest
-  ): Promise<TGenreAdminItemResponse> {
+  ): Promise<TAdminGenreItemResponse> {
     const genre = await this.findGenreOrFail(id);
 
-    if (data.nameRu !== undefined) {
-      await this.ensureNameIsFree(data.nameRu, id);
+    if (data.nameRu !== undefined || data.nameEn !== undefined) {
+      await this.ensureNamesAreFree(
+        { nameRu: data.nameRu, nameEn: data.nameEn },
+        id
+      );
     }
 
-    await genre.update({ ...data });
-    return mapGenreToAdminItem(genre);
+    try {
+      await genre.update({ ...data });
+      return mapGenreToAdminItem(genre);
+    } catch (error) {
+      rethrowUniqueAsConflict(error, "Жанр с таким названием уже существует");
+    }
   }
 
   /** Удаление жанра; привязан к фильмам → 409 (Restrict, ADR-007). */
@@ -103,17 +135,33 @@ export class GenresAdminService {
     return genre;
   }
 
-  /** Уникальность nameRu без учёта регистра; excludeId — при update. */
-  private async ensureNameIsFree(
-    nameRu: string,
+  /** Уникальность nameRu / nameEn без учёта регистра; excludeId — при update. */
+  private async ensureNamesAreFree(
+    names: { nameRu?: string; nameEn?: string },
     excludeId?: number
   ): Promise<void> {
-    const sameName = where(fn("LOWER", col("nameRu")), nameRu.toLowerCase());
+    const sameNameChecks = [
+      names.nameRu !== undefined
+        ? where(fn("LOWER", col("nameRu")), names.nameRu.toLowerCase())
+        : null,
+      names.nameEn !== undefined
+        ? where(fn("LOWER", col("nameEn")), names.nameEn.toLowerCase())
+        : null,
+    ].filter((clause): clause is NonNullable<typeof clause> => clause != null);
+
+    if (sameNameChecks.length === 0) {
+      return;
+    }
+
     const duplicate = await this.genreRepository.findOne({
-      where:
-        excludeId === undefined
-          ? sameName
-          : { [Op.and]: [sameName, { id: { [Op.ne]: excludeId } }] },
+      where: {
+        [Op.and]: [
+          { [Op.or]: sameNameChecks },
+          ...(excludeId !== undefined
+            ? [{ id: { [Op.ne]: excludeId } }]
+            : []),
+        ],
+      },
     });
 
     if (duplicate) {

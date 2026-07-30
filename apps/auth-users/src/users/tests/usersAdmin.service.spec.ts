@@ -2,7 +2,9 @@ import { HttpStatus } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
+import { Sequelize } from "sequelize-typescript";
 
+import { Role } from "../../roles/models";
 import { RolesService } from "../../roles/services";
 import { User } from "../models";
 import { UsersAdminService } from "../services";
@@ -27,8 +29,24 @@ describe("UsersAdminService", () => {
     count: jest.fn(),
   };
 
+  const mockRoleRepository = {
+    findOne: jest.fn(),
+  };
+
   const mockRolesService = {
     getRoleByValue: jest.fn(),
+  };
+
+  const mockTransaction = {
+    id: "tx",
+    LOCK: { UPDATE: "UPDATE" },
+  };
+
+  const mockSequelize = {
+    transaction: jest.fn(
+      async (callback: (t: typeof mockTransaction) => Promise<unknown>) =>
+        await callback(mockTransaction)
+    ),
   };
 
   /** Достаёт payload RpcException для проверки statusCode. */
@@ -46,11 +64,18 @@ describe("UsersAdminService", () => {
       providers: [
         UsersAdminService,
         { provide: getModelToken(User), useValue: mockUserRepository },
+        { provide: getModelToken(Role), useValue: mockRoleRepository },
         { provide: RolesService, useValue: mockRolesService },
+        { provide: Sequelize, useValue: mockSequelize },
       ],
     }).compile();
 
     service = module.get<UsersAdminService>(UsersAdminService);
+
+    // Sequelize transaction.LOCK.UPDATE читается с объекта transaction
+    (mockTransaction as { LOCK: { UPDATE: string } }).LOCK = {
+      UPDATE: "UPDATE",
+    };
   });
 
   afterEach(() => {
@@ -77,6 +102,7 @@ describe("UsersAdminService", () => {
 
   describe("setUserRole", () => {
     it("throws 404 for unknown user", async () => {
+      mockRolesService.getRoleByValue.mockResolvedValue(userRole);
       mockUserRepository.findOne.mockResolvedValue(null);
 
       const error = await getRpcError(service.setUserRole(999, { role: "USER" }));
@@ -85,7 +111,6 @@ describe("UsersAdminService", () => {
     });
 
     it("throws 400 for unknown role", async () => {
-      mockUserRepository.findOne.mockResolvedValue(makeUser(1, [userRole]));
       mockRolesService.getRoleByValue.mockResolvedValue(null);
 
       const error = await getRpcError(
@@ -93,46 +118,59 @@ describe("UsersAdminService", () => {
       );
 
       expect(error.statusCode).toBe(HttpStatus.BAD_REQUEST);
+      expect(mockSequelize.transaction).not.toHaveBeenCalled();
     });
 
     it("throws 409 when demoting the last ADMIN", async () => {
       const lastAdmin = makeUser(1, [adminRole]);
-      mockUserRepository.findOne.mockResolvedValue(lastAdmin);
       mockRolesService.getRoleByValue.mockResolvedValue(userRole);
+      mockUserRepository.findOne.mockResolvedValue(lastAdmin);
+      mockRoleRepository.findOne.mockResolvedValue(adminRole);
       mockUserRepository.count.mockResolvedValue(1);
 
       const error = await getRpcError(service.setUserRole(1, { role: "USER" }));
 
       expect(error.statusCode).toBe(HttpStatus.CONFLICT);
       expect(lastAdmin.$set).not.toHaveBeenCalled();
+      expect(mockRoleRepository.findOne).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { value: "ADMIN" },
+          lock: "UPDATE",
+        })
+      );
     });
 
     it("demotes ADMIN when another admin remains", async () => {
       const admin = makeUser(1, [adminRole]);
       const demoted = makeUser(1, [userRole]);
+      mockRolesService.getRoleByValue.mockResolvedValue(userRole);
       mockUserRepository.findOne
         .mockResolvedValueOnce(admin)
         .mockResolvedValueOnce(demoted);
-      mockRolesService.getRoleByValue.mockResolvedValue(userRole);
+      mockRoleRepository.findOne.mockResolvedValue(adminRole);
       mockUserRepository.count.mockResolvedValue(2);
 
       const result = await service.setUserRole(1, { role: "USER" });
 
-      expect(admin.$set).toHaveBeenCalledWith("roles", [userRole.id]);
+      expect(admin.$set).toHaveBeenCalledWith("roles", [userRole.id], {
+        transaction: mockTransaction,
+      });
       expect(result.role).toBe("USER");
     });
 
     it("sets role and rereads user with roles", async () => {
       const user = makeUser(2, [userRole]);
       const promoted = makeUser(2, [adminRole]);
+      mockRolesService.getRoleByValue.mockResolvedValue(adminRole);
       mockUserRepository.findOne
         .mockResolvedValueOnce(user)
         .mockResolvedValueOnce(promoted);
-      mockRolesService.getRoleByValue.mockResolvedValue(adminRole);
 
       const result = await service.setUserRole(2, { role: "ADMIN" });
 
-      expect(user.$set).toHaveBeenCalledWith("roles", [adminRole.id]);
+      expect(user.$set).toHaveBeenCalledWith("roles", [adminRole.id], {
+        transaction: mockTransaction,
+      });
       expect(mockUserRepository.count).not.toHaveBeenCalled();
       expect(result).toMatchObject({ id: 2, role: "ADMIN" });
     });

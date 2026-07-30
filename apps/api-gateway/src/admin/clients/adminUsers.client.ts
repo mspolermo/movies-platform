@@ -9,7 +9,6 @@ import { Injectable } from "@nestjs/common";
 
 import { authUsersRpc, RmqService } from "@common/services";
 
-/** RMQ-клиент admin-операций auth-users (список пользователей, назначение роли). */
 @Injectable()
 export class AdminUsersClient {
   constructor(private readonly rmq: RmqService) {}

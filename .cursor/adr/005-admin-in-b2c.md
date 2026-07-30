@@ -93,7 +93,7 @@ Body create/update: `TCreateFilmRequest` / `TUpdateFilmRequest`. Ответ item
 | `updateGenreStub` | `PATCH` | `/admin/genres/:id` | `ADMIN.GENRES.BY_ID(id)` |
 | `deleteGenreStub` | `DELETE` | `/admin/genres/:id` | `ADMIN.GENRES.BY_ID(id)` |
 
-Body: `TCreateGenreRequest` / `TUpdateGenreRequest`. List/item: `TGenreAdminItemResponse` (**с `id`**).
+Body: `TCreateGenreRequest` / `TUpdateGenreRequest`. List/item: `TAdminGenreItemResponse` (**с `id`**).
 
 ### `manageCountries` — `features/manageCountries/api/countriesStubApi.ts`
 
@@ -104,7 +104,7 @@ Body: `TCreateGenreRequest` / `TUpdateGenreRequest`. List/item: `TGenreAdminItem
 | `updateCountryStub` | `PATCH` | `/admin/countries/:id` | `ADMIN.COUNTRIES.BY_ID(id)` |
 | `deleteCountryStub` | `DELETE` | `/admin/countries/:id` | `ADMIN.COUNTRIES.BY_ID(id)` |
 
-Body: `TCreateCountryRequest` / `TUpdateCountryRequest`. Item: `TCountryAdminItemResponse` (**с `id`**).
+Body: `TCreateCountryRequest` / `TUpdateCountryRequest`. Item: `TAdminCountryItemResponse` (**с `id`**).
 
 ### `manageProfessions` — `features/manageProfessions/api/professionsStubApi.ts`
 
@@ -115,7 +115,7 @@ Body: `TCreateCountryRequest` / `TUpdateCountryRequest`. Item: `TCountryAdminIte
 | `updateProfessionStub` | `PATCH` | `/admin/professions/:id` | `ADMIN.PROFESSIONS.BY_ID(id)` |
 | `deleteProfessionStub` | `DELETE` | `/admin/professions/:id` | `ADMIN.PROFESSIONS.BY_ID(id)` |
 
-Body: `TCreateProfessionRequest` / `TUpdateProfessionRequest`. Item: `TProfessionAdminItemResponse`.
+Body: `TCreateProfessionRequest` / `TUpdateProfessionRequest`. Item: `TAdminProfessionItemResponse`.
 
 ### `managePersons` — `features/managePersons/api/personsStubApi.ts`
 
@@ -127,7 +127,7 @@ Body: `TCreateProfessionRequest` / `TUpdateProfessionRequest`. Item: `TProfessio
 | `updatePersonStub` | `PATCH` | `/admin/persons/:id` | `ADMIN.PERSONS.BY_ID(id)` |
 | `deletePersonStub` | `DELETE` | `/admin/persons/:id` | `ADMIN.PERSONS.BY_ID(id)` |
 
-Body: `TCreatePersonRequest` / `TUpdatePersonRequest` (+ `professionIds`). Item: `TPersonAdminItemResponse`.  
+Body: `TCreatePersonRequest` / `TUpdatePersonRequest` (+ `professionIds`). Item: `TAdminPersonItemResponse`.  
 Professions options на UI: GET `/admin/professions` (тот же list, что `manageProfessions`).
 
 ### `manageUsers` — `features/manageUsers/api/usersStubApi.ts`

@@ -10,7 +10,7 @@ export type TAppRole = "ADMIN" | "USER" | "MANAGER";
 /** Частичное обновление, где `null` = «очистить поле» (PATCH админки, ADR-007). */
 export type TNullablePartial<T> = { [K in keyof T]?: T[K] | null };
 
-/** Параметры admin-списков: пагинация + поиск (`q` — films/persons). */
+/** Параметры admin-списков: пагинация + поиск (`q` — films/persons/countries/genres). */
 export type TAdminListRequest = {
   page?: number;
   perPage?: number;

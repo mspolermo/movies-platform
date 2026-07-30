@@ -2,7 +2,7 @@ import type {
   TAdminCountriesListResponse,
   TAdminListRequest,
   TAdminUpdateCountryRpcRequest,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
   TCreateCountryRequest,
 } from "@common/types";
 
@@ -13,7 +13,6 @@ import { kinoDbRpc } from "@common/services";
 
 import { CountriesAdminService } from "../services";
 
-/** RPC-хендлеры admin CRUD стран; авторизация — на gateway (ADR-005). */
 @Controller("admin-countries")
 export class CountriesAdminController {
   constructor(private readonly countriesAdminService: CountriesAdminService) {}
@@ -28,14 +27,14 @@ export class CountriesAdminController {
   @MessagePattern(kinoDbRpc.admin.countries.create)
   createCountry(
     @Payload() dto: TCreateCountryRequest
-  ): Promise<TCountryAdminItemResponse> {
+  ): Promise<TAdminCountryItemResponse> {
     return this.countriesAdminService.createCountry(dto);
   }
 
   @MessagePattern(kinoDbRpc.admin.countries.update)
   updateCountry(
     @Payload() request: TAdminUpdateCountryRpcRequest
-  ): Promise<TCountryAdminItemResponse> {
+  ): Promise<TAdminCountryItemResponse> {
     return this.countriesAdminService.updateCountry(request.id, request.data);
   }
 

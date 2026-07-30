@@ -1,11 +1,11 @@
 import type { Person } from "../models";
-import type { TPersonAdminItemResponse } from "@common/types";
+import type { TAdminPersonItemResponse } from "@common/types";
 
 /**
  * Преобразует ORM-модель персоны в admin-ответ (поля + professionIds).
  * Требует загруженной связи `professions`.
  */
-export function mapPersonToAdminItem(person: Person): TPersonAdminItemResponse {
+export function mapPersonToAdminItem(person: Person): TAdminPersonItemResponse {
   return {
     id: person.id,
     photoUrl: person.photoUrl ?? "",

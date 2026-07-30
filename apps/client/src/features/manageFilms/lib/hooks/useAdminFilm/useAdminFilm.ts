@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 
 import { getFilmById } from '../../../api';
 
-/** Состояние загрузки одного фильма для формы редактирования. */
 export type TAdminFilmLoadState =
   | { status: 'idle' }
   | { status: 'loading' }

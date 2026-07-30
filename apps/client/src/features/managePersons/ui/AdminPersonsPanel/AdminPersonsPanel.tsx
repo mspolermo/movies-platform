@@ -1,7 +1,7 @@
 'use client';
 
 import type { TAdminPersonsPanelProps } from './types';
-import type { TPersonAdminItemResponse } from '@common/types';
+import type { TAdminPersonItemResponse } from '@common/types';
 
 import type { FormEvent } from 'react';
 
@@ -21,9 +21,8 @@ import styles from './AdminPersonsPanel.module.scss';
 import { createPerson, deletePerson, updatePerson } from '../../api';
 import { useAdminPersons } from '../../lib';
 
-/** CRUD персон (серверный поиск); опции профессий приходят со страницы (композиция). */
 export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps) => {
-  const panel = useAdminCrudPanel<TPersonAdminItemResponse>();
+  const panel = useAdminCrudPanel<TAdminPersonItemResponse>();
   const persons = useAdminPersons(panel.query);
   const [nameRu, setNameRu] = useState('');
   const [nameEn, setNameEn] = useState('');
@@ -44,7 +43,7 @@ export const AdminPersonsPanel = ({ professionOptions }: TAdminPersonsPanelProps
     setProfessionIds([]);
   };
 
-  const openEdit = (item: TPersonAdminItemResponse) => {
+  const openEdit = (item: TAdminPersonItemResponse) => {
     panel.openEdit(item);
     setNameRu(item.nameRu);
     setNameEn(item.nameEn);

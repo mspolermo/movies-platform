@@ -6,15 +6,15 @@ import type {
   TAdminListRequest,
   TAdminPersonsListResponse,
   TAdminProfessionsListResponse,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
   TCreateCountryRequest,
   TCreateFilmRequest,
   TCreateGenreRequest,
   TCreatePersonRequest,
   TCreateProfessionRequest,
-  TGenreAdminItemResponse,
-  TPersonAdminItemResponse,
-  TProfessionAdminItemResponse,
+  TAdminGenreItemResponse,
+  TAdminPersonItemResponse,
+  TAdminProfessionItemResponse,
   TUpdateCountryRequest,
   TUpdateFilmRequest,
   TUpdateGenreRequest,
@@ -26,12 +26,9 @@ import { Injectable } from "@nestjs/common";
 
 import { kinoDbRpc, RmqService } from "@common/services";
 
-/** RMQ-клиент admin-операций kino-db (films/genres/countries/professions/persons). */
 @Injectable()
 export class AdminKinoDbClient {
   constructor(private readonly rmq: RmqService) {}
-
-  // --- films ---
 
   listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.films.list, request);
@@ -56,20 +53,18 @@ export class AdminKinoDbClient {
     return this.rmq.sendToFilms(kinoDbRpc.admin.films.delete, id);
   }
 
-  // --- genres ---
-
   listGenres(request: TAdminListRequest): Promise<TAdminGenresListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.genres.list, request);
   }
 
-  createGenre(dto: TCreateGenreRequest): Promise<TGenreAdminItemResponse> {
+  createGenre(dto: TCreateGenreRequest): Promise<TAdminGenreItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.genres.create, dto);
   }
 
   updateGenre(
     id: number,
     data: TUpdateGenreRequest
-  ): Promise<TGenreAdminItemResponse> {
+  ): Promise<TAdminGenreItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.genres.update, { id, data });
   }
 
@@ -77,30 +72,26 @@ export class AdminKinoDbClient {
     return this.rmq.sendToFilms(kinoDbRpc.admin.genres.delete, id);
   }
 
-  // --- countries ---
-
   listCountries(
     request: TAdminListRequest
   ): Promise<TAdminCountriesListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.countries.list, request);
   }
 
-  createCountry(dto: TCreateCountryRequest): Promise<TCountryAdminItemResponse> {
+  createCountry(dto: TCreateCountryRequest): Promise<TAdminCountryItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.countries.create, dto);
   }
 
   updateCountry(
     id: number,
     data: TUpdateCountryRequest
-  ): Promise<TCountryAdminItemResponse> {
+  ): Promise<TAdminCountryItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.countries.update, { id, data });
   }
 
   deleteCountry(id: number): Promise<true> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.countries.delete, id);
   }
-
-  // --- professions ---
 
   listProfessions(
     request: TAdminListRequest
@@ -110,14 +101,14 @@ export class AdminKinoDbClient {
 
   createProfession(
     dto: TCreateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.professions.create, dto);
   }
 
   updateProfession(
     id: number,
     data: TUpdateProfessionRequest
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.professions.update, {
       id,
       data,
@@ -128,24 +119,22 @@ export class AdminKinoDbClient {
     return this.rmq.sendToFilms(kinoDbRpc.admin.professions.delete, id);
   }
 
-  // --- persons ---
-
   listPersons(request: TAdminListRequest): Promise<TAdminPersonsListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.persons.list, request);
   }
 
-  getPersonById(id: number): Promise<TPersonAdminItemResponse> {
+  getPersonById(id: number): Promise<TAdminPersonItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.persons.getById, id);
   }
 
-  createPerson(dto: TCreatePersonRequest): Promise<TPersonAdminItemResponse> {
+  createPerson(dto: TCreatePersonRequest): Promise<TAdminPersonItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.persons.create, dto);
   }
 
   updatePerson(
     id: number,
     data: TUpdatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.persons.update, { id, data });
   }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import type { TCountryAdminItemResponse } from '@common/types';
+import type { TAdminCountryItemResponse } from '@common/types';
 
 import type { FormEvent } from 'react';
 
@@ -9,7 +9,6 @@ import { useState } from 'react';
 import {
   AdminCrudList,
   Button,
-  filterByQuery,
   Input,
   LoadMoreSection,
   Modal,
@@ -20,18 +19,11 @@ import styles from './AdminCountriesPanel.module.scss';
 import { createCountry, deleteCountry, updateCountry } from '../../api';
 import { useAdminCountries } from '../../lib';
 
-/** CRUD стран через модалку и /admin/countries. */
 export const AdminCountriesPanel = () => {
-  const countries = useAdminCountries();
-  const panel = useAdminCrudPanel<TCountryAdminItemResponse>();
+  const panel = useAdminCrudPanel<TAdminCountryItemResponse>();
+  const countries = useAdminCountries(panel.query);
   const [countryName, setCountryName] = useState('');
   const [countryNameEn, setCountryNameEn] = useState('');
-
-  const filtered = filterByQuery(
-    countries.items,
-    panel.query,
-    (x, q) => x.countryName.toLowerCase().includes(q) || x.countryNameEn.toLowerCase().includes(q)
-  );
 
   const openCreate = () => {
     panel.openCreate();
@@ -39,7 +31,7 @@ export const AdminCountriesPanel = () => {
     setCountryNameEn('');
   };
 
-  const openEdit = (item: TCountryAdminItemResponse) => {
+  const openEdit = (item: TAdminCountryItemResponse) => {
     panel.openEdit(item);
     setCountryName(item.countryName);
     setCountryNameEn(item.countryNameEn);
@@ -100,8 +92,9 @@ export const AdminCountriesPanel = () => {
           emptyText={countries.loading ? 'Загрузка…' : 'Нет записей'}
           getActionLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
           getKey={(item) => item.id}
-          items={filtered}
+          items={countries.items}
           renderLabel={(item) => `${item.countryName} / ${item.countryNameEn}`}
+          searchPlaceholder="Поиск по названию"
           searchQuery={panel.query}
           onAdd={openCreate}
           onDelete={panel.requestDelete}

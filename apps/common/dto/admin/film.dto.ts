@@ -11,7 +11,6 @@ import {
 
 import { OptionalNullable, OptionalStrict } from "./decorators";
 
-/** Создание фильма (админка): обязательное название + опциональные скаляры. */
 export class CreateFilmDto implements TCreateFilmRequest {
   @ApiProperty({ description: "Название на русском" })
   @IsString()
@@ -19,117 +18,116 @@ export class CreateFilmDto implements TCreateFilmRequest {
   filmNameRu!: string;
 
   @ApiPropertyOptional({ description: "Название на английском" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   filmNameEn?: string;
 
   @ApiPropertyOptional({ description: "Описание" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   description?: string;
 
   @ApiPropertyOptional({ description: "Слоган" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   slogan?: string;
 
   @ApiPropertyOptional({ description: "Год выхода" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   year?: number;
 
   @ApiPropertyOptional({ description: "Длительность, мин" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   movieLength?: number;
 
   @ApiPropertyOptional({ description: "Язык оригинала" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   originalFilmLanguage?: string;
 
   @ApiPropertyOptional({ description: "Страна премьеры" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   premiereCountry?: string;
 
   @ApiPropertyOptional({ description: "Дата мировой премьеры (ISO 8601)" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsDateString()
   premiereWorldDate?: string;
 
   @ApiPropertyOptional({ description: "Название трейлера" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   trailerName?: string;
 
   @ApiPropertyOptional({ description: "URL трейлера" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   trailerUrl?: string;
 
   @ApiPropertyOptional({ description: "URL большого постера" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   bigPictureUrl?: string;
 
   @ApiPropertyOptional({ description: "URL маленького постера" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsString()
   smallPictureUrl?: string;
 
   @ApiPropertyOptional({ description: "Рейтинг Кинопоиска" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsNumber()
   ratingKp?: number;
 
   @ApiPropertyOptional({ description: "Голоса Кинопоиска" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   votesKp?: number;
 
   @ApiPropertyOptional({ description: "Рейтинг IMDb" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsNumber()
   ratingImdb?: number;
 
   @ApiPropertyOptional({ description: "Голоса IMDb" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   votesImdb?: number;
 
   @ApiPropertyOptional({ description: "Рейтинг кинокритиков" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsNumber()
   ratingFilmCritics?: number;
 
   @ApiPropertyOptional({ description: "Голоса кинокритиков" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   votesFilmCritics?: number;
 
   @ApiPropertyOptional({ description: "Рейтинг российских кинокритиков" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsNumber()
   ratingRussianFilmCritics?: number;
 
   @ApiPropertyOptional({ description: "Голоса российских кинокритиков" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   votesRussianFilmCritics?: number;
 
   @ApiPropertyOptional({ description: "Позиция в топ-10" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   top10?: number;
 
   @ApiPropertyOptional({ description: "Позиция в топ-250" })
-  @OptionalNullable()
+  @OptionalStrict()
   @IsInt()
   top250?: number;
 }
 
-/** Частичное обновление фильма; `null` — очистить опциональное поле (ADR-007). */
 export class UpdateFilmDto implements TUpdateFilmRequest {
   @ApiPropertyOptional({ description: "Название на русском (null запрещён)" })
   @OptionalStrict()

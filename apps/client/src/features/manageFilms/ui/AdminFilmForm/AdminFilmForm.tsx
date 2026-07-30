@@ -88,7 +88,6 @@ const toUpdatePayload = (form: TCreateFilmRequest): TUpdateFilmRequest => {
   ) as TUpdateFilmRequest;
 };
 
-/** Форма создания/редактирования скаляров фильма (POST/PATCH /admin/films). */
 export const AdminFilmForm = ({ mode, initial }: TAdminFilmFormProps) => {
   const router = useRouter();
   const [form, setForm] = useState<TCreateFilmRequest>(() => toForm(initial));

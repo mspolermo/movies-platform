@@ -8,6 +8,7 @@ import type {
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
+import { Sequelize } from "sequelize-typescript";
 
 import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
 
@@ -21,7 +22,9 @@ import { User } from "../models";
 export class UsersAdminService {
   constructor(
     @InjectModel(User) private readonly userRepository: typeof User,
-    private readonly rolesService: RolesService
+    @InjectModel(Role) private readonly roleRepository: typeof Role,
+    private readonly rolesService: RolesService,
+    private readonly sequelize: Sequelize
   ) {}
 
   /** Пагинированный список пользователей с ролями. */
@@ -50,13 +53,12 @@ export class UsersAdminService {
   /**
    * Назначает пользователю единственную роль (`$set`).
    * Инвариант: нельзя снять роль ADMIN с последнего администратора → 409 (ADR-005).
+   * Demote сериализуется через `FOR UPDATE` на строке роли ADMIN + пользователе.
    */
   async setUserRole(
     id: number,
     data: TUpdateUserRoleRequest
   ): Promise<TAdminUserItemResponse> {
-    const user = await this.findUserOrFail(id);
-
     const role = await this.rolesService.getRoleByValue(data.role);
     if (!role) {
       throw new RpcException({
@@ -65,56 +67,63 @@ export class UsersAdminService {
       });
     }
 
-    const isAdminNow = (user.roles ?? []).some(
-      (userRole) => userRole.value === "ADMIN"
-    );
+    return this.sequelize.transaction(async (transaction) => {
+      const user = await this.userRepository.findOne({
+        where: { id },
+        include: [{ model: Role, through: { attributes: [] } }],
+        lock: transaction.LOCK.UPDATE,
+        transaction,
+      });
 
-    if (isAdminNow && data.role !== "ADMIN") {
-      const adminsCount = await this.countAdmins();
-
-      if (adminsCount <= 1) {
+      if (!user) {
         throw new RpcException({
-          statusCode: HttpStatus.CONFLICT,
-          message: "Нельзя снять роль ADMIN с последнего администратора",
+          statusCode: HttpStatus.NOT_FOUND,
+          message: "Пользователь не найден",
         });
       }
-    }
 
-    await user.$set("roles", [role.id]);
+      const isAdminNow = (user.roles ?? []).some(
+        (userRole) => userRole.value === "ADMIN"
+      );
 
-    // Перечитываем с ролями — $set не обновляет загруженную связь
-    const updated = await this.findUserOrFail(id);
-    return toAdminUserItem(updated);
-  }
-
-  /** Пользователь по id (с ролями) или RpcException 404. */
-  private async findUserOrFail(id: number): Promise<User> {
-    const user = await this.userRepository.findOne({
-      where: { id },
-      include: [{ model: Role, through: { attributes: [] } }],
-    });
-
-    if (!user) {
-      throw new RpcException({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: "Пользователь не найден",
-      });
-    }
-
-    return user;
-  }
-
-  /** Количество пользователей с ролью ADMIN. */
-  private async countAdmins(): Promise<number> {
-    return this.userRepository.count({
-      include: [
-        {
-          model: Role,
+      if (isAdminNow && data.role !== "ADMIN") {
+        // Блокируем строку роли ADMIN — параллельные demote не проскочат оба
+        await this.roleRepository.findOne({
           where: { value: "ADMIN" },
-          through: { attributes: [] },
-        },
-      ],
-      distinct: true,
+          lock: transaction.LOCK.UPDATE,
+          transaction,
+        });
+
+        const adminsCount = await this.userRepository.count({
+          include: [
+            {
+              model: Role,
+              where: { value: "ADMIN" },
+              through: { attributes: [] },
+            },
+          ],
+          distinct: true,
+          transaction,
+        });
+
+        if (adminsCount <= 1) {
+          throw new RpcException({
+            statusCode: HttpStatus.CONFLICT,
+            message: "Нельзя снять роль ADMIN с последнего администратора",
+          });
+        }
+      }
+
+      await user.$set("roles", [role.id], { transaction });
+
+      // Перечитываем с ролями — $set не обновляет загруженную связь
+      const updated = await this.userRepository.findOne({
+        where: { id },
+        include: [{ model: Role, through: { attributes: [] } }],
+        transaction,
+      });
+
+      return toAdminUserItem(updated!);
     });
   }
 }

@@ -28,19 +28,19 @@ import type {
   TAdminFilmsListResponse,
   TAdminUpdateFilmRpcRequest,
   TCreateFilmRequest,
-  TGenreAdminItemResponse,
+  TAdminGenreItemResponse,
   TAdminGenresListResponse,
   TAdminUpdateGenreRpcRequest,
   TCreateGenreRequest,
-  TCountryAdminItemResponse,
+  TAdminCountryItemResponse,
   TAdminCountriesListResponse,
   TAdminUpdateCountryRpcRequest,
   TCreateCountryRequest,
-  TProfessionAdminItemResponse,
+  TAdminProfessionItemResponse,
   TAdminProfessionsListResponse,
   TAdminUpdateProfessionRpcRequest,
   TCreateProfessionRequest,
-  TPersonAdminItemResponse,
+  TAdminPersonItemResponse,
   TAdminPersonsListResponse,
   TAdminUpdatePersonRpcRequest,
   TCreatePersonRequest,
@@ -224,11 +224,11 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.admin.genres.create]: {
     request: TCreateGenreRequest;
-    response: TGenreAdminItemResponse;
+    response: TAdminGenreItemResponse;
   };
   [kinoDbRpc.admin.genres.update]: {
     request: TAdminUpdateGenreRpcRequest;
-    response: TGenreAdminItemResponse;
+    response: TAdminGenreItemResponse;
   };
   [kinoDbRpc.admin.genres.delete]: {
     request: number;
@@ -240,11 +240,11 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.admin.countries.create]: {
     request: TCreateCountryRequest;
-    response: TCountryAdminItemResponse;
+    response: TAdminCountryItemResponse;
   };
   [kinoDbRpc.admin.countries.update]: {
     request: TAdminUpdateCountryRpcRequest;
-    response: TCountryAdminItemResponse;
+    response: TAdminCountryItemResponse;
   };
   [kinoDbRpc.admin.countries.delete]: {
     request: number;
@@ -256,11 +256,11 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.admin.professions.create]: {
     request: TCreateProfessionRequest;
-    response: TProfessionAdminItemResponse;
+    response: TAdminProfessionItemResponse;
   };
   [kinoDbRpc.admin.professions.update]: {
     request: TAdminUpdateProfessionRpcRequest;
-    response: TProfessionAdminItemResponse;
+    response: TAdminProfessionItemResponse;
   };
   [kinoDbRpc.admin.professions.delete]: {
     request: number;
@@ -272,15 +272,15 @@ export type TKinoDbRpcContract = {
   };
   [kinoDbRpc.admin.persons.getById]: {
     request: number;
-    response: TPersonAdminItemResponse;
+    response: TAdminPersonItemResponse;
   };
   [kinoDbRpc.admin.persons.create]: {
     request: TCreatePersonRequest;
-    response: TPersonAdminItemResponse;
+    response: TAdminPersonItemResponse;
   };
   [kinoDbRpc.admin.persons.update]: {
     request: TAdminUpdatePersonRpcRequest;
-    response: TPersonAdminItemResponse;
+    response: TAdminPersonItemResponse;
   };
   [kinoDbRpc.admin.persons.delete]: {
     request: number;

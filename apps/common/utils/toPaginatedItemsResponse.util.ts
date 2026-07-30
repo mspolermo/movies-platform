@@ -1,6 +1,5 @@
 import type { TPaginatedItemsResponse } from "@common/types";
 
-/** Собирает единый `{ items } & TPaginationMeta`. */
 export function toPaginatedItemsResponse<TItem>(
   items: TItem[],
   total: number,

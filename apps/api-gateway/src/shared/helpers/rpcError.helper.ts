@@ -83,3 +83,8 @@ export function throwHttpFromRpcError(error: unknown): never {
 
   throw new HttpException({ statusCode, message }, statusCode);
 }
+
+/** `await` RMQ-вызова; ошибку маппит в HttpException. */
+export function fromRpc<T>(promise: Promise<T>): Promise<T> {
+  return promise.catch((error: unknown) => throwHttpFromRpcError(error));
+}

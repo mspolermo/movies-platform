@@ -2,11 +2,11 @@ import type { TAdminListRequest } from "@common/types";
 
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsInt, IsOptional, IsString, Max, Min } from "class-validator";
+import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from "class-validator";
 
 import { LIST_MAX_LIMIT } from "@common/constants";
 
-/** Query-параметры admin-списков: пагинация + поиск (`q` — films/persons). */
+/** Query-параметры admin-списков: пагинация + поиск (`q` — films/persons/countries/genres). */
 export class AdminListQueryDto implements TAdminListRequest {
   @ApiPropertyOptional({ description: "Номер страницы", example: 1 })
   @IsOptional()
@@ -26,5 +26,6 @@ export class AdminListQueryDto implements TAdminListRequest {
   @ApiPropertyOptional({ description: "Поисковая строка (по name-полям)" })
   @IsOptional()
   @IsString()
+  @MaxLength(200)
   q?: string;
 }

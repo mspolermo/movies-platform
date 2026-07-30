@@ -34,8 +34,9 @@
 - Access token — module-scope memory (`session/accessToken`), **не** localStorage / не zustand.
 - Zustand — один store `useUserStore` (`entities/user`); не складывать туда токены.
 - Пагинация/infinite — `usePaginatedResource` + feature-hooks (`useLoadMoreFilms`, `useFilmComments`, …).
+- Debounce значений — `useDebouncedValue` (`shared/lib/hooks`); admin search `q` — через него.
 - Auth/session layout, proxy, ESLint dual-entry — [ADR-001](../adr/001-jwt-access-opaque-refresh.md).
-- Admin B2C `/admin/*` — [ADR-005](../adr/005-admin-in-b2c.md): `pages/AdminRootLayout` gate (soft-404 = `NotFoundPage` UI через `shared/ui/NotFoundView`) + `AdminLayout` shell + `manage*` stubs; `API_ENDPOINTS.ADMIN` forward; stubs **не** вызывают `apiClient`; proxy `/admin/:path*`.
+- Admin B2C `/admin/*` — [ADR-005](../adr/005-admin-in-b2c.md) + [ADR-007](../adr/007-admin-be-implementation.md): gate + `AdminLayout` + `manage*` на реальном `/admin/*`; серверный `q` для films/persons/countries/genres; professions — `filterByQuery` (маленький словарь).
 - Server Actions сейчас: только `getCountriesList`, `getGenresList`, `getFilmsFilters`.
 
 ## Типы

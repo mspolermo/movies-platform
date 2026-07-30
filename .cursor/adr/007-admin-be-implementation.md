@@ -13,14 +13,14 @@ ADR-005 зафиксировал FE-стабы админки и целевой 
 ### Пагинация всех admin-списков (отклонение от ADR-005)
 
 - Все admin-list ответы — `TPaginatedItemsResponse<T*AdminItemResponse>` (`items` + `total/page/perPage/hasMore` из `@common/types/shared/meta`), а не plain-массивы из таблицы ADR-005.
-- Параметры: `page` / `perPage` (default 50, максимум 100) + `q` для films/persons (iLike по name-полям, серверный поиск). Нормализация — `toAdminListParams` (`apps/common/utils`).
-- `toPaginatedItemsResponse` перенесён из kino-db в `apps/common/utils` (нужен и auth-users); попутно исправлена опечатка `Iems` → `Items`.
-- FE: `usePaginatedResource` + `LoadMoreSection`; для films/persons — debounce 300ms и `resetDeps` по `q`.
+- Параметры: `page` / `perPage` (default 50, максимум 100) + `q` для films/persons/countries/genres (iLike по name-полям, серверный поиск). Нормализация — `toAdminListParams` (`apps/common/utils`). Профессии — клиентский `filterByQuery` (словарь ~9 записей).
+- `toPaginatedItemsResponse` / `toILikeContains` — в `apps/common/utils`; `rethrowUniqueAsConflict` — в `kino-db/src/common/utils` (Nest+Sequelize). `toILikeContains` вырезает `%`/`_`; после санитизации пусто → пустой список (не `ILIKE '%%'`).
+- FE: `usePaginatedResource` + `LoadMoreSection` + `useDebouncedValue` (300ms) и `resetDeps` по `q`.
 
 ### Формат RPC-ошибок MS → gateway
 
 - Admin-хендлеры MS бросают `RpcException({ statusCode, message })`.
-- Gateway: helper `throwHttpFromRpcError` (`api-gateway/src/shared/helpers/rpc-error.helper.ts`) перебрасывает `HttpException`; понимает **оба** формата — payload `RpcException` (`statusCode`) и сериализованный `HttpException` (`status` / `response.statusCode`); fallback 500. Без парсинга фраз.
+- Gateway: helper `throwHttpFromRpcError` / `fromRpc` (`api-gateway/src/shared/helpers/rpcError.helper.ts`) перебрасывает `HttpException`; понимает **оба** формата — payload `RpcException` (`statusCode`) и сериализованный `HttpException` (`status` / `response.statusCode`); fallback 500. Без парсинга фраз.
 - Отсутствующий id в `getById`/`update`/`delete` → `RpcException 404` → `NotFoundException` (не `null` с 200); на FE `getFilmById` маппит 404 → `null` (контракт хука формы).
 
 ### Delete-стратегия (mixed)
@@ -36,7 +36,7 @@ ADR-005 зафиксировал FE-стабы админки и целевой 
 
 - Только 3 роли из посева: `USER`, `ADMIN`, `MANAGER` (`TAppRole`); админка лишь назначает одну активную роль пользователю (`$set`).
 - Orphan `authUsersRpc.roles.create` + handler + `CreateRoleDto` удалены (закрывает B6); `RolesService.getRoleByValue` остаётся.
-- Инвариант последнего ADMIN: снятие роли ADMIN с последнего администратора → `RpcException 409`. Гонка конкурентных PATCH не закрывается (перебор для админки).
+- Инвариант последнего ADMIN: снятие роли ADMIN с последнего администратора → `RpcException 409`. Demote сериализуется через `FOR UPDATE` на строке роли ADMIN + пользователе.
 
 ### Канон структуры модулей MS (kino-db layout)
 

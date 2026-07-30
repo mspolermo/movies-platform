@@ -22,7 +22,6 @@ import { AdminListQueryDto, CreateFilmDto, UpdateFilmDto } from "@common/dto";
 import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
 import { AdminFilmsService } from "../services";
 
-/** Admin CRUD фильмов; только роль ADMIN (ADR-005). */
 @Controller("admin/films")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles("ADMIN")

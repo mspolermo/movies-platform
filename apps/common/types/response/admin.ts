@@ -12,22 +12,25 @@ import type { TAppRole } from "../request/admin";
 export type TAdminFilmItemResponse = Pick<TFilmEntity, "id"> & TAdminFilmFields;
 
 /** Жанр для админского CRUD (с id). */
-export type TGenreAdminItemResponse = Pick<
+export type TAdminGenreItemResponse = Pick<
   TGenreEntity,
   "id" | "nameRu" | "nameEn"
 >;
 
 /** Страна для админского CRUD (с id). */
-export type TCountryAdminItemResponse = Pick<
+export type TAdminCountryItemResponse = Pick<
   TCountryEntity,
   "id" | "countryName" | "countryNameEn"
 >;
 
-/** Профессия для админки (алиас публичного элемента с id). */
-export type TProfessionAdminItemResponse = Pick<TProfessionEntity, "id" | "name">;
+/** Профессия для админки (с id). */
+export type TAdminProfessionItemResponse = Pick<
+  TProfessionEntity,
+  "id" | "name"
+>;
 
 /** Персона в админке: поля и professionIds для формы записи/чтения. */
-export type TPersonAdminItemResponse = Pick<
+export type TAdminPersonItemResponse = Pick<
   TPersonEntity,
   "id" | "photoUrl" | "nameRu" | "nameEn"
 > & {
@@ -50,19 +53,19 @@ export type TAdminFilmsListResponse =
 
 /** Пагинированный список жанров (админка). */
 export type TAdminGenresListResponse =
-  TPaginatedItemsResponse<TGenreAdminItemResponse>;
+  TPaginatedItemsResponse<TAdminGenreItemResponse>;
 
 /** Пагинированный список стран (админка). */
 export type TAdminCountriesListResponse =
-  TPaginatedItemsResponse<TCountryAdminItemResponse>;
+  TPaginatedItemsResponse<TAdminCountryItemResponse>;
 
 /** Пагинированный список профессий (админка). */
 export type TAdminProfessionsListResponse =
-  TPaginatedItemsResponse<TProfessionAdminItemResponse>;
+  TPaginatedItemsResponse<TAdminProfessionItemResponse>;
 
 /** Пагинированный список персон (админка). */
 export type TAdminPersonsListResponse =
-  TPaginatedItemsResponse<TPersonAdminItemResponse>;
+  TPaginatedItemsResponse<TAdminPersonItemResponse>;
 
 /** Пагинированный список пользователей (админка). */
 export type TAdminUsersListResponse =

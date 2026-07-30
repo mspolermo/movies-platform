@@ -20,11 +20,6 @@ import {
   AdminUsersService,
 } from "./services";
 
-/**
- * Admin-панель (/admin/*, ADR-005): CRUD фильмов и справочников kino-db,
- * роли пользователей auth-users. Доступ — JwtAuthGuard + RolesGuard(ADMIN).
- * RmqModule — @Global, JwtConfigModule экспортирует guards и UserRolesService.
- */
 @Module({
   imports: [JwtConfigModule],
   controllers: [

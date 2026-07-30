@@ -10,7 +10,6 @@ import styles from './AdminFilmsList.module.scss';
 import { deleteFilm } from '../../api';
 import { useAdminFilms } from '../../lib';
 
-/** Список фильмов админки: серверный поиск, переход в форму, подтверждение удаления. */
 export const AdminFilmsList = () => {
   const router = useRouter();
   const panel = useAdminCrudPanel<TAdminFilmItemResponse>();

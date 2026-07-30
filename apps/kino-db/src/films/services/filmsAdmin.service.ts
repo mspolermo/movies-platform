@@ -13,14 +13,17 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Op } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 
-import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
+import {
+  toAdminListParams,
+  toILikeContains,
+  toPaginatedItemsResponse,
+} from "@common/utils";
 
 import { CommentLike } from "../../comments/models/commentLike.model";
 import { Comment } from "../../comments/models/comments.model";
 import { mapFilmToAdminItem } from "../mappers";
 import { Fact, Film, FilmCountry, FilmGenre, FilmPerson } from "../models";
 
-/** Admin CRUD скаляров фильма (ADR-005/ADR-007). */
 @Injectable()
 export class FilmsAdminService {
   constructor(
@@ -38,15 +41,19 @@ export class FilmsAdminService {
     private readonly sequelize: Sequelize
   ) {}
 
-  /** Пагинированный список фильмов с опциональным поиском по названиям. */
   async listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
     const { page, perPage, offset, q } = toAdminListParams(request);
 
-    const where = q
+    const like = q ? toILikeContains(q) : undefined;
+    if (q && !like) {
+      return toPaginatedItemsResponse([], 0, page, perPage);
+    }
+
+    const where = like
       ? {
           [Op.or]: [
-            { filmNameRu: { [Op.iLike]: `%${q}%` } },
-            { filmNameEn: { [Op.iLike]: `%${q}%` } },
+            { filmNameRu: { [Op.iLike]: like } },
+            { filmNameEn: { [Op.iLike]: like } },
           ],
         }
       : undefined;
@@ -66,13 +73,11 @@ export class FilmsAdminService {
     );
   }
 
-  /** Фильм по id; 404 если не найден. */
   async getFilmById(id: number): Promise<TAdminFilmItemResponse> {
     const film = await this.findFilmOrFail(id);
     return mapFilmToAdminItem(film);
   }
 
-  /** Создание фильма (только скаляры entity). */
   async createFilm(dto: TCreateFilmRequest): Promise<TAdminFilmItemResponse> {
     const film = await this.filmRepository.create(
       this.toWriteValues(dto) as TFilmCreationAtt
@@ -80,7 +85,6 @@ export class FilmsAdminService {
     return mapFilmToAdminItem(film);
   }
 
-  /** Частичное обновление; `null` в поле — очистить значение. */
   async updateFilm(
     id: number,
     data: TUpdateFilmRequest
@@ -136,7 +140,6 @@ export class FilmsAdminService {
     return true;
   }
 
-  /** Фильм по id или RpcException 404. */
   private async findFilmOrFail(id: number): Promise<Film> {
     const film = await this.filmRepository.findByPk(id);
 
@@ -150,7 +153,6 @@ export class FilmsAdminService {
     return film;
   }
 
-  /** Скаляры запроса → значения модели (ISO string даты → Date; null — очистка). */
   private toWriteValues(
     data: TCreateFilmRequest | TUpdateFilmRequest
   ): Record<string, unknown> {

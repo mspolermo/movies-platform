@@ -2,64 +2,40 @@ import type {
   TAdminListRequest,
   TAdminPersonsListResponse,
   TCreatePersonRequest,
-  TPersonAdminItemResponse,
+  TAdminPersonItemResponse,
   TUpdatePersonRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
 
-import { throwHttpFromRpcError } from "../../shared";
+import { fromRpc } from "../../shared";
 import { AdminKinoDbClient } from "../clients";
 
-/** Admin CRUD персон: делегирует в kino-db, RPC-ошибки → HttpException. */
+/** Admin CRUD персон (kino-db RPC). */
 @Injectable()
 export class AdminPersonsService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  async listPersons(
-    request: TAdminListRequest
-  ): Promise<TAdminPersonsListResponse> {
-    try {
-      return await this.client.listPersons(request);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  listPersons(request: TAdminListRequest): Promise<TAdminPersonsListResponse> {
+    return fromRpc(this.client.listPersons(request));
   }
 
-  async getPersonById(id: number): Promise<TPersonAdminItemResponse> {
-    try {
-      return await this.client.getPersonById(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  getPersonById(id: number): Promise<TAdminPersonItemResponse> {
+    return fromRpc(this.client.getPersonById(id));
   }
 
-  async createPerson(
-    dto: TCreatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
-    try {
-      return await this.client.createPerson(dto);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  createPerson(dto: TCreatePersonRequest): Promise<TAdminPersonItemResponse> {
+    return fromRpc(this.client.createPerson(dto));
   }
 
-  async updatePerson(
+  updatePerson(
     id: number,
     data: TUpdatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
-    try {
-      return await this.client.updatePerson(id, data);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  ): Promise<TAdminPersonItemResponse> {
+    return fromRpc(this.client.updatePerson(id, data));
   }
 
-  async deletePerson(id: number): Promise<true> {
-    try {
-      return await this.client.deletePerson(id);
-    } catch (error) {
-      throwHttpFromRpcError(error);
-    }
+  deletePerson(id: number): Promise<true> {
+    return fromRpc(this.client.deletePerson(id));
   }
 }

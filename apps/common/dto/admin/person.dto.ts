@@ -8,7 +8,6 @@ import { IsArray, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 import { OptionalNullable, OptionalStrict } from "./decorators";
 
-/** Создание персоны + professionIds (админка). */
 export class CreatePersonDto implements TCreatePersonRequest {
   @ApiProperty({ description: "Имя на русском" })
   @IsString()
@@ -30,7 +29,6 @@ export class CreatePersonDto implements TCreatePersonRequest {
   professionIds!: number[];
 }
 
-/** Частичное обновление персоны; `photoUrl: null` — очистить фото (ADR-007). */
 export class UpdatePersonDto implements TUpdatePersonRequest {
   @ApiPropertyOptional({ description: "Имя на русском" })
   @OptionalStrict()

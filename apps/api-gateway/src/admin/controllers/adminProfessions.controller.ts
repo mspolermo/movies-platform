@@ -1,6 +1,6 @@
 import type {
   TAdminProfessionsListResponse,
-  TProfessionAdminItemResponse,
+  TAdminProfessionItemResponse,
 } from "@common/types";
 
 import {
@@ -26,7 +26,6 @@ import {
 import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
 import { AdminProfessionsService } from "../services";
 
-/** Admin CRUD профессий; только роль ADMIN (ADR-005). */
 @Controller("admin/professions")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles("ADMIN")
@@ -51,7 +50,7 @@ export class AdminProfessionsController {
   @Post()
   createProfession(
     @Body() dto: CreateProfessionDto
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.adminProfessionsService.createProfession(dto);
   }
 
@@ -63,7 +62,7 @@ export class AdminProfessionsController {
   updateProfession(
     @Param("id", ParseIntPipe) id: number,
     @Body() dto: UpdateProfessionDto
-  ): Promise<TProfessionAdminItemResponse> {
+  ): Promise<TAdminProfessionItemResponse> {
     return this.adminProfessionsService.updateProfession(id, dto);
   }
 

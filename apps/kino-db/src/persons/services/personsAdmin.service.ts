@@ -2,17 +2,21 @@ import type {
   TAdminListRequest,
   TAdminPersonsListResponse,
   TCreatePersonRequest,
-  TPersonAdminItemResponse,
+  TAdminPersonItemResponse,
   TUpdatePersonRequest,
 } from "@common/types";
 
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
-import { Op } from "sequelize";
+import { Op, Transaction } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 
-import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
+import {
+  toAdminListParams,
+  toILikeContains,
+  toPaginatedItemsResponse,
+} from "@common/utils";
 
 import { FilmPerson } from "../../films/models";
 import { Profession } from "../../professions/models";
@@ -39,11 +43,16 @@ export class PersonsAdminService {
   ): Promise<TAdminPersonsListResponse> {
     const { page, perPage, offset, q } = toAdminListParams(request);
 
-    const where = q
+    const like = q ? toILikeContains(q) : undefined;
+    if (q && !like) {
+      return toPaginatedItemsResponse([], 0, page, perPage);
+    }
+
+    const where = like
       ? {
           [Op.or]: [
-            { nameRu: { [Op.iLike]: `%${q}%` } },
-            { nameEn: { [Op.iLike]: `%${q}%` } },
+            { nameRu: { [Op.iLike]: like } },
+            { nameEn: { [Op.iLike]: like } },
           ],
         }
       : undefined;
@@ -67,47 +76,65 @@ export class PersonsAdminService {
   }
 
   /** Персона по id (с professionIds); 404 если не найдена. */
-  async getPersonById(id: number): Promise<TPersonAdminItemResponse> {
+  async getPersonById(id: number): Promise<TAdminPersonItemResponse> {
     const person = await this.findPersonOrFail(id);
     return mapPersonToAdminItem(person);
   }
 
-  /** Создание персоны + привязка профессий. */
+  /** Создание персоны + привязка профессий (одна транзакция). */
   async createPerson(
     dto: TCreatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     await this.ensureProfessionsExist(dto.professionIds);
 
-    const person = await this.personRepository.create({
-      nameRu: dto.nameRu,
-      nameEn: dto.nameEn,
-      photoUrl: dto.photoUrl,
+    const personId = await this.sequelize.transaction(async (transaction) => {
+      const person = await this.personRepository.create(
+        {
+          nameRu: dto.nameRu,
+          nameEn: dto.nameEn,
+          photoUrl: dto.photoUrl,
+        },
+        { transaction }
+      );
+      await person.$set("professions", dto.professionIds, { transaction });
+      return person.id;
     });
-    await person.$set("professions", dto.professionIds);
 
-    return this.getPersonById(person.id);
+    return this.getPersonById(personId);
   }
 
-  /** Частичное обновление персоны; `photoUrl: null` — очистить; sync профессий через $set. */
+  /** Частичное обновление персоны; `photoUrl: null` — очистить; scalars + профессии в одной tx. */
   async updatePerson(
     id: number,
     data: TUpdatePersonRequest
-  ): Promise<TPersonAdminItemResponse> {
-    const person = await this.findPersonOrFail(id);
-
+  ): Promise<TAdminPersonItemResponse> {
     const { professionIds, ...scalars } = data;
 
     if (professionIds !== undefined) {
       await this.ensureProfessionsExist(professionIds);
     }
 
-    if (Object.keys(scalars).length > 0) {
-      await person.update(scalars as Partial<Person>);
-    }
+    await this.sequelize.transaction(async (transaction) => {
+      const person = await this.personRepository.findByPk(id, {
+        transaction,
+        lock: Transaction.LOCK.UPDATE,
+      });
 
-    if (professionIds !== undefined) {
-      await person.$set("professions", professionIds);
-    }
+      if (!person) {
+        throw new RpcException({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: "Персона не найдена",
+        });
+      }
+
+      if (Object.keys(scalars).length > 0) {
+        await person.update(scalars as Partial<Person>, { transaction });
+      }
+
+      if (professionIds !== undefined) {
+        await person.$set("professions", professionIds, { transaction });
+      }
+    });
 
     return this.getPersonById(id);
   }

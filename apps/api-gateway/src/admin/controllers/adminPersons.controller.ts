@@ -1,6 +1,6 @@
 import type {
   TAdminPersonsListResponse,
-  TPersonAdminItemResponse,
+  TAdminPersonItemResponse,
 } from "@common/types";
 
 import {
@@ -26,7 +26,6 @@ import {
 import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
 import { AdminPersonsService } from "../services";
 
-/** Admin CRUD персон; только роль ADMIN (ADR-005). */
 @Controller("admin/persons")
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles("ADMIN")
@@ -49,7 +48,7 @@ export class AdminPersonsController {
   @Get("/:id")
   getPersonById(
     @Param("id", ParseIntPipe) id: number
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.adminPersonsService.getPersonById(id);
   }
 
@@ -59,7 +58,7 @@ export class AdminPersonsController {
   @Post()
   createPerson(
     @Body() dto: CreatePersonDto
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.adminPersonsService.createPerson(dto);
   }
 
@@ -72,7 +71,7 @@ export class AdminPersonsController {
   updatePerson(
     @Param("id", ParseIntPipe) id: number,
     @Body() dto: UpdatePersonDto
-  ): Promise<TPersonAdminItemResponse> {
+  ): Promise<TAdminPersonItemResponse> {
     return this.adminPersonsService.updatePerson(id, dto);
   }
 

@@ -20,7 +20,6 @@ const ROLE_OPTIONS = [
 const isAppRole = (value: string): value is TAppRole =>
   value === 'ADMIN' || value === 'USER' || value === 'MANAGER';
 
-/** Таблица пользователей и смена роли (PATCH /admin/users/:id). */
 export const AdminUsersPanel = () => {
   const users = useAdminUsers();
   const [pendingId, setPendingId] = useState<number | null>(null);

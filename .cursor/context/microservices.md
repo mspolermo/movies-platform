@@ -31,7 +31,7 @@
 ## Ошибки RPC (ADR-007)
 
 - MS в admin/новых хендлерах бросают `RpcException({ statusCode, message })` — не HttpException.
-- Gateway переводит через `throwHttpFromRpcError` (`api-gateway/src/shared/helpers`) — понимает оба формата (payload `statusCode` и сериализованный `HttpException`), fallback 500; фразы не парсить.
+- Gateway: `fromRpc` / `throwHttpFromRpcError` (`api-gateway/src/shared/helpers/rpcError.helper.ts`) — оба формата (`statusCode` и сериализованный `HttpException`), fallback 500; фразы не парсить.
 - Отсутствующий id → `RpcException 404` (не `null` с успешным ответом).
 
 ## Resilience (ожидание)
