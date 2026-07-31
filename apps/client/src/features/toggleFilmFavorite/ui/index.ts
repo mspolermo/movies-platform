@@ -1,0 +1,1 @@
+export { FilmFavoriteProvider } from './FilmFavoriteProvider';

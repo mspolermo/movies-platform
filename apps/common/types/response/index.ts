@@ -46,6 +46,18 @@ export type {
 } from "./auth";
 
 export type {
+  TUserFavoriteItemResponse,
+  TUserFilmRatingItemResponse,
+  TMyFavoritesResponse,
+  TMyFilmRatingsResponse,
+  TToggleFavoriteResponse,
+  TUpsertFilmRatingResponse,
+  TDeleteFilmRatingResponse,
+  TMyFavoriteIdsResponse,
+  TMyFilmRatingGradesResponse,
+} from "./userFilmPrefs";
+
+export type {
   TAdminFilmItemResponse,
   TAdminGenreItemResponse,
   TAdminCountryItemResponse,

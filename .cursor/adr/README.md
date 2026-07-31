@@ -43,3 +43,4 @@
 | [005](./005-admin-in-b2c.md) | Admin в B2C (`/admin/*`): FE stubs + контракт BE | Accepted |
 | [006](./006-no-oauth.md) | Без OAuth (email/password JWT) | Accepted |
 | [007](./007-admin-be-implementation.md) | Реализация Admin BE (F1 BE + B5): пагинация, RPC-ошибки, delete-стратегия, RBAC | Accepted |
+| [008](./008-user-film-prefs-auth-users.md) | User–film prefs (favorites + ratings) в auth-users | Accepted |

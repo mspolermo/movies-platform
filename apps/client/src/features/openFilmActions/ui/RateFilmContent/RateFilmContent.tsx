@@ -7,13 +7,20 @@ import cn from 'classnames';
 import styles from './RateFilmContent.module.scss';
 
 const GRADES = Array.from({ length: 10 }, (_, index) => index + 1);
+/** sync FILM_USER_GRADE_BAD_MAX (@common/constants) */
 const BAD_GRADE_MAX = 6;
 
 /**
  * Шкала оценки 1–10.
  * 1–6 — красный hover, 7–10 — зелёный.
  */
-export const RateFilmContent = ({ onSelect }: TRateFilmContentProps) => {
+export const RateFilmContent = ({
+  onSelect,
+  selectedGrade = null,
+  onDelete,
+  error = null,
+  isSubmitting = false,
+}: TRateFilmContentProps) => {
   return (
     <div className={styles.root}>
       <p className={styles.hint}>Оценки улучшают рекомендации</p>
@@ -24,10 +31,13 @@ export const RateFilmContent = ({ onSelect }: TRateFilmContentProps) => {
             <button
               key={grade}
               aria-label={`Оценка ${grade}`}
+              aria-pressed={selectedGrade === grade}
               className={cn(
                 styles.score,
-                grade <= BAD_GRADE_MAX ? styles.scoreBad : styles.scoreGood
+                grade <= BAD_GRADE_MAX ? styles.scoreBad : styles.scoreGood,
+                selectedGrade === grade && styles.scoreSelected
               )}
+              disabled={isSubmitting}
               type="button"
               onClick={() => onSelect(grade)}
             >
@@ -41,6 +51,19 @@ export const RateFilmContent = ({ onSelect }: TRateFilmContentProps) => {
           <span className={styles.label}>отлично</span>
         </div>
       </div>
+
+      {selectedGrade != null && onDelete ? (
+        <button
+          className={styles.deleteButton}
+          disabled={isSubmitting}
+          type="button"
+          onClick={onDelete}
+        >
+          Удалить оценку
+        </button>
+      ) : null}
+
+      {error ? <p className={styles.error}>{error}</p> : null}
     </div>
   );
 };

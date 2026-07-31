@@ -1,10 +1,12 @@
 import type { TSubmitFilmGradeParams } from '../../../model';
+import type { TUpsertFilmRatingResponse } from '@common/types';
 
-import { debugStubLog } from '@/shared/lib';
+import { upsertFilmRating } from '@/entities/film';
 
-/**
- * Заглушка отправки оценки. Позже заменить на API.
- */
-export const submitFilmGrade = ({ filmId, grade }: TSubmitFilmGradeParams): void => {
-  debugStubLog('[openFilmActions] submitFilmGrade', { filmId, grade });
+/** Отправить или обновить оценку фильма. */
+export const submitFilmGrade = async ({
+  filmId,
+  grade,
+}: TSubmitFilmGradeParams): Promise<TUpsertFilmRatingResponse> => {
+  return upsertFilmRating(filmId, { grade });
 };

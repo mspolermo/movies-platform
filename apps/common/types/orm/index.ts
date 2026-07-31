@@ -8,3 +8,11 @@ export type { TCommentLikeCreationAtt, TCommentLikeOrmModel } from './comment-li
 export type { TRoleCreationAtt, TRoleOrmModel } from './role';
 export type { TUserCreationAtt, TUserOrmModel } from './user';
 export type { TFilmCreationAtt, TFilmOrmModel } from './film';
+export type {
+  TUserFavoriteCreationAtt,
+  TUserFavoriteOrmModel,
+} from './userFavorite';
+export type {
+  TUserFilmRatingCreationAtt,
+  TUserFilmRatingOrmModel,
+} from './userFilmRating';

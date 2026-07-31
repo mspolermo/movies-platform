@@ -8,3 +8,5 @@ export type { TCommentEntity } from './comment';
 export type { TCommentLikeEntity } from './commentLike';
 export type { TRoleEntity } from './role';
 export type { TUserEntity } from './user';
+export type { TUserFavoriteEntity } from './userFavorite';
+export type { TUserFilmRatingEntity } from './userFilmRating';

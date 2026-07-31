@@ -57,6 +57,18 @@ export const API_ENDPOINTS = {
     LIKE: (commentId: number) => `/comments/${commentId}/like`,
   },
 
+  FAVORITES: {
+    LIST: '/favorites',
+    IDS: '/favorites/ids',
+    TOGGLE: (filmId: number) => `/favorites/${filmId}`,
+  },
+
+  RATINGS: {
+    LIST: '/ratings',
+    GRADES: '/ratings/grades',
+    BY_FILM: (filmId: number) => `/ratings/${filmId}`,
+  },
+
   AUTH: {
     LOGIN: '/auth/login',
     REGISTRATION: '/auth/registration',

@@ -88,6 +88,50 @@
   }
 }
 
+.scoreSelected {
+  color: var(--color-active);
+
+  &.scoreBad {
+    background: var(--color-red);
+  }
+
+  &.scoreGood {
+    background: var(--color-green);
+  }
+}
+
+.deleteButton {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover:not(:disabled) {
+    color: var(--color-heading);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.error {
+  margin: 0;
+  color: var(--color-red);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
 .labels {
   display: flex;
   justify-content: space-between;

@@ -26,6 +26,16 @@
       color: var(--color-red);
       stroke: var(--color-red);
     }
+
+    .iconRateGood {
+      color: var(--color-green);
+      stroke: var(--color-green);
+    }
+
+    .iconRateBad {
+      color: var(--color-red);
+      stroke: var(--color-red);
+    }
   }
 
   &:focus {
@@ -35,6 +45,11 @@
   &:focus-visible {
     outline: 2px solid var(--color-red);
     outline-offset: 2px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
   }
 }
 
@@ -67,6 +82,55 @@
     display: block;
     margin: 0 auto;
   }
+}
+
+.iconRateGood {
+  color: var(--color-green);
+  stroke: var(--color-green);
+  fill: none;
+
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.iconRateBad {
+  color: var(--color-red);
+  stroke: var(--color-red);
+  fill: none;
+
+  svg {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.detailWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.favoriteError {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-red);
+  text-align: center;
 }
 
 .detail {
@@ -111,6 +175,11 @@
     outline: 2px solid var(--color-red);
     outline-offset: 2px;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+  }
 }
 
 .detailActionActive {
@@ -120,6 +189,28 @@
     color: var(--color-red);
     stroke: var(--color-red);
     fill: var(--color-red);
+  }
+
+  .detailLabel {
+    color: var(--color-heading);
+  }
+}
+
+.detailActionRateGood {
+  .detailIcon {
+    color: var(--color-green);
+    stroke: var(--color-green);
+  }
+
+  .detailLabel {
+    color: var(--color-heading);
+  }
+}
+
+.detailActionRateBad {
+  .detailIcon {
+    color: var(--color-red);
+    stroke: var(--color-red);
   }
 
   .detailLabel {

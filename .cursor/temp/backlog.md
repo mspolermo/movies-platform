@@ -27,8 +27,8 @@
 |---|-----|--------|-----|-----------|
 | F1 | **Admin CRUD** фильмов/жанров/… | **done (FE+BE)** | [ADR-005](../adr/005-admin-in-b2c.md) + [ADR-007](../adr/007-admin-be-implementation.md): `/admin/*` на gateway (RolesGuard), admin RPC в kino-db/auth-users, FE без стабов, пагинация всех списков | Порт DOM/Redux-админки; Bearer из localStorage |
 | F2 | **OAuth** Google + VK | **skip** | — | Social login; stub снят ([ADR-006](../adr/006-no-oauth.md)) |
-| F3 | **Избранное / bookmark** | open | Backend entity + RPC + `features/toggleFilmFavorite` (← B12). UI stub в `openFilmActions` ок до API | Fake store без пути к API; «вечный» console.log-stub |
-| F4 | **Оценка фильма 1–10** | open | User ratings entity (← B11) → заменить `submitFilmGrade` stub в `openFilmActions` | GradeBlock DOM-хаки из OLD |
+| F3 | **Избранное / bookmark** | **done** | [ADR-008](../adr/008-user-film-prefs-auth-users.md): auth-users + `toggleFilmFavorite` | — |
+| F4 | **Оценка фильма 1–10** | **done** | [ADR-008](../adr/008-user-film-prefs-auth-users.md): ratings API в `openFilmActions` | — |
 | F5 | Access token только in-memory | **done** | [ADR-001](../adr/001-jwt-access-opaque-refresh.md); hard reload → bootstrap/refresh | JWT в `localStorage` |
 
 ### P1 — Film / Home UX
@@ -36,7 +36,7 @@
 | # | Что | Статус | Как |
 |---|-----|--------|-----|
 | F6 | Share panel | **done** | в `openFilmActions` ([ADR-004](../adr/004-open-film-actions.md)) |
-| F8 | PlayerPanel actions | **done** | card+detail panel в `openFilmActions`; bookmark stub до F3 |
+| F8 | PlayerPanel actions | **done** | card+detail panel в `openFilmActions` + prefs API (ADR-008) |
 | F12 | Promo / hero | **done** | `widgets/PromoBannerSlider` ([ADR-003](../adr/003-home-promo-banner-slider.md)) |
 
 ### P2 — DX
@@ -72,8 +72,8 @@
 | B8 | `GET /auth/checkToken` deprecated | удалить после миграции потребителей | **S** |
 | B9 | Слабое покрытие gateway | только films specs | **S–M** |
 | B10 | Event-driven write-side | `@EventPattern` | **L** |
-| B11 | User ratings как сущность | нужно для F4 | **L** (блокер ratings UI) |
-| B12 | Favorites entity + RPC | нужно для F3 | **M–L** |
+| B11 | ~~User ratings~~ | **закрыт** ADR-008 / F4 | — |
+| B12 | ~~Favorites entity + RPC~~ | **закрыт** ADR-008 / F3 | — |
 
 ### Возможные улучшения
 
@@ -102,7 +102,7 @@
 ```
 1. B1 миграции вместо synchronize          (P0 infra/BE)
 2. ADR: admin?                             (F1 — ADR-005; F2 OAuth — skip, ADR-006)
-3. Favorites + ratings: API                (F3/F4 ← B11/B12)
+3. ~~Favorites + ratings: API~~            done — F3/F4, ADR-008
 4. ~~Admin на RBAC~~                        done — F1+B5+B6, ADR-007
 5. ~~Film UX: share / panel (F6, F8)~~     done — ADR-004
 6. I1 client в compose · F14 smoke · F16 E2E
@@ -117,11 +117,11 @@
 ### Frontend
 - [x] F1 Admin — done FE+BE ([ADR-005](../adr/005-admin-in-b2c.md), [ADR-007](../adr/007-admin-be-implementation.md))
 - [x] F2 OAuth — **не делаем** ([ADR-006](../adr/006-no-oauth.md)); stub удалён
-- [ ] F3 Favorites API (UI stub в `openFilmActions` — временно ок)
-- [ ] F4 Ratings API (вместо `submitFilmGrade` stub)
+- [x] F3 Favorites API — done ([ADR-008](../adr/008-user-film-prefs-auth-users.md), `toggleFilmFavorite`)
+- [x] F4 Ratings API — done ([ADR-008](../adr/008-user-film-prefs-auth-users.md))
 - [x] F5 Access token in-memory — done ([ADR-001](../adr/001-jwt-access-opaque-refresh.md))
 - [x] F6 Share — done (`openFilmActions`, [ADR-004](../adr/004-open-film-actions.md))
-- [x] F8 Panel actions — done (`openFilmActions`, favorite stub)
+- [x] F8 Panel actions — done (`openFilmActions` + prefs API)
 - [x] F12 Promo — done ([ADR-003](../adr/003-home-promo-banner-slider.md))
 - [x] Nested comments — **не делаем** ([ADR-002](../adr/002-flat-film-reviews.md))
 - [x] F7 / F9 / F10 / F11 — **не делаем** (fullscreen trailer, tab-shell, Top-N, mega-menus)
@@ -136,6 +136,6 @@
 - [ ] B3 RMQ timeout/retry/DLQ
 - [x] B5/B6 RBAC / orphan RPC — done (ADR-007)
 - [ ] B8 удалить checkToken
-- [ ] B11/B12 ratings + favorites entities
+- [x] B11/B12 ratings + favorites — done (ADR-008)
 - [ ] I1 Client в compose
 - [ ] I4 CI

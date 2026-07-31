@@ -19,7 +19,7 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | Сервис | Роль | Порт | Транспорт | БД |
 |--------|------|------|-----------|-----|
 | `api-gateway` | HTTP API, JWT verify, cookies, BFF-оркестрация | 5001→5000 | HTTP + RMQ client | — |
-| `auth-users` | Users, roles, JWT sign, refresh rotation | 3001 | HTTP health (+ `GET /roles/:value`) + RMQ | `db2` |
+| `auth-users` | Users, roles, JWT, refresh, favorites/ratings (ADR-008) | 3001 | HTTP health (+ `GET /roles/:value`) + RMQ | `db2` |
 | `kino-db` | Films, persons, dictionaries, comments | 3002 | HTTP health + RMQ | `db` |
 | `rabbitmq` | Очереди `users_queue`, `films_queue` | 5672 / 15672 | AMQP | — |
 
@@ -30,7 +30,7 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | App | Путь | Описание |
 |-----|------|----------|
 | api-gateway | `apps/api-gateway` | Единая HTTP-точка входа |
-| auth-users | `apps/auth-users` | Auth / users / roles |
+| auth-users | `apps/auth-users` | Auth / users / roles / user–film prefs |
 | kino-db | `apps/kino-db` | Контентный домен |
 | client | `apps/client` | Next.js FSD UI |
 | common | `apps/common` | Types, DTO, RMQ, constants (Nest lib) |
@@ -87,6 +87,13 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | GET | `/comments/:filmId` | JWT | Комментарии |
 | POST | `/comments/:filmId` | JWT | Создать комментарий |
 | POST | `/comments/:commentId/like` | JWT | Лайк комментария |
+| GET | `/favorites` | JWT | Избранное (пагинация) |
+| GET | `/favorites/ids` | JWT | Compact filmIds (hydrate панели) |
+| POST | `/favorites/:filmId` | JWT | Toggle избранного (validate film) |
+| GET | `/ratings` | JWT | Оценки пользователя (пагинация) |
+| GET | `/ratings/grades` | JWT | Compact grades (hydrate панели) |
+| PUT | `/ratings/:filmId` | JWT | Upsert 1–10; film 404 → orphan delete + 404 |
+| DELETE | `/ratings/:filmId` | JWT | Удалить оценку |
 | GET/POST | `/admin/films` | ADMIN | Пагинированный список (`?q=`) / создание |
 | GET/PATCH/DELETE | `/admin/films/:id` | ADMIN | Скаляры фильма; DELETE — cascade (ADR-007) |
 | GET/POST | `/admin/genres` | ADMIN | Пагинация + `?q=` / создание (409 дубликат имени) |
@@ -151,6 +158,14 @@ ADMIN = `JwtAuthGuard + RolesGuard + @Roles("ADMIN")`; списки — `TPagina
 | `logout` | users |
 | `admin.users.list` | users (admin) |
 | `admin.users.setRole` | users (admin) |
+| `favorites.toggle` | favorites |
+| `favorites.remove` | favorites (orphan cleanup при film 404) |
+| `favorites.list` | favorites |
+| `favorites.ids` | favorites |
+| `ratings.upsert` | ratings |
+| `ratings.delete` | ratings |
+| `ratings.list` | ratings |
+| `ratings.grades` | ratings |
 
 Orphan `createRole` удалён (B6, ADR-007) — роли только из посева.
 
@@ -165,9 +180,10 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Genres / Countries / Professions | `kino-db/*` | `entities/genre\|country\|profession` | словари |
 | Comments | `kino-db/comments` | `entities/comment`, `features/getFilmComments` | Comment, CommentLike |
 | Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user`, `src/app/providers` | users, roles, refresh_tokens |
+| Favorites / user ratings | `auth-users` + gateway validate film | `toggleFilmFavorite`, `openFilmActions`, `entities/film` api/context; ADR-008 | `user_favorites`, `user_film_ratings` |
 | Search / Filters | gateway aggregation | `features/search*`, `filterFilms` | — |
-| Ratings (KP) | поля Film | `features/openFilmActions` (UI grade stub) | нет user-ratings таблицы |
-| Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004 | favorite stub до F3 |
+| Ratings (KP) | поля Film | ссылка на КП в UI | catalog fields |
+| Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004/008 | — |
 | Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |
 | Admin (B2C) | gateway `src/admin` + `*Admin`-сервисы в kino-db/auth-users (ADR-005/007) | `pages/AdminRootLayout` (gate), `widgets/AdminLayout`, `pages/Admin*`, `features/manage*` (apiClient, без стабов) | seed `admin@gmail.com` в `devops/users-db` |
 
@@ -183,6 +199,8 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Жанры / страны / профессии | `apps/kino-db/src/{genres,countries,professions}` |
 | Авторизация (HTTP) | `apps/api-gateway/src/auth` |
 | Авторизация (логика/JWT) | `apps/auth-users/src/{users,tokens,roles}` |
+| Favorites / Ratings MS | `apps/auth-users/src/{favorites,ratings}` |
+| Favorites / Ratings HTTP | `apps/api-gateway/src/{favorites,ratings}` |
 | JWT guards | `apps/api-gateway/src/jwt` |
 | RMQ контракты | `apps/common/services/rmq/messaging` |
 | Публичные типы | `apps/common/types/{request,response}` |

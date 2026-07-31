@@ -5,6 +5,21 @@ import type {
   TAdminSetUserRoleRpcRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
+  TToggleFavoriteRpcRequest,
+  TRemoveFavoriteRpcRequest,
+  TListFavoritesRpcRequest,
+  TFavoriteIdsRpcRequest,
+  TUpsertFilmRatingRpcRequest,
+  TDeleteFilmRatingRpcRequest,
+  TListFilmRatingsRpcRequest,
+  TFilmRatingGradesRpcRequest,
+  TToggleFavoriteResponse,
+  TMyFavoritesResponse,
+  TMyFavoriteIdsResponse,
+  TUpsertFilmRatingResponse,
+  TDeleteFilmRatingResponse,
+  TMyFilmRatingsResponse,
+  TMyFilmRatingGradesResponse,
 } from "@common/types";
 import type {
   TAuthUsersRpcAuthResponse,
@@ -33,6 +48,19 @@ export const authUsersRpc = {
       list: "admin.users.list",
       setRole: "admin.users.setRole",
     },
+  },
+  /** User–film prefs (ADR-008). */
+  favorites: {
+    toggle: "favorites.toggle",
+    remove: "favorites.remove",
+    list: "favorites.list",
+    ids: "favorites.ids",
+  },
+  ratings: {
+    upsert: "ratings.upsert",
+    delete: "ratings.delete",
+    list: "ratings.list",
+    grades: "ratings.grades",
   },
 } as const;
 
@@ -68,5 +96,37 @@ export type TAuthUsersRpcContract = {
   [authUsersRpc.admin.users.setRole]: {
     request: TAdminSetUserRoleRpcRequest;
     response: TAdminUserItemResponse;
+  };
+  [authUsersRpc.favorites.toggle]: {
+    request: TToggleFavoriteRpcRequest;
+    response: TToggleFavoriteResponse;
+  };
+  [authUsersRpc.favorites.remove]: {
+    request: TRemoveFavoriteRpcRequest;
+    response: TToggleFavoriteResponse;
+  };
+  [authUsersRpc.favorites.list]: {
+    request: TListFavoritesRpcRequest;
+    response: TMyFavoritesResponse;
+  };
+  [authUsersRpc.favorites.ids]: {
+    request: TFavoriteIdsRpcRequest;
+    response: TMyFavoriteIdsResponse;
+  };
+  [authUsersRpc.ratings.upsert]: {
+    request: TUpsertFilmRatingRpcRequest;
+    response: TUpsertFilmRatingResponse;
+  };
+  [authUsersRpc.ratings.delete]: {
+    request: TDeleteFilmRatingRpcRequest;
+    response: TDeleteFilmRatingResponse;
+  };
+  [authUsersRpc.ratings.list]: {
+    request: TListFilmRatingsRpcRequest;
+    response: TMyFilmRatingsResponse;
+  };
+  [authUsersRpc.ratings.grades]: {
+    request: TFilmRatingGradesRpcRequest;
+    response: TMyFilmRatingGradesResponse;
   };
 };

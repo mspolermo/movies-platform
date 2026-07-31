@@ -19,6 +19,7 @@
 - `timestamps: false` на контентных таблицах kino; ручные `createdAt` у Film/Comment/CommentLike. Auth — Sequelize timestamps (кроме `user_roles`).
 - Сейчас `synchronize: true` — **не полагаться** на это в prod; новые изменения схемы фиксировать в seed/SQL и документации.
 - FK users↔comments **нет** (разные БД) — целостность на уровне приложения.
+- FK users↔Film **нет**: `user_favorites` / `user_film_ratings` хранят логический `filmId`; проверка существования фильма — на gateway (ADR-008). Unique `(userId, filmId)`; list-индексы `(userId, createdAt/updatedAt, id)`.
 - Новые seed-шаги — append в `devops/kino-db/seed/` (не править applied SQL «на месте» без необходимости).
 
 ## Индексы и запросы
@@ -38,6 +39,6 @@
 
 **kino:** Film 1—M Fact, Comment; Film N—M Genre/Country/Person; Person N—M Profession; Comment 1—M CommentLike; Comment self-parent.
 
-**users:** User N—M Role; User 1—M RefreshToken.
+**users:** User N—M Role; User 1—M RefreshToken; User 1—M user_favorites / user_film_ratings (`filmId` без FK на kino).
 
 Подробнее: [`../project-index.md`](../project-index.md). Долг схемы: [`../temp/backlog.md`](../temp/backlog.md) (B1).

@@ -2,3 +2,4 @@
 export * from './comment';
 export * from './auth';
 export * from './admin';
+export * from './userFilmPrefs';

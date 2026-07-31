@@ -6,8 +6,8 @@
 
 | Сервис | Владеет |
 |--------|---------|
-| api-gateway | HTTP, auth cookies, JWT verify, агрегация |
-| auth-users | users, roles, JWT sign, refresh_tokens |
+| api-gateway | HTTP, auth cookies, JWT verify, агрегация; film-validate на write prefs |
+| auth-users | users, roles, JWT sign, refresh_tokens, **user_favorites / user_film_ratings** (ADR-008) |
 | kino-db | films, persons, dictionaries, comments |
 
 - Клиент → **только** gateway.

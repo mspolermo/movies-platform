@@ -88,6 +88,30 @@ Access token: только in-memory на клиенте.
 
 ---
 
+## Поток favorites / user ratings (ADR-008)
+
+```
+Write PUT /ratings/:filmId:
+  JWT → gateway getFilmById
+    → ok: ratings.upsert
+    → 404: ratings.delete (orphan cleanup) + HTTP 404
+
+Write POST /favorites/:filmId:
+  JWT → gateway getFilmById
+    → ok: favorites.toggle
+    → 404: favorites.remove (orphan cleanup, без create)
+
+Read compact (панель): GET /favorites/ids | GET /ratings/grades → auth-users
+Read list (профиль later): GET /favorites | GET /ratings (TPaginatedItemsResponse)
+
+DELETE /ratings/:filmId — без validate film (idempotent)
+Path filmId: ParsePositiveIntPipe (>= 1)
+```
+
+Prefs в `db2` (`user_favorites`, `user_film_ratings`); `filmId` без FK на kino.
+
+---
+
 ## Backend-слои (внутри сервиса)
 
 | Слой | Gateway | kino-db / auth-users |

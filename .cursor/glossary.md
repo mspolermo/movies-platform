@@ -31,5 +31,6 @@
 | **synchronize** | Sequelize auto-sync схемы (миграций нет) |
 | **BFF aggregation** | Сборка ответа из нескольких RPC на gateway (filters, search) |
 | **Public / JWT** | Декораторы/guards доступа на gateway |
-| **rateFilm** | UI-фича отображения/оценки; отдельной user-ratings таблицы нет |
+| **user film rating** | Оценка 1–10 в `user_film_ratings` (auth-users, ADR-008); UI — `openFilmActions` |
+| **user favorite** | Избранное в `user_favorites` (auth-users); UI — `toggleFilmFavorite` + panel |
 | **отзыв (comment)** | Плоская запись к `filmId` (`title`+`text`); без `parentId`/тредов. См. [ADR-002](./adr/002-flat-film-reviews.md) |

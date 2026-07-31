@@ -45,7 +45,8 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 8. Действия фильма (rate/share/panel) — одна feature `openFilmActions`; entity context + card actions renderer; без соц-stubs. См. [ADR-004](.cursor/adr/004-open-film-actions.md).
 9. Admin B2C `/admin/*` — реализован FE+BE: gateway `AdminModule` (`JwtAuthGuard + RolesGuard + @Roles("ADMIN")`), admin RPC в kino-db/auth-users, пагинация всех списков. См. [ADR-005](.cursor/adr/005-admin-in-b2c.md) и [ADR-007](.cursor/adr/007-admin-be-implementation.md).
 10. Auth — только email/password JWT; OAuth не делаем. См. [ADR-006](.cursor/adr/006-no-oauth.md).
-11. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
+11. Favorites + user film ratings — в auth-users; compact ids/grades для панели; list для профиля. См. [ADR-008](.cursor/adr/008-user-film-prefs-auth-users.md).
+12. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
 
 ## Не путать
 

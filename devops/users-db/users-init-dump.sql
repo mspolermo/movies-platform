@@ -300,6 +300,73 @@ ALTER TABLE ONLY public.user_roles
 
 
 --
+-- user_favorites / user_film_ratings (ADR-008)
+--
+
+CREATE TABLE public.user_favorites (
+    id integer NOT NULL,
+    "userId" integer NOT NULL,
+    "filmId" integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL
+);
+
+CREATE SEQUENCE public.user_favorites_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE public.user_favorites_id_seq OWNED BY public.user_favorites.id;
+ALTER TABLE ONLY public.user_favorites ALTER COLUMN id SET DEFAULT nextval('public.user_favorites_id_seq'::regclass);
+
+ALTER TABLE ONLY public.user_favorites
+    ADD CONSTRAINT user_favorites_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.user_favorites
+    ADD CONSTRAINT "user_favorites_userId_filmId_key" UNIQUE ("userId", "filmId");
+
+ALTER TABLE ONLY public.user_favorites
+    ADD CONSTRAINT "user_favorites_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE TABLE public.user_film_ratings (
+    id integer NOT NULL,
+    "userId" integer NOT NULL,
+    "filmId" integer NOT NULL,
+    grade integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL,
+    CONSTRAINT user_film_ratings_grade_check CHECK (((grade >= 1) AND (grade <= 10)))
+);
+
+CREATE SEQUENCE public.user_film_ratings_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE public.user_film_ratings_id_seq OWNED BY public.user_film_ratings.id;
+ALTER TABLE ONLY public.user_film_ratings ALTER COLUMN id SET DEFAULT nextval('public.user_film_ratings_id_seq'::regclass);
+
+ALTER TABLE ONLY public.user_film_ratings
+    ADD CONSTRAINT user_film_ratings_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY public.user_film_ratings
+    ADD CONSTRAINT "user_film_ratings_userId_filmId_key" UNIQUE ("userId", "filmId");
+
+ALTER TABLE ONLY public.user_film_ratings
+    ADD CONSTRAINT "user_film_ratings_userId_fkey" FOREIGN KEY ("userId") REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE INDEX "user_favorites_userId_createdAt_id_idx"
+    ON public.user_favorites ("userId", "createdAt" DESC, id DESC);
+
+CREATE INDEX "user_film_ratings_userId_updatedAt_id_idx"
+    ON public.user_film_ratings ("userId", "updatedAt" DESC, id DESC);
+
+--
 -- TOC entry 3357 (class 0 OID 0)
 -- Dependencies: 5
 -- Name: SCHEMA public; Type: ACL; Schema: -; Owner: root

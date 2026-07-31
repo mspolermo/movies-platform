@@ -23,6 +23,20 @@ export type {
   TToggleCommentLikeRequest,
 } from "./comment";
 export type {
+  TListPaginationParams,
+  TGetMyFavoritesParams,
+  TGetMyFilmRatingsParams,
+  TUpsertFilmRatingRequest,
+  TToggleFavoriteRpcRequest,
+  TRemoveFavoriteRpcRequest,
+  TListFavoritesRpcRequest,
+  TFavoriteIdsRpcRequest,
+  TUpsertFilmRatingRpcRequest,
+  TDeleteFilmRatingRpcRequest,
+  TListFilmRatingsRpcRequest,
+  TFilmRatingGradesRpcRequest,
+} from "./userFilmPrefs";
+export type {
   TAppRole,
   TNullablePartial,
   TAdminListRequest,

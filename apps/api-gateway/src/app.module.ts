@@ -9,12 +9,14 @@ import { AppController } from "./app.controller";
 import { AuthModule } from "./auth";
 import { CommentsModule } from "./comments";
 import { CountriesModule } from "./countries";
+import { FavoritesModule } from "./favorites";
 import { FilmsModule } from "./films";
 import { FiltersModule } from "./filters";
 import { GenresModule } from "./genres";
 import { JwtConfigModule } from "./jwt";
 import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
+import { RatingsModule } from "./ratings";
 import { SearchModule } from "./search";
 
 @Module({
@@ -38,6 +40,8 @@ import { SearchModule } from "./search";
     PersonsModule,
     GenresModule,
     CommentsModule,
+    FavoritesModule,
+    RatingsModule,
     SearchModule,
     FiltersModule,
     CountriesModule,

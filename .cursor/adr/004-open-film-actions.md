@@ -31,8 +31,8 @@ OLD: SharePanel — chrome без handlers; соцкнопки (WA/TG/VK/…) �
 
 | Action | Card | Detail | Поведение |
 |--------|------|--------|-----------|
-| Избранное | да | да | Local toggle + `console.log`; визуальный active. API — после F3 / отдельного ADR |
-| Оценить | да | да | `openGradeFilm(id)` → modal 1–10; без auth → `/auth/login` |
+| Избранное | да | да | API через feature `toggleFilmFavorite` + entity-context (ADR-008); не внутри этого слайса |
+| Оценить | да | да | `openGradeFilm(id)` → modal 1–10 + API upsert/delete (ADR-008); без auth → `/auth/login` |
 | Поделиться | да | да | `openShareFilm(payload)` → modal: copy + Web Share |
 | Трейлер CTA | нет | нет | Embed на странице остаётся; кнопки в панели нет |
 | Похожие / Не нравится | нет | нет | Удалены из UI |
@@ -41,7 +41,7 @@ OLD: SharePanel — chrome без handlers; соцкнопки (WA/TG/VK/…) �
 
 | Инвариант | Деталь |
 |-----------|--------|
-| Иконка «Оценить» | `RateIcon` = outline **thumbs-up** ([Lucide](https://lucide.dev/icons/thumbs-up)); **не** звезда (звезда путается с избранным и KP) |
+| Иконка «Оценить» | `rate` = thumbs-up; при оценке ≤6 — `rateDown` (thumbs-down) красный, >6 — green thumbs-up; **не** звезда |
 | Иконка избранного | Bookmark / BookmarkFilled |
 | Иконка шаринга | Share (upload-style) |
 | Card overlay | hover-as-is; `showIcons` + actions из `FilmCardActionsContext`; `stopPropagation` на кнопках |
@@ -63,8 +63,8 @@ OLD: SharePanel — chrome без handlers; соцкнопки (WA/TG/VK/…) �
 - Иконка оценки = звезда (конфликт семантики с bookmark / KP)
 
 Клиент: `apps/client/src/features/openFilmActions`.  
-Entity extension: `entities/film/model/` — `types.ts` + `context/` (`FilmActionsContext`, `FilmCardActionsContext`).  
-Иконка: `shared/ui/SvgIcon/assets/rate.svg` (через `<SvgIcon icon="rate" />`).
+Entity extension: `entities/film/model/` — contexts (`FilmActions`, `FilmCardActions`, `FilmFavorite`, `FilmMyRating`).  
+Иконки: `rate` / `rateDown` в SvgIcon.
 
 ## Последствия
 
@@ -72,13 +72,13 @@ Entity extension: `entities/film/model/` — `types.ts` + `context/` (`FilmActio
 
 - Один Layout-provider вместо цепочки grade/share.
 - Карточки с `showIcons` получают actions автоматически при наличии Provider (RSC Home / features→features не ломаются).
-- Чёткое разделение: bookmark = сохранить, thumbs-up = оценить, share = ссылка.
+- Чёткое разделение: bookmark = сохранить, thumbs-up/down = оценка, share = ссылка.
 
 **Минусы / риски**
 
-- Stub favorite/grade не являются контрактом бэка; состояние favorite сбрасывается при remount.
 - Touch: overlay карточки по-прежнему только hover.
 - Native share недоступен на большинстве desktop — остаётся copy.
+- Prefs API — ADR-008 (auth-users); Favorites API остаётся вне этого слайса.
 
 ## Альтернативы
 

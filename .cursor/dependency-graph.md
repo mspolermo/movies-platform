@@ -84,6 +84,16 @@ kino-db GenresAdminController → GenresAdminService
 ↓ уникальность имени / 404 → RpcException {statusCode, message}
 ↓ mapGenreToAdminItem → TAdminGenreItemResponse
 admin.users.* — аналогично через users_queue → auth-users UsersAdminController
+
+### Favorites / Ratings write (ADR-008)
+
+```
+Client → gateway FavoritesController / RatingsController (JWT)
+  → FilmsService.getFilmById → films_queue (ensure)
+  → FavoritesClient / RatingsClient → users_queue → auth-users
+```
+
+Compact hydrate: только users_queue (`favorites.ids` / `ratings.grades`).
 ```
 
 ---

@@ -20,6 +20,7 @@ import PersonIcon from '../assets/person.svg';
 import QuoteCloseIcon from '../assets/quoteClose.svg';
 import QuoteOpenIcon from '../assets/quoteOpen.svg';
 import RateIcon from '../assets/rate.svg';
+import RateDownIcon from '../assets/rateDown.svg';
 import SearchIcon from '../assets/search.svg';
 import ShareIcon from '../assets/share.svg';
 import SortIcon from '../assets/sort.svg';
@@ -30,7 +31,7 @@ import VolumeDownIcon from '../assets/volumeDown.svg';
  * Реестр иконок: ключ camelCase → SVG из `../assets/<key>.svg` (SVGR).
  * Новая иконка: файл `assets/<key>.svg` + запись здесь.
  *
- * `rate` и `like` — один path (thumbs-up), разная толщина stroke (1.5 / 2) под разные контексты.
+ * `rate` / `like` — thumbs-up; `rateDown` — thumbs-down (оценка ≤ 6).
  */
 export const iconsLibrary = {
   arrowLeft: ArrowLeftIcon,
@@ -55,6 +56,7 @@ export const iconsLibrary = {
   quoteClose: QuoteCloseIcon,
   quoteOpen: QuoteOpenIcon,
   rate: RateIcon,
+  rateDown: RateDownIcon,
   search: SearchIcon,
   share: ShareIcon,
   sort: SortIcon,
