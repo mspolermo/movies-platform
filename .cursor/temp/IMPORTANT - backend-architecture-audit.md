@@ -1,393 +1,249 @@
 # Архитектурный аудит backend
 
-**Дата:** 2026-07-19  
-**Стек:** NestJS 9 · TypeScript · RabbitMQ (Nest ClientProxy RPC) · Sequelize · PostgreSQL ×2  
-**Объём:** `api-gateway`, `auth-users`, `kino-db`, `apps/common`
+**Дата:** 2026-08-02 (обновление Gateway & Integration Audit)  
+**Предыдущий срез:** 2026-07-19 (устарел по RolesGuard/Nest/admin)  
+**Стек:** NestJS 11 · TypeScript · RabbitMQ (ClientProxy RPC) · Sequelize · PostgreSQL ×2  
+**Объём этого среза:** `api-gateway` + `apps/common` (types/dto/rmq) + RPC-стыки MS  
+**Вне scope среза:** `apps/client`; глубокий data-слой Sequelize/SQL — **фаза 2** (долг ниже сохранён)
+
+**Lens:** учебный/MVP monorepo с claim на production-habits.
 
 ---
 
 ## Часть 1. Общий вердикт
 
-### Итоговый уровень: **Strong Middle**
+### Итоговый уровень: **Strong Middle (~6.2/10 weighted)**
 
-Сильные стороны реальные: осознанный split auth/content, typed RMQ-контракты, слой `@common/types` (entity → response/request/orm), refresh rotation с reuse-detection, тонкий gateway Client→Service→Controller.
+Сильное: единственная HTTP-граница; typed RMQ без orphans; ADR-001 refresh rotation; ADR-007/008 admin+prefs; RolesGuard **живой**; `@common/types` дисциплина; prefs/admin на `fromRpc` + хорошие Jest.
 
-Слабые стороны системные: это **не микросервисы 2026**, а **два sync-RPC воркера за RabbitMQ**. Нет timeout/retry/circuit breaker, `synchronize: true`, RolesGuard мёртв, пагинация разъехалась, FilmsService — god-object, поиск через `ILIKE %…%` без индексов.
+Слабое для prod: нет RPC timeout; `/health` всегда 200; RMQ/`guest` + HTTP side-doors MS; `fromRpc` дырявый на каталоге/auth/comments; Swagger всегда on; filters fan-out ×3; phrase-match auth errors.
 
-На 3–5 лет при росте команды/нагрузки текущая форма **не выдержит без рефакторинга транспорта и data-слоя**. Как учебный/MVP-бэкенд с хорошими контрактами — да. Как production-grade — нет.
-
-| Область | Оценка | Почему |
-| ------- | ------ | ------ |
-| Архитектура | **5/10** | Gateway + 2 сервиса ок для размера; sync RMQ = distributed monolith |
-| Микросервисы | **5/10** | Граница auth/content здравая; оркестрация и fan-out на gateway |
-| NestJS | **7/10** | Модули предсказуемы; FilmsService / dead RolesGuard |
-| RMQ | **4/10** | Typed send — плюс; иначе чистый sync RPC без resilience |
-| Common Types | **8/10** | Лучшая часть бэка; мелкий drift пагинации/Role.description |
-| API Contracts | **6/10** | Типы есть; версии нет; nullable раздуты; docs drift |
-| Безопасность | **6/10** | Auth flow зрелый; RBAC мёртв; RMQ trust; sync schema |
-| База данных | **4/10** | synchronize; мало индексов; тяжёлые join/ILIKE |
-| Масштабируемость | **4/10** | Одна очередь/сервис; 3 RMQ на filters; нет кэша |
-| Поддерживаемость | **6/10** | Структура читаемая; мёртвый код + рассинхрон docs |
+| Ось | Вес | Score | Почему |
+|-----|-----|-------|--------|
+| Boundaries & orchestration | 0.20 | **7/10** | Границы чистые; filters/health smells |
+| RPC contracts & resilience | 0.20 | **5/10** | Stitches 100%; timeout/DLQ/fromRpc слабые |
+| Gateway implementation | 0.20 | **7/10** | Тонкие controllers; auth/comments error debt |
+| Shared types/DTO | 0.15 | **8/10** | Лучший слой; pagination drift |
+| Security posture | 0.15 | **5/10** | Auth зрелый; RMQ trust = P0 |
+| Testability & ops | 0.10 | **4/10** | Health ложный; gateway specs дырявые |
+| **Weighted (integration)** | | **~6.2** | |
+| База данных (фаза 2, не пересчитана) | — | **~4/10** | synchronize; индексы; ILIKE — срез 19.07 |
 
 ---
 
-## 1. Общая архитектура микросервисов
+## Часть 2. P0 / P1 (deduped)
 
-**Оценка: 5/10**
-
-### Что сделано правильно
-
-- **Граница auth vs content** — единственный осмысленный split: `auth-users` (users/roles/tokens) и `kino-db` (каталог). Это не искусственное дробление по таблицам.
-- **api-gateway как единственная HTTP-граница** — клиент не ходит в микросервисы напрямую. Health на :3001/:3002 — ок для internal.
-- **Нет Sequelize между сервисами** — по проводу только JSON по typed-контрактам. Это лучше, чем «shared DB + shared models».
-
-### Что плохо
-
-#### Sync RPC поверх RabbitMQ = distributed monolith
-
-Каждый бизнес-запрос: HTTP → `ClientProxy.send` → queue → handler → reply. Нет событий, нет eventual consistency, нет независимых deploy-циклов с обратной совместимостью сообщений.
-
-По сути это **удалённые вызовы методов** с latency/ops-ценой брокера. Если убрать RMQ и поставить HTTP/gRPC между теми же тремя процессами — поведение почти не изменится. Значит границы сервисов **не оправданы сложностью транспорта**.
-
-#### Логика не в том сервисе / утечка оркестрации
-
-| Место | Проблема |
-|-------|----------|
-| `CommentsService` (gateway) | При create: RMQ `getUserById` → локально `authorName` из email → RMQ `createComment`. **Денормализация имени автора живёт на gateway**, kino-db не знает users. Classic saga/orchestration smell на BFF. |
-| `FiltersService` (gateway) | 3 параллельных RMQ (genres + countries + years) на каждый `/filters`. Справочники должны быть **один endpoint / один кэш** в kino-db или CDN. |
-| `SearchService` | Fan-out films+persons — ок для BFF, но без таймаутов/частичного ответа. |
-
-#### Слишком сильное знание друг о друге
-
-- Gateway знает **все** pattern-строки и request/response shapes обоих сервисов (через common — это нормально для контрактов, но **coupling высокий**: любое изменение kino-db RPC ломает gateway compile-time — хорошо для монорепы, плохо для независимого ownership).
-- kino-db доверяет `userId` / `authorName` из payload без проверки подписи сообщения (задокументировано как «ok в docker-сети» — для prod недостаточно).
-
-#### Separation of concerns
-
-| Слой | Вердикт |
-|------|---------|
-| Gateway controllers | В основном HTTP/Swagger/cookies — ок |
-| Gateway services | Тонкие прокси — ок; comments/filters — уже business orchestration |
-| Microservice controllers | Thin `@MessagePattern` — ок |
-| Microservice services | Transaction Script + Sequelize — основная логика здесь |
-
-**Вывод по границам:** для текущего продукта хватило бы **монолита Nest + 2 БД** (или даже 1 БД с схемами) и HTTP. Микросервисы сейчас — **premature distribution**.
+| ID | Sev | Lens | Problem | Evidence | Fix |
+|----|-----|------|---------|----------|-----|
+| **S-01** | P0 | blocker-for-prod | RMQ published + `guest`/`guest`; MS trust payload | `docker-compose.yml:rabbitmq`; comments/admin handlers | Prod: internal network; strong creds; no host publish |
+| **S-02** | P0 | blocker-for-prod | MS HTTP side-doors (`/roles`, CORS `true`, ports 3001/3002) | `auth-users/main.ts`, `roles.controller` | HTTP только health / закрыть порты |
+| **S-03** | P0 | blocker-for-prod | `/health` всегда HTTP 200 `status:"ok"` при dead MS | `app.controller.ts:health` | Liveness vs readiness; 503 если users+films down |
+| **S-04** | P1 | blocker-for-prod | Нет `timeout()` на `RmqService.send*` | `rmq.service.ts` | `rxjs.timeout(N)` + конфиг; ADR |
+| **S-05** | P1 | blocker-for-prod | `fromRpc` только admin/prefs; каталог/auth/comments → 500 | `rpcError.helper.ts` | Обернуть все RMQ-await; auth → statusCode |
+| **S-06** | P1 | blocker-for-prod | Filter leak: `HttpException.message`; не `getResponse()` | `global-exception.filter.ts` | Hide ≥500 in prod; normalize getResponse() |
+| **S-07** | P1 | blocker-for-prod | Swagger `/api/docs` всегда on | `main.ts` | `SWAGGER_ENABLED` / non-prod |
+| **S-08** | P1 | debt-ok-for-mvp | Throttler inert вне AuthController | `app.module` | `APP_GUARD` ThrottlerGuard |
+| **S-09** | P1 | blocker-for-prod | Dockerfile HEALTHCHECK `${PORT}` без ENV | `apps/*/Dockerfile` | `ENV PORT=…` |
+| **S-10** | P1 | debt-ok-for-mvp | Gateway `depends_on` только rabbit | `docker-compose.yml` | depends_on MS **или** readiness S-03 |
 
 ---
 
-## 2. RabbitMQ архитектура
+## Часть 3. Архитектура и границы (BFF)
 
-**Оценка: 4/10**
+**Канон:** `Client → api-gateway (HTTP) → RabbitMQ RPC → auth-users | kino-db → PG → Mapper → Response`
 
-### Что хорошо
+### Соблюдено
 
-- Typed contracts: `TKinoDbRpcContract` / `TAuthUsersRpcContract` + `RmqService.sendToFilms/Users` — compile-time safety редкая и ценная.
-- Durable queues.
-- Константы паттернов в одном месте (`kino-db.rpc.ts`, `auth-users.rpc.ts`).
+- Gateway ↛ Postgres; MS ↛ MS; клиент ↛ MS.
+- Admin на gateway: Jwt + RolesGuard + `@Roles("ADMIN")` → thin Service → Admin*Client (ADR-007).
+- Prefs write: film-validate на gateway → auth-users (ADR-008) — **ok-BFF**.
+- Comments authorName hydrate на gateway — **ok-BFF** (не переносить users в kino-db).
 
-### Что плохо / риски
+### Orchestration classify
 
-| Проблема | Почему критично |
-|----------|-----------------|
-| **Только request/reply** | Нет `@EventPattern`, нет outbox, нет async workflows. RMQ как «медленный HTTP». |
-| **Нет timeout** | `firstValueFrom(client.send(...))` без `timeout()`. Зависший consumer = вечный HTTP. |
-| **Нет retry / DLQ / nack policy** | Дефолтный Nest RMQ; при ошибке поведение неочевидно для ops. |
-| **Нет circuit breaker / bulkhead** | Падение kino-db валит весь gateway UX. |
-| **Нет версионирования сообщений** | Pattern strings (`"filters"`, `"getFilmById"`) — breaking change = deploy lockstep. |
-| **Error mapping через string includes** | `AuthService.handleAuthError` парсит русские/английские фразы из RPC. Хрупко, i18n-ад. |
-| **Нет correlation/observability контракта** | Trace id через RMQ не проброшен системно. |
-| **Одна очередь на сервис** | `films_queue` / `users_queue` — все операции конкурируют; тяжёлый `filters` блокирует `getFilmById`. |
-| **prefetch / concurrency** | Не настроены явно в factory. |
+| Место | Класс | Действие |
+|-------|-------|----------|
+| Comments create (getUser + createComment) | ok-BFF | Fix layer: через AuthClient; authorName = `user.name` |
+| Filters ×3 (genres+countries+years) | should-be-cached (+ later should-move-to-MS) | TTL-кэш → опц. `getFiltersBundle` |
+| Search ×2 | ok-BFF | Partial failure via `allSettled` |
+| Prefs film-check | ok-BFF | Опц. лёгкий `filmExists` RPC |
+| Health films+persons ping | fix | Оба = `health.ping` на `FILMS_QUEUE` — оставить один |
 
-### Что изменить (по приоритету)
+### Layering smells
 
-1. Либо **убрать RMQ** → gRPC/HTTP между сервисами (честный sync).
-2. Либо оставить RMQ, но: `timeout` + typed error codes (`RpcException` с `code`) + DLQ + отдельные queues для heavy queries + event bus для side-effects (comment created → analytics).
-3. Перенести `getFiltersAggregate` в kino-db одним RPC.
+- `CommentsService` / `UserRolesService` → прямой `RmqService`, минуя `*Client`.
+- Мёртвый `UserRolesModule` (service живёт в `JwtConfigModule`).
+
+**Sync RMQ = distributed monolith:** confirmed, для MVP `debt-ok-for-mvp`. Timeout — blocker до prod.
 
 ---
 
-## 3. NestJS архитектура
+## Часть 4. RMQ / контракты
 
-**Оценка: 7/10**
+### Coverage
 
-### Плюсы
+- Pattern ∈ contract ↔ gateway client ↔ `@MessagePattern`: **полная**, 0 orphans.
+- `favorites.remove` — **internal** (orphan cleanup при 404 фильма), не dead, нет HTTP — by design.
+- `getAllFilmYears` — только FiltersClient (fan-out).
 
-- Повторяемый паттерн gateway: `controllers / services / clients / dto`.
-- Модули по доменам, без `forwardRef` циклических Nest-зависимостей.
-- Global `ValidationPipe` (whitelist + transform) на gateway.
-- `GlobalExceptionFilter` — базовый safety net.
-- Mappers в kino-db отделены от Sequelize models.
+### Resilience (факт)
 
-### Минусы
-
-| Запах | Где |
-|-------|-----|
-| **God-service** | `kino-db` `FilmsService` ~430 LOC: getById, filters, similar, years, professions, persons-by-profession |
-| **Dead code** | `RolesGuard` + `UserRolesModule` (модуль не в AppModule); guard нигде не `@UseGuards` |
-| **Fat-ish controllers** | `auth.controller` / `films.controller` раздуты Swagger + cookie wiring (приемлемо, но шумно) |
-| **Business logic на gateway** | authorName resolution, locale label pick для filters |
-| **SOLID** | FilmsService нарушает SRP; OCP — добавление фильтров = правка того же метода |
-| **console.log в guards** | JwtAuthGuard / RolesGuard — шум и потенциальная утечка в логи |
-| **DTO дубли** | `FilmFiltersDto` в kino-db ≈ `TSearchFilmsParams` + gateway query DTO |
-| **HttpException из auth-users** | Через RMQ статус/тело сериализуются грязно; gateway ловит string matching |
-
-Нет классических fat controllers с SQL. Это **service-centric Nest**, не Clean Nest.
-
----
-
-## 4. Domain Layer
-
-**Оценка близости:**
-
-| Стиль | Близость |
-|-------|----------|
-| **Transaction Script** | **~85%** — логика в сервисах, модели = bags of fields |
-| **Clean Architecture** | **~15%** — есть «контракты» в common, но нет use-cases / domain services / ports-adapters кроме RMQ clients |
-| **DDD** | **~5%** — нет aggregates, invariants в домене, ubiquitous language размазан по Sequelize |
-
-**Анемичная модель:** да, и для каталога это нормально. Проблема не в анемии, а в том, что **правила (похожие фильмы, фильтры, лайки) живут в одном сервисе без выделения query/command**.
-
-Комментарии: likesCount считается scan'ом likes table на страницу — доменная операция без денормализованного счётчика.
-
----
-
-## 5. apps/common — полный аудит
-
-**Оценка: 8/10** (лучшая зона бэка)
-
-### Структура (как задумано — и в целом соблюдено)
-
-```
-types/entity  → поля хранения
-types/response → Pick/Omit от entity (+ JSON dates as string)
-types/request  → query/RPC params
-types/orm      → CreationAtt + OrmModel (backend-only)
-dto/           → class-validator (backend)
-services/rmq/  → инфраструктура + RPC contracts
-constants/     → LIST_*, JWT
-```
-
-Публичный barrel `@common/types` = **только request + response**. Entity/orm не торчат клиенту. Это правильное решение и редкая дисциплина.
-
-### Контракты
-
-| Тема | Вердикт |
-|------|---------|
-| Дублирование типов | Низкое для film/user; **DTO vs type** дублируются намеренно (validators) — ок, но `FilmFiltersDto` в kino-db не в common/dto |
-| DTO ↔ response | Auth: `CreateUserDto` → `TAuthUsersRpcAuthResponse` → gateway strips refresh → `TAuthResponse` — согласовано |
-| Рассинхрон front/back | Общий barrel снижает риск; **пагинация persons** (`TPaginatedPersonsResponse` без `page`/`perPage`) vs films/comments (`TPaginationMeta`) — клиент вынужден ветвиться |
-| Лишние типы | `TRegistrationResponse` / `TRefreshTokenResponse` = алиасы `TAuthResponse` — harmless noise |
-| OAuth stub | ~~`OauthCreateUserDto` + `outRegistration`~~ — удалён ([ADR-006](../adr/006-no-oauth.md))
-
-### Границы common
-
-| Риск | Статус |
+| Тема | Статус |
 |------|--------|
-| Свалка | **Нет** — узкий scope (types/dto/rmq/constants) |
-| Домен через common | **Нет** бизнес-логики в common — хорошо |
-| Entity как DTO | **Нет** на публичном API |
-| Sequelize модели по проводу | **Нет**; orm-типы только для моделей сервисов |
+| Timeout | **нет** (`firstValueFrom` без `timeout`) |
+| Retry / DLQ / prefetch | **нет** (только durable) |
+| Correlation / x-request-id | только Nest reply correlation |
+| Error wire | Admin/prefs: `RpcException({statusCode})` + `fromRpc`; catalog/auth/comments: legacy `HttpException` / phrase-match → часто HTTP 500 |
+| RolesGuard catch | infra error → ложный 403 |
 
-### Типизация — проблемные зоны
+### Fan-out (HTTP → N RMQ)
 
-#### TFilm*
-
-- `TFilmEntity` богаче, чем отдаёт API (imdb, top10, premiereWorldDate) — нормально как storage shape.
-- `TFilmDetailsResponse` — optional `countries?/genres?/facts?` при том что getById почти всегда их грузит → лишний nullable для клиента.
-- `premiereCountry` в list item, но не в details Pick — странная асимметрия.
-- `FilmFiltersDto` (kino-db) требует `page`/`perPage` required, `TSearchFilmsParams` — optional → рассинхрон контракта request.
-
-#### TUser* / TAuth*
-
-- JWT payload: `{ sub, email }` — **roles не в токене**. RolesGuard ходит в RMQ за пользователем (если бы использовался) — дорого и правильно с точки зрения revoke, но RBAC не включён.
-- `TRoleEntity.description?` есть в типе, **колонки в Sequelize Role нет** — drift entity ↔ DB.
-- `TAuthUsersRpcAuthResponse` правильно отделён от HTTP `TAuthResponse` (refresh только на wire RMQ).
-
-#### Комментарии
-
-- `createdAt: string` в response — правильно для JSON.
-- `liked?` optional — ок для public list.
-- Нет `parentId` (дерево в docs — вранье).
-- `authorName` денормализован навечно — смена email/имени не обновит старые комментарии.
-
-#### Пагинация / фильтры
-
-| Контракт | Поля |
-|----------|------|
-| `TPaginationMeta` | total, page, perPage, hasMore |
-| `TPaginatedPersonsResponse` | items, total, hasMore — **без page/perPage** |
-| Persons request | `limit` |
-| Films request | `perPage` |
-
-Это уже техдолг контрактов, не «мелочь».
+| HTTP | ≈ RMQ |
+|------|-------|
+| GET `/health` | 3 (users + films + persons≡films) |
+| GET `/filters` | 3 |
+| GET `/search` | 2 |
+| POST comments | 2+ |
+| Prefs write | 2 |
+| Admin + RolesGuard | +1 getUserById |
 
 ---
 
-## 6. API Contracts
+## Часть 5. Реализация gateway
 
-**Оценка: 6/10**
+### Bootstrap / auth / shared
 
-### REST (gateway)
+- ValidationPipe whitelist+transform; нет `forbidNonWhitelisted`.
+- Encoding middleware всегда ставит `Content-Type: application/json` (ломает Swagger HTML).
+- Auth: throttle login/reg/refresh ок; phrase-match ошибок vs `fromRpc`.
+- Deprecated `GET /auth/checkToken` жив.
+- Dead: `toAuthResponse`, `ServiceError`, `UserRolesModule`.
 
-- Публичный каталог в основном `@Public` / без guard — ок для B2C.
-- Swagger есть.
-- **Нет `/v1`** — любое breaking change = боль клиента.
-- Docs (`PROJECT_ARCHITECTURE`) врёт: JWT на persons/genres/countries, Comment.parentId, 17 vs 18 RMQ patterns, sequence createComment без getUserById.
+### Catalog / BFF
 
-### RMQ
+- Контроллеры тонкие; `any` нет.
+- Guard wiring неоднороден: persons/genres/countries без Jwt; films/search Jwt+`@Public`; filters `@Public` без class Jwt (= noop).
+- Search/filters: `Promise.all` = fail-all.
+- Swagger `CountryResponseDto` врёт (`id`/`name` ≠ `countryName`/`countryNameEn`).
 
-- Typed — сильная сторона.
-- Incompatible ответы возможны только при ручном обходе типов (мало).
-- Утечки внутренних моделей: **нет** (mappers режут поля).
-- Неявные поля: optional `?` на связях фильма; `null` vs `[]` vs empty inconsistently (`getSimilar` null если нет фильма, `[]` если нет жанров).
-- RPC errors не контрактны (нет `TRpcError`).
+### Comments / prefs / admin
 
----
-
-## 7. Безопасность
-
-**Оценка: 6/10**
-
-### Реальные сильные стороны
-
-- Access short-lived + opaque refresh (64 bytes) + SHA-256 at rest.
-- Refresh **rotation** + **reuse → revoke all** в транзакции с `LOCK.UPDATE` — senior-level auth.
-- Cookie: HttpOnly, Secure (prod), SameSite=Lax, Path=`/api/auth`.
-- OriginGuard на refresh/logout в production.
-- Throttle на auth: 5/min login/reg, 30/min refresh.
-- bcrypt для паролей; password не уходит в RMQ responses (mapper).
-- `PRIVATE_KEY` обязателен в production (`resolveJwtSecret`).
-
-### Реальные уязвимости / gaps сейчас
-
-| Severity | Issue |
-|----------|-------|
-| **High (ops)** | `synchronize: true` на обеих БД — schema drift / data loss риск в любом «почти prod» |
-| **Medium** | RBAC мёртв: `RolesGuard` не навешан; admin-эндпоинтов нет, но `createRole` по RMQ доступен любому, кто достучится до очереди |
-| **Medium** | RMQ payload trust: подмена `userId` при доступе к брокеру = комментарии/лайки от чужого имени |
-| **Medium** | auth-users HTTP `GET /roles/:value` — если порт торчит наружу |
-| **Low–Med** | Throttler global 100/min — auth отдельно ок; остальной API слабо защищён от scrape |
-| **Low** | bcrypt rounds = 10 (2026 чаще 12+) |
-| **Low** | JWT без `roles`/`jti` — ок для verify-only, но logout access не инвалидирует до expiry |
-| **Low** | Error messages на login различают «user not found» vs «wrong password» **внутри auth-users**; gateway схлопывает для клиента — хорошо на границе, плохо если RMQ/logs утекут наружу |
-| **Info** | `has_session` не security — задокументировано честно |
-| **Info** | CSRF: SameSite+OriginGuard — адекватно для cookie refresh |
-
-Нет секретов в репозитории в рамках этого аудита кода; риск — **дефолты JWT в non-production** (ожидаемо).
+- Prefs: film-check + orphan cleanup + `fromRpc` + Jest — ок.
+- Comments: нет film-check, нет `fromRpc`, слабый `CommentDTO`, authorName = email local-part.
+- Admin: thin passthrough — ок.
 
 ---
 
-## 8. Работа с БД
+## Часть 6. apps/common types / DTO
 
-**Оценка: 4/10**
+**Оценка: 8/10**
 
-### Sequelize usage
-
-- Модели типизированы через `@common/types/orm` — хорошо.
-- Associations плотные (Film↔Person↔Genre↔Comment) — типичный Sequelize graph.
-- Транзакции: refresh tokens, toggle like — есть где надо.
-- **`synchronize: true`** — главный anti-pattern для роста.
-
-### Производительность — что сломается
-
-| Место | Риск |
-|-------|------|
-| `filmFilters` | M2M `required: true` includes + `findAndCountAll` + `distinct` — на 500k фильмов тяжело без денормализации/материализованных путей |
-| `searchFilmsByName` / persons search | `ILIKE '%name%'` — seq scan, нет trigram/GIN |
-| `getFilmProfessions` | Грузит **всех persons фильма с professions**, агрегирует в JS — N persons × M professions в память |
-| `getComments` likes | Грузит все likes страницы, считает в JS; лучше `GROUP BY` / denormalized `likesCount` |
-| `getSimilarFilms` | 2–3 запроса, GROUP BY — ок на малых данных; без индекса по genreId+filmId будет больно |
-| Indexes | Явно мало (`PersonProfession`, `CommentLike`); на Film.year / votesKp / name — не видно в моделях |
-| Filters years | `DISTINCT year` full scan periodically |
-
-### N+1
-
-Явного ORM N+1 в горячих путях мало (includes / separate facts). Больше проблема — **over-fetch** и **неоптимальные агрегации**.
+- Barrel: только request+response — ок.
+- Response через Pick/Omit; Date в response = string (сэмпл OK).
+- **Долг:** три схемы пагинации request (`perPage` / `limit` / `limit+offset`); gateway DTO без `implements T*`; auth request-типы живут в class DTO; RPC refresh/logout request в папке `response/`.
 
 ---
 
-## 9. Масштабируемость (1M users / 500k films / 15 devs)
+## Часть 7. Безопасность
 
-### Что сломается первым
+### Зрело (ADR-001)
 
-1. **`GET /films` filters** — join hell + count distinct.
-2. **`GET /filters`** — 3 sync RPC × каждый SSR/клиент.
-3. **Поиск ILIKE** — CPU на Postgres.
-4. **Единая `films_queue`** — latency spikes от тяжёлых запросов.
-5. **RMQ sync без timeout** — каскадные таймауты на gateway при деградации kino-db.
-6. **Comments authorName orchestration** — лишний hop на каждый POST.
+- Access verify-only на gateway; opaque refresh HttpOnly + rotation/reuse; OriginGuard на refresh/logout в prod; SameSite=lax; throttle login/reg.
 
-### Что потребует рефакторинга при 15 разработчиках
+### Блокеры prod
 
-- Разрезать `FilmsService` / возможно выделить `FilmQueryService` / search index (OpenSearch).
-- Версионирование API + ownership по пакетам/сервисам (сейчас monorepo lockstep — ок до ~8 людей, дальше нужны module boundaries/CI owners).
-- Убрать dead RolesGuard или внедрить RBAC по-настоящему.
-- Migrations вместо synchronize.
-- Контрактные RPC errors вместо string matching.
-- Возможно схлопнуть микросервисы обратно или заменить RMQ на gRPC — иначе onboarding «зачем брокер» будет дорогим.
+- S-01 / S-02 (сеть/брокер/side-doors).
+- S-06 filter leak; S-07 Swagger; S-08 throttle только auth.
+- RMQ payload: prefs assert id shape; comments/admin — trust gateway (defense-in-depth слабый).
+
+### Не security-дыры
+
+- Public GET catalog без Jwt — ок для B2C (задокументировать).
+- `has_session` non-HttpOnly — UX-only (ADR-001), не authz.
+- Baseline «RolesGuard мёртв» — **invalid**.
 
 ---
 
-## 10. Переусложнения
+## Часть 8. Tests & ops
 
-| Что | Почему overengineering |
-|-----|------------------------|
-| RabbitMQ как транспорт для sync CRUD | Нет async advantage; добавлена ops-сложность |
-| Три процесса + две БД при одном продукте/команде | Граница auth оправдана слабее, чем стоимость |
-| `UserRolesService` + RolesGuard без применения | Абстракция без use-case |
-| OAuth RPC stub | ~~Контракт без реализации~~ — удалён ([ADR-006](../adr/006-no-oauth.md))
-| Алиасы `TRegistrationResponse` / `TRefreshTokenResponse` | Шум |
-| JwtAuthGuard на классе + `@Public` на всех методах films | Ритуал без эффекта |
-| Locale label mapping на gateway для filters | Можно в kino-db одним ответом |
-
-**Premature optimization:** почти нет (кэшей/шардинга нет). Наоборот — premature **distribution**.
-
-**Что упростить:**
-
-1. Monolith (или modular monolith) + optional extract auth later.
-2. Один `getCatalogFilters` RPC.
-3. Удалить мёртвый Roles wiring или довести до конца (OAuth stub снят — [ADR-006](../adr/006-no-oauth.md)).
-4. Унифицировать пагинацию на `TPaginationMeta`.
+| Тема | Факт |
+|------|------|
+| Gateway specs | 6 файлов: films (частично), favorites, ratings, adminFilms, admin RBAC |
+| Нет specs | auth, comments, search, filters, persons/genres/countries, guards, health |
+| `/health` | всегда 200 `ok` → compose `curl -f` зелёный при dead MS |
+| Dockerfile | `${PORT}` без `ENV PORT` |
+| Compose | gateway depends_on только rabbit; `JWT_ACCESS_EXPIRES_IN` на gateway не читается |
+| auth-users `/health` | без DB check (kino-db — с authenticate) |
+| Env | RMQ fail-fast; JWT secret fail только в production |
 
 ---
 
-## 11. Недоработки (техдолг)
+## Часть 9. Decision answers
 
-1. `synchronize: true` → миграции (Umzug/Flyway/liquibase — не важно, главное versioned SQL).
-2. RMQ resilience: timeout, typed errors, DLQ, queue split.
-3. Индексы + поиск (pg_trgm / отдельный search).
-4. Единый pagination contract.
-5. Roles: либо вырезать, либо JWT claims + guard на admin routes.
-6. `FilmsService` split (query vs similar vs filters).
-7. Denormalize `likesCount` / пересмотреть `authorName` lifecycle.
-8. Docs sync (`PROJECT_ARCHITECTURE`, auth path filenames).
-9. Observability: OpenTelemetry trace across HTTP→RMQ→DB.
-10. `forbidNonWhitelisted` / строже ValidationPipe; rate limit на write comments.
-11. Убрать `console.log` из security path.
-12. Cookie `maxAge` — проверить единообразие ms (сейчас SEC×1000 для express — ок, но имя константы путает).
+1. **Filters:** TTL-кэш на gateway first → при необходимости ADR `getFiltersBundle` в kino-db.  
+2. **authorName:** оставить на gateway; `user.name` first.  
+3. **RolesGuard:** оставить RPC (revoke); опц. TTL-кэш 30–60s.  
+4. **Sync-RMQ:** ок для MVP; **timeout ADR обязателен** до внешнего prod; DLQ — backlog.
 
 ---
 
-## 12. Итоговая таблица и уровень
+## Часть 10. Roadmap
 
-| Область | Оценка |
-| ---------------- | ------ |
-| Архитектура | **5/10** |
-| Микросервисы | **5/10** |
-| NestJS | **7/10** |
-| RMQ | **4/10** |
-| Common Types | **8/10** |
-| API Contracts | **6/10** |
-| Безопасность | **6/10** |
-| База данных | **4/10** |
-| Масштабируемость | **4/10** |
-| Поддерживаемость | **6/10** |
+### Quick wins (≤1d)
 
-### Уровень: **Strong Middle**
+1. `rxjs.timeout` в `RmqService` (S-04)  
+2. Health readiness + один ping/queue (S-03)  
+3. `fromRpc` на comments/auth/catalog (S-05)  
+4. GlobalExceptionFilter fix (S-06)  
+5. `SWAGGER_ENABLED` (S-07)  
+6. CountryResponseDto demote/fix  
+7. authorName = `user.name`  
+8. Dead code cleanup (см. план в temp)  
+9. Dockerfile `ENV PORT` (S-09)
 
-**Почему не Middle:** typed RPC contracts, refresh rotation с reuse detection, дисциплина `@common/types`, тонкий gateway layering, осмысленный auth cookie design — это выше среднего рынка Nest-CRUD.
+### Structural (ADR)
 
-**Почему не Senior / Production-grade:** транспорт притворяется микросервисами; нет operational maturity (migrations, timeouts, indexes, observability); RBAC мёртв; god-service и контрактный drift пагинации; docs врут.
+1. Prod overlay: no publish RMQ/MS (S-01/S-02)  
+2. Filters cache / bundle RPC  
+3. Единый `RpcException({statusCode})` во всех MS; убрать phrase-match  
+4. Pagination → `page`/`perPage`  
+5. APP_GUARD Throttler  
+6. **Фаза 2 Data Audit** (ниже)
 
-**3–5 лет:** поддерживаемо **только** если либо (a) схлопнуть distribution и усилить modular monolith + DB, либо (b) довести микросервисы до настоящих (async, versioned contracts, independent data ownership, search/cache). В текущем виде команда из 15 упрётся в очередь и в FilmsService раньше, чем в «границы доменов».
+---
+
+## Часть 11. Фаза 2 — Data & Persistence (из среза 19.07, не пересчитано)
+
+Не входил в Gateway & Integration Audit 02.08. Долг актуален до отдельного аудита:
+
+| Тема | Проблема |
+|------|----------|
+| Schema | `synchronize: true` в auth-users и kino-db |
+| Search | `ILIKE %…%` без индексов |
+| FilmsService | god-object / тяжёлые join |
+| N+1 / likes | comments likesCount scan |
+| Role.description | тип vs колонка drift |
+| Migrations | отсутствуют |
+
+---
+
+## Часть 12. Delta к срезу 19.07
+
+| Claim 19.07 | Status 02.08 |
+|-------------|--------------|
+| NestJS 9 | **invalid** → Nest 11 |
+| RolesGuard мёртв / admin нет | **fixed** |
+| Sync RMQ / no timeout / filters×3 / RMQ trust | **confirmed** |
+| Typed contracts | **confirmed** (лучше: 0 orphans) |
+| `@common/types` сильный | **confirmed** |
+| Auth refresh | **confirmed** |
+| synchronize / ILIKE / Films god | **out of scope** → фаза 2 |
+| Пагинация drift | **confirmed** |
+
+---
+
+## Часть 13. Ссылки
+
+- Бэклог: [`.cursor/temp/backlog.md`](./backlog.md)  
+- План очистки мёртвого кода: [`.cursor/temp/dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md)  
+- Канон: [`.cursor/architecture.md`](../architecture.md), [`.cursor/context/microservices.md`](../context/microservices.md), ADR-001/007/008
