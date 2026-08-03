@@ -70,7 +70,7 @@ ID `F-xx-yy` = findings аудита. `#` = трек бэклога.
 | F40 | Font SoT | F-13-01 | **S** | Inter **или** IvySans — не оба |
 | F41 | Breakpoints canon | F-13-02 | **M** | только `$bp-mobile`/`$bp-tablet` (650/1160) |
 | F42 | Kit: Card / domain composites | F-14-01/02 | **M** | Card→PersonCard; SortFilter/AdminCrudList не в generic root |
-| F43 | Rename `get*` features | F-01-01 | **L** | use-case names; over-slices → Layout/shared |
+| F43 | Rename `get*` features | F-01-01 | **L** | rename done (`browse*`/`commentOnFilm`/…); over-slices → Layout/shared — open |
 | F13 | i18n | — | **L** | next-intl / аналог |
 | F16 | E2E Playwright | — | **L** | только с ADR; login→profile→logout |
 

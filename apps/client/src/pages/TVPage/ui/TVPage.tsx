@@ -1,4 +1,4 @@
-import { IPTVPlayer } from '@/features/getTV';
+import { IPTVPlayer } from '@/features/watchTV';
 import { Page } from '@/widgets/Layout';
 
 export const TVPage = () => {

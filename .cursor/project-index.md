@@ -176,12 +176,12 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Домен | Backend | Frontend FSD | БД |
 |-------|---------|--------------|-----|
 | Films | `kino-db/films` | `entities/film`, `features/filterFilms`, `loadMoreFilms`, … | Film, Fact, M:N |
-| Persons | `kino-db/persons` | `entities/person`, `features/getAllPersons*` | Person, M:N |
+| Persons | `kino-db/persons` | `entities/person`, `features/browsePersons*` | Person, M:N |
 | Genres / Countries / Professions | `kino-db/*` | `entities/genre\|country\|profession` | словари |
-| Comments | `kino-db/comments` | `entities/comment`, `features/getFilmComments` | Comment, CommentLike |
+| Comments | `kino-db/comments` | `entities/comment`, `features/commentOnFilm` | Comment, CommentLike |
 | Auth / Users / Roles | `auth-users` | `features/auth`, `entities/user`, `src/app/providers` | users, roles, refresh_tokens |
 | Favorites / user ratings | `auth-users` + gateway validate film | `toggleFilmFavorite`, `openFilmActions`, `entities/film` api/context; ADR-008 | `user_favorites`, `user_film_ratings` |
-| Search / Filters | gateway aggregation | `features/search*`, `filterFilms` | — |
+| Search / Filters | gateway aggregation | `features/searchCatalog`, `filterFilms` | — |
 | Ratings (KP) | поля Film | ссылка на КП в UI | catalog fields |
 | Film actions | — | `features/openFilmActions` (panel + share + grade); ADR-004/008 | — |
 | Home promo banners | статика (без API) | `widgets/PromoBannerSlider` (loop/dots/autoplay) | — |

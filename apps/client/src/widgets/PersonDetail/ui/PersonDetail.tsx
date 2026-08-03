@@ -3,7 +3,7 @@ import type { TPersonDetailProps } from './types';
 import { PersonInfo } from '@/entities/person';
 import personInfoStyles from '@/entities/person/ui/PersonInfo/PersonInfo.module.scss';
 import { ProfessionsList } from '@/entities/profession';
-import { PersonFilmography } from '@/features/getPersonFilmography';
+import { PersonFilmography } from '@/features/browsePersonFilmography';
 import { Skeleton } from '@/shared/ui';
 
 import styles from './PersonDetail.module.scss';

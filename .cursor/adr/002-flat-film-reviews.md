@@ -6,7 +6,7 @@
 
 ## Контекст
 
-В `old-client` создание комментария поддерживало `parentId` (threaded replies). В текущем стеке (`TCommentEntity`, `TCreateCommentRequest`, UI `features/getFilmComments`) — только корневые записи: `title` + `text` к `filmId`, плюс лайки. Продуктовой задачи на дерево комментариев нет: нужны **отзывы к фильму**, не форум/треды.
+В `old-client` создание комментария поддерживало `parentId` (threaded replies). В текущем стеке (`TCommentEntity`, `TCreateCommentRequest`, UI `features/commentOnFilm`) — только корневые записи: `title` + `text` к `filmId`, плюс лайки. Продуктовой задачи на дерево комментариев нет: нужны **отзывы к фильму**, не форум/треды.
 
 ## Решение
 
@@ -28,7 +28,7 @@
 Именование в продукте: **отзыв** (review) к фильму; технический домен/таблица могут оставаться `comment*`.
 
 См. типы: `apps/common/types/entity/comment.ts`, `apps/common/types/request/comment.ts`.  
-Клиент: `features/getFilmComments`.
+Клиент: `features/commentOnFilm`.
 
 ## Последствия
 

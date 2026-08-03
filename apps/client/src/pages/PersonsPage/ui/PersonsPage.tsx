@@ -2,7 +2,7 @@
 
 import type { TPersonsPageProps } from './types';
 
-import { AllPersonsList } from '@/features/getAllPersons';
+import { AllPersonsList } from '@/features/browsePersons';
 import { Page } from '@/widgets/Layout';
 
 export const PersonsPage = ({ isLoading, initialPersonsPage }: TPersonsPageProps) => {

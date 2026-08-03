@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 
-import { FilmCommentsSection } from '@/features/getFilmComments';
+import { FilmCommentsSection } from '@/features/commentOnFilm';
 
 type TFilmCommentsViewerProps = {
   filmName: string;

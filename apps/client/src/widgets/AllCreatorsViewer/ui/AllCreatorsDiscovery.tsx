@@ -3,7 +3,7 @@
 import type { TAllCreatorsViewerReadyProps } from '../models';
 
 import { ProfessionsSlider } from '@/entities/profession';
-import { AllPersonsByProfession } from '@/features/getAllPersonsByProfession';
+import { AllPersonsByProfession } from '@/features/browsePersonsByProfession';
 
 import { useAllCreatorsView } from '../lib';
 import styles from './AllCreatorsViewer.module.scss';

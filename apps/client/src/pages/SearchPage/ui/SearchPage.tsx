@@ -1,6 +1,6 @@
 'use client';
 
-import { SearchFilmsAndPersons } from '@/features/searchFilmsAndPersonsByQuery';
+import { SearchFilmsAndPersons } from '@/features/searchCatalog';
 import { Page } from '@/widgets/Layout';
 
 export const SearchPage = () => {

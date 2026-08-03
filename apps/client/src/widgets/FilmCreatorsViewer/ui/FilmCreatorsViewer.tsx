@@ -1,7 +1,7 @@
 'use client';
 
 import { ProfessionsSlider } from '@/entities/profession';
-import { FilmPersonsByProfession } from '@/features/getFilmPersonsByProfession';
+import { FilmPersonsByProfession } from '@/features/browseFilmCreators';
 
 import { useFilmCreatorViewer } from '../lib';
 

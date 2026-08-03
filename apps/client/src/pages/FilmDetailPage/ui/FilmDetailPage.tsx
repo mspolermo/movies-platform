@@ -5,8 +5,8 @@ import type { TFilmDetailPageProps } from './types';
 import React from 'react';
 
 import { FilmDetail, FilmsCarousel } from '@/entities/film';
-import { SimilarFilmsCarousel } from '@/features/getSimilarFilmsCarousel';
 import { FilmActionsPanel } from '@/features/openFilmActions';
+import { SimilarFilmsCarousel } from '@/features/showSimilarFilms';
 import { FilmCommentsViewer } from '@/widgets/FilmCommentsViewer';
 import { FilmCreatorsViewer } from '@/widgets/FilmCreatorsViewer';
 import { Page } from '@/widgets/Layout';
