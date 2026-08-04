@@ -19,7 +19,7 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | Сервис | Роль | Порт | Транспорт | БД |
 |--------|------|------|-----------|-----|
 | `api-gateway` | HTTP API, JWT verify, cookies, BFF-оркестрация | 5001→5000 | HTTP + RMQ client | — |
-| `auth-users` | Users, roles, JWT, refresh, favorites/ratings (ADR-008) | 3001 | HTTP health (+ `GET /roles/:value`) + RMQ | `db2` |
+| `auth-users` | Users, roles, JWT, refresh, favorites/ratings (ADR-008) | 3001 | HTTP `/health` + RMQ | `db2` |
 | `kino-db` | Films, persons, dictionaries, comments | 3002 | HTTP health + RMQ | `db` |
 | `rabbitmq` | Очереди `users_queue`, `films_queue` | 5672 / 15672 | AMQP | — |
 
@@ -61,7 +61,8 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 
 | Метод | Путь | Auth | Назначение |
 |-------|------|------|------------|
-| GET | `/health` | Public | Health gateway |
+| GET | `/health` | Public | Readiness (RPC ping users+films + DB; 503 если down) |
+| GET | `/health/live` | Public | Liveness (process up) |
 | POST | `/auth/registration` | Public | Регистрация + cookies |
 | POST | `/auth/login` | Public | Логин + cookies |
 | POST | `/auth/refresh` | Public + OriginGuard | Ротация токенов |
@@ -202,6 +203,7 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | Favorites / Ratings MS | `apps/auth-users/src/{favorites,ratings}` |
 | Favorites / Ratings HTTP | `apps/api-gateway/src/{favorites,ratings}` |
 | JWT guards | `apps/api-gateway/src/jwt` |
+| Health (GW ready/live) | `apps/api-gateway/src/health` |
 | RMQ контракты | `apps/common/services/rmq/messaging` |
 | Публичные типы | `apps/common/types/{request,response}` |
 | DTO валидация | `apps/common/dto`, `apps/*/dto` |

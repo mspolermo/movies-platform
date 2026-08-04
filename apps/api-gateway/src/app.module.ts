@@ -5,7 +5,6 @@ import { ThrottlerModule } from "@nestjs/throttler";
 import { RmqModule } from "@common/services";
 
 import { AdminModule } from "./admin";
-import { AppController } from "./app.controller";
 import { AuthModule } from "./auth";
 import { CommentsModule } from "./comments";
 import { CountriesModule } from "./countries";
@@ -13,6 +12,7 @@ import { FavoritesModule } from "./favorites";
 import { FilmsModule } from "./films";
 import { FiltersModule } from "./filters";
 import { GenresModule } from "./genres";
+import { HealthModule } from "./health";
 import { JwtConfigModule } from "./jwt";
 import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
@@ -35,6 +35,7 @@ import { SearchModule } from "./search";
     ]),
     RmqModule,
     JwtConfigModule,
+    HealthModule,
     AuthModule,
     FilmsModule,
     PersonsModule,
@@ -48,6 +49,5 @@ import { SearchModule } from "./search";
     ProfessionsModule,
     AdminModule,
   ],
-  controllers: [AppController],
 })
 export class AppModule {}

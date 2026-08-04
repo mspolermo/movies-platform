@@ -3,7 +3,7 @@ import {
   Get,
   ServiceUnavailableException,
 } from "@nestjs/common";
-import { MessagePattern } from "@nestjs/microservices";
+import { MessagePattern, RpcException } from "@nestjs/microservices";
 import { InjectConnection } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize";
 
@@ -17,7 +17,15 @@ export class HealthController {
   ) {}
 
   @MessagePattern(kinoDbRpc.health.ping)
-  ping(): true {
+  async ping(): Promise<true> {
+    try {
+      await this.assertDb();
+    } catch {
+      throw new RpcException({
+        statusCode: 503,
+        message: "database disconnected",
+      });
+    }
     return true;
   }
 
@@ -26,7 +34,7 @@ export class HealthController {
     const timestamp = new Date().toISOString();
 
     try {
-      await this.sequelize.authenticate();
+      await this.assertDb();
     } catch {
       throw new ServiceUnavailableException({
         status: "error",
@@ -42,5 +50,9 @@ export class HealthController {
       service: "kino-db",
       database: "connected",
     };
+  }
+
+  private async assertDb(): Promise<void> {
+    await this.sequelize.authenticate();
   }
 }

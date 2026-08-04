@@ -17,10 +17,6 @@ import { PersonsClient } from "../clients";
 export class PersonsService {
   constructor(private readonly personsClient: PersonsClient) {}
 
-  async ping(): Promise<boolean> {
-    return this.personsClient.ping();
-  }
-
   async getAllPersonsPaginated(
     params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {

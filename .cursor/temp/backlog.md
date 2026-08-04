@@ -7,7 +7,7 @@
 Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (D1–D13 → **B32**).
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
-**Обновлено:** 2026-08-02 — ревью: дедуп FE↔BE↔Infra, единый владелец, порядок волн по зависимостям.
+**Обновлено:** 2026-08-04 — закрыты B20/B21/B22/B29/B40; один `docker-compose.yml` (prod overlay снят → I7 open).
 
 ## Легенда
 
@@ -92,9 +92,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
-| B20 | RMQ published + guest; MS trust payload | S-01 | **S** | **I7**, I14 | Prod overlay: не publish 5672/15672; сильные креды; internal net |
-| B21 | MS HTTP side-doors (`/roles`, CORS, ports) | S-02 | **S** | **I7** | HTTP только `/health` или закрыть порты; CORS off |
-| B22 | Gateway `/health` всегда 200 `ok` | S-03 | **S** | I2, B29, B40 | Liveness vs readiness; 503 если users+films down; один ping/queue |
+| — | _(B20/B21/B22 закрыты — см. Архив)_ | | | | |
 
 ### P1 — resilience / errors / ops
 
@@ -106,7 +104,6 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 | B26 | Swagger gate | S-07 | **S** | I16 | `SWAGGER_ENABLED` / non-prod only |
 | B27 | Global ThrottlerGuard | S-08 | **M** | — | `APP_GUARD`; жёстче admin/write |
 | B28 | Dockerfile `ENV PORT` | S-09 | **S** | I12 | Все три Dockerfile (HC `${PORT}`) |
-| B29 | Compose gateway depends_on MS | S-10 | **S** | B22, I2 | `service_healthy` MS **или** достаточно readiness B22 |
 | B1 | `synchronize: true` → migrations | INF-53 | **S** | I8 | auth-users + kino-db; sync off @edge |
 | B30 | Filters TTL-кэш / bundle RPC | A1-04 | **M** | — | Кэш на gateway; опц. ADR `getFiltersBundle` |
 | B31 | Единый RpcException во всех MS | A2-04 | **M** | B24 | Канон `{statusCode,message}`; выкинуть phrase-match |
@@ -122,8 +119,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 | B36 | Pagination request unify | A4-01 | **M** | — | канон `page`/`perPage` |
 | B37 | Search/filters partial failure | A3b-03/04 | **M** | — | `allSettled` + partial payload |
 | B38 | Guard wiring catalog unify | A3b-05 | **M** | B32/D9 | Jwt+`@Public` везде **или** явно без Jwt |
-| B39 | Gateway Jest gaps | A6-06 | **M** | — | auth, comments, health, filters |
-| B40 | Auth-users `/health` + DB | A6-05 | **S** | B22 | как kino-db `authenticate` |
+| B39 | Gateway Jest gaps | A6-06 | **M** | — | auth, comments, filters (health — done) |
 | B41 | RolesGuard: не маскировать infra→403 | A2-07 | **S** | B24 | fromRpc + проброс 5xx |
 | B42 | Comments через AuthClient | A1-02 | **S** | — | не прямой `RmqService` |
 | B15 | Observability (x-request-id) | A2-10 | **M** | — | correlation HTTP↔RMQ |
@@ -149,7 +145,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
-| I7 | Prod overlay: strip publish / no bind / production target | INF-85/70/71 | **S** | **B20**, **B21** | `compose.prod.yml` (или override); internal data plane |
+| I7 | Prod overlay: strip publish / no bind / production target | INF-85/70/71 | **S** | B20, B21 | Один `docker-compose.yml` = local DX; @edge — overlay/profiles или отдельный файл, когда понадобится |
 | I8 | Named volumes PG×2 + RMQ | INF-51 | **S** | B1, I9, I17 | `pg_kino` / `pg_users` / `rmq_data`; lifecycle в docs |
 | I14 | Weak defaults: PG `root/root`; RMQ guest вне env | INF-40 | **S** | **B20** | Strong secrets; RMQ user/pass из env; example ≠ prod-like |
 
@@ -199,7 +195,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 
 | Тема | Владелец | Поддержка |
 |------|----------|-----------|
-| Не publish RMQ/MS/DB + guest | **B20/B21** + **I7** | I14 secrets |
+| Не publish RMQ/MS/DB + guest | **I7** (+ B20/B21 код/creds) | I14 secrets |
 | Readiness / false-green HC | **B22** | I2 start_period; B29; B40 |
 | `ENV PORT` / non-root image | **B28** / **I12** | один PR образов OK |
 | Swagger off @edge | **B26** | I16 |
@@ -277,14 +273,14 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 - [ ] F13 i18n · F16 E2E (с ADR)
 
 ### Backend
-- [ ] B20/B21/B22 P0 (RMQ / side-doors / health)
-- [ ] B23–B29 + B40/B41/B42 resilience/ops/layering
+- [x] B20/B21/B22 P0 (RMQ / side-doors / health) + B29 + B40
+- [ ] B23–B28 + B41/B42 resilience/ops/layering
 - [ ] B32 dead-code · B33/B34 comments · B1 migrations
 - [ ] B30/B31 filters + RpcException · B13 LIST enrich
 - [ ] B36–B39 · B15 · B27 · B10
 
 ### Infra
-- [ ] I7/I8/I14 overlay + named vols + weak defaults
+- [ ] I7/I8/I14 edge overlay + named vols + weak defaults
 - [ ] I2/I3/I13/I15/I17 compose DX + graceful + profiles + seed + docs
 - [ ] I4 CI · I9 backup · I10–I12 images/scripts · I16 env
 - [ ] I1/I6/I18–I25 polish
@@ -314,3 +310,8 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 | B11 / B12 | Ratings + favorites RPC (ADR-008) |
 | B4 | «Два HTTP-порта у МС» → переформулирован в **B21** |
 | B8 | checkToken → **B32/D7** |
+| B20 | RMQ creds из env (non-guest); factory ban guest @prod; local compose publish для DX |
+| B21 | MS HTTP `/roles` удалён; CORS off; HTTP MS только `/health` |
+| B22 | GW `/health` readiness 503 + `/health/live`; DB-aware `health.ping` |
+| B29 | GW `depends_on` MS `service_healthy` + `start_period` |
+| B40 | auth-users HTTP `/health` + `sequelize.authenticate` |

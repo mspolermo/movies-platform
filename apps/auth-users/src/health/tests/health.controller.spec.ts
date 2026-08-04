@@ -61,7 +61,7 @@ describe("HealthController", () => {
 
       expect(result).toMatchObject({
         status: "ok",
-        service: "kino-db",
+        service: "auth-users",
         database: "connected",
       });
 
@@ -80,7 +80,7 @@ describe("HealthController", () => {
       await expect(controller.health()).rejects.toMatchObject({
         response: {
           status: "error",
-          service: "kino-db",
+          service: "auth-users",
           database: "disconnected",
         },
       });

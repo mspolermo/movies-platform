@@ -17,10 +17,6 @@ import { RmqService, kinoDbRpc } from "@common/services";
 export class PersonsClient {
   constructor(private readonly rmq: RmqService) {}
 
-  ping(): Promise<boolean> {
-    return this.rmq.sendToFilms(kinoDbRpc.health.ping, {});
-  }
-
   getAllPersons(
     params: TGetPersonsRequest = {}
   ): Promise<TPaginatedPersonsResponse> {

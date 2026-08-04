@@ -42,4 +42,4 @@
 ## Deploy / ownership
 
 - Контракты в common = compile-time coupling монорепы — ок; breaking RPC = один PR на все потребители.
-- HTTP порты MS — для health/internal; бизнес-API через них не открывать наружу.
+- HTTP порты MS — только `/health` (internal/Docker HC); бизнес-API через HTTP MS не открывать; CORS на MS не включать.

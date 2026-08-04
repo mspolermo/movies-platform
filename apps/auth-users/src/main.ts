@@ -9,12 +9,6 @@ async function start() {
   // Создаем HTTP приложение
   const app = await NestFactory.create(AppModule);
 
-  // Настраиваем CORS
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
-
   // Получаем ConfigService из DI
   const config = app.get(ConfigService);
 

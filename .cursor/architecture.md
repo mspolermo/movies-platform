@@ -169,7 +169,7 @@ UX redirects: thin `proxy.ts` → `resolveSessionRedirect` + `has_session` (не
 ## Инфраструктурные факты
 
 - Schema: `synchronize: true` (миграций Sequelize нет; seed в `devops/`)
-- Health: HTTP `/health` на gateway и обоих MS; Docker healthchecks
+- Health: GW `/health` (ready, 503) + `/health/live`; MS HTTP `/health` с DB authenticate; Docker HC + `depends_on` MS healthy
 - Graceful shutdown: SIGTERM handlers есть; полноценный `app.close()` — слабо
 - CI: GitHub Actions в репо нет
 - Client **не** в docker-compose — локальный `npm run dev`

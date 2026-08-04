@@ -29,7 +29,7 @@
 |---|-----|------|----------|------|
 | D7 | `GET /auth/checkToken` | `auth/controllers/auth.controller.ts` + Swagger + `project-index` | Grep client/mobile/docs на `checkToken`; только `/auth/me` | Средний (внешние клиенты?) |
 | D8 | `CountryResponseDto` | `countries/dto/response/countryResponse.dto.ts` | Либо удалить + `@ApiOkResponse` от реального shape, либо поля = `TCountryItemResponse` | Средний (только docs) |
-| D9 | Noop `@Public()` без Jwt | `FiltersController`, `AppController`, auth routes без class Jwt | Убрать декоратор **или** повесить Jwt+`@Public` единообразно (предпочтительно catalog unify — отдельная задача B) | Низкий/средний |
+| D9 | Noop `@Public()` без Jwt | `FiltersController`, `HealthController` (GW), auth routes без class Jwt | Убрать декоратор **или** повесить Jwt+`@Public` единообразно (предпочтительно catalog unify — отдельная задача B); `AppController` удалён (B22) | Низкий/средний |
 
 **DoD Wave 2:** Swagger countries = runtime JSON; checkToken отсутствует в index.
 

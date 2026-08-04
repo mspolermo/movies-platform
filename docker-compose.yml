@@ -5,9 +5,13 @@ services:
       dockerfile: ./apps/api-gateway/Dockerfile
       target: development
     command: >
-      sh -c "sleep 15 && npm run start:dev api-gateway"
+      sh -c "npm run start:dev api-gateway"
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      auth-users:
+        condition: service_healthy
+      kino-db:
         condition: service_healthy
     volumes:
       - .:/usr/src/app
@@ -18,7 +22,9 @@ services:
       - .env
     environment:
       - PORT=5000
-      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
+      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
       - USERS_QUEUE=${USERS_QUEUE}
       - FILMS_QUEUE=${FILMS_QUEUE}
       - PRIVATE_KEY=${PRIVATE_KEY}
@@ -32,6 +38,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 120s
   auth-users:
     build:
       context: .
@@ -58,7 +65,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT}
-      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
+      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
       - USERS_QUEUE=${USERS_QUEUE}
       - PRIVATE_KEY=${PRIVATE_KEY}
       - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
@@ -70,6 +79,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 120s
   kino-db:
     build:
       context: .
@@ -96,7 +106,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_KINO}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT}
-      - RABBITMQ_URL=${RABBITMQ_URL}
+      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
+      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
       - FILMS_QUEUE=${FILMS_QUEUE}
     networks:
       - default
@@ -106,6 +118,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 120s
   kino-db-seed:
     image: postgres:15
     command: >
@@ -149,8 +162,8 @@ services:
       - 5672:5672
       - 15672:15672
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-mp}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
     networks:
       - default
     restart: unless-stopped
@@ -158,7 +171,7 @@ services:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 30s
       timeout: 10s
-      retries: 3   
+      retries: 3
   db:
     container_name: db
     image: postgres:15
@@ -167,7 +180,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB_KINO}
     ports:
-      - 5432:5432 
+      - 5432:5432
     networks:
       - default
     restart: unless-stopped
@@ -175,7 +188,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB_KINO}"]
       interval: 30s
       timeout: 10s
-      retries: 3  
+      retries: 3
   db2:
     container_name: db2
     image: postgres:15
@@ -185,7 +198,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_USER}
     ports:
       - 5433:5432
-    volumes:   
+    volumes:
       - ./devops/users-db/users-init-dump.sql:/docker-entrypoint-initdb.d/users-init-dump.sql
     networks:
       - default
@@ -198,4 +211,4 @@ services:
 
 networks:
   default:
-    driver: bridge  
+    driver: bridge
