@@ -27,7 +27,7 @@ export class ProfessionsController {
   @Public()
   @ApiOperation({ summary: 'Получить персон по профессии с пагинацией' })
   @ApiResponse({ status: 200, description: 'Список персон профессии' })
-  @ApiParam({ name: 'profession', description: 'ID профессии', type: Number })
+  @ApiParam({ name: 'professionId', description: 'ID профессии', type: Number })
   @Get(":professionId/persons")
   getPersonsByProfession(
     @Param() params: ProfessionPersonsParamDto,

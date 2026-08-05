@@ -28,7 +28,6 @@ services:
       - USERS_QUEUE=${USERS_QUEUE}
       - FILMS_QUEUE=${FILMS_QUEUE}
       - PRIVATE_KEY=${PRIVATE_KEY}
-      - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     networks:
       - default

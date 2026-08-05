@@ -11,7 +11,6 @@ export {
 export {
   setAuthCookies,
   clearAuthCookies,
-  toAuthResponse,
 } from "./auth-cookie.helper";
 export {
   extractRpcErrorMessage,

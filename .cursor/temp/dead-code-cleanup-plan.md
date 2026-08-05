@@ -69,12 +69,12 @@
 
 Чеклист:
 
-- [ ] D1 UserRolesModule
-- [ ] D2 toAuthResponse
-- [ ] D3 ServiceError
-- [ ] D4 compose JWT_ACCESS_EXPIRES_IN с gateway
-- [ ] D5 genres JwtConfigModule import
-- [ ] D6 ApiParam/TODO professionId
+- [x] D1 UserRolesModule
+- [x] D2 toAuthResponse
+- [x] D3 ServiceError
+- [x] D4 compose JWT_ACCESS_EXPIRES_IN с gateway
+- [x] D5 genres JwtConfigModule import
+- [x] D6 ApiParam/TODO professionId
 - [ ] D7 checkToken
 - [ ] D8 CountryResponseDto
 - [ ] D9 noop @Public

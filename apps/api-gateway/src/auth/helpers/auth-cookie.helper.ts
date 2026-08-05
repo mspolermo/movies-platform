@@ -1,5 +1,3 @@
-import type { TAuthResponse } from "@common/types";
-
 import { Response } from "express";
 
 import {
@@ -41,12 +39,3 @@ export const clearAuthCookies = (res: Response, isProduction: boolean): void => 
     getClearHasSessionCookieOptions(isProduction)
   );
 };
-
-/** Публичный HTTP-ответ: refresh в cookie, access только в body. */
-export const toAuthResponse = (
-  user: TAuthResponse["user"],
-  accessToken: string
-): TAuthResponse => ({
-  user,
-  accessToken,
-});
