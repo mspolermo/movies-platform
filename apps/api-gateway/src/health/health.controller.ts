@@ -1,12 +1,13 @@
 import type { Response } from "express";
 
-import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Res, UseGuards } from "@nestjs/common";
 
-import { Public } from "../shared/guards";
+import { JwtAuthGuard, Public } from "../shared";
 
 import { HealthService } from "./health.service";
 
 @Controller()
+@UseGuards(JwtAuthGuard)
 export class HealthController {
   constructor(private readonly healthService: HealthService) {}
 

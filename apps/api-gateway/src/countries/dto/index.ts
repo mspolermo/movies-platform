@@ -1,1 +1,1 @@
-export { CountryResponseDto } from './response'
+export { CountryItemResponseDto } from "./countryItemResponse.dto";

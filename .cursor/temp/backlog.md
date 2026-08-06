@@ -4,7 +4,7 @@
 Аудит FE: [`IMPORTANT - frontend-architecture-audit.md`](./IMPORTANT%20-%20frontend-architecture-audit.md) (2026-07-31).  
 Аудит BE: [`IMPORTANT - backend-architecture-audit.md`](./IMPORTANT%20-%20backend-architecture-audit.md) (2026-08-02).  
 Аудит Infra: [`IMPORTANT - infrastructure-audit.md`](./IMPORTANT%20-%20infrastructure-audit.md) (2026-08-02).  
-Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (D1–D13 → **B32**).
+Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (остаток D10–D11, D13 → **B32**; Wave 1–2 / D12 done).
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
 **Обновлено:** 2026-08-04 — закрыты B20/B21/B22/B29/B40; один `docker-compose.yml` (prod overlay снят → I7 open).
@@ -24,7 +24,7 @@ Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (D1–D13 
 
 1. Работаем **один раз** — пункт живёт в таблице своего слоя (`F*` / `B*` / `I*`).
 2. Пересечения BE↔Infra → матрица ниже + колонка «Связь»; в Infra **нет** строк-указателей «→ B22».
-3. Dead-code D1–D13 только через **B32** (не плодить B7/B35 как отдельные задачи).
+3. Dead-code (остаток D10–D11, D13) только через **B32** (не плодить B7/B35 как отдельные задачи).
 4. LIST enrich профиля: продукт **F28**, BE-часть **B13** — закрывать одним треком.
 
 ---
@@ -86,7 +86,7 @@ ID `F-xx-yy` = findings аудита. `#` = трек бэклога.
 
 ## Backend — активный
 
-ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-code-cleanup-plan.md).
+ID `S-xx` = synth findings. Dead code → **B32** / [план](./dead-code-cleanup-plan.md) (D10–D11, D13).
 
 ### P0 — prod blockers
 
@@ -113,12 +113,12 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
-| B32 | Dead code Wave 1–3 | D1–D13 | **S** | — | [dead-code-cleanup-plan.md](./dead-code-cleanup-plan.md); включает checkToken, CountryDto, ApiParam |
+| B32 | Dead code Wave 3 | D10–D11, D13 | **S** | B24 | [dead-code-cleanup-plan.md](./dead-code-cleanup-plan.md); guards Logger + dead branches; Wave 1–2 done |
 | B33 | authorName = `user.name` | A3c-03 | **S** | — | fallback email local-part |
 | B34 | Comments film-check + fromRpc | A3c-01/02 | **S** | B24 | как prefs или RpcException 404 в kino-db |
 | B36 | Pagination request unify | A4-01 | **M** | — | канон `page`/`perPage` |
 | B37 | Search/filters partial failure | A3b-03/04 | **M** | — | `allSettled` + partial payload |
-| B38 | Guard wiring catalog unify | A3b-05 | **M** | B32/D9 | Jwt+`@Public` везде **или** явно без Jwt |
+| B38 | Guard wiring catalog unify | A3b-05 | **M** | — | Jwt+`@Public` **или** Public-only; опереться на существующие `@Public` markers; не вводить APP_GUARD Jwt без них |
 | B39 | Gateway Jest gaps | A6-06 | **M** | — | auth, comments, filters (health — done) |
 | B41 | RolesGuard: не маскировать infra→403 | A2-07 | **S** | B24 | fromRpc + проброс 5xx |
 | B42 | Comments через AuthClient | A1-02 | **S** | — | не прямой `RmqService` |
@@ -201,7 +201,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план D1–D13](./dead-c
 | Swagger off @edge | **B26** | I16 |
 | Migrations / sync off | **B1** | I8 volumes |
 | Profile LIST cards | **F28** + **B13** | F27 UI |
-| Dead code / checkToken / CountryDto | **B32** | — |
+| Dead code / guards noise | **B32** | — |
 
 ---
 
@@ -224,7 +224,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 В3  Параллельные быстрые wins
     FE: F22 · F23 · F24 · F36 · F37 · F20
-    BE: B32 (D1–D9; D10–D13 с В2)
+    BE: B32 (D10–D11/D13 с В2)
     Infra: I10 · I11 · I16
 
 В4  Prefs correctness (FE)
@@ -275,7 +275,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 ### Backend
 - [x] B20/B21/B22 P0 (RMQ / side-doors / health) + B29 + B40
 - [ ] B23–B28 + B41/B42 resilience/ops/layering
-- [ ] B32 dead-code · B33/B34 comments · B1 migrations
+- [ ] B32 Wave 3 (D10–D11/D13) · B33/B34 comments · B1 migrations
 - [ ] B30/B31 filters + RpcException · B13 LIST enrich
 - [ ] B36–B39 · B15 · B27 · B10
 
@@ -309,7 +309,9 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 | B5 / B6 | RolesGuard `/admin/*` + orphan `createRole` удалён (ADR-007) |
 | B11 / B12 | Ratings + favorites RPC (ADR-008) |
 | B4 | «Два HTTP-порта у МС» → переформулирован в **B21** |
-| B8 | checkToken → **B32/D7** |
+| B8 | checkToken удалён (**B32/D7**); канон `/auth/me` |
+| — | Dead-code Wave 1 (D1–D6) + D12 done |
+| — | Dead-code Wave 2 (D7–D9) done | checkToken; Swagger response DTOs (catalog+films+comments+auth); Public = JwtAuthGuard+@Public; JwtConfigModule `@Global` без feature-imports; ApiBearerAuth только JWT-required |
 | B20 | RMQ creds из env (non-guest); factory ban guest @prod; local compose publish для DX |
 | B21 | MS HTTP `/roles` удалён; CORS off; HTTP MS только `/health` |
 | B22 | GW `/health` readiness 503 + `/health/live`; DB-aware `health.ping` |

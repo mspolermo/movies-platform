@@ -1,32 +1,28 @@
 import type { TGenresListResponse } from "@common/types";
 
-import {
-  Controller,
-  Get,
-} from "@nestjs/common";
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-} from "@nestjs/swagger";
+import { Controller, Get, UseGuards } from "@nestjs/common";
+import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
+import { JwtAuthGuard, Public } from "../../shared";
+import { GenreItemResponseDto } from "../dto";
 import { GenresService } from "../services";
 
+@ApiTags("Genres")
 @Controller("genres")
-@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class GenresController {
   constructor(
     private readonly genresService: GenresService
   ) {}
 
-  @ApiOperation({
-    summary: "Получение всех жанров",
-  })
-  @ApiResponse({
-    status: 200,
-    description: "Список жанров",
-  })
+  @Public()
   @Get()
+  @ApiOperation({ summary: "Получение всех жанров" })
+  @ApiOkResponse({
+    description: "Список жанров (`nameRu` / `nameEn`)",
+    type: GenreItemResponseDto,
+    isArray: true,
+  })
   getAllGenres(): Promise<TGenresListResponse> {
     return this.genresService.getAllGenres();
   }

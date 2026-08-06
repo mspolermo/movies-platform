@@ -57,7 +57,7 @@ ADR-005 зафиксировал FE-стабы админки и целевой 
 
 - Создан декоратор `@Roles(...roles)` (`shared/guards/roles.decorator.ts`, `ROLES_KEY = "roles"` — та же строка, что читает `RolesGuard`).
 - Все admin-контроллеры: `@UseGuards(JwtAuthGuard, RolesGuard)` + `@Roles("ADMIN")` на классе; unit-тест проверяет проводку метаданных.
-- `AdminModule` импортирует только `JwtConfigModule` (он экспортирует guards и `UserRolesService`; `RmqModule` — global).
+- Guards/роли: `JwtConfigModule` `@Global()` (экспортирует `JwtAuthGuard` / `RolesGuard` / `UserRolesService`); `RmqModule` — global. `AdminModule` не импортирует JWT отдельно.
 
 ### Валидация
 

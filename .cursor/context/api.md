@@ -8,6 +8,9 @@
 - REST + JSON; документация — Swagger `/api/docs`.
 - Версионирования URL нет — breaking changes согласовывать; при необходимости — ADR.
 - Auth: Bearer access; refresh/logout — cookie + OriginGuard (prod).
+- Публичные роуты: class `JwtAuthGuard` + method `@Public` (optional Bearer; B38). `JwtConfigModule` — `@Global()`.
+- Swagger `@ApiBearerAuth` — только JWT-required (не на `@Public`).
+- Текущий пользователь — `GET /auth/me` (`/auth/checkToken` удалён).
 - Ошибки: стабильные HTTP status + предсказуемое тело; не протекать stack trace в prod.
 
 ## Контракты типов
@@ -22,6 +25,7 @@
 - Вход HTTP валидировать DTO (`class-validator`).
 - Общие auth/comment DTO — `@common/dto`.
 - Не дублировать «тот же» интерфейс в types, если можно опереться на существующий тип.
+- Swagger response DTO на gateway: `implements T*Response` + `@ApiOkResponse({ type })`. Доменный owner (`FilmListItemResponseDto` → `films/dto`; search/professions реиспользуют).
 
 ## RPC
 
@@ -40,5 +44,4 @@
 
 - Не открывать бизнес-HTTP MS наружу.
 - Не отдавать ORM/entity поля «лишним» набором без нужды (overfetch осознанно).
-- Deprecated (`/auth/checkToken`) не использовать в новом коде.
 - Comments/отзывы — **без** `parentId` / nested create (см. [ADR-002](../adr/002-flat-film-reviews.md)).

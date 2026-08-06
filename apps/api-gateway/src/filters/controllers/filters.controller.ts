@@ -7,21 +7,23 @@ import {
   Controller,
   Get,
   Query,
+  UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
 import {
-  ApiBearerAuth,
+  ApiOkResponse,
   ApiOperation,
   ApiQuery,
-  ApiResponse,
+  ApiTags,
 } from "@nestjs/swagger";
 
-import { Public } from "../../shared";
-import { GetFiltersQueryDto } from "../dto";
+import { JwtAuthGuard, Public } from "../../shared";
+import { FiltersResponseDto, GetFiltersQueryDto } from "../dto";
 import { FiltersService } from "../services";
 
+@ApiTags("Filters")
 @Controller("filters")
-@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 export class FiltersController {
   constructor(
     private readonly filtersService: FiltersService
@@ -39,9 +41,9 @@ export class FiltersController {
     description:
       "Локаль подписей жанров и стран (по умолчанию ru)",
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Жанры, страны и годы для quick filters",
+    type: FiltersResponseDto,
   })
   @Get("quick")
   async getQuickFilters(
@@ -62,9 +64,9 @@ export class FiltersController {
     description:
       "Локаль подписей жанров и стран (по умолчанию ru)",
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Доступные фильтры",
+    type: FiltersResponseDto,
   })
   @Get()
   async getFilters(
@@ -74,4 +76,3 @@ export class FiltersController {
     return this.filtersService.getFilters(query.locale);
   }
 }
-

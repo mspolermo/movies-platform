@@ -1,7 +1,5 @@
 import { Module } from "@nestjs/common";
 
-import { JwtConfigModule } from "../jwt";
-
 import { AdminKinoDbClient, AdminUsersClient } from "./clients";
 import {
   AdminCountriesController,
@@ -21,7 +19,6 @@ import {
 } from "./services";
 
 @Module({
-  imports: [JwtConfigModule],
   controllers: [
     AdminFilmsController,
     AdminGenresController,

@@ -15,24 +15,36 @@ import {
   Req,
   ParseIntPipe,
 } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+} from "@nestjs/swagger";
 
 import { CommentDTO } from "@common/dto";
 
 import { JwtAuthGuard, Public } from "../../shared";
 import { AuthenticatedRequest } from "../../shared/interfaces";
-import { GetFilmCommentsQueryDto } from "../dto";
+import {
+  CommentResponseDto,
+  CommentsPaginatedResponseDto,
+  GetFilmCommentsQueryDto,
+  ToggleCommentLikeResponseDto,
+} from "../dto";
 import { CommentsService } from "../services";
 
 @Controller("comments")
-@UseGuards(JwtAuthGuard) // Защищаем весь контроллер
-@ApiBearerAuth()
+@UseGuards(JwtAuthGuard) // Защищаем весь контроллер; GET — @Public (optional Bearer)
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Public()
   @ApiOperation({ summary: "Получение комментариев по id фильма" })
-  @ApiResponse({ status: 200, description: "Список комментариев" })
+  @ApiOkResponse({
+    description: "Список комментариев",
+    type: CommentsPaginatedResponseDto,
+  })
   @Get("/:filmId")
   async getCommentsByFilmId(
     @Param("filmId", ParseIntPipe) filmId: number,
@@ -47,8 +59,12 @@ export class CommentsController {
     });
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Создание комментария" })
-  @ApiResponse({ status: 200, description: "Созданный комментарий" })
+  @ApiOkResponse({
+    description: "Созданный комментарий",
+    type: CommentResponseDto,
+  })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @Post("/:filmId")
   async createComment(
@@ -60,8 +76,12 @@ export class CommentsController {
     return await this.commentsService.createComment(filmId, dto, userId);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Toggle лайка комментария" })
-  @ApiResponse({ status: 200, description: "Состояние лайка" })
+  @ApiOkResponse({
+    description: "Состояние лайка",
+    type: ToggleCommentLikeResponseDto,
+  })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @Post("/:commentId/like")
   async toggleCommentLike(

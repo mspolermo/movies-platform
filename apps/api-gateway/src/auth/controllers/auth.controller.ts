@@ -14,18 +14,20 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { ApiOperation, ApiResponse } from "@nestjs/swagger";
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiResponse,
+} from "@nestjs/swagger";
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { Request, Response } from "express";
 
 import { AuthDto, CreateUserDto } from "@common/dto";
 
-import {
-  JwtAuthGuard,
-  OriginGuard,
-  Public,
-} from "../../shared/guards";
+import { JwtAuthGuard, OriginGuard, Public } from "../../shared";
 import { AuthenticatedRequest } from "../../shared/interfaces";
+import { AuthResponseDto, CurrentUserResponseDto } from "../dto";
 import {
   clearAuthCookies,
   REFRESH_TOKEN_COOKIE,
@@ -34,7 +36,7 @@ import {
 import { AuthService } from "../services";
 
 /** HTTP-граница auth: cookie, throttle, OriginGuard на refresh/logout. */
-@UseGuards(ThrottlerGuard)
+@UseGuards(ThrottlerGuard, JwtAuthGuard)
 @Controller("auth")
 export class AuthController {
   constructor(
@@ -51,7 +53,10 @@ export class AuthController {
   @Public()
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @ApiOperation({ summary: "Регистрация" })
-  @ApiResponse({ status: 200, description: "Пользователь зарегистрирован" })
+  @ApiOkResponse({
+    description: "Пользователь зарегистрирован",
+    type: AuthResponseDto,
+  })
   @Post("/registration")
   async registrationUser(
     @Body() dto: CreateUserDto,
@@ -65,7 +70,10 @@ export class AuthController {
   @Public()
   @Throttle({ default: { limit: 5, ttl: 60_000 } })
   @ApiOperation({ summary: "Логин" })
-  @ApiResponse({ status: 200, description: "Пользователь авторизован" })
+  @ApiOkResponse({
+    description: "Пользователь авторизован",
+    type: AuthResponseDto,
+  })
   @Post("/login")
   async loginUser(
     @Body() dto: AuthDto,
@@ -80,7 +88,10 @@ export class AuthController {
   @UseGuards(OriginGuard)
   @Throttle({ default: { limit: 30, ttl: 60_000 } })
   @ApiOperation({ summary: "Обновление access token по refresh cookie" })
-  @ApiResponse({ status: 200, description: "Новая пара токенов" })
+  @ApiOkResponse({
+    description: "Новая пара токенов",
+    type: AuthResponseDto,
+  })
   @ApiResponse({ status: 401, description: "Unauthorized" })
   @Post("/refresh")
   async refreshToken(
@@ -113,27 +124,17 @@ export class AuthController {
     return { success: true };
   }
 
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Текущий пользователь" })
-  @ApiResponse({ status: 200, description: "Информация о пользователе" })
+  @ApiOkResponse({
+    description: "Информация о пользователе",
+    type: CurrentUserResponseDto,
+  })
   @ApiResponse({ status: 401, description: "Unauthorized" })
-  @UseGuards(JwtAuthGuard)
   @Get("/me")
   async getCurrentUser(
     @Req() req: AuthenticatedRequest
   ): Promise<TCurrentUserResponse> {
     return await this.authService.getCurrentUser(req.user);
-  }
-
-  /** @deprecated Используйте GET /auth/me */
-  @ApiOperation({ summary: "Получение пользователя по токену (deprecated)" })
-  @ApiResponse({ status: 200, description: "Информация о пользователе" })
-  @ApiResponse({ status: 401, description: "Unauthorized" })
-  @UseGuards(JwtAuthGuard)
-  @Get("/checkToken")
-  async checkToken(@Req() req: AuthenticatedRequest) {
-    return {
-      id: req.user.id,
-      email: req.user.email,
-    };
   }
 }

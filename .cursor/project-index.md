@@ -68,24 +68,23 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | POST | `/auth/refresh` | Public + OriginGuard | Ротация токенов |
 | POST | `/auth/logout` | Public + OriginGuard | Revoke + clear cookies |
 | GET | `/auth/me` | JWT | Текущий пользователь |
-| GET | `/auth/checkToken` | JWT | **deprecated** → `/auth/me` |
 | GET | `/films` | Public | Поиск/фильтры |
 | GET | `/films/:id` | Public | Детали фильма |
 | GET | `/films/:id/similar` | Public | Похожие |
 | GET | `/films/:id/professions` | Public | Профессии в фильме |
 | GET | `/films/:id/persons-by-profession` | Public | Каст по профессии |
-| GET | `/persons` | JWT* | Список персон |
-| GET | `/persons/search` | JWT* | Поиск персон |
-| GET | `/persons/:id` | JWT* | Профиль |
-| GET | `/persons/:id/filmography` | JWT* | Фильмография |
-| GET | `/genres` | JWT* | Жанры |
-| GET | `/countries` | JWT* | Страны |
+| GET | `/persons` | Public | Список персон |
+| GET | `/persons/search` | Public | Поиск персон |
+| GET | `/persons/:id` | Public | Профиль |
+| GET | `/persons/:id/filmography` | Public | Фильмография |
+| GET | `/genres` | Public | Жанры |
+| GET | `/countries` | Public | Страны |
 | GET | `/professions` | Public | Профессии |
 | GET | `/professions/:professionId/persons` | Public | Персоны по профессии |
 | GET | `/filters` | Public | Агрегация фильтров |
 | GET | `/filters/quick` | Public | Quick filters (header) |
 | GET | `/search` | Public | Глобальный поиск |
-| GET | `/comments/:filmId` | JWT | Комментарии |
+| GET | `/comments/:filmId` | Public | Комментарии (optional JWT) |
 | POST | `/comments/:filmId` | JWT | Создать комментарий |
 | POST | `/comments/:commentId/like` | JWT | Лайк комментария |
 | GET | `/favorites` | JWT | Избранное (пагинация) |
@@ -108,7 +107,8 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | GET | `/admin/users` | ADMIN | Пагинированный список с ролями |
 | PATCH | `/admin/users/:id` | ADMIN | `{ role }`; последний ADMIN → 409 |
 
-\* JWT на gateway; клиент шлёт Bearer после login/refresh.  
+Public = class `JwtAuthGuard` + method `@Public` (optional Bearer; `JwtConfigModule` `@Global`; готовность к `APP_GUARD` / B38).  
+JWT = `JwtAuthGuard` без `@Public`.  
 ADMIN = `JwtAuthGuard + RolesGuard + @Roles("ADMIN")`; списки — `TPaginatedItemsResponse` (ADR-007).
 
 ---

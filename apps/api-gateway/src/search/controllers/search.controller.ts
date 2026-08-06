@@ -1,14 +1,20 @@
 import type { TSearchResultResponse } from "@common/types";
 
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from "@nestjs/swagger";
+import {
+  ApiOkResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../shared/guards";
+import { JwtAuthGuard, Public } from "../../shared";
+import { SearchResultResponseDto } from "../dto";
 import { SearchService } from "../services/search.service";
 
+@ApiTags("Search")
 @Controller("search")
 @UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 export class SearchController {
   constructor(
     private readonly searchService: SearchService,
@@ -18,9 +24,9 @@ export class SearchController {
   @ApiOperation({
     summary: "Поиск фильмов и персон по имени",
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Результаты поиска",
+    type: SearchResultResponseDto,
   })
   @ApiQuery({
     name: "name",

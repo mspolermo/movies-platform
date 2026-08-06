@@ -16,14 +16,19 @@ import {
   ValidationPipe,
 } from "@nestjs/common";
 import {
-  ApiBearerAuth,
+  ApiOkResponse,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from "@nestjs/swagger";
 
+import { PaginatedPersonsResponseDto } from "../../persons/dto";
+import { ProfessionItemResponseDto } from "../../professions/dto";
 import { JwtAuthGuard, Public } from "../../shared";
 import {
+  FilmDetailsResponseDto,
+  FilmListItemResponseDto,
+  FilmsPaginationResponseDto,
   GetFilmPersonsByProfessionDto,
   GetSimilarFilmsDto,
   SearchFilmsDto,
@@ -33,18 +38,15 @@ import { FilmsService } from "../services";
 @ApiTags("Films")
 @Controller("films")
 @UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
 export class FilmsController {
-  constructor(
-    private readonly filmsService: FilmsService
-  ) {}
+  constructor(private readonly filmsService: FilmsService) {}
 
   @Public()
   @Get()
   @ApiOperation({ summary: "Поиск фильмов" })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Список фильмов",
+    type: FilmsPaginationResponseDto,
   })
   searchFilms(
     @Query(new ValidationPipe({ transform: true }))
@@ -58,9 +60,10 @@ export class FilmsController {
   @ApiOperation({
     summary: "Получить похожие фильмы по жанрам",
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Список похожих фильмов",
+    type: FilmListItemResponseDto,
+    isArray: true,
   })
   @ApiResponse({
     status: 404,
@@ -80,9 +83,10 @@ export class FilmsController {
   @Public()
   @Get(":id/professions")
   @ApiOperation({ summary: "Получить профессии фильма" })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Список профессий фильма",
+    type: ProfessionItemResponseDto,
+    isArray: true,
   })
   getFilmProfessions(
     @Param("id", ParseIntPipe) id: number
@@ -97,9 +101,9 @@ export class FilmsController {
   @ApiOperation({
     summary: "Получить персон фильма по профессии",
   })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Список персон",
+    type: PaginatedPersonsResponseDto,
   })
   getFilmPersonsByProfession(
     @Param("id", ParseIntPipe) filmId: number,
@@ -115,9 +119,9 @@ export class FilmsController {
   @Public()
   @Get(":id")
   @ApiOperation({ summary: "Получить фильм по id" })
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: "Информация о фильме",
+    type: FilmDetailsResponseDto,
   })
   @ApiResponse({
     status: 404,

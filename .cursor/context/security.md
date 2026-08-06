@@ -9,8 +9,11 @@
 - Refresh: opaque + hash в БД; ротация; reuse detection → revoke all user tokens.
 - Refresh cookie: HttpOnly, Path `/api/auth` (через gateway path), SameSite=Lax.
 - `has_session` — **не** security control.
-- Защищённые роуты — `JwtAuthGuard` + Bearer.
-- RolesGuard/RBAC не считать рабочим, пока не восстановлен и не покрыт тестами.
+- Защищённые роуты — `JwtAuthGuard` + Bearer (без `@Public`).
+- Публичные роуты — class `JwtAuthGuard` + method `@Public` (optional Bearer). `JwtConfigModule` — `@Global()` (guard DI без import в каждом feature-модуле). Нужен до `APP_GUARD` / B38, иначе auth/health/catalog лягут 401.
+- `/admin/*`: `JwtAuthGuard + RolesGuard + @Roles("ADMIN")` — рабочий (ADR-007 + specs). Не маскировать infra/RPC 5xx в 403 — **B41**.
+- Текущий пользователь — только `GET /auth/me` (`/auth/checkToken` удалён).
+- Swagger: `@ApiBearerAuth` **только** на JWT-required хендлерах/контроллерах (favorites, ratings, admin, auth `/me`, comments POST). Не ставить на `@Public` catalog — OpenAPI иначе врёт `security required`.
 
 ## CSRF / CORS
 
