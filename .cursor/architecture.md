@@ -61,9 +61,9 @@ API Gateway → JSON → Client
 ```
 Client (Bearer access)
   ↓ POST /api/comments/:filmId
-API Gateway JwtAuthGuard → userId
-  ↓ (опционально getUserById для authorName)
-  ↓ sendToFilms("createComment", …)
+API Gateway JwtAuthGuard → userId + email (JWT)
+  ↓ authorName = email local-part (B33: → user.name)
+  ↓ fromRpc(sendToFilms("createComment", …))
 kino-db → Comment persist → map → TCommentResponse
 ```
 

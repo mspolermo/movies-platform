@@ -3,11 +3,10 @@
 Канон архитектуры: [`.cursor/architecture.md`](../architecture.md). Канон клиента: `apps/client`.  
 Аудит FE: [`IMPORTANT - frontend-architecture-audit.md`](./IMPORTANT%20-%20frontend-architecture-audit.md) (2026-07-31).  
 Аудит BE: [`IMPORTANT - backend-architecture-audit.md`](./IMPORTANT%20-%20backend-architecture-audit.md) (2026-08-02).  
-Аудит Infra: [`IMPORTANT - infrastructure-audit.md`](./IMPORTANT%20-%20infrastructure-audit.md) (2026-08-02).  
-Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (остаток D10–D11, D13 → **B32**; Wave 1–2 / D12 done).
+Аудит Infra: [`IMPORTANT - infrastructure-audit.md`](./IMPORTANT%20-%20infrastructure-audit.md) (2026-08-02).
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
-**Обновлено:** 2026-08-04 — закрыты B20/B21/B22/B29/B40; один `docker-compose.yml` (prod overlay снят → I7 open).
+**Обновлено:** 2026-08-07 — B32 + review-fixes: comments `fromRpc` all paths + JWT email (без getById hop); RolesGuard/`UserRolesService` fromRpc + unexpected→500 (B41) + user 404→401; `getUserById` RpcException; `/auth/me` via `fromRpc`.
 
 ## Легенда
 
@@ -24,7 +23,7 @@ Dead code: [`dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md) (оста�
 
 1. Работаем **один раз** — пункт живёт в таблице своего слоя (`F*` / `B*` / `I*`).
 2. Пересечения BE↔Infra → матрица ниже + колонка «Связь»; в Infra **нет** строк-указателей «→ B22».
-3. Dead-code (остаток D10–D11, D13) только через **B32** (не плодить B7/B35 как отдельные задачи).
+3. Dead-code (**B32** closed) — не плодить B7/B35 как отдельные задачи.
 4. LIST enrich профиля: продукт **F28**, BE-часть **B13** — закрывать одним треком.
 
 ---
@@ -86,7 +85,7 @@ ID `F-xx-yy` = findings аудита. `#` = трек бэклога.
 
 ## Backend — активный
 
-ID `S-xx` = synth findings. Dead code → **B32** / [план](./dead-code-cleanup-plan.md) (D10–D11, D13).
+ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 
 ### P0 — prod blockers
 
@@ -99,7 +98,7 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план](./dead-code-clean
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
 | B23 | RMQ RPC timeout (+ ADR) | S-04 | **S–M** | — | `rxjs.timeout` в `RmqService`; ADR; DLQ/prefetch следом |
-| B24 | `fromRpc` на catalog/auth/comments | S-05 | **S** | B31, B41 | Все RMQ-await через `fromRpc`; auth statusCode вместо phrase-match |
+| B24 | `fromRpc` на catalog/auth | S-05 | **S** | B31 | Все RMQ-await через `fromRpc`; auth statusCode вместо phrase-match (comments — done) |
 | B25 | GlobalExceptionFilter leak / getResponse | S-06 | **S** | — | Hide ≥500 in prod; normalize `getResponse()` |
 | B26 | Swagger gate | S-07 | **S** | I16 | `SWAGGER_ENABLED` / non-prod only |
 | B27 | Global ThrottlerGuard | S-08 | **M** | — | `APP_GUARD`; жёстче admin/write |
@@ -113,15 +112,13 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план](./dead-code-clean
 
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
-| B32 | Dead code Wave 3 | D10–D11, D13 | **S** | B24 | [dead-code-cleanup-plan.md](./dead-code-cleanup-plan.md); guards Logger + dead branches; Wave 1–2 done |
 | B33 | authorName = `user.name` | A3c-03 | **S** | — | fallback email local-part |
-| B34 | Comments film-check + fromRpc | A3c-01/02 | **S** | B24 | как prefs или RpcException 404 в kino-db |
+| B34 | Comments film-check | A3c-01 | **S** | B24 | как prefs или RpcException 404 в kino-db (`fromRpc` на comments — done) |
 | B36 | Pagination request unify | A4-01 | **M** | — | канон `page`/`perPage` |
 | B37 | Search/filters partial failure | A3b-03/04 | **M** | — | `allSettled` + partial payload |
 | B38 | Guard wiring catalog unify | A3b-05 | **M** | — | Jwt+`@Public` **или** Public-only; опереться на существующие `@Public` markers; не вводить APP_GUARD Jwt без них |
 | B39 | Gateway Jest gaps | A6-06 | **M** | — | auth, comments, filters (health — done) |
-| B41 | RolesGuard: не маскировать infra→403 | A2-07 | **S** | B24 | fromRpc + проброс 5xx |
-| B42 | Comments через AuthClient | A1-02 | **S** | — | не прямой `RmqService` |
+| B42 | Comments через AuthClient | A1-02 | **S** | — | не прямой `RmqService` (create уже без RMQ users; RolesGuard ещё через UserRolesService) |
 | B15 | Observability (x-request-id) | A2-10 | **M** | — | correlation HTTP↔RMQ |
 | B10 | Event-driven write-side | — | **L** | — | только с ADR |
 
@@ -201,8 +198,6 @@ ID `S-xx` = synth findings. Dead code → **B32** / [план](./dead-code-clean
 | Swagger off @edge | **B26** | I16 |
 | Migrations / sync off | **B1** | I8 volumes |
 | Profile LIST cards | **F28** + **B13** | F27 UI |
-| Dead code / guards noise | **B32** | — |
-
 ---
 
 ## Рекомендуемый порядок
@@ -219,12 +214,11 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
     I2 · I3 · I13 · I15 · I17 · B29 · B40
 
 В2  RPC / HTTP resilience
-    B23 · B24 · B25 · B26 · B41 · B42
-    (+ B33/B34 comments рядом с fromRpc)
+    B23 · B24 · B25 · B26 · B42
+    (+ B33/B34 comments рядом)
 
 В3  Параллельные быстрые wins
     FE: F22 · F23 · F24 · F36 · F37 · F20
-    BE: B32 (D10–D11/D13 с В2)
     Infra: I10 · I11 · I16
 
 В4  Prefs correctness (FE)
@@ -251,7 +245,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 Почему сдвиг vs предыдущего порядка:
 - FE correctness (ошибки/nav/refresh) вынесен в **В3**, не после CI/migrations.
 - Migrations (**B1**) отдельной волной **после** edge+resilience — риск данных не блокирует health/RPC.
-- Dead-code (**B32**) рано, но не в P0-треке.
+- Dead-code (**B32**) закрыт.
 - Comments/fromRpc/RolesGuard сгруппированы в **В2** (один смысловой PR-кластер).
 - CI (**I4**) после того, как HC/scripts не врут (иначе gate зелёный на лжи).
 
@@ -274,8 +268,9 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 ### Backend
 - [x] B20/B21/B22 P0 (RMQ / side-doors / health) + B29 + B40
-- [ ] B23–B28 + B41/B42 resilience/ops/layering
-- [ ] B32 Wave 3 (D10–D11/D13) · B33/B34 comments · B1 migrations
+- [ ] B23–B28 + B42 resilience/ops/layering
+- [x] B32 Wave 3 (D10–D11/D13) + B41 RolesGuard 5xx
+- [ ] B33/B34 comments film-check · B1 migrations
 - [ ] B30/B31 filters + RpcException · B13 LIST enrich
 - [ ] B36–B39 · B15 · B27 · B10
 
@@ -312,6 +307,8 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 | B8 | checkToken удалён (**B32/D7**); канон `/auth/me` |
 | — | Dead-code Wave 1 (D1–D6) + D12 done |
 | — | Dead-code Wave 2 (D7–D9) done | checkToken; Swagger response DTOs (catalog+films+comments+auth); Public = JwtAuthGuard+@Public; JwtConfigModule `@Global` без feature-imports; ApiBearerAuth только JWT-required |
+| B32 | Dead-code Wave 3 (D10–D11, D13): Nest Logger guards; drop `!jwtService`; comments JWT email + `fromRpc` all; `getUserById` → RpcException 404 |
+| B41 | RolesGuard: `UserRolesService`/`fromRpc`; unexpected → 500 (не 403) |
 | B20 | RMQ creds из env (non-guest); factory ban guest @prod; local compose publish для DX |
 | B21 | MS HTTP `/roles` удалён; CORS off; HTTP MS только `/health` |
 | B22 | GW `/health` readiness 503 + `/health/live`; DB-aware `health.ping` |

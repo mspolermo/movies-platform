@@ -72,8 +72,12 @@ export class CommentsController {
     @Body() dto: CommentDTO,
     @Req() req: AuthenticatedRequest
   ): Promise<TCommentResponse> {
-    const userId = req.user.id;
-    return await this.commentsService.createComment(filmId, dto, userId);
+    return await this.commentsService.createComment(
+      filmId,
+      dto,
+      req.user.id,
+      req.user.email
+    );
   }
 
   @ApiBearerAuth()

@@ -3,6 +3,7 @@ import {
   HttpStatus,
   UnauthorizedException,
 } from "@nestjs/common";
+import { RpcException } from "@nestjs/microservices";
 import { getModelToken } from "@nestjs/sequelize";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as bcrypt from "bcryptjs";
@@ -192,6 +193,41 @@ describe("UsersService", () => {
         include: { all: true },
       });
       expect(service.createUserWithRole).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("getUserById", () => {
+    /** Достаёт payload RpcException для проверки statusCode. */
+    const getRpcError = async (promise: Promise<unknown>) => {
+      await expect(promise).rejects.toBeInstanceOf(RpcException);
+      const error = await promise.catch((e: RpcException) => e);
+      return (error as RpcException).getError() as {
+        statusCode: number;
+        message: string;
+      };
+    };
+
+    it("returns authorized user response when user exists", async () => {
+      mockUsersRepository.findOne.mockResolvedValue(mockUser);
+
+      await expect(service.getUserById(1)).resolves.toEqual({
+        id: mockUser.id,
+        email: mockUser.email,
+        name: mockUser.name,
+        roles: mockUser.roles.map((role) => ({
+          id: role.id,
+          value: role.value,
+        })),
+      });
+    });
+
+    it("throws RpcException 404 when user is missing", async () => {
+      mockUsersRepository.findOne.mockResolvedValue(null);
+
+      const error = await getRpcError(service.getUserById(999));
+
+      expect(error.statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(error.message).toBe("Пользователь не найден");
     });
   });
 });

@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
@@ -19,6 +20,8 @@ interface ErrorWithMessage {
 
 @Injectable()
 export class RolesGuard implements CanActivate {
+  private readonly logger = new Logger(RolesGuard.name);
+
   constructor(
     private reflector: Reflector,
     private userRolesService: UserRolesService
@@ -43,7 +46,7 @@ export class RolesGuard implements CanActivate {
       const req = context.switchToHttp().getRequest<AuthenticatedRequest>();
 
       if (!req.user) {
-        console.log("🔒 RolesGuard: Пользователь не аутентифицирован");
+        this.logger.debug("User not authenticated");
         throw new UnauthorizedException({
           message: "Пользователь не аутентифицирован",
         });
@@ -55,7 +58,9 @@ export class RolesGuard implements CanActivate {
       );
 
       if (!userWithRoles.roles || !Array.isArray(userWithRoles.roles)) {
-        console.log("🔒 RolesGuard: У пользователя нет ролей");
+        this.logger.debug(
+          `User ${req.user.id} has no roles; required: ${requiredRoles.join(", ")}`
+        );
         throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
       }
 
@@ -64,32 +69,45 @@ export class RolesGuard implements CanActivate {
       );
 
       if (!hasRequiredRole) {
-        console.log(
-          `🔒 RolesGuard: Пользователь ${userWithRoles.email} (ID: ${
-            userWithRoles.id
-          }) не имеет требуемых ролей: ${requiredRoles.join(", ")}`
+        this.logger.debug(
+          `User ${userWithRoles.id} missing required roles: ${requiredRoles.join(", ")}`
         );
         throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
       }
-
-      console.log(
-        `🔒 RolesGuard: Доступ разрешен для пользователя ${
-          userWithRoles.email
-        } с ролями: ${userWithRoles.roles.map((r) => r.value).join(", ")}`
-      );
 
       // Обновляем пользователя в request с полной информацией
       req.user = userWithRoles;
 
       return true;
     } catch (e) {
-      if (e instanceof UnauthorizedException || e instanceof HttpException) {
+      if (e instanceof UnauthorizedException) {
+        throw e;
+      }
+
+      if (e instanceof HttpException) {
+        const status = e.getStatus();
+        // User lookup 404 при валидном JWT — authz, не «ресурс admin».
+        if (status === HttpStatus.NOT_FOUND) {
+          throw new UnauthorizedException({
+            message: "Пользователь не аутентифицирован",
+          });
+        }
+        // 403 deny / 5xx от fromRpc — как есть (B41).
         throw e;
       }
 
       const errorWithMessage = e as ErrorWithMessage;
-      console.log("🔒 RolesGuard: Ошибка при проверке ролей:", errorWithMessage?.message || e);
-      throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
+      this.logger.error(
+        `Roles check failed: ${errorWithMessage?.message || String(e)}`
+      );
+      // Не маскируем infra/неожиданные ошибки под 403 (B41).
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: "Ошибка проверки доступа",
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }

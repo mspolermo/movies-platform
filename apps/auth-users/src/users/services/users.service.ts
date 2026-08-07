@@ -6,6 +6,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
+import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
 import * as bcrypt from "bcryptjs";
 
@@ -97,17 +98,20 @@ export class UsersService {
         include: { all: true },
       });
       if (!user) {
-        throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND);
+        throw new RpcException({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: "Пользователь не найден",
+        });
       }
       return toAuthorizedUserResponse(user);
     } catch (e) {
-      if (e instanceof HttpException) {
+      if (e instanceof RpcException) {
         throw e;
       }
-      throw new HttpException(
-        "Ошибка при получении пользователя",
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      throw new RpcException({
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: "Ошибка при получении пользователя",
+      });
     }
   }
 }

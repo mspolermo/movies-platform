@@ -4,6 +4,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
@@ -23,6 +24,8 @@ interface JWTError extends Error {
 //  используемый для реализации стратегии защиты маршрута.
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
+  private readonly logger = new Logger(JwtAuthGuard.name);
+
   //  * конструктор класса, принимающий в качестве аргумента объект сервиса JwtService,
   //  необходимый для работы с JWT токенами.
   constructor(private jwtService: JwtService, private reflector: Reflector) {}
@@ -50,7 +53,7 @@ export class JwtAuthGuard implements CanActivate {
         return true;
       }
 
-      console.log("🔐 JWT Guard: Отсутствует заголовок Authorization");
+      this.logger.debug("Missing Authorization header");
       throw new UnauthorizedException({
         message: "Отсутствует заголовок авторизации",
       });
@@ -60,22 +63,24 @@ export class JwtAuthGuard implements CanActivate {
       }
 
       const jwtError = e as JWTError;
-      
+
       if (jwtError?.name === "TokenExpiredError") {
-        console.log("🔐 JWT Guard: Токен истек");
+        this.logger.debug("JWT expired");
         throw new UnauthorizedException({
           message: "Токен истек",
         });
       }
 
       if (jwtError?.name === "JsonWebTokenError") {
-        console.log("🔐 JWT Guard: Неверный формат токена");
+        this.logger.debug("Invalid JWT format");
         throw new UnauthorizedException({
           message: "Неверный формат токена",
         });
       }
 
-      console.log("🔐 JWT Guard: Ошибка при проверке токена:", jwtError?.message || e);
+      this.logger.debug(
+        `JWT verification failed: ${jwtError?.message || String(e)}`
+      );
       throw new UnauthorizedException({
         message: "Пользователь не авторизован",
       });
@@ -98,16 +103,6 @@ export class JwtAuthGuard implements CanActivate {
       return false;
     }
 
-    if (!this.jwtService) {
-      if (optional) {
-        return false;
-      }
-
-      throw new UnauthorizedException({
-        message: "Ошибка сервиса аутентификации",
-      });
-    }
-
     try {
       const tokenPayload = this.jwtService.verify<{
         sub: number;
@@ -119,6 +114,7 @@ export class JwtAuthGuard implements CanActivate {
           return false;
         }
 
+        this.logger.debug("Incomplete JWT payload");
         throw new UnauthorizedException({
           message: "Неполные данные пользователя в токене",
         });

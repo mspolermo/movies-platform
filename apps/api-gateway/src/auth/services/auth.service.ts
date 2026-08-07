@@ -14,6 +14,7 @@ import {
 
 import { AuthDto, CreateUserDto } from "@common/dto";
 
+import { fromRpc } from "../../shared";
 import { AuthClient } from "../clients";
 import { rpcMessageIncludes } from "../helpers";
 
@@ -108,7 +109,7 @@ export class AuthService {
   }
 
   async getCurrentUser(user: TJwtUserRequest): Promise<TCurrentUserResponse> {
-    return this.authClient.getUserById(user.id);
+    return fromRpc(this.authClient.getUserById(user.id));
   }
 
   private handleAuthError(

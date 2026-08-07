@@ -244,6 +244,5 @@
 
 ## Часть 13. Ссылки
 
-- Бэклог: [`.cursor/temp/backlog.md`](./backlog.md)  
-- План очистки мёртвого кода: [`.cursor/temp/dead-code-cleanup-plan.md`](./dead-code-cleanup-plan.md)  
+- Бэклог: [`.cursor/temp/backlog.md`](./backlog.md) (dead-code Wave 1–3 → **B32** closed)  
 - Канон: [`.cursor/architecture.md`](../architecture.md), [`.cursor/context/microservices.md`](../context/microservices.md), ADR-001/007/008
