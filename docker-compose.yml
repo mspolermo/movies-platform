@@ -17,23 +17,23 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '5001:5000'
+      - '${BIND_HOST:-127.0.0.1}:${GATEWAY_PUBLISH_PORT:-5001}:${GATEWAY_LISTEN_PORT:-5000}'
     env_file:
       - .env
     environment:
-      - PORT=5000
+      - PORT=${GATEWAY_LISTEN_PORT:-5000}
       - RABBITMQ_USER=${RABBITMQ_USER:-mp}
       - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
-      - USERS_QUEUE=${USERS_QUEUE}
-      - FILMS_QUEUE=${FILMS_QUEUE}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - USERS_QUEUE=${USERS_QUEUE:-users_queue}
+      - FILMS_QUEUE=${FILMS_QUEUE:-films_queue}
       - PRIVATE_KEY=${PRIVATE_KEY}
-      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
     networks:
       - default
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:$$PORT/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -54,27 +54,27 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '3001:3001'
+      - '${BIND_HOST:-127.0.0.1}:${AUTH_USERS_PUBLISH_PORT:-3001}:${AUTH_USERS_LISTEN_PORT:-3001}'
     env_file:
       - .env
     environment:
-      - PORT=3001
+      - PORT=${AUTH_USERS_LISTEN_PORT:-3001}
       - POSTGRES_HOST=db2
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - RABBITMQ_USER=${RABBITMQ_USER:-mp}
       - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
-      - USERS_QUEUE=${USERS_QUEUE}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - USERS_QUEUE=${USERS_QUEUE:-users_queue}
       - PRIVATE_KEY=${PRIVATE_KEY}
       - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
     networks:
       - default
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:$$PORT/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -95,25 +95,25 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     ports:
-      - '3002:3002'
+      - '${BIND_HOST:-127.0.0.1}:${KINO_DB_PUBLISH_PORT:-3002}:${KINO_DB_LISTEN_PORT:-3002}'
     env_file:
       - .env
     environment:
-      - PORT=3002
+      - PORT=${KINO_DB_LISTEN_PORT:-3002}
       - POSTGRES_HOST=db
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB_KINO}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - RABBITMQ_USER=${RABBITMQ_USER:-mp}
       - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:5672
-      - FILMS_QUEUE=${FILMS_QUEUE}
+      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - FILMS_QUEUE=${FILMS_QUEUE:-films_queue}
     networks:
       - default
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      test: ["CMD-SHELL", "curl -f http://localhost:$$PORT/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -129,21 +129,22 @@ services:
         condition: service_started
     volumes:
       - ./devops/kino-db/seed:/seed:ro
-    env_file:
-      - .env
+    # без env_file: не тащить host RABBITMQ_URL / лишние secrets в one-shot
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DB_KINO}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
     networks:
       - default
     restart: "no"
   pgadmin:
     image: dpage/pgadmin4
+    profiles:
+      - tools
     ports:
-      - "5050:80"
+      - '${BIND_HOST:-127.0.0.1}:${PGADMIN_PUBLISH_PORT:-5050}:${PGADMIN_LISTEN_PORT:-80}'
     environment:
       - PGADMIN_DEFAULT_EMAIL=admin@example.com
       - PGADMIN_DEFAULT_PASSWORD=admin
@@ -158,11 +159,13 @@ services:
   rabbitmq:
     image: rabbitmq:3.10.7-management
     ports:
-      - 5672:5672
-      - 15672:15672
+      - '${BIND_HOST:-127.0.0.1}:${RABBITMQ_AMQP_PUBLISH_PORT:-5672}:${RABBITMQ_AMQP_LISTEN_PORT:-5672}'
+      - '${BIND_HOST:-127.0.0.1}:${RABBITMQ_MGMT_PUBLISH_PORT:-15672}:${RABBITMQ_MGMT_LISTEN_PORT:-15672}'
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-mp}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
+    volumes:
+      - rmq_data:/var/lib/rabbitmq
     networks:
       - default
     restart: unless-stopped
@@ -179,7 +182,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB_KINO}
     ports:
-      - 5432:5432
+      - '${BIND_HOST:-127.0.0.1}:${POSTGRES_KINO_PUBLISH_PORT:-5432}:${POSTGRES_LISTEN_PORT:-5432}'
+    volumes:
+      - pg_kino:/var/lib/postgresql/data
     networks:
       - default
     restart: unless-stopped
@@ -196,8 +201,9 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB_USER}
     ports:
-      - 5433:5432
+      - '${BIND_HOST:-127.0.0.1}:${POSTGRES_USERS_PUBLISH_PORT:-5433}:${POSTGRES_LISTEN_PORT:-5432}'
     volumes:
+      - pg_users:/var/lib/postgresql/data
       - ./devops/users-db/users-init-dump.sql:/docker-entrypoint-initdb.d/users-init-dump.sql
     networks:
       - default
@@ -211,3 +217,8 @@ services:
 networks:
   default:
     driver: bridge
+
+volumes:
+  pg_kino:
+  pg_users:
+  rmq_data:

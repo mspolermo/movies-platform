@@ -48,15 +48,17 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | Entity types | `apps/common/types/entity` | База для response/orm, не в barrel |
 | DTO | `apps/common/dto` | Nest class-validator (backend) |
 | RMQ | `apps/common/services/rmq` | `RmqModule`, `RmqService`, `kinoDbRpc`, `authUsersRpc` |
-| Constants | `apps/common/constants` | Limits, JWT helpers |
+| Constants | `apps/common/constants` | Limits, grade, JWT helpers (BE); network SoT |
+| Network | `apps/common/constants/network.ts` (+ `network.rmq.ts`) | Публичные порты/URL; RMQ — `network.rmq`; зеркало `devops/network.env` (ADR-009) |
 
-Алиас: `@common`, `@common/*` → `apps/common`.
+Алиас: `@common`, `@common/*` → `apps/common`.  
+Клиент: types + value-import constants/network; не JWT/dto/orm/entity.
 
 ---
 
 # Все публичные API
 
-База: `http://localhost:5001` (Swagger: `/api/docs`).  
+База: `http://localhost:5001` (Swagger `/api/docs` — только non-prod).  
 Клиент: same-origin `/api/*` → rewrite на gateway.
 
 | Метод | Путь | Auth | Назначение |
@@ -218,7 +220,7 @@ Orphan `createRole` удалён (B6, ADR-007) — роли только из п
 | App providers (auth composition) | `apps/client/src/app/providers` |
 | Auth session actions | `apps/client/src/features/auth/lib/authActions` |
 | Session modules | `apps/client/src/shared/api/session/{accessToken,apiClient,sessionCookie,sessionBridge,sessionBootstrap,resolveSessionRedirect}` + `constants.ts` |
-| API endpoints + base URL consts | `apps/client/src/shared/api/endpoints.ts` (`API_ENDPOINTS`, `BROWSER_API_BASE_URL`, `DEFAULT_SSR_API_BASE_URL`) |
+| API endpoints + browser base | `apps/client/src/shared/api/endpoints.ts` (`API_ENDPOINTS`, `BROWSER_API_BASE_URL`); SSR gateway — `API_GATEWAY_URL` (`@common/constants/network`) |
 | getApiBaseUrl | `apps/client/src/shared/lib/utils/getApiBaseUrl` (читает consts из `endpoints`) |
 | Entities / Features / Widgets | `apps/client/src/{entities,features,widgets}` |
 | API публичный barrel | `apps/client/src/shared/api` (узкий surface; app-код сюда) |

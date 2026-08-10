@@ -4,6 +4,7 @@ import type { TFilmActionsPanelProps } from './types';
 
 import type { MouseEvent } from 'react';
 
+import { FILM_USER_GRADE_BAD_MAX } from '@common/constants';
 import cn from 'classnames';
 
 import {
@@ -18,8 +19,6 @@ import { SvgIcon, Tooltip } from '@/shared/ui';
 import styles from './FilmActionsPanel.module.scss';
 
 const ICON_SIZE = 22;
-/** sync FILM_USER_GRADE_BAD_MAX (@common/constants) */
-const BAD_GRADE_MAX = 6;
 
 /**
  * Панель действий фильма: card (overlay icons) | detail (strip).
@@ -58,10 +57,10 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
   const hasGrade = grade != null;
   const rateLabel = hasGrade ? `Изменить оценку: ${grade}` : 'Оценить фильм';
   const rateDetailLabel = hasGrade ? 'Изменить' : 'Оценить';
-  const rateIcon = hasGrade && grade <= BAD_GRADE_MAX ? 'rateDown' : 'rate';
+  const rateIcon = hasGrade && grade <= FILM_USER_GRADE_BAD_MAX ? 'rateDown' : 'rate';
   const rateToneClass = !hasGrade
     ? styles.iconDefault
-    : grade <= BAD_GRADE_MAX
+    : grade <= FILM_USER_GRADE_BAD_MAX
       ? styles.iconRateBad
       : styles.iconRateGood;
 
@@ -175,7 +174,9 @@ export const FilmActionsPanel = (props: TFilmActionsPanelProps) => {
           className={cn(
             styles.detailAction,
             hasGrade &&
-              (grade <= BAD_GRADE_MAX ? styles.detailActionRateBad : styles.detailActionRateGood)
+              (grade <= FILM_USER_GRADE_BAD_MAX
+                ? styles.detailActionRateBad
+                : styles.detailActionRateGood)
           )}
           disabled={ratingDisabled}
           type="button"

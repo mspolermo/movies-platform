@@ -3,39 +3,43 @@
 ## Локальный стенд
 
 ```bash
-# backend + db + rabbitmq + seed
-docker compose up -d --build
+cp .env.example .env
+# COMPOSE_ENV_FILES=./devops/network.env,.env
+
+npm run compose:up   # -d --build; foreground: compose:up:fg
 
 # frontend отдельно
 cd apps/client && npm install && npm run dev
 ```
 
-- Env: скопировать `.env.example` → `.env` (не коммитить `.env`).
-- Обязательны `RABBITMQ_USER` / `RABBITMQ_PASS` и literal `RABBITMQ_URL` для host-run (ConfigModule не expand'ит `${VAR}`). Compose подставляет defaults `mp` / `mp_dev_change_me`, если var пустые.
-- **Смена RMQ user/pass:** образ rabbitmq пишет пользователя только при первом init. После перехода с `guest` → `mp` пересоздай брокер: `docker compose rm -sf rabbitmq` (и volume брокера, если был named/anonymous с старыми данными), затем `up -d`.
-- Полный reset kino-данных: `docker compose down -v` затем up.
-- Один compose-файл: [`docker-compose.yml`](../../docker-compose.yml) (local DX). Отдельного prod overlay нет — edge publish/strip = **I7**, когда понадобится.
+- Топология: [`devops/network.env`](../../devops/network.env) + [`network.ts`](../../apps/common/constants/network.ts) / [`network.rmq.ts`](../../apps/common/constants/network.rmq.ts). Secrets — root `.env`. См. [`devops/README.md`](../../devops/README.md), [ADR-009](../adr/009-compose-port-topology.md).
+- **Host-run Nest:** `RABBITMQ_URL` / очереди из constants (или override в `.env`); DX fallback только non-prod. **App-контейнеры:** compose собирает `amqp://…@rabbitmq:…` — не прокидывать host URL.
+- Compose defaults RMQ: `mp` / `mp_dev_change_me` если `RABBITMQ_USER`/`PASS` пустые.
+- **Смена RMQ / PG user/pass:** образ пишет пользователя только при **первом** init volume. После смены creds — пересоздать volume (`docker compose rm -sf rabbitmq` + `down` volume / `down -v` осторожно) затем `up`. Immutability: смена пароля в `.env` без recreate volume **не** обновит уже инициализированный Postgres/RMQ. Example: `POSTGRES_USER=mp_dev` — старые volumes на `root` несовместимы без wipe.
+- Named volumes: `pg_kino`, `pg_users`, `rmq_data`. `down -v` сносит все три.
+- Publish bind: `BIND_HOST=127.0.0.1` (I7 **partial** — не strip). Один compose = local DX; prod overlay — отдельно.
+- PgAdmin: `profiles: [tools]` (`COMPOSE_PROFILES=tools`). Seed всегда on.
 
 ## Сервисы Compose
 
 | Service | Назначение |
 |---------|------------|
-| api-gateway | HTTP :5001 |
-| auth-users | RMQ users + HTTP health :3001 (local publish) |
-| kino-db | RMQ films + HTTP health :3002 (local publish) |
-| kino-db-seed | one-shot seed после старта kino-db |
-| db / db2 | Postgres 15 |
-| rabbitmq | AMQP + management :15672 (local) |
-| pgadmin | :5050 |
+| api-gateway | HTTP :5001 (`127.0.0.1`) |
+| auth-users | RMQ users + HTTP health :3001 |
+| kino-db | RMQ films + HTTP health :3002 |
+| kino-db-seed | one-shot seed (всегда) |
+| db / db2 | Postgres 15 → vols `pg_kino` / `pg_users` |
+| rabbitmq | AMQP + management → `rmq_data` |
+| pgadmin | :5050, profile `tools` |
 
 Client в compose **не** включён.
 
 ## Nest bootstrap
 
-- Gateway: HTTP only + ValidationPipe + Swagger + filters/guards.
+- Gateway: HTTP + ValidationPipe + Swagger **только если** `NODE_ENV !== "production"` + filters/guards.
 - MS: `connectMicroservice(RMQ)` + `startAllMicroservices` + HTTP listen (только `/health`; без CORS).
-- Очередь задаётся env `USERS_QUEUE` / `FILMS_QUEUE`.
-- RMQ URL: compose задаёт `amqp://user:pass@rabbitmq:5672`; production запрещает user `guest` (`rmq.factory`).
+- Очереди: env или fallback `USERS_QUEUE` / `FILMS_QUEUE` из `@common/constants/network.rmq`.
+- RMQ URL: compose → `@rabbitmq`; host-run → constant/`process.env` (DX default только non-prod); production запрещает `guest` и DX-креды (`rmq.factory`).
 
 ## Health / restart
 

@@ -1,12 +1,14 @@
 import type { NextConfig } from 'next';
 
-import { DEFAULT_SSR_API_BASE_URL } from '../../src/shared/api/endpoints';
+// next.config: relative → apps/common (alias `@common/*` здесь не резолвится)
+// eslint-disable-next-line import/no-internal-modules
+import { API_GATEWAY_URL } from '../../../common/constants/network';
 
 type TRemotePattern = NonNullable<NonNullable<NextConfig['images']>['remotePatterns']>[number];
 
 /** `images.remotePatterns` для постеров KP + локальный gateway. */
 export const createImageRemotePatterns = (): TRemotePattern[] => {
-  const defaultGateway = new URL(DEFAULT_SSR_API_BASE_URL);
+  const defaultGateway = new URL(API_GATEWAY_URL);
 
   return [
     {

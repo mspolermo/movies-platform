@@ -5,7 +5,7 @@
 ## Публичный HTTP (api-gateway)
 
 - Единственная точка входа для клиента.
-- REST + JSON; документация — Swagger `/api/docs`.
+- REST + JSON; Swagger `/api/docs` — только если `NODE_ENV !== "production"` (B26 thin).
 - Версионирования URL нет — breaking changes согласовывать; при необходимости — ADR.
 - Auth: Bearer access; refresh/logout — cookie + OriginGuard (prod).
 - Публичные роуты: class `JwtAuthGuard` + method `@Public` (optional Bearer; B38). `JwtConfigModule` — `@Global()`.
@@ -36,8 +36,8 @@
 ## Клиентский API-слой
 
 - Browser: `baseURL` = `BROWSER_API_BASE_URL` (`/api`), `withCredentials: true`.
-- SSR: `API_GATEWAY_URL` или `DEFAULT_SSR_API_BASE_URL` — через `getApiBaseUrl` (`shared/lib`).
-- Пути REST + base URL consts — **только** `shared/api/endpoints.ts` (не хардкод в UI, не `shared/constants`). Зачем — [ADR-001](../adr/001-jwt-access-opaque-refresh.md) (§ «endpoints.ts»).
+- SSR: `API_GATEWAY_URL` из `@common/constants` / env — через `getApiBaseUrl` (`shared/lib`).
+- Пути REST — **только** `shared/api/endpoints.ts` (не хардкод в UI); SSR gateway URL — `API_GATEWAY_URL` (`@common/constants/network`). Зачем — [ADR-001](../adr/001-jwt-access-opaque-refresh.md) (§ «endpoints.ts»), [ADR-009](../adr/009-compose-port-topology.md).
 - 401 → single-flight refresh → retry; провал → `sessionBridge.onSessionExpired`. Детали session/ESLint — тот же ADR.
 
 ## Запреты

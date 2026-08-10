@@ -2,6 +2,8 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
+import { NETWORK } from "@common/constants/network";
+
 import { FavoritesModule, UserFavorite } from "./favorites";
 import { HealthController } from "./health";
 import { RatingsModule, UserFilmRating } from "./ratings";
@@ -19,7 +21,7 @@ import { User, UsersModule } from "./users";
     SequelizeModule.forRoot({
       dialect: "postgres",
       host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
+      port: Number(process.env.POSTGRES_PORT) || NETWORK.postgresDialPort,
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,

@@ -30,8 +30,8 @@ alwaysApply: true
 
 **Клиент (`apps/client`)**
 
-- Только **`@common/types`** → фактически `request` + `response`.
-- Всегда **`import type { … } from '@common/types'`** — без побочных импортов значений в бандл.
+- Типы: только **`import type { … } from '@common/types'`** → `request` + `response`.
+- Value-import: **`@common/constants`** / **`@common/constants/network`** (limits, grade, публичная топология). JWT / **`network.rmq`** / dto / orm / entity — запрещены (eslint, ADR-009).
 
 **Бэкенд (api-gateway, kino-db, auth-users и т.д.)**
 

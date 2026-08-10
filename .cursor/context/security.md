@@ -30,7 +30,7 @@
 
 - Пароли: bcrypt; никогда в логах/ответах.
 - Не логировать tokens, Authorization headers, полные email без нужды.
-- RMQ не экспонировать наружу Docker-сети на edge (local compose публикует 5672/15672 для DX; strip — I7); не `guest` @production.
+- RMQ не экспонировать наружу Docker-сети на edge (local compose публикует 5672/15672 для DX; strip — I7); @production не `guest` и не DX-креды `mp` / `mp_dev_change_me` (`rmq.factory`).
 - Client не хранит refresh; access только memory.
 
 ## Input

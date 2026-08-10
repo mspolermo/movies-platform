@@ -39,10 +39,12 @@
 - Admin B2C `/admin/*` — [ADR-005](../adr/005-admin-in-b2c.md) + [ADR-007](../adr/007-admin-be-implementation.md): gate + `AdminLayout` + `manage*` на реальном `/admin/*`; серверный `q` для films/persons/countries/genres; professions — `filterByQuery` (маленький словарь).
 - Server Actions сейчас: только `getCountriesList`, `getGenresList`, `getFilmsFilters`.
 
-## Типы
+## Типы и constants
 
-- Только `import type { … } from '@common/types'`.
-- Запрещено: `@common/dto`, `@common/types/orm`, `@common/types/entity`.
+- Типы: только `import type { … } from '@common/types'` (request/response).
+- Value-import разрешён: `@common/constants` / `@common/constants/network` (grade, `API_GATEWAY_URL`, `NETWORK`, …). См. ADR-009.
+- Запрещено (eslint): `@common/dto`, `@common/types/orm`, `@common/types/entity`, JWT helpers, `@common/constants/network.rmq` (`RABBITMQ_*`, очереди); `import *` из `@common/constants` / `…/network`.
+- UI порог «плохо/хорошо»: `FILM_USER_GRADE_*` из `@common/constants` (не локальные литералы).
 
 ## UI
 
@@ -58,7 +60,7 @@
 | Папка | Назначение |
 |-------|------------|
 | `next/` | NextConfig (images, rewrites, SVGR) |
-| `eslint/` | flat ESLint (FSD + React/Next) |
+| `eslint/` | flat ESLint: `fsdconfig` + `reactConfig` + `commonModuleRules` (ADR-009 `@common` perimeter) |
 | `vitest/` | Vitest + setup |
 | `storybook/` | Storybook 10 (`main`/`preview`, SVGR); mock `next/image` — `configs/mocks/` |
 

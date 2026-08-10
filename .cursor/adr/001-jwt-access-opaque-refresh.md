@@ -36,7 +36,7 @@
 
 ### Клиент: `endpoints.ts` (пути + base URL)
 
-Единый источник REST-путей и base URL consts — `shared/api/endpoints.ts` (`API_ENDPOINTS`, `BROWSER_API_BASE_URL`, `DEFAULT_SSR_API_BASE_URL`).
+Единый источник REST-путей — `shared/api/endpoints.ts` (`API_ENDPOINTS`, `BROWSER_API_BASE_URL`). SSR gateway URL — `API_GATEWAY_URL` (`@common/constants/network`, ADR-009).
 
 **Почему не хардкод в компонентах / не `shared/constants`:**
 

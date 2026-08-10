@@ -5,6 +5,8 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { SwaggerModule } from "@nestjs/swagger";
 import cookieParser from "cookie-parser";
 
+import { NETWORK } from "@common/constants/network";
+
 import { AppModule } from "./app.module";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
 import { GlobalExceptionFilter } from "./shared";
@@ -17,7 +19,8 @@ async function bootstrap() {
   app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
 
-  const PORT = configService.get("PORT", 5000);
+  const PORT =
+    Number(configService.get("PORT")) || NETWORK.gateway.listen;
 
   // Настройка CORS
   app.enableCors(getCorsConfig(configService));
@@ -40,10 +43,12 @@ async function bootstrap() {
   // Глобальный exception filter для обработки 500 ошибок
   app.useGlobalFilters(new GlobalExceptionFilter());
 
-  // Настройка Swagger
-  const config = getSwaggerConfig();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("/api/docs", app, document);
+  // Swagger — только non-production (B26 thin / ADR-009 track)
+  if (configService.get<string>("NODE_ENV") !== "production") {
+    const config = getSwaggerConfig();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup("/api/docs", app, document);
+  }
 
   await app.listen(PORT, () => console.log(`Server started on port = ${PORT}`));
 }

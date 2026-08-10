@@ -100,9 +100,9 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 | B23 | RMQ RPC timeout (+ ADR) | S-04 | **S–M** | — | `rxjs.timeout` в `RmqService`; ADR; DLQ/prefetch следом |
 | B24 | `fromRpc` на catalog/auth | S-05 | **S** | B31 | Все RMQ-await через `fromRpc`; auth statusCode вместо phrase-match (comments — done) |
 | B25 | GlobalExceptionFilter leak / getResponse | S-06 | **S** | — | Hide ≥500 in prod; normalize `getResponse()` |
-| B26 | Swagger gate | S-07 | **S** | I16 | `SWAGGER_ENABLED` / non-prod only |
+| B26 | Swagger gate | S-07 | **S** | I16 | **thin @V0:** `NODE_ENV !== "production"`; full `SWAGGER_ENABLED` — later |
 | B27 | Global ThrottlerGuard | S-08 | **M** | — | `APP_GUARD`; жёстче admin/write |
-| B28 | Dockerfile `ENV PORT` | S-09 | **S** | I12 | Все три Dockerfile (HC `${PORT}`) |
+| B28 | Dockerfile `ENV PORT` | S-09 | **S** | I12 | **done @V0** (prod `ENV PORT` + HC; sync-тест) |
 | B1 | `synchronize: true` → migrations | INF-53 | **S** | I8 | auth-users + kino-db; sync off @edge |
 | B30 | Filters TTL-кэш / bundle RPC | A1-04 | **M** | — | Кэш на gateway; опц. ADR `getFiltersBundle` |
 | B31 | Единый RpcException во всех MS | A2-04 | **M** | B24 | Канон `{statusCode,message}`; выкинуть phrase-match |
@@ -142,9 +142,9 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 
 | # | Что | ID | Горизонт | Связь | Как |
 |---|-----|-----|:--------:|-------|-----|
-| I7 | Prod overlay: strip publish / no bind / production target | INF-85/70/71 | **S** | B20, B21 | Один `docker-compose.yml` = local DX; @edge — overlay/profiles или отдельный файл, когда понадобится |
-| I8 | Named volumes PG×2 + RMQ | INF-51 | **S** | B1, I9, I17 | `pg_kino` / `pg_users` / `rmq_data`; lifecycle в docs |
-| I14 | Weak defaults: PG `root/root`; RMQ guest вне env | INF-40 | **S** | **B20** | Strong secrets; RMQ user/pass из env; example ≠ prod-like |
+| I7 | Prod overlay: strip publish / no bind / production target | INF-85/70/71 | **S** | B20, B21 | **partial @V0:** bind `127.0.0.1`; strip/dual-compose — later |
+| I8 | Named volumes PG×2 + RMQ | INF-51 | **S** | B1, I9, I17 | **done @V0:** `pg_kino` / `pg_users` / `rmq_data` + docs immutability |
+| I14 | Weak defaults: PG `root/root`; RMQ guest вне env | INF-40 | **S** | **B20** | **partial @V0:** PG `mp_dev` / change-me; RMQ `mp` из env; prod-strong secrets — later |
 
 ### P1 — DX compose / images / secrets / CI
 
@@ -156,8 +156,8 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 | I9 | Backup/restore runbook (`pg_dump`) | INF-57 | **S** | I8 | после named volumes |
 | I10 | Fix `start:prod` → `dist/apps/<app>/main` | INF-20 | **S** | — | script или удалить ложь |
 | I11 | `.dockerignore`: client, `.cursor`, seed data | INF-12 | **S** | I20 | shrink build context |
-| I12 | Non-root USER в Dockerfile ×3 | INF-10 | **S** | B28 | + chown dist |
-| I13 | Compose `profiles: [tools]` / `[seed]` | INF-04/41 | **S** | I7 | pgadmin/seed opt-in |
+| I12 | Non-root USER в Dockerfile ×3 | INF-10 | **S** | B28 | **done @V0:** prod `USER node` + chown; development — root |
+| I13 | Compose `profiles: [tools]` / `[seed]` | INF-04/41 | **S** | I7 | **partial @V0:** pgadmin `tools`; seed всегда on |
 | I15 | Seed `depends_on kino-db: service_healthy` | INF-02 | **S** | — | + schema poll в script |
 | I16 | Env hardening: JWT placeholder / CORS / pgadmin→env | INF-42/44/41 | **S** | B26 | fail-fast; `STRICT_ORIGINS` или always allowlist |
 | I17 | Doc blast radius `down -v` (kino≠all) | INF-56 | **S** | I8 | deployment.md per-volume |
@@ -176,6 +176,7 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 | I23 | Dual bootstrap kino-seed vs users-initdb | INF-52/59 | **M** | — | runbook или единый seed job |
 | I24 | Default admin password в SQL comment | INF-58 | **S** | — | local-only; rotate @edge |
 | I25 | Dead `libs/**` in format; Jest ignore client; engines | INF-21/22/24 | **S** | — | package.json cleanup |
+| I26 | Dockerfile PORT ×3 ← network SoT | ADR-009 | **S** | — | сейчас `ENV PORT` хардкод + sync-тест; прокинуть из `network.ts` / `network.env` (`build.args` / единый knob) — без третьего якоря |
 
 ### Skip / владельцы в BE · не сейчас
 
@@ -238,7 +239,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 В9  Later polish
     B27 · B30 · B31 · B36–B39 · B15 · B10
-    I1 · I6 · I19–I21 · I23–I25
+    I1 · I6 · I19–I21 · I23–I26
     F38–F43 · F13 · F16
 ```
 
@@ -268,17 +269,19 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 ### Backend
 - [x] B20/B21/B22 P0 (RMQ / side-doors / health) + B29 + B40
-- [ ] B23–B28 + B42 resilience/ops/layering
+- [x] B26 thin (swagger non-prod) + B28 ENV PORT @V0
+- [ ] B23–B25/B27/B42 + full B26 flag
 - [x] B32 Wave 3 (D10–D11/D13) + B41 RolesGuard 5xx
 - [ ] B33/B34 comments film-check · B1 migrations
 - [ ] B30/B31 filters + RpcException · B13 LIST enrich
 - [ ] B36–B39 · B15 · B27 · B10
 
 ### Infra
-- [ ] I7/I8/I14 edge overlay + named vols + weak defaults
-- [ ] I2/I3/I13/I15/I17 compose DX + graceful + profiles + seed + docs
-- [ ] I4 CI · I9 backup · I10–I12 images/scripts · I16 env
-- [ ] I1/I6/I18–I25 polish
+- [x] I8 named vols + docs; I12/B28 prod images; ADR-009 network SoT @V0
+- [~] I7 bind partial; I13 tools partial; I14 PG change-me partial
+- [ ] I7 strip overlay · I2/I3/I15/I17 · seed profile
+- [ ] I4 CI · I9 backup · I10–I11 · I16 env
+- [ ] I1/I6/I18–I26 polish
 
 ---
 

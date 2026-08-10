@@ -1,10 +1,13 @@
-import { BROWSER_API_BASE_URL, DEFAULT_SSR_API_BASE_URL } from '../../../api/endpoints';
+import { API_GATEWAY_URL } from '@common/constants';
+
+import { BROWSER_API_BASE_URL } from '../../../api/endpoints';
 
 const resolveSsrApiBaseUrl = (): string => {
   const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process
     ?.env;
 
-  return env?.API_GATEWAY_URL ?? DEFAULT_SSR_API_BASE_URL;
+  // `||` — пустая строка env = unset
+  return env?.API_GATEWAY_URL || API_GATEWAY_URL;
 };
 
 /** URL для axios `baseURL`: SSR — gateway из env, browser — `/api`. */

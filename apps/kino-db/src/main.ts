@@ -1,6 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 
+import { NETWORK } from "@common/constants/network";
 import { createRmqMicroserviceOptions } from "@common/services";
 
 import { AppModule } from "./app.module";
@@ -21,7 +22,7 @@ async function bootstrap() {
   await app.startAllMicroservices();
 
   // HTTP сервер
-  const port = process.env.PORT || 3002;
+  const port = Number(process.env.PORT) || NETWORK.kinoDb.listen;
   await app.listen(port);
 
   console.log(`Kino-db service started on port ${port}`);

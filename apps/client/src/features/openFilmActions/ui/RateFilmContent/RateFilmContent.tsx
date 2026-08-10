@@ -2,13 +2,12 @@
 
 import type { TRateFilmContentProps } from './types';
 
+import { FILM_USER_GRADE_BAD_MAX, FILM_USER_GRADE_MAX } from '@common/constants';
 import cn from 'classnames';
 
 import styles from './RateFilmContent.module.scss';
 
-const GRADES = Array.from({ length: 10 }, (_, index) => index + 1);
-/** sync FILM_USER_GRADE_BAD_MAX (@common/constants) */
-const BAD_GRADE_MAX = 6;
+const GRADES = Array.from({ length: FILM_USER_GRADE_MAX }, (_, index) => index + 1);
 
 /**
  * Шкала оценки 1–10.
@@ -34,7 +33,7 @@ export const RateFilmContent = ({
               aria-pressed={selectedGrade === grade}
               className={cn(
                 styles.score,
-                grade <= BAD_GRADE_MAX ? styles.scoreBad : styles.scoreGood,
+                grade <= FILM_USER_GRADE_BAD_MAX ? styles.scoreBad : styles.scoreGood,
                 selectedGrade === grade && styles.scoreSelected
               )}
               disabled={isSubmitting}

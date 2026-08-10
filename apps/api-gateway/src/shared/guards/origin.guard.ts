@@ -7,6 +7,8 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { Request } from "express";
 
+import { ALLOWED_ORIGINS as DEFAULT_ALLOWED_ORIGINS } from "@common/constants/network";
+
 /**
  * Проверяет Origin/Referer для cookie-авторизуемых роутов (CSRF defense-in-depth).
  * В dev пропускает отсутствующий Origin (same-origin / curl).
@@ -23,8 +25,11 @@ export class OriginGuard implements CanActivate {
       return true;
     }
 
-    const allowedOrigins = this.configService
-      .get<string>("ALLOWED_ORIGINS", "http://localhost:3000")
+    // пустая строка из compose ≠ unset для ConfigService.get(default)
+    const allowedOrigins = (
+      this.configService.get<string>("ALLOWED_ORIGINS") ||
+      DEFAULT_ALLOWED_ORIGINS
+    )
       .split(",")
       .map((origin) => origin.trim())
       .filter(Boolean);

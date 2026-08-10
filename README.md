@@ -44,17 +44,8 @@ Client → api-gateway (HTTP) → RabbitMQ → auth-users | kino-db → PostgreS
 
 ```bash
 cp .env.example .env
-docker compose up -d --build
-
-cd apps/client && npm install && npm run dev
+# .env уже содержит COMPOSE_ENV_FILES=./devops/network.env,.env
 ```
-
-- API / Swagger: http://localhost:5001/api/docs  
-- UI: http://localhost:3000  
-- RabbitMQ UI: http://localhost:15672 (`guest` / `guest`)  
-- PgAdmin: http://localhost:5050  
-
-Сброс данных kino: `docker compose down -v && docker compose up -d --build`.
 
 ## Репозиторий
 
@@ -63,8 +54,9 @@ apps/
   api-gateway/   # HTTP BFF
   auth-users/    # auth
   kino-db/       # контент
-  common/        # shared types & RMQ
+  common/        # shared types, constants, RMQ
   client/        # Next.js FSD
+devops/          # network.env, seed, README
 .cursor/         # KB Cursor: rules, context, adr, skills, temp
 PROJECT_CONTEXT.md
 ```

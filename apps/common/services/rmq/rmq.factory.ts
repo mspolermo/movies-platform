@@ -5,11 +5,25 @@ import {
   Transport,
 } from "@nestjs/microservices";
 
+import { NETWORK } from "@common/constants/network";
+import {
+  FILMS_QUEUE,
+  RABBITMQ_DX_PASS,
+  RABBITMQ_DX_USER,
+  RABBITMQ_URL as RABBITMQ_URL_DEFAULT,
+  USERS_QUEUE,
+} from "@common/constants/network.rmq";
+
 type TRmqUrlOptions = {
   url?: string;
   user?: string;
   pass?: string;
   host?: string;
+};
+
+const QUEUE_DEFAULTS: Record<string, string> = {
+  USERS_QUEUE,
+  FILMS_QUEUE,
 };
 
 const amqpToHttp = (url: string): string =>
@@ -24,7 +38,7 @@ const schemeOf = (url: string): "amqp" | "amqps" =>
  * Resolve RMQ URL:
  * - URL with userinfo → use as-is
  * - URL without userinfo + USER/PASS → inject encoded credentials (keeps amqp/amqps)
- * - USER/PASS only → build amqp://…@host (host or localhost:5672)
+ * - USER/PASS only → build amqp://…@host (host or localhost:amqpPublish)
  */
 export const resolveRmqUrl = (opts: TRmqUrlOptions): string => {
   const { url: configuredUrl, user, pass, host } = opts;
@@ -52,13 +66,41 @@ export const resolveRmqUrl = (opts: TRmqUrlOptions): string => {
   }
 
   if (user && pass) {
-    const hostPort = host ?? "localhost:5672";
+    const hostPort =
+      host ?? `localhost:${NETWORK.rabbitmq.amqpPublish}`;
     return `amqp://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${hostPort}`;
   }
 
   throw new Error(
     "RMQ config error: RABBITMQ_URL (or RABBITMQ_USER+RABBITMQ_PASS) is required"
   );
+};
+
+/**
+ * DX default URL только вне production.
+ * В production без env → undefined → resolveRmqUrl throw.
+ */
+export const selectRmqUrlOrDxDefault = (opts: {
+  configuredUrl: string;
+  user?: string;
+  pass?: string;
+  nodeEnv?: string;
+}): string | undefined => {
+  const { configuredUrl, user, pass, nodeEnv = process.env.NODE_ENV } = opts;
+
+  if (configuredUrl) {
+    return configuredUrl;
+  }
+
+  if (user && pass) {
+    return undefined;
+  }
+
+  if (nodeEnv === "production") {
+    return undefined;
+  }
+
+  return RABBITMQ_URL_DEFAULT;
 };
 
 export const assertRmqCredentialsForProduction = (
@@ -91,19 +133,32 @@ export const assertRmqCredentialsForProduction = (
       'RMQ config error: production forbids RabbitMQ user "guest"'
     );
   }
+
+  if (username === RABBITMQ_DX_USER && password === RABBITMQ_DX_PASS) {
+    throw new Error(
+      "RMQ config error: production forbids DX RabbitMQ credentials (mp / mp_dev_change_me)"
+    );
+  }
 };
 
 const getRmqConfig = (config: ConfigService, queueKey: string) => {
+  // пустая строка из compose/env = unset
+  const configuredUrl = (config.get<string>("RABBITMQ_URL") || "").trim();
+  const user = config.get<string>("RABBITMQ_USER") || undefined;
+  const pass = config.get<string>("RABBITMQ_PASS") || undefined;
+  const host = config.get<string>("RABBITMQ_HOST") || undefined;
+  const nodeEnv = config.get<string>("NODE_ENV") || process.env.NODE_ENV;
+
   const url = resolveRmqUrl({
-    url: config.get<string>("RABBITMQ_URL"),
-    user: config.get<string>("RABBITMQ_USER"),
-    pass: config.get<string>("RABBITMQ_PASS"),
-    host: config.get<string>("RABBITMQ_HOST"),
+    url: selectRmqUrlOrDxDefault({ configuredUrl, user, pass, nodeEnv }),
+    user,
+    pass,
+    host,
   });
 
-  assertRmqCredentialsForProduction(url);
+  assertRmqCredentialsForProduction(url, nodeEnv);
 
-  const queue = config.get<string>(queueKey);
+  const queue = config.get<string>(queueKey) || QUEUE_DEFAULTS[queueKey];
 
   if (!queue) {
     throw new Error(`RMQ config error: ${queueKey}`);

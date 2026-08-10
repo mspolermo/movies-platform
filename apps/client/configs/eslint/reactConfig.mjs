@@ -8,6 +8,8 @@ import reactPlugin from 'eslint-plugin-react'
 import reactHooksPlugin from 'eslint-plugin-react-hooks'
 import nextPlugin from '@next/eslint-plugin-next'
 
+import { commonModuleRules } from './commonModuleRules.mjs'
+
 /**
  * Единственный ESLint-стек клиента (см. eslint.config.mjs).
  * Парсер — только `@typescript-eslint/parser` v8 из этого файла.
@@ -77,6 +79,7 @@ export const reactConfig = [
       ],
       // Предпочитать использование import type
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+      ...commonModuleRules,
       // Запрет на использование console, но разрешаем console.error, console.warn и console.info
       'no-console': ['error', { allow: ['error', 'warn', 'info'] }],
       // если переменная не изменяется то обязательно использовать const
@@ -181,8 +184,15 @@ export const reactConfig = [
   // отключает правила, конфликтующие с Prettier
   prettierConfig,
   {
-    // next.config — Node globals; не FSD (корневой wiring → configs/next)
-    files: ['**/next.config.js', '**/next.config.ts', '**/next.config.mjs', 'scripts/**/*.js', 'configs/storybook/**/*.{ts,tsx}'],
+    // next.config + configs/next — Node globals; relative → apps/common (alias не резолвится)
+    files: [
+      '**/next.config.js',
+      '**/next.config.ts',
+      '**/next.config.mjs',
+      'scripts/**/*.js',
+      'configs/next/**/*.{ts,tsx}',
+      'configs/storybook/**/*.{ts,tsx}',
+    ],
     languageOptions: { globals: globals.node },
     rules: {
       '@typescript-eslint/no-require-imports': 'off',

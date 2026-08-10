@@ -4,9 +4,6 @@
  */
 export const BROWSER_API_BASE_URL = '/api';
 
-/** Запасной base URL для SSR, если нет `API_GATEWAY_URL`. */
-export const DEFAULT_SSR_API_BASE_URL = 'http://localhost:5001';
-
 /**
  * Пути REST API (относительно {@link BROWSER_API_BASE_URL}).
  * Функции-пути — для ресурсов с динамическим id.

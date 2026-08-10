@@ -33,7 +33,7 @@
 
 - HTTP в `entities/film/api`; избранное — feature `toggleFilmFavorite` + entity-context.
 - Оценка — в `openFilmActions` (замена stub); Favorites API **не** внутри этой feature (ADR-004).
-- Порог UI «плохо/хорошо»: 1–6 / 7–10; константы grade на BE (`FILM_USER_GRADE_*`); на FE — литерал + JSDoc sync (без value-import `@common/constants`).
+- Порог UI «плохо/хорошо»: 1–6 / 7–10; `FILM_USER_GRADE_*` из `@common/constants` (BE + FE value-import; ADR-009).
 
 ### Comments
 

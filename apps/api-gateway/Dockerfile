@@ -13,7 +13,7 @@ COPY tsconfig*.json ./
 # Установка зависимостей
 RUN npm ci --only=production && npm cache clean --force
 
-# Development stage
+# Development stage (bind-mount DX — root; не USER node)
 FROM base AS development
 
 RUN npm ci
@@ -27,14 +27,18 @@ FROM base AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
+# Sync with apps/common/constants/network.ts NETWORK.gateway.listen
+ENV PORT=5000
 
 COPY . .
 
 COPY --from=development /usr/src/app/dist ./dist
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+RUN chown -R node:node /usr/src/app
+
+USER node
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# Правильный путь к main файлу
 CMD ["node", "dist/apps/api-gateway/main"]

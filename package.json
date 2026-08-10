@@ -20,7 +20,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "compose:config": "docker compose --env-file devops/network.env --env-file .env config",
+    "compose:up": "docker compose --env-file devops/network.env --env-file .env up -d --build",
+    "compose:up:fg": "docker compose --env-file devops/network.env --env-file .env up",
+    "compose:down": "docker compose --env-file devops/network.env --env-file .env down"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.28",

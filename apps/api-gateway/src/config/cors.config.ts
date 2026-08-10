@@ -1,11 +1,12 @@
 import { ConfigService } from "@nestjs/config";
 
+import { ALLOWED_ORIGINS } from "@common/constants/network";
+
 export const getCorsConfig = (configService: ConfigService) => {
   const NODE_ENV = configService.get<string>("NODE_ENV", "development");
-  const allowedOrigins = configService.get<string>(
-    "ALLOWED_ORIGINS",
-    "http://localhost:3000,http://localhost:3001"
-  );
+  // пустая строка из compose ≠ unset для ConfigService.get(default)
+  const allowedOrigins =
+    configService.get<string>("ALLOWED_ORIGINS") || ALLOWED_ORIGINS;
 
   const corsOrigins = allowedOrigins.split(",").map((origin) => origin.trim());
 
