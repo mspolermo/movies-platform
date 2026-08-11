@@ -49,7 +49,7 @@ B2C Movies Platform — каталог фильмов и людей, фильт�
 | DTO | `apps/common/dto` | Nest class-validator (backend) |
 | RMQ | `apps/common/services/rmq` | `RmqModule`, `RmqService`, `kinoDbRpc`, `authUsersRpc` |
 | Constants | `apps/common/constants` | Limits, grade, JWT helpers (BE); network SoT |
-| Network | `apps/common/constants/network.ts` (+ `network.rmq.ts`) | Публичные порты/URL; RMQ — `network.rmq`; зеркало `devops/network.env` (ADR-009) |
+| Network | `apps/common/constants/network.ts` + `services/rmq/rmq.constants.ts` | Публичные порты/URL; RMQ/PG DX+assert+DI — `rmq.constants`; зеркало `devops/network.env` (ADR-009) |
 
 Алиас: `@common`, `@common/*` → `apps/common`.  
 Клиент: types + value-import constants/network; не JWT/dto/orm/entity.

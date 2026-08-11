@@ -4,7 +4,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
 import { firstValueFrom } from "rxjs";
 
-import { FILMS_CLIENT, USERS_CLIENT } from "./rmq.tokens";
+import { FILMS_CLIENT, USERS_CLIENT } from "./rmq.constants";
 
 @Injectable()
 export class RmqService {

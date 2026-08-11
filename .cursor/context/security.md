@@ -30,7 +30,8 @@
 
 - Пароли: bcrypt; никогда в логах/ответах.
 - Не логировать tokens, Authorization headers, полные email без нужды.
-- RMQ не экспонировать наружу Docker-сети на edge (local compose публикует 5672/15672 для DX; strip — I7); @production не `guest` и не DX-креды `mp` / `mp_dev_change_me` (`rmq.factory`).
+- RMQ не экспонировать наружу Docker-сети на edge (local compose публикует 5672/15672 для DX; strip — I7); @production не `guest` и не DX-креды `mp` / `mp_dev_change_me` (`rmq.factory`); pass ≥16 и ≠ user (`assertProdSecretStrength`).
+- Postgres @production: не empty, не `root`/`root`, не DX `mp_dev` / `mp_dev_change_me`, тот же strength (`apps/common/services/rmq/rmq.constants.ts`).
 - Client не хранит refresh; access только memory.
 
 ## Input
@@ -40,5 +41,6 @@
 
 ## Secrets
 
-- Секреты только в `.env` (не коммитить). Ориентир имён — `.env.example`.
+- Секреты только в `.env` (не коммитить). Ориентир имён — `.env.example` (DX).
+- @production fail-fast: PG (`assertPostgresCredentialsForProduction`) и RMQ (`assertRmqCredentialsForProduction` + strength). Gate = `NODE_ENV=production` (не замена I7/I16).
 - Один `PRIVATE_KEY` для sign/verify — ротация = одновременный редеплой gateway + auth-users.

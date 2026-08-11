@@ -30,11 +30,3 @@ export {
   CLIENT_ORIGIN,
   ALLOWED_ORIGINS,
 } from "./network";
-
-export {
-  RABBITMQ_DX_USER,
-  RABBITMQ_DX_PASS,
-  RABBITMQ_URL,
-  USERS_QUEUE,
-  FILMS_QUEUE,
-} from "./network.rmq";

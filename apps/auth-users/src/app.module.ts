@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 
 import { NETWORK } from "@common/constants/network";
+import { assertPostgresCredentialsForProduction } from "@common/services/rmq/rmq.constants";
 
 import { FavoritesModule, UserFavorite } from "./favorites";
 import { HealthController } from "./health";
@@ -18,23 +19,36 @@ import { User, UsersModule } from "./users";
     ConfigModule.forRoot({
       envFilePath: ".env",
     }),
-    SequelizeModule.forRoot({
-      dialect: "postgres",
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT) || NETWORK.postgresDialPort,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      models: [
-        User,
-        Role,
-        UserRoles,
-        RefreshToken,
-        UserFavorite,
-        UserFilmRating,
-      ],
-      autoLoadModels: true,
-      synchronize: true,
+    SequelizeModule.forRootAsync({
+      useFactory: () => {
+        const username = (process.env.POSTGRES_USER || "").trim() || undefined;
+        const password =
+          (process.env.POSTGRES_PASSWORD || "").trim() || undefined;
+        assertPostgresCredentialsForProduction(
+          username,
+          password,
+          process.env.NODE_ENV
+        );
+
+        return {
+          dialect: "postgres" as const,
+          host: process.env.POSTGRES_HOST,
+          port: Number(process.env.POSTGRES_PORT) || NETWORK.postgresDialPort,
+          username,
+          password,
+          database: process.env.POSTGRES_DB,
+          models: [
+            User,
+            Role,
+            UserRoles,
+            RefreshToken,
+            UserFavorite,
+            UserFilmRating,
+          ],
+          autoLoadModels: true,
+          synchronize: true,
+        };
+      },
     }),
     UsersModule,
     RolesModule,

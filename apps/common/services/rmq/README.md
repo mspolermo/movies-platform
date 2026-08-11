@@ -21,9 +21,12 @@
 | `rmq.factory.ts` | URL из env, `createRmqClient` / `createRmqMicroserviceOptions` |
 | `rmq.module.ts` | `@Global()` модуль: clients + `RmqService` |
 | `rmq.service.ts` | Typed `sendToFilms` / `sendToUsers` |
-| `rmq.providers.ts` / `rmq.tokens.ts` | DI-токены `FILMS_CLIENT` / `USERS_CLIENT` |
+| `rmq.constants.ts` | DX/URL/очереди, PG assert, DI tokens |
+| `rmq.providers.ts` | DI wiring `FILMS_CLIENT` / `USERS_CLIENT` |
 
-Публичный баррель: [`index.ts`](./index.ts) → реэкспорт из `@common/services`.
+Публичный баррель [`index.ts`](./index.ts) / `@common/services`: `RmqModule`, `RmqService`, `createRmqMicroserviceOptions`, `authUsersRpc`, `kinoDbRpc` (+ RPC types).
+
+DX/creds/asserts/DI tokens — **не** в барреле; deep-import `@common/services/rmq/rmq.constants` (или relative внутри пакета).
 
 ## Кто что использует
 
@@ -37,14 +40,14 @@
 
 | Переменная | Смысл |
 |------------|--------|
-| `RABBITMQ_URL` | Полный URL (`amqp://user:pass@host:5672`). С userinfo — используется as-is |
-| `RABBITMQ_USER` / `RABBITMQ_PASS` | Если URL без creds — inject с `encodeURIComponent`; без URL — сборка на `RABBITMQ_HOST` или `localhost:5672` |
+| `RABBITMQ_URL` | URL. С userinfo — as-is; **без** userinfo + USER/PASS → inject с `encodeURIComponent` |
+| `RABBITMQ_USER` / `RABBITMQ_PASS` | Creds; compose apps — обязательны из `.env` (без `:-` DX) |
 | `RABBITMQ_HOST` | Опционально, только при сборке URL без `RABBITMQ_URL` |
 | `USERS_QUEUE` / `FILMS_QUEUE` | Имена durable-очередей |
 
-В `NODE_ENV=production` factory запрещает пустые creds и user `guest`.
+В `NODE_ENV=production` factory запрещает пустые creds, user `guest`, DX-пару `mp`/`mp_dev_change_me`, pass &lt; 16 или pass === user.
 
-Compose задаёт URL вида `amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@rabbitmq:5672` (см. корневой `docker-compose.yml`).
+Compose apps: `RABBITMQ_URL=amqp://rabbitmq:5672` (host-only) + `RABBITMQ_USER`/`PASS` (см. корневой `docker-compose.yml`).
 
 ## Новый RPC (чеклист)
 

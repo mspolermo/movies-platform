@@ -2,7 +2,7 @@ import { Provider } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 
 import { createRmqClient } from "./rmq.factory";
-import { FILMS_CLIENT, USERS_CLIENT } from "./rmq.tokens";
+import { FILMS_CLIENT, USERS_CLIENT } from "./rmq.constants";
 
 export const rmqProviders: Provider[] = [
   {

@@ -10,13 +10,13 @@
 ## Решение
 
 1. **SoT для кода (публичное):** [`apps/common/constants/network.ts`](../../apps/common/constants/network.ts) — `NETWORK`, `API_GATEWAY_URL`, `CLIENT_ORIGIN` / `ALLOWED_ORIGINS`.
-2. **SoT RMQ (backend-only):** [`apps/common/constants/network.rmq.ts`](../../apps/common/constants/network.rmq.ts) — host-run `RABBITMQ_URL`, DX-creds, очереди. Клиент не импортирует (eslint).
+2. **SoT RMQ/PG backend-only:** [`apps/common/services/rmq/rmq.constants.ts`](../../apps/common/services/rmq/rmq.constants.ts) — host-run `RABBITMQ_URL`, DX-creds, очереди, PG DX/assert, DI tokens. Клиент не импортирует (eslint).
 3. **Зеркало для Compose:** [`devops/network.env`](../../devops/network.env) + `COMPOSE_ENV_FILES=./devops/network.env,.env`.
 4. **Sync-тест** (`apps/api-gateway/src/health/tests/network.sync.spec.ts`) сверяет ts+rmq ↔ env и Dockerfile `ENV PORT` ↔ listen.
 5. **I7 @V0:** bind lock `BIND_HOST=127.0.0.1` на publish (не strip / не dual-compose) → backlog **partial**.
 6. **Seed** всегда; **pgadmin** — `profiles: [tools]` → I13 **partial**.
-7. **Client** value-import: `@common/constants` / `@common/constants/network` (grade, `API_GATEWAY_URL`, `NETWORK`); запрещены JWT, `network.rmq`, dto/orm/entity; запрещён `import *` из constants barrels.
-8. Host `RABBITMQ_URL` не прокидывать в app-контейнеры — compose собирает `@rabbitmq:…`. DX URL-fallback в `rmq.factory` только при `NODE_ENV !== production`; prod запрещает `guest` и DX-креды.
+7. **Client** value-import: `@common/constants` / `@common/constants/network` (grade, `API_GATEWAY_URL`, `NETWORK`); запрещены JWT, `@common/services` / `rmq.constants`, dto/orm/entity; запрещён `import *` из constants barrels.
+8. Host `RABBITMQ_URL` не прокидывать в app-контейнеры — compose задаёт host-only `@rabbitmq:…` + USER/PASS (encode в factory). DX URL-fallback в `rmq.factory` только при `NODE_ENV !== production`; prod запрещает `guest`, DX-креды и weak pass; PG — `rmq.constants`.
 9. Root `.env` — только secrets/флаги (JWT, PG, `RABBITMQ_USER`/`PASS`, `COMPOSE_ENV_FILES`).
 10. `ALLOWED_ORIGINS` DX-default = `CLIENT_ORIGIN` (`http://localhost:3000`); prod — явный whitelist.
 
@@ -26,7 +26,7 @@
 
 **Плюсы:** один канон для apps; Compose без магических чисел; client/SSR без локальных `localhost:5001`; RMQ DX-creds не в том же модуле, что тянет браузер.
 
-**Минусы:** dual-edit ts(+rmq)+env; DX-creds в git (`network.rmq` / `network.env`); Dockerfile PORT — третий якорь (в sync-тесте).
+**Минусы:** dual-edit ts(+rmq)+env; DX-creds в git (`rmq.constants` / `network.env`); Dockerfile PORT — третий якорь (в sync-тесте).
 
 ## Альтернативы
 

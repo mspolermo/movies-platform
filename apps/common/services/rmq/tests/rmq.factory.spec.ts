@@ -2,7 +2,7 @@ import {
   RABBITMQ_DX_PASS,
   RABBITMQ_DX_USER,
   RABBITMQ_URL,
-} from "@common/constants/network.rmq";
+} from "@common/services/rmq/rmq.constants";
 import {
   assertRmqCredentialsForProduction,
   resolveRmqUrl,
@@ -110,10 +110,28 @@ describe("rmq.factory", () => {
     it("allows non-DX credentials in production", () => {
       expect(() =>
         assertRmqCredentialsForProduction(
-          "amqp://prod_user:strong_pass@rabbitmq:5672",
+          "amqp://prod_user:strong_password_ok@rabbitmq:5672",
           "production"
         )
       ).not.toThrow();
+    });
+
+    it("forbids short password in production", () => {
+      expect(() =>
+        assertRmqCredentialsForProduction(
+          "amqp://prod_user:short_pass@rabbitmq:5672",
+          "production"
+        )
+      ).toThrow(/at least 16/);
+    });
+
+    it("forbids password equal to user in production", () => {
+      expect(() =>
+        assertRmqCredentialsForProduction(
+          "amqp://same_user_and_pass:same_user_and_pass@rabbitmq:5672",
+          "production"
+        )
+      ).toThrow(/must not equal username/);
     });
 
     it("requires credentials in production", () => {

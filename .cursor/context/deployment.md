@@ -12,10 +12,10 @@ npm run compose:up   # -d --build; foreground: compose:up:fg
 cd apps/client && npm install && npm run dev
 ```
 
-- Топология: [`devops/network.env`](../../devops/network.env) + [`network.ts`](../../apps/common/constants/network.ts) / [`network.rmq.ts`](../../apps/common/constants/network.rmq.ts). Secrets — root `.env`. См. [`devops/README.md`](../../devops/README.md), [ADR-009](../adr/009-compose-port-topology.md).
-- **Host-run Nest:** `RABBITMQ_URL` / очереди из constants (или override в `.env`); DX fallback только non-prod. **App-контейнеры:** compose собирает `amqp://…@rabbitmq:…` — не прокидывать host URL.
-- Compose defaults RMQ: `mp` / `mp_dev_change_me` если `RABBITMQ_USER`/`PASS` пустые.
-- **Смена RMQ / PG user/pass:** образ пишет пользователя только при **первом** init volume. После смены creds — пересоздать volume (`docker compose rm -sf rabbitmq` + `down` volume / `down -v` осторожно) затем `up`. Immutability: смена пароля в `.env` без recreate volume **не** обновит уже инициализированный Postgres/RMQ. Example: `POSTGRES_USER=mp_dev` — старые volumes на `root` несовместимы без wipe.
+- Топология: [`devops/network.env`](../../devops/network.env) + [`network.ts`](../../apps/common/constants/network.ts) / [`rmq.constants.ts`](../../apps/common/services/rmq/rmq.constants.ts). Secrets — root `.env` (шаблон `.env.example`). См. [`devops/README.md`](../../devops/README.md), [ADR-009](../adr/009-compose-port-topology.md).
+- **Host-run Nest:** `RABBITMQ_URL` / очереди из constants (или override в `.env`); DX fallback только non-prod. **App-контейнеры:** compose задаёт host-only `amqp://rabbitmq:…` + `RABBITMQ_USER`/`PASS` (encode в `rmq.factory`) — не прокидывать host URL.
+- Compose **без** `:-` DX для `RABBITMQ_USER`/`PASS` — значения только из `.env` (как `POSTGRES_*`).
+- **Смена RMQ / PG user/pass:** образ пишет пользователя только при **первом** init volume. После смены creds — пересоздать volume (`docker compose rm -sf rabbitmq` + `down` volume / `down -v` осторожно) затем `up`. Immutability: смена пароля в `.env` без recreate volume **не** обновит уже инициализированный Postgres/RMQ. Rotate = wipe `pg_kino` / `pg_users` / `rmq_data`. Example: `POSTGRES_USER=mp_dev` — старые volumes на `root` несовместимы без wipe.
 - Named volumes: `pg_kino`, `pg_users`, `rmq_data`. `down -v` сносит все три.
 - Publish bind: `BIND_HOST=127.0.0.1` (I7 **partial** — не strip). Один compose = local DX; prod overlay — отдельно.
 - PgAdmin: `profiles: [tools]` (`COMPOSE_PROFILES=tools`). Seed всегда on.
@@ -38,8 +38,9 @@ Client в compose **не** включён.
 
 - Gateway: HTTP + ValidationPipe + Swagger **только если** `NODE_ENV !== "production"` + filters/guards.
 - MS: `connectMicroservice(RMQ)` + `startAllMicroservices` + HTTP listen (только `/health`; без CORS).
-- Очереди: env или fallback `USERS_QUEUE` / `FILMS_QUEUE` из `@common/constants/network.rmq`.
-- RMQ URL: compose → `@rabbitmq`; host-run → constant/`process.env` (DX default только non-prod); production запрещает `guest` и DX-креды (`rmq.factory`).
+- Очереди: env или fallback `USERS_QUEUE` / `FILMS_QUEUE` из `@common/services/rmq/rmq.constants`.
+- RMQ URL: compose → host-only `@rabbitmq` + USER/PASS; host-run → constant/`process.env` (DX default только non-prod); production запрещает `guest`, DX-креды и weak pass (`rmq.factory` + `assertProdSecretStrength`).
+- Postgres @production: assert в `kino-db` / `auth-users` (`rmq.constants`).
 
 ## Health / restart
 
@@ -64,6 +65,6 @@ Client в compose **не** включён.
 ## Prod-готовность (инварианты)
 
 - Не оставлять `synchronize: true` как единственный способ схемы.
-- Секреты и `ALLOWED_ORIGINS` задавать явно; RMQ не `guest` @production.
+- Секреты и `ALLOWED_ORIGINS` задавать явно; @production не DX PG/RMQ и не short pass; RMQ не `guest`.
 - Не публиковать порты MS/Rabbit/Postgres на edge без необходимости (сейчас local compose публикует для DX; strip @edge — **I7**).
 - Breaking RPC — деплой gateway + MS вместе (монорепа).

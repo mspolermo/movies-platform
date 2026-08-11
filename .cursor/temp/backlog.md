@@ -6,7 +6,7 @@
 Аудит Infra: [`IMPORTANT - infrastructure-audit.md`](./IMPORTANT%20-%20infrastructure-audit.md) (2026-08-02).
 
 Актуализировать при закрытии пунктов; не дублировать в `architecture.md`.  
-**Обновлено:** 2026-08-07 — B32 + review-fixes: comments `fromRpc` all paths + JWT email (без getById hop); RolesGuard/`UserRolesService` fromRpc + unexpected→500 (B41) + user 404→401; `getUserById` RpcException; `/auth/me` via `fromRpc`.
+**Обновлено:** 2026-08-11 — I14 closed; В1 без prod-secrets; V0 archive + I8/I12.
 
 ## Легенда
 
@@ -144,7 +144,6 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 |---|-----|-----|:--------:|-------|-----|
 | I7 | Prod overlay: strip publish / no bind / production target | INF-85/70/71 | **S** | B20, B21 | **partial @V0:** bind `127.0.0.1`; strip/dual-compose — later |
 | I8 | Named volumes PG×2 + RMQ | INF-51 | **S** | B1, I9, I17 | **done @V0:** `pg_kino` / `pg_users` / `rmq_data` + docs immutability |
-| I14 | Weak defaults: PG `root/root`; RMQ guest вне env | INF-40 | **S** | **B20** | **partial @V0:** PG `mp_dev` / change-me; RMQ `mp` из env; prod-strong secrets — later |
 
 ### P1 — DX compose / images / secrets / CI
 
@@ -193,7 +192,7 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 
 | Тема | Владелец | Поддержка |
 |------|----------|-----------|
-| Не publish RMQ/MS/DB + guest | **I7** (+ B20/B21 код/creds) | I14 secrets |
+| Не publish RMQ/MS/DB + guest | **I7** (+ B20/B21 код/creds) | I14 done (assert) |
 | Readiness / false-green HC | **B22** | I2 start_period; B29; B40 |
 | `ENV PORT` / non-root image | **B28** / **I12** | один PR образов OK |
 | Swagger off @edge | **B26** | I16 |
@@ -203,19 +202,17 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 
 ## Рекомендуемый порядок
 
-Принцип: **edge-блокер → cold-start/health → RPC resilience → параллельно FE P0 + cheap cleanup → CI/images → migrations → prefs/product → polish.**  
+Закрыто @V0 (не в волнах): **B20–B22**, **B28/I12**, **I8**, **I14**, **B29/B40**, **B32/B41**, thin **B26**.  
+Принцип: **edge leftovers + cold-start → RPC resilience → FE P0 + cheap cleanup → prefs → CI/ops → migrations → product → polish.**  
 FE P0 (F22–F24, F20) не ждать миграций/CI — независимы.
 
 ```
-В0  Edge surface
-    I7 + B20 + B21 · I8 · I14 · B22 · B28 · I12
-    (один трек: overlay + secrets + readiness + PORT/non-root)
-
-В1  Compose cold-start / DX
-    I2 · I3 · I13 · I15 · I17 · B29 · B40
+В1  Edge leftovers + Compose cold-start
+    I7 strip/dual-compose
+    I2 · I3 · I13 seed profile · I15 · I17
 
 В2  RPC / HTTP resilience
-    B23 · B24 · B25 · B26 · B42
+    B23 · B24 · B25 · B26 full flag · B42
     (+ B33/B34 comments рядом)
 
 В3  Параллельные быстрые wins
@@ -229,7 +226,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
     I4 · I9 · I18 · I22
 
 В6  Schema
-    B1 (migrations; sync off @edge) — после I8, не мешать В0–В2
+    B1 (migrations; sync off @edge) — I8 уже есть; не мешать В1–В2
 
 В7  Profile LIST
     F27 · F28 + B13
@@ -243,12 +240,11 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
     F38–F43 · F13 · F16
 ```
 
-Почему сдвиг vs предыдущего порядка:
-- FE correctness (ошибки/nav/refresh) вынесен в **В3**, не после CI/migrations.
-- Migrations (**B1**) отдельной волной **после** edge+resilience — риск данных не блокирует health/RPC.
-- Dead-code (**B32**) закрыт.
-- Comments/fromRpc/RolesGuard сгруппированы в **В2** (один смысловой PR-кластер).
-- CI (**I4**) после того, как HC/scripts не врут (иначе gate зелёный на лжи).
+Почему так:
+- Edge P0: I14 закрыт; волны стартуют с **остатков I7** + cold-start (без B29/B40).
+- FE correctness рано (**В3**), не после CI/migrations.
+- **B1** после resilience — риск схемы не блокирует health/RPC.
+- CI (**I4**) после того, как HC/scripts не врут.
 
 ---
 
@@ -278,7 +274,8 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 ### Infra
 - [x] I8 named vols + docs; I12/B28 prod images; ADR-009 network SoT @V0
-- [~] I7 bind partial; I13 tools partial; I14 PG change-me partial
+- [x] I14 prod-strong secrets (PG assert + RMQ strength; compose no :- DX; host-only URL)
+- [~] I7 bind partial; I13 tools partial
 - [ ] I7 strip overlay · I2/I3/I15/I17 · seed profile
 - [ ] I4 CI · I9 backup · I10–I11 · I16 env
 - [ ] I1/I6/I18–I26 polish
@@ -317,3 +314,11 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 | B22 | GW `/health` readiness 503 + `/health/live`; DB-aware `health.ping` |
 | B29 | GW `depends_on` MS `service_healthy` + `start_period` |
 | B40 | auth-users HTTP `/health` + `sequelize.authenticate` |
+
+### Infra
+
+| # | Что |
+|---|-----|
+| I14 | Prod-strong secrets: PG+RMQ assert (`rmq.constants`); strength ≥16/≠user; compose без `:-` DX; host-only `RABBITMQ_URL` + encode |
+| I8 | Named volumes `pg_kino` / `pg_users` / `rmq_data` @V0 |
+| I12 / B28 | Non-root USER + `ENV PORT` prod images @V0 |

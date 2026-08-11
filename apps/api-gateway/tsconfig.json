@@ -4,6 +4,6 @@
     "types": ["jest", "node"],
     "noEmit": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../common/services/rmq/tests/rmq.factory.spec.ts", "../common/services/rmq/tests/postgres.spec.ts", "../common/services/rmq/tests/network.sync.spec.ts"],
   "exclude": ["node_modules", "dist"]
 }

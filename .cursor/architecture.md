@@ -169,7 +169,7 @@ UX redirects: thin `proxy.ts` → `resolveSessionRedirect` + `has_session` (не
 ## Инфраструктурные факты
 
 - Schema: `synchronize: true` (миграций Sequelize нет; seed в `devops/`)
-- Топология: `network.ts` + `network.rmq.ts` + `devops/network.env` (ADR-009); publish bind `127.0.0.1`; vols `pg_kino`/`pg_users`/`rmq_data`
+- Топология: `network.ts` + `services/rmq/rmq.constants.ts` + `devops/network.env` (ADR-009); publish bind `127.0.0.1`; vols `pg_kino`/`pg_users`/`rmq_data`
 - Health: GW `/health` (ready, 503) + `/health/live`; MS HTTP `/health` с DB authenticate; Docker HC + `depends_on` MS healthy
 - Graceful shutdown: SIGTERM handlers есть; полноценный `app.close()` — слабо
 - CI: GitHub Actions в репо нет

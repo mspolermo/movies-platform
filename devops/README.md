@@ -5,10 +5,10 @@
 | Файл | Роль |
 |------|------|
 | [`apps/common/constants/network.ts`](../apps/common/constants/network.ts) | Публичная топология (порты, `API_GATEWAY_URL`, origin) — Nest / Next / client |
-| [`apps/common/constants/network.rmq.ts`](../apps/common/constants/network.rmq.ts) | RMQ DX URL/creds/очереди — **backend-only** |
+| [`apps/common/services/rmq/rmq.constants.ts`](../apps/common/services/rmq/rmq.constants.ts) | RMQ/PG DX, asserts, очереди, DI tokens — **backend-only** |
 | [`devops/network.env`](./network.env) | Зеркало для **Compose** (`COMPOSE_ENV_FILES` / `--env-file`) |
 
-Меняешь порт, URL, очереди — **ts (+ rmq) и env** в одном PR. Drift ловит sync-тест (`apps/api-gateway/src/health/tests/network.sync.spec.ts`).
+Меняешь порт, URL, очереди — **network.ts + rmq.constants + env** в одном PR. Drift ловит sync-тест (`apps/api-gateway/src/health/tests/network.sync.spec.ts`).
 
 ## Secrets — не сюда
 
@@ -17,9 +17,10 @@ JWT, PG password, `RABBITMQ_USER` / `RABBITMQ_PASS` — root [`.env`](../.env) (
 
 ## RabbitMQ: host vs Docker
 
-- **Host-run Nest:** `RABBITMQ_URL` из `network.rmq` → `…@localhost:5672` (DX fallback только при `NODE_ENV !== production`).
-- **Контейнеры apps:** compose **собирает** `amqp://user:pass@rabbitmq:5672` — не подставляй host `RABBITMQ_URL` в сервисы (иначе `localhost` внутри контейнера).
-- **Production:** без env — fail-fast; DX-креды `mp` / `mp_dev_change_me` запрещены (`rmq.factory`).
+- **Host-run Nest:** `RABBITMQ_URL` из `rmq.constants` → `…@localhost:5672` (DX fallback только при `NODE_ENV !== production`).
+- **Контейнеры apps:** compose задаёт host-only `amqp://rabbitmq:5672` + `RABBITMQ_USER`/`PASS` — factory inject + encode; не подставляй host `RABBITMQ_URL` в сервисы.
+- **Production:** без env — fail-fast; DX-креды и weak pass запрещены (`rmq.factory` + `assertProdSecretStrength` в `rmq.constants`); PG — там же.
+- Compose **без** `:-` DX для USER/PASS — обязателен `.env` из `.env.example`.
 
 ## Быстрый старт
 
@@ -33,7 +34,7 @@ npm run compose:up       # -d --build
 # foreground: npm run compose:up:fg
 ```
 
-Без `COMPOSE_ENV_FILES` / `--env-file` compose всё равно поднимется: в `docker-compose.yml` есть `:-defaults`, совпадающие с `network.ts`.  
+Без `COMPOSE_ENV_FILES` / `--env-file` compose всё равно поднимется: в `docker-compose.yml` есть `:-defaults` для **портов/топологии**, совпадающие с `network.ts`. Secrets (`POSTGRES_*`, `RABBITMQ_USER`/`PASS`) — **без** `:-`; нужен `.env`.  
 `network.env` нужен как единый knob (не дублировать цифры в YAML вручную).
 
 Альтернатива без `COMPOSE_ENV_FILES` в `.env`:

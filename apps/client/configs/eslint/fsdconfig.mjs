@@ -28,7 +28,7 @@ const apiClientDeepAllow = ['**/session/apiClient', '**/session/apiClient/**']
 const styleAllow = ['**/*.module.scss', '**/*.scss', '**/*.css']
 
 // Базовый allow для public API (без SVG — их только SvgIcon)
-// monorepo common: barrel + network (public); RMQ — network.rmq, eslint ban (ADR-009)
+// monorepo common: barrel + network (public); RMQ — @common/services/rmq, eslint ban (ADR-009)
 const commonAllow = [
   '@common/types',
   '@common/types/**',

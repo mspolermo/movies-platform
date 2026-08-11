@@ -12,7 +12,8 @@ import {
   RABBITMQ_DX_USER,
   RABBITMQ_URL as RABBITMQ_URL_DEFAULT,
   USERS_QUEUE,
-} from "@common/constants/network.rmq";
+  assertProdSecretStrength,
+} from "./rmq.constants";
 
 type TRmqUrlOptions = {
   url?: string;
@@ -139,14 +140,16 @@ export const assertRmqCredentialsForProduction = (
       "RMQ config error: production forbids DX RabbitMQ credentials (mp / mp_dev_change_me)"
     );
   }
+
+  assertProdSecretStrength(password, username, "RMQ config error");
 };
 
 const getRmqConfig = (config: ConfigService, queueKey: string) => {
   // пустая строка из compose/env = unset
   const configuredUrl = (config.get<string>("RABBITMQ_URL") || "").trim();
-  const user = config.get<string>("RABBITMQ_USER") || undefined;
-  const pass = config.get<string>("RABBITMQ_PASS") || undefined;
-  const host = config.get<string>("RABBITMQ_HOST") || undefined;
+  const user = (config.get<string>("RABBITMQ_USER") || "").trim() || undefined;
+  const pass = (config.get<string>("RABBITMQ_PASS") || "").trim() || undefined;
+  const host = (config.get<string>("RABBITMQ_HOST") || "").trim() || undefined;
   const nodeEnv = config.get<string>("NODE_ENV") || process.env.NODE_ENV;
 
   const url = resolveRmqUrl({

@@ -11,9 +11,9 @@ import {
   FILMS_QUEUE,
   RABBITMQ_URL,
   USERS_QUEUE,
-} from "@common/constants/network.rmq";
+} from "@common/services/rmq/rmq.constants";
 
-/** `apps/api-gateway/src/health/tests` → repo root */
+/** `apps/common/services/rmq/tests` → repo root */
 const repoRoot = join(__dirname, "../../../../../");
 
 const parseEnvFile = (relativePath: string): Record<string, string> => {
@@ -98,5 +98,17 @@ describe("network.ts ↔ devops/network.env sync", () => {
     const m = seed.match(/POSTGRES_PORT="\$\{POSTGRES_PORT:-(\d+)\}"/);
     expect(m).not.toBeNull();
     expect(Number(m![1])).toBe(NETWORK.postgresDialPort);
+  });
+
+  it("compose RMQ: no DX :- fallback; apps URL without userinfo", () => {
+    const compose = readFileSync(join(repoRoot, "docker-compose.yml"), "utf8");
+    expect(compose).not.toMatch(/RABBITMQ_USER:-\s*mp\b/);
+    expect(compose).not.toMatch(/RABBITMQ_PASS:-mp_dev_change_me/);
+    expect(compose).toMatch(
+      /RABBITMQ_URL=amqp:\/\/rabbitmq:\$\{RABBITMQ_AMQP_LISTEN_PORT/
+    );
+    expect(compose).not.toMatch(
+      /RABBITMQ_URL=amqp:\/\/\$\{RABBITMQ_USER/
+    );
   });
 });

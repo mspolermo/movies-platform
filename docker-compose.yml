@@ -22,9 +22,9 @@ services:
       - .env
     environment:
       - PORT=${GATEWAY_LISTEN_PORT:-5000}
-      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
-      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_URL=amqp://rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
       - USERS_QUEUE=${USERS_QUEUE:-users_queue}
       - FILMS_QUEUE=${FILMS_QUEUE:-films_queue}
       - PRIVATE_KEY=${PRIVATE_KEY}
@@ -64,9 +64,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
-      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
-      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_URL=amqp://rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
       - USERS_QUEUE=${USERS_QUEUE:-users_queue}
       - PRIVATE_KEY=${PRIVATE_KEY}
       - JWT_ACCESS_EXPIRES_IN=${JWT_ACCESS_EXPIRES_IN}
@@ -105,9 +105,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB_KINO}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
-      - RABBITMQ_USER=${RABBITMQ_USER:-mp}
-      - RABBITMQ_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
-      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-mp}:${RABBITMQ_PASS:-mp_dev_change_me}@rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
+      - RABBITMQ_USER=${RABBITMQ_USER}
+      - RABBITMQ_PASS=${RABBITMQ_PASS}
+      - RABBITMQ_URL=amqp://rabbitmq:${RABBITMQ_AMQP_LISTEN_PORT:-5672}
       - FILMS_QUEUE=${FILMS_QUEUE:-films_queue}
     networks:
       - default
@@ -162,8 +162,8 @@ services:
       - '${BIND_HOST:-127.0.0.1}:${RABBITMQ_AMQP_PUBLISH_PORT:-5672}:${RABBITMQ_AMQP_LISTEN_PORT:-5672}'
       - '${BIND_HOST:-127.0.0.1}:${RABBITMQ_MGMT_PUBLISH_PORT:-15672}:${RABBITMQ_MGMT_LISTEN_PORT:-15672}'
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER:-mp}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS:-mp_dev_change_me}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     volumes:
       - rmq_data:/var/lib/rabbitmq
     networks:

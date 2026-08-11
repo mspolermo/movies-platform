@@ -43,7 +43,7 @@
 
 - Типы: только `import type { … } from '@common/types'` (request/response).
 - Value-import разрешён: `@common/constants` / `@common/constants/network` (grade, `API_GATEWAY_URL`, `NETWORK`, …). См. ADR-009.
-- Запрещено (eslint): `@common/dto`, `@common/types/orm`, `@common/types/entity`, JWT helpers, `@common/constants/network.rmq` (`RABBITMQ_*`, очереди); `import *` из `@common/constants` / `…/network`.
+- Запрещено (eslint): `@common/dto`, `@common/types/orm`, `@common/types/entity`, JWT helpers, `@common/services` / `rmq` (RMQ/PG DX, asserts, очереди); `import *` из `@common/constants` / `…/network`.
 - UI порог «плохо/хорошо»: `FILM_USER_GRADE_*` из `@common/constants` (не локальные литералы).
 
 ## UI

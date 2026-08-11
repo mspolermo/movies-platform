@@ -35,7 +35,7 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 
 ## Правила (кратко)
 
-1. Клиент: `import type` из `@common/types`; value-import `@common/constants` / `network` OK (`API_GATEWAY_URL`, grade); JWT / `network.rmq` / dto / orm / entity — нет. См. [ADR-009](.cursor/adr/009-compose-port-topology.md).
+1. Клиент: `import type` из `@common/types`; value-import `@common/constants` / `network` OK (`API_GATEWAY_URL`, grade); JWT / `@common/services` (RMQ) / dto / orm / entity — нет. См. [ADR-009](.cursor/adr/009-compose-port-topology.md).
 2. ORM/entity наружу не отдавать — только `T*Response` через mapper.
 3. Новый RPC — в `apps/common/services/rmq/messaging/*` + оба конца.
 4. FSD: зависимости только вниз (`pages → widgets → features → entities → shared`).
@@ -46,7 +46,7 @@ B2C-киноплатформа: каталог фильмов, люди, жан�
 9. Admin B2C `/admin/*` — реализован FE+BE: gateway `AdminModule` (`JwtAuthGuard + RolesGuard + @Roles("ADMIN")`), admin RPC в kino-db/auth-users, пагинация всех списков. См. [ADR-005](.cursor/adr/005-admin-in-b2c.md) и [ADR-007](.cursor/adr/007-admin-be-implementation.md).
 10. Auth — только email/password JWT; OAuth не делаем. См. [ADR-006](.cursor/adr/006-no-oauth.md).
 11. Favorites + user film ratings — в auth-users; compact ids/grades для панели; list для профиля. См. [ADR-008](.cursor/adr/008-user-film-prefs-auth-users.md).
-12. Топология: `network.ts` (public) + `network.rmq.ts` (backend) + зеркало `devops/network.env`. Host vs docker RMQ — [devops/README.md](devops/README.md), [ADR-009](.cursor/adr/009-compose-port-topology.md).
+12. Топология: `network.ts` (public) + `services/rmq/rmq.constants.ts` (backend) + зеркало `devops/network.env`. Host vs docker RMQ — [devops/README.md](devops/README.md), [ADR-009](.cursor/adr/009-compose-port-topology.md).
 13. После задачи — [skill update-project-context](.cursor/skills/update-project-context/SKILL.md).
 
 ## Не путать

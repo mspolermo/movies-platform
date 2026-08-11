@@ -1,7 +1,7 @@
 /**
  * SoT публичной топологии (Nest listen/publish, client/SSR URL, CORS DX).
  * Зеркало Compose: `devops/network.env` (см. `devops/README.md`, ADR-009).
- * RMQ URL/creds/очереди — `network.rmq.ts` (backend-only).
+ * RMQ/PG DX + asserts + DI tokens — `apps/common/services/rmq/rmq.constants.ts` (backend-only).
  */
 
 export const NETWORK = {
