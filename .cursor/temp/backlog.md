@@ -153,7 +153,7 @@ ID `S-xx` = synth findings. Dead code Wave 1–3 → **B32** (closed).
 | I3 | Graceful workers + `init` + `stop_grace_period` | INF-86/87 | **S** | — | `app.close()`; compose `init: true` |
 | I4 | GitHub Actions merge gate (root + client) | INF-80/81 | **S–M** | I18, I22 | lint / typecheck / test / `nest build`×3 / next build |
 | I9 | Backup/restore runbook (`pg_dump`) | INF-57 | **S** | I8 | после named volumes |
-| I10 | Fix `start:prod` → `dist/apps/<app>/main` | INF-20 | **S** | — | script или удалить ложь |
+| I10 | Fix `start:prod` → `dist/apps/<app>/main` | INF-20 | **S** | — | **done:** `start:prod:{api-gateway,auth-users,kino-db}` |
 | I11 | `.dockerignore`: client, `.cursor`, seed data | INF-12 | **S** | I20 | shrink build context |
 | I12 | Non-root USER в Dockerfile ×3 | INF-10 | **S** | B28 | **done @V0:** prod `USER node` + chown; development — root |
 | I13 | Compose `profiles: [tools]` / `[seed]` | INF-04/41 | **S** | I7 | **partial @V0:** pgadmin `tools`; seed всегда on |
@@ -217,7 +217,7 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 
 В3  Параллельные быстрые wins
     FE: F22 · F23 · F24 · F36 · F37 · F20
-    Infra: I10 · I11 · I16
+    Infra: I11 · I16 (I10 done)
 
 В4  Prefs correctness (FE)
     F21 · F25 · F26
@@ -277,7 +277,8 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 - [x] I14 prod-strong secrets (PG assert + RMQ strength; compose no :- DX; host-only URL)
 - [~] I7 bind partial; I13 tools partial
 - [ ] I7 strip overlay · I2/I3/I15/I17 · seed profile
-- [ ] I4 CI · I9 backup · I10–I11 · I16 env
+- [x] I10 `start:prod:*` → `dist/apps/<app>/main`
+- [ ] I4 CI · I9 backup · I11 · I16 env
 - [ ] I1/I6/I18–I26 polish
 
 ---
@@ -322,3 +323,4 @@ FE P0 (F22–F24, F20) не ждать миграций/CI — независи�
 | I14 | Prod-strong secrets: PG+RMQ assert (`rmq.constants`); strength ≥16/≠user; compose без `:-` DX; host-only `RABBITMQ_URL` + encode |
 | I8 | Named volumes `pg_kino` / `pg_users` / `rmq_data` @V0 |
 | I12 / B28 | Non-root USER + `ENV PORT` prod images @V0 |
+| I10 | `start:prod:{api-gateway,auth-users,kino-db}` → `dist/apps/<app>/main` (INF-20) |
