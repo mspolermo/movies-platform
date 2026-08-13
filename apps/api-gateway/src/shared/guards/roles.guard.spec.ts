@@ -7,7 +7,7 @@ import {
 import { Reflector } from "@nestjs/core";
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { UserRolesService } from "../../user-roles/user-roles.service";
+import { UserRolesService } from "../../user-roles/userRoles.service";
 
 import { RolesGuard } from "./roles.guard";
 

@@ -1,1 +1,1 @@
-export { UserRolesService } from "./user-roles.service";
+export { UserRolesService } from "./userRoles.service";
