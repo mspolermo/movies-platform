@@ -8,7 +8,7 @@ import {
   HAS_SESSION_COOKIE,
   HAS_SESSION_VALUE,
   REFRESH_TOKEN_COOKIE,
-} from "./auth-cookies";
+} from "./authCookies";
 
 /** Ставит refresh (HttpOnly) + has_session (UX) после login/registration/refresh. */
 export const setAuthCookies = (

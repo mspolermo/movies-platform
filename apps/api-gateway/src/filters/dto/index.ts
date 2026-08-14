@@ -1,2 +1,2 @@
-export * from "./get-filters-query.dto";
+export * from "./getFiltersQuery.dto";
 export { FiltersResponseDto } from "./filtersResponse.dto";

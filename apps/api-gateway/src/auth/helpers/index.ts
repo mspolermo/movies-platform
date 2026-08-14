@@ -7,11 +7,11 @@ export {
   getHasSessionCookieOptions,
   getClearRefreshCookieOptions,
   getClearHasSessionCookieOptions,
-} from "./auth-cookies";
+} from "./authCookies";
 export {
   setAuthCookies,
   clearAuthCookies,
-} from "./auth-cookie.helper";
+} from "./authCookie.helper";
 export {
   extractRpcErrorMessage,
   rpcMessageIncludes,
