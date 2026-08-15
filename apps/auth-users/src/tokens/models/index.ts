@@ -1,1 +1,1 @@
-export { RefreshToken } from "./refresh-token.model";
+export { RefreshToken } from "./refreshToken.model";
