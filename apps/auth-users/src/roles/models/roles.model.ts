@@ -10,7 +10,7 @@ import {
 
 import { User } from "../../users/models/users.model";
 
-import { UserRoles } from "./user-role.model";
+import { UserRoles } from "./userRole.model";
 
 @Table({ tableName: "roles" })
 export class Role extends Model<TRoleOrmModel, TRoleCreationAtt> {
