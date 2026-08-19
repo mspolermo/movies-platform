@@ -4,6 +4,6 @@
     "types": ["jest", "node"],
     "noEmit": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../common/utils/assertRpcPositiveInt.ts"],
   "exclude": ["node_modules", "dist"]
 }

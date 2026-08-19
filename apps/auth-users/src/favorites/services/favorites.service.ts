@@ -12,9 +12,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/sequelize";
 import { QueryTypes, Sequelize, UniqueConstraintError } from "sequelize";
 
-import { toListParams, toPaginatedItemsResponse } from "@common/utils";
+import { toListParams, toPaginatedItemsResponse, assertRpcPositiveInt } from "@common/utils";
 
-import { assertRpcPositiveInt } from "../../shared";
 import {
   mapFavoriteToItemResponse,
   mapFavoritesToIdsResponse,

@@ -18,9 +18,8 @@ import {
   FILM_USER_GRADE_MAX,
   FILM_USER_GRADE_MIN,
 } from "@common/constants";
-import { toListParams, toPaginatedItemsResponse } from "@common/utils";
+import { toListParams, toPaginatedItemsResponse, assertRpcPositiveInt } from "@common/utils";
 
-import { assertRpcPositiveInt } from "../../shared";
 import {
   mapRatingToItemResponse,
   mapRatingsToGradesResponse,

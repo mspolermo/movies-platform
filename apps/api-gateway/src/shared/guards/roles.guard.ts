@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
-import { UserRolesService } from "../../user-roles";
+import { UserRolesService } from "../../userRoles";
 import { AuthenticatedRequest } from "../interfaces";
 
 import { ROLES_KEY } from "./roles.decorator";

@@ -4,7 +4,7 @@ import { JwtModule } from "@nestjs/jwt";
 
 import { getJwtConfig } from "../config";
 import { JwtAuthGuard, RolesGuard } from "../shared/guards";
-import { UserRolesService } from "../user-roles";
+import { UserRolesService } from "../userRoles";
 
 /** Global: JwtAuthGuard / RolesGuard доступны во всех feature-модулях без повторного import. */
 @Global()
