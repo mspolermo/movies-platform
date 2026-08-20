@@ -11,9 +11,8 @@ import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, col, fn, where } from "sequelize";
 
-import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
+import { toAdminListParams, toPaginatedItemsResponse, rethrowUniqueAsConflict } from "@common/utils";
 
-import { rethrowUniqueAsConflict } from "../../common/utils";
 import { PersonProfession } from "../../persons/models";
 import { mapProfessionToAdminItem } from "../mappers";
 import { Profession } from "../models";

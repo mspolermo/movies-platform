@@ -15,9 +15,9 @@ import {
   toAdminListParams,
   toILikeContains,
   toPaginatedItemsResponse,
+  rethrowUniqueAsConflict
 } from "@common/utils";
 
-import { rethrowUniqueAsConflict } from "../../common/utils";
 import { FilmGenre } from "../../films/models";
 import { mapGenreToAdminItem } from "../mappers";
 import { Genre } from "../models";
