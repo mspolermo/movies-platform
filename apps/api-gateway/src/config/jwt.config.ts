@@ -1,9 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 
-import {
-  JWT_ENV,
-  resolveJwtSecret,
-} from "@common/constants";
+import { JWT_ENV } from "@common/constants";
+import { resolveJwtSecret } from "@common/utils";
 
 /**
  * Verify-only JWT на gateway: подпись делает auth-users.

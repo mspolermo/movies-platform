@@ -3,7 +3,6 @@ import { join } from "path";
 
 import {
   ALLOWED_ORIGINS,
-  API_GATEWAY_URL,
   CLIENT_ORIGIN,
   NETWORK,
 } from "@common/constants/network";
@@ -15,6 +14,8 @@ import {
 
 /** `apps/common/services/rmq/tests` → repo root */
 const repoRoot = join(__dirname, "../../../../../");
+
+export const API_GATEWAY_URL = `http://localhost:${NETWORK.gateway.publish}`;
 
 const parseEnvFile = (relativePath: string): Record<string, string> => {
   const raw = readFileSync(join(repoRoot, relativePath), "utf8");

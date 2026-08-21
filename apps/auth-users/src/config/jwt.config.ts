@@ -1,10 +1,7 @@
 import type { JwtModuleOptions } from "@nestjs/jwt";
 
-import {
-  JWT_DEFAULTS,
-  JWT_ENV,
-  resolveJwtSecret,
-} from "@common/constants";
+import { JWT_DEFAULTS, JWT_ENV } from "@common/constants";
+import { resolveJwtSecret } from "@common/utils";
 
 export const BCRYPT_ROUNDS = 10;
 

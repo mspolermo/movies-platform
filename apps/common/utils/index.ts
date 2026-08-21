@@ -6,3 +6,4 @@ export type { TListParams } from "./toListParams.util";
 export { toILikeContains } from "./toILikeContains.util";
 export { assertRpcPositiveInt } from "./assertRpcPositiveInt";
 export { rethrowUniqueAsConflict } from "./rethrowUniqueAsConflict";
+export { resolveJwtSecret } from "./resolveJwtSecret";

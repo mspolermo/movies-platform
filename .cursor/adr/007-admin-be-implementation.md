@@ -13,7 +13,7 @@ ADR-005 зафиксировал FE-стабы админки и целевой 
 ### Пагинация всех admin-списков (отклонение от ADR-005)
 
 - Все admin-list ответы — `TPaginatedItemsResponse<T*AdminItemResponse>` (`items` + `total/page/perPage/hasMore` из `@common/types/shared/meta`), а не plain-массивы из таблицы ADR-005.
-- Параметры: `page` / `perPage` (default 50, максимум 100) + `q` для films/persons/countries/genres (iLike по name-полям, серверный поиск). Нормализация — `toAdminListParams` (`apps/common/utils`). Профессии — клиентский `filterByQuery` (словарь ~9 записей).
+- Параметры: `page` / `perPage` (default 20, максимум 100) + `q` для films/persons/countries/genres (iLike по name-полям, серверный поиск). Нормализация — `toAdminListParams` (`apps/common/utils`). Профессии — клиентский `filterByQuery` (словарь ~9 записей).
 - `toPaginatedItemsResponse` / `toILikeContains` — в `apps/common/utils`; `rethrowUniqueAsConflict` — в `kino-db/src/common/utils` (Nest+Sequelize). `toILikeContains` вырезает `%`/`_`; после санитизации пусто → пустой список (не `ILIKE '%%'`).
 - FE: `usePaginatedResource` + `LoadMoreSection` + `useDebouncedValue` (300ms) и `resetDeps` по `q`.
 

@@ -10,21 +10,3 @@ export const JWT_DEFAULTS = {
   DEV_SECRET: "dev-only-secret",
   ACCESS_EXPIRES_IN: "15m",
 } as const;
-
-/**
- * Резолв секрета: prod без ключа — throw; иначе общий dev-fallback.
- */
-export const resolveJwtSecret = (
-  secret: string | undefined,
-  nodeEnv: string | undefined
-): string => {
-  if (secret) {
-    return secret;
-  }
-
-  if (nodeEnv === "production") {
-    throw new Error(`${JWT_ENV.PRIVATE_KEY} is required in production`);
-  }
-
-  return JWT_DEFAULTS.DEV_SECRET;
-};

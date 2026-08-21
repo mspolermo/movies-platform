@@ -22,7 +22,9 @@ export const NETWORK = {
   pgadmin: { publish: 5050, listen: 80 },
 } as const;
 
-export const API_GATEWAY_URL = `http://localhost:${NETWORK.gateway.publish}`;
+//TODO: подумать что с клиентским origin делать
+
 export const CLIENT_ORIGIN = "http://localhost:3000";
+
 /** CORS / OriginGuard fallback (DX client). Prod — явный ALLOWED_ORIGINS в env. */
 export const ALLOWED_ORIGINS = CLIENT_ORIGIN;
