@@ -1,4 +1,4 @@
-import type { TCommentCreationAtt, TCommentOrmModel } from "@common/types/orm";
+import type { TCommentCreationAtt, TCommentOrmModel } from "../orm";
 
 import { ApiProperty } from "@nestjs/swagger";
 import {

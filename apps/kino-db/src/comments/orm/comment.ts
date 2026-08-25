@@ -1,4 +1,4 @@
-import { TCommentEntity, TFilmEntity } from "../entity";
+import { TCommentEntity, TFilmEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create комментария. */
 export type TCommentCreationAtt = Pick<
