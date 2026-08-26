@@ -1,0 +1,1 @@
+export type { TCountryCreationAtt, TCountryOrmModel } from './country';

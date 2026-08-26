@@ -1,4 +1,4 @@
-import type { TFactCreationAtt, TFactOrmModel } from "@common/types/orm";
+import type { TFactCreationAtt, TFactOrmModel } from "../orm";
 
 import {
   BelongsTo,

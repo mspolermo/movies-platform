@@ -1,0 +1,1 @@
+export type { TFactCreationAtt, TFactOrmModel } from './fact';

@@ -1,4 +1,4 @@
-import { TCountryEntity, TFilmEntity } from "../entity";
+import { TCountryEntity, TFilmEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create страны. */
 export type TCountryCreationAtt = Pick<TCountryEntity, "countryName" | "countryNameEn">;

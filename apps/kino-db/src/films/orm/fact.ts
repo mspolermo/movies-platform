@@ -1,4 +1,4 @@
-import { TFactEntity, TFilmEntity } from "../entity";
+import { TFactEntity, TFilmEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create факта. */
 export type TFactCreationAtt = Pick<TFactEntity, "value" | "type" | "spoiler" | "filmId">;
