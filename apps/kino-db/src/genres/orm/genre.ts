@@ -1,4 +1,4 @@
-import { TFilmEntity, TGenreEntity } from "../entity";
+import { TFilmEntity, TGenreEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create жанра. */
 export type TGenreCreationAtt = Pick<TGenreEntity, "nameRu" | "nameEn">;

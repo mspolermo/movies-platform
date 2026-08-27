@@ -1,0 +1,1 @@
+export type { TGenreCreationAtt, TGenreOrmModel } from './genre';

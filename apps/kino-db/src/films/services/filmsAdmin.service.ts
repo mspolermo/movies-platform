@@ -80,6 +80,7 @@ export class FilmsAdminService {
 
   async createFilm(dto: TCreateFilmRequest): Promise<TAdminFilmItemResponse> {
     const film = await this.filmRepository.create(
+          //TODO: так быть не должно - никаких приведений типов и использовании ORM типа в сервисе
       this.toWriteValues(dto) as TFilmCreationAtt
     );
     return mapFilmToAdminItem(film);
@@ -90,6 +91,7 @@ export class FilmsAdminService {
     data: TUpdateFilmRequest
   ): Promise<TAdminFilmItemResponse> {
     const film = await this.findFilmOrFail(id);
+    //TODO: так быть не должно - никаких приведений типов и использовании ORM типа в сервисе
     await film.update(this.toWriteValues(data) as Partial<TFilmOrmModel>);
     return mapFilmToAdminItem(film);
   }

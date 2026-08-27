@@ -1,4 +1,4 @@
-import type { TGenreCreationAtt, TGenreOrmModel } from "@common/types/orm";
+import type { TGenreCreationAtt, TGenreOrmModel } from "../orm";
 
 import { ApiProperty } from "@nestjs/swagger";
 import {

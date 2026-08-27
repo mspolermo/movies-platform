@@ -1,5 +1,4 @@
 export type { TProfessionCreationAtt, TProfessionOrmModel } from './profession';
-export type { TGenreCreationAtt, TGenreOrmModel } from './genre';
 export type { TPersonCreationAtt, TPersonOrmModel } from './person';
 export type { TRoleCreationAtt, TRoleOrmModel } from './role';
 export type { TUserCreationAtt, TUserOrmModel } from './user';
