@@ -1,5 +1,4 @@
 export type { TProfessionCreationAtt, TProfessionOrmModel } from './profession';
-export type { TPersonCreationAtt, TPersonOrmModel } from './person';
 export type { TRoleCreationAtt, TRoleOrmModel } from './role';
 export type { TUserCreationAtt, TUserOrmModel } from './user';
 export type { TFilmCreationAtt, TFilmOrmModel } from './film';

@@ -1,0 +1,1 @@
+export type { TPersonCreationAtt, TPersonOrmModel } from './person';
