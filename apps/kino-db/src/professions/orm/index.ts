@@ -1,0 +1,1 @@
+export type { TProfessionCreationAtt, TProfessionOrmModel } from './profession';

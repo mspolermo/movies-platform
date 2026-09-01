@@ -1,4 +1,4 @@
-import type { TProfessionCreationAtt, TProfessionOrmModel } from "@common/types/orm";
+import type { TProfessionCreationAtt, TProfessionOrmModel } from "../orm";
 
 import {
   BelongsToMany,
