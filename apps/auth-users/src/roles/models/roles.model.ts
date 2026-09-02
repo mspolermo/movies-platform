@@ -1,4 +1,4 @@
-import type { TRoleOrmModel, TRoleCreationAtt } from "@common/types/orm";
+import type { TRoleOrmModel, TRoleCreationAtt } from "../orm";
 
 import {
   BelongsToMany,

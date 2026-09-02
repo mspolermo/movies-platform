@@ -1,4 +1,4 @@
-import { TRoleEntity, TUserEntity } from "../entity";
+import { TRoleEntity, TUserEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create роли. */
 export type TRoleCreationAtt = Pick<TRoleEntity, "value"> & {
