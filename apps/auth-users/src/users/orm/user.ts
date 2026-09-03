@@ -1,4 +1,4 @@
-import type { TRoleEntity, TUserEntity } from "../entity";
+import type { TRoleEntity, TUserEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create пользователя. */
 export type TUserCreationAtt = Pick<TUserEntity, "email" | "password" | "name">;

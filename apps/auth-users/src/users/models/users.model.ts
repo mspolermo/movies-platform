@@ -1,4 +1,4 @@
-import type { TUserOrmModel, TUserCreationAtt } from "@common/types/orm";
+import type { TUserOrmModel, TUserCreationAtt } from "../orm"
 
 import { ApiProperty } from "@nestjs/swagger";
 import {

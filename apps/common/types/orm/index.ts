@@ -1,4 +1,4 @@
-export type { TUserCreationAtt, TUserOrmModel } from './user';
+
 export type { TFilmCreationAtt, TFilmOrmModel } from './film';
 export type {
   TUserFavoriteCreationAtt,
