@@ -1,7 +1,4 @@
-import type {
-  TUserFavoriteCreationAtt,
-  TUserFavoriteOrmModel,
-} from "@common/types/orm";
+import type { TUserFavoriteCreationAtt, TUserFavoriteOrmModel } from "../orm";
 
 import {
   BelongsTo,

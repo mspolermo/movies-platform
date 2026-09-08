@@ -1,4 +1,4 @@
-import type { TUserFavoriteEntity } from "../entity";
+import type { TUserFavoriteEntity } from "@common/types/entity";
 
 /** Атрибуты create избранного. */
 export type TUserFavoriteCreationAtt = Pick<
