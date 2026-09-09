@@ -1,4 +1,4 @@
-import type { TUserFilmRatingEntity } from "../entity";
+import type { TUserFilmRatingEntity } from "@common/types/entity";
 
 /** Атрибуты create оценки фильма. */
 export type TUserFilmRatingCreationAtt = Pick<
