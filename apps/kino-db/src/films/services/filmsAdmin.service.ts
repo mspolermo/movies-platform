@@ -5,7 +5,6 @@ import type {
   TCreateFilmRequest,
   TUpdateFilmRequest,
 } from "@common/types";
-import type { TFilmCreationAtt, TFilmOrmModel } from "@common/types/orm";
 
 import { HttpStatus, Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
@@ -22,29 +21,47 @@ import {
 import { CommentLike } from "../../comments/models/commentLike.model";
 import { Comment } from "../../comments/models/comments.model";
 import { mapFilmToAdminItem } from "../mappers";
-import { Fact, Film, FilmCountry, FilmGenre, FilmPerson } from "../models";
+import {
+  Fact,
+  Film,
+  FilmCountry,
+  FilmGenre,
+  FilmPerson,
+} from "../models";
 
 @Injectable()
 export class FilmsAdminService {
   constructor(
-    @InjectModel(Film) private readonly filmRepository: typeof Film,
+    @InjectModel(Film)
+    private readonly filmRepository: typeof Film,
+
     @InjectModel(FilmGenre)
     private readonly filmGenreRepository: typeof FilmGenre,
+
     @InjectModel(FilmCountry)
     private readonly filmCountryRepository: typeof FilmCountry,
+
     @InjectModel(FilmPerson)
     private readonly filmPersonRepository: typeof FilmPerson,
-    @InjectModel(Fact) private readonly factRepository: typeof Fact,
-    @InjectModel(Comment) private readonly commentRepository: typeof Comment,
+
+    @InjectModel(Fact)
+    private readonly factRepository: typeof Fact,
+
+    @InjectModel(Comment)
+    private readonly commentRepository: typeof Comment,
+
     @InjectModel(CommentLike)
     private readonly commentLikeRepository: typeof CommentLike,
+
     private readonly sequelize: Sequelize
   ) {}
 
-  async listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
+  async listFilms(
+    request: TAdminListRequest
+  ): Promise<TAdminFilmsListResponse> {
     const { page, perPage, offset, q } = toAdminListParams(request);
-
     const like = q ? toILikeContains(q) : undefined;
+
     if (q && !like) {
       return toPaginatedItemsResponse([], 0, page, perPage);
     }
@@ -73,16 +90,21 @@ export class FilmsAdminService {
     );
   }
 
-  async getFilmById(id: number): Promise<TAdminFilmItemResponse> {
+  async getFilmById(
+    id: number
+  ): Promise<TAdminFilmItemResponse> {
     const film = await this.findFilmOrFail(id);
+
     return mapFilmToAdminItem(film);
   }
 
-  async createFilm(dto: TCreateFilmRequest): Promise<TAdminFilmItemResponse> {
+  async createFilm(
+    dto: TCreateFilmRequest
+  ): Promise<TAdminFilmItemResponse> {
     const film = await this.filmRepository.create(
-          //TODO: так быть не должно - никаких приведений типов и использовании ORM типа в сервисе
-      this.toWriteValues(dto) as TFilmCreationAtt
+      this.toCreateValues(dto)
     );
+
     return mapFilmToAdminItem(film);
   }
 
@@ -91,14 +113,15 @@ export class FilmsAdminService {
     data: TUpdateFilmRequest
   ): Promise<TAdminFilmItemResponse> {
     const film = await this.findFilmOrFail(id);
-    //TODO: так быть не должно - никаких приведений типов и использовании ORM типа в сервисе
-    await film.update(this.toWriteValues(data) as Partial<TFilmOrmModel>);
+
+    await film.update(this.toUpdateValues(data));
+
     return mapFilmToAdminItem(film);
   }
 
   /**
-   * Удаление фильма каскадом (ADR-007): commentLikes → comments →
-   * join-строки (жанры/страны/персоны) и facts → film. Одна транзакция.
+   * Удаляет фильм вместе с зависимыми сущностями
+   * в рамках одной транзакции.
    */
   async deleteFilm(id: number): Promise<true> {
     const film = await this.findFilmOrFail(id);
@@ -109,6 +132,7 @@ export class FilmsAdminService {
         attributes: ["id"],
         transaction,
       });
+
       const commentIds = comments.map((comment) => comment.id);
 
       if (commentIds.length > 0) {
@@ -116,6 +140,7 @@ export class FilmsAdminService {
           where: { commentId: commentIds },
           transaction,
         });
+
         await this.commentRepository.destroy({
           where: { filmId: id },
           transaction,
@@ -126,15 +151,21 @@ export class FilmsAdminService {
         where: { filmId: id },
         transaction,
       });
+
       await this.filmCountryRepository.destroy({
         where: { filmId: id },
         transaction,
       });
+
       await this.filmPersonRepository.destroy({
         where: { filmId: id },
         transaction,
       });
-      await this.factRepository.destroy({ where: { filmId: id }, transaction });
+
+      await this.factRepository.destroy({
+        where: { filmId: id },
+        transaction,
+      });
 
       await film.destroy({ transaction });
     });
@@ -155,17 +186,32 @@ export class FilmsAdminService {
     return film;
   }
 
-  private toWriteValues(
-    data: TCreateFilmRequest | TUpdateFilmRequest
-  ): Record<string, unknown> {
+  private toCreateValues(
+    data: TCreateFilmRequest
+  ) {
     const { premiereWorldDate, ...rest } = data;
-    const values: Record<string, unknown> = { ...rest };
 
-    if (premiereWorldDate !== undefined) {
-      values.premiereWorldDate =
-        premiereWorldDate === null ? null : new Date(premiereWorldDate);
-    }
+    return {
+      ...rest,
+      ...(premiereWorldDate !== undefined && {
+        premiereWorldDate: new Date(premiereWorldDate),
+      }),
+    };
+  }
 
-    return values;
+  private toUpdateValues(
+    data: TUpdateFilmRequest
+  ) {
+    const { premiereWorldDate, ...rest } = data;
+
+    return {
+      ...rest,
+      ...(premiereWorldDate !== undefined && {
+        premiereWorldDate:
+          premiereWorldDate === null
+            ? null
+            : new Date(premiereWorldDate),
+      }),
+    };
   }
 }
