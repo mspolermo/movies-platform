@@ -1,7 +1,7 @@
 import type {
   TUserFilmRatingCreationAtt,
   TUserFilmRatingOrmModel,
-} from "../orm";
+} from "./orm";
 
 import {
   BelongsTo,

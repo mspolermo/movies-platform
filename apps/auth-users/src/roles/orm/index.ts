@@ -1,1 +1,0 @@
-export type { TRoleCreationAtt, TRoleOrmModel } from './role';

@@ -10,3 +10,4 @@ export type { TRoleEntity } from './role';
 export type { TUserEntity } from './user';
 export type { TUserFavoriteEntity } from './userFavorite';
 export type { TUserFilmRatingEntity } from './userFilmRating';
+export type { TUserRoleEntity } from './userRole';

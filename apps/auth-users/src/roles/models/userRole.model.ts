@@ -8,10 +8,21 @@ import {
 
 import { User } from "../../users/models/users.model";
 
+import {
+  TUserRoleCreationAtt,
+  TUserRoleOrmModel,
+} from "./orm";
 import { Role } from "./roles.model";
 
-@Table({ tableName: "user_roles", createdAt: false, updatedAt: false })
-export class UserRoles extends Model<UserRoles> {
+@Table({
+  tableName: "user_roles",
+  createdAt: false,
+  updatedAt: false,
+})
+export class UserRoles extends Model<
+  TUserRoleOrmModel,
+  TUserRoleCreationAtt
+> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
