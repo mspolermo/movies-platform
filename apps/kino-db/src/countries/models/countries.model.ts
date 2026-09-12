@@ -1,4 +1,4 @@
-import type { TCountryCreationAtt, TCountryOrmModel } from "../orm";
+import type { TCountryCreationAtt, TCountryOrmModel } from "./orm";
 
 import {
   BelongsToMany,

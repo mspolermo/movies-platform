@@ -9,12 +9,13 @@ import {
 import { Person } from "../../persons/models/persons.model";
 
 import { Film } from "./films.model";
+import { TFilmPersonCreationAtt, TFilmPersonOrmModel } from "./orm";
 
 @Table({
   tableName: "_FilmToPerson",
   timestamps: false,
 })
-export class FilmPerson extends Model<FilmPerson> {
+export class FilmPerson extends Model<TFilmPersonOrmModel, TFilmPersonCreationAtt> {
   @ForeignKey(() => Film)
   @Column({
     field: "A",

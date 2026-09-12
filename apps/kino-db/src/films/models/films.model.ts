@@ -1,4 +1,4 @@
-import type { TFilmOrmModel, TFilmCreationAtt } from "../orm";
+import type { TFilmOrmModel, TFilmCreationAtt } from "./orm";
 
 import { ApiProperty } from "@nestjs/swagger";
 import {

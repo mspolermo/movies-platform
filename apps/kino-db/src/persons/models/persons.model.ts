@@ -1,4 +1,4 @@
-import type { TPersonCreationAtt, TPersonOrmModel } from "../orm"
+import type { TPersonCreationAtt, TPersonOrmModel } from "./orm"
 
 import { ApiProperty } from "@nestjs/swagger";
 import {

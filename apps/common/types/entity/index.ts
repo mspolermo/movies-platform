@@ -11,3 +11,7 @@ export type { TUserEntity } from './user';
 export type { TUserFavoriteEntity } from './userFavorite';
 export type { TUserFilmRatingEntity } from './userFilmRating';
 export type { TUserRoleEntity } from './userRole';
+export type { TFilmCountryEntity } from './filmCountry';
+export type { TFilmGenreEntity } from './filmGenre';
+export type { TFilmPersonEntity } from './filmPerson';
+export type { TPersonProfessionEntity } from './personProfession';

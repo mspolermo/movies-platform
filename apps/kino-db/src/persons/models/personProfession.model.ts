@@ -8,6 +8,7 @@ import {
 
 import { Profession } from "../../professions/models/professions.model";
 
+import { TPersonProfessionCreationAtt, TPersonProfessionOrmModel } from "./orm/personProfession";
 import { Person } from "./persons.model";
 
 //TODO: A и B переделать на нормальные колонки 
@@ -17,7 +18,7 @@ import { Person } from "./persons.model";
   updatedAt: false,
   indexes: [{ name: "_PersonToProfession_B_index", fields: ["B"] }],
 })
-export class PersonProfession extends Model<PersonProfession> {
+export class PersonProfession extends Model<TPersonProfessionOrmModel, TPersonProfessionCreationAtt> {
   @ForeignKey(() => Person)
   @Column({ type: DataType.INTEGER, allowNull: false })
   A!: number;

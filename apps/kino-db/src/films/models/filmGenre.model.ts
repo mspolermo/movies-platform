@@ -10,12 +10,13 @@ import {
 import { Genre } from "../../genres/models/genres.model";
 
 import { Film } from "./films.model";
+import { TFilmGenreCreationAtt, TFilmGenreOrmModel } from "./orm";
 
 @Table({
   tableName: "_FilmToGenre",
   timestamps: false,
 })
-export class FilmGenre extends Model<FilmGenre> {
+export class FilmGenre extends Model<TFilmGenreOrmModel, TFilmGenreCreationAtt> {
   @ForeignKey(() => Film)
   @Column({
     field: "A",

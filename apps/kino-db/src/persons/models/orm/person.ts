@@ -1,4 +1,3 @@
-// Общие типы для Person
 import { TFilmEntity, TPersonEntity, TProfessionEntity } from "@common/types/entity";
 
 /** Атрибуты для Sequelize.create персоны. */
