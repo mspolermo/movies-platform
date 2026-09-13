@@ -11,9 +11,8 @@ import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { Observable } from "rxjs";
 
+import { IS_PUBLIC_KEY } from "../decorators";
 import { AuthenticatedRequest } from "../interfaces";
-
-import { IS_PUBLIC_KEY } from "./public.decorator";
 
 interface JWTError extends Error {
   name: string;

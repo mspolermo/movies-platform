@@ -1,1 +1,1 @@
-export * from "./request.interface";
+export { AuthenticatedRequest } from "./request.interface";

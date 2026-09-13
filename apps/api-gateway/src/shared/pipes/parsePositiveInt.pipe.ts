@@ -6,7 +6,7 @@ import {
   PipeTransform,
 } from "@nestjs/common";
 
-/** ParseInt + value >= 1 (path params вроде filmId). */
+/** Преобразует параметр в положительное целое число. */
 @Injectable()
 export class ParsePositiveIntPipe
   extends ParseIntPipe

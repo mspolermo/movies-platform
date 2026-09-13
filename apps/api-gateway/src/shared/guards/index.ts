@@ -1,5 +1,3 @@
-export * from "./jwtAuth.guard";
-export * from "./roles.guard";
-export * from "./roles.decorator";
-export * from "./origin.guard";
-export * from "./public.decorator";
+export { JwtAuthGuard } from "./jwtAuth.guard";
+export { RolesGuard} from "./roles";
+export { OriginGuard } from "./origin.guard";
