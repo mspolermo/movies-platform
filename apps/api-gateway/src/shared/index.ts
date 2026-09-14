@@ -4,3 +4,4 @@ export { AuthenticatedRequest } from "./interfaces";
 export { JwtAuthGuard, RolesGuard, OriginGuard } from "./guards";
 export * from "./transforms";
 export { ParsePositiveIntPipe } from "./pipes";
+export { fromRpc, rpcMessageIncludes } from "./helpers"
