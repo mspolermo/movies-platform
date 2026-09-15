@@ -25,9 +25,10 @@ import { Request, Response } from "express";
 
 import { AuthDto, CreateUserDto } from "@common/dto";
 
-import { JwtAuthGuard, OriginGuard, Public } from "../../shared";
-import { AuthenticatedRequest } from "../../shared/interfaces";
+import { JwtAuthGuard, Public } from "../../security";
+import { AuthenticatedRequest } from "../../shared";
 import { AuthResponseDto, CurrentUserResponseDto } from "../dto";
+import { OriginGuard } from "../guards";
 import {
   clearAuthCookies,
   REFRESH_TOKEN_COOKIE,

@@ -1,4 +1,5 @@
 export {
   fromRpc,
-  rpcMessageIncludes
+  rpcMessageIncludes,
+  extractRpcErrorMessage
 } from "./rpc";

@@ -17,7 +17,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 import { AdminListQueryDto, UpdateUserRoleDto } from "@common/dto";
 
-import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
+import { JwtAuthGuard, Roles, RolesGuard } from "../../security";
 import { AdminUsersService } from "../services";
 
 @Controller("admin/users")

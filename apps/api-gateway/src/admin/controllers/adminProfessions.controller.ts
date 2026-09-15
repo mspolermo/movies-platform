@@ -23,7 +23,7 @@ import {
   UpdateProfessionDto,
 } from "@common/dto";
 
-import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
+import { JwtAuthGuard, Roles, RolesGuard } from "../../security";
 import { AdminProfessionsService } from "../services";
 
 @Controller("admin/professions")

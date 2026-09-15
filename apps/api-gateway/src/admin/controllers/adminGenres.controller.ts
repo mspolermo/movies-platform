@@ -19,7 +19,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 import { AdminListQueryDto, CreateGenreDto, UpdateGenreDto } from "@common/dto";
 
-import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
+import { JwtAuthGuard, Roles, RolesGuard } from "../../security";
 import { AdminGenresService } from "../services";
 
 /** Admin CRUD жанров; только роль ADMIN (ADR-005). */

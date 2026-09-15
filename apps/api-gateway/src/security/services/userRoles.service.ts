@@ -4,7 +4,7 @@ import { Injectable } from "@nestjs/common";
 
 import { RmqService, authUsersRpc } from "@common/services";
 
-import { fromRpc } from "../shared/helpers";
+import { fromRpc } from "../../shared/helpers";
 
 @Injectable()
 export class UserRolesService {

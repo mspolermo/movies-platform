@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 
-import { JwtAuthGuard } from "../../shared";
+import { JwtAuthGuard } from "../../security";
 import { FilmsController } from "../controllers";
 import { FilmsService } from "../services";
 

@@ -1,7 +1,7 @@
 import { HttpException } from "@nestjs/common";
 
 /** Достаёт текст ошибки из Nest RMQ / RxJS (вложенный message, string, object). */
-const extractRpcErrorMessage = (error: unknown): string => {
+export const extractRpcErrorMessage = (error: unknown): string => {
   if (error == null) {
     return "";
   }

@@ -8,7 +8,7 @@ import type {
 import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import {
   FilmographyQueryDto,
   FindPersonsQueryDto,

@@ -1,6 +1,6 @@
 import { GUARDS_METADATA } from "@nestjs/common/constants";
 
-import { JwtAuthGuard, ROLES_KEY, RolesGuard } from "../../shared";
+import { JwtAuthGuard, ROLES_KEY, RolesGuard } from "../../security";
 import {
   AdminCountriesController,
   AdminFilmsController,

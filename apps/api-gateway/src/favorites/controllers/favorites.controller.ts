@@ -17,8 +17,8 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 import { UserFilmPrefsListQueryDto } from "@common/dto";
 
-import { JwtAuthGuard, ParsePositiveIntPipe } from "../../shared";
-import { AuthenticatedRequest } from "../../shared/interfaces";
+import { JwtAuthGuard } from "../../security";
+import { AuthenticatedRequest, ParsePositiveIntPipe } from "../../shared";
 import { FavoritesService } from "../services";
 
 @Controller("favorites")

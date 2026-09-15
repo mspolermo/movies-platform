@@ -11,7 +11,6 @@ import { AppModule } from "./app.module";
 import { getSwaggerConfig, getCorsConfig, getEncodingMiddleware } from "./config";
 import { GlobalExceptionFilter } from "./shared";
 
-
 let app: NestExpressApplication | null = null;
 
 async function bootstrap() {

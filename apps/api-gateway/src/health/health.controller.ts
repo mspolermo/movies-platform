@@ -2,7 +2,7 @@ import type { Response } from "express";
 
 import { Controller, Get, HttpStatus, Res, UseGuards } from "@nestjs/common";
 
-import { JwtAuthGuard, Public } from "../shared";
+import { JwtAuthGuard, Public } from "../security";
 
 import { HealthService } from "./health.service";
 

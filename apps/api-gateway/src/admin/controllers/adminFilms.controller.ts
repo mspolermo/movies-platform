@@ -19,7 +19,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse } from "@nestjs/swagger";
 
 import { AdminListQueryDto, CreateFilmDto, UpdateFilmDto } from "@common/dto";
 
-import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
+import { JwtAuthGuard, Roles, RolesGuard } from "../../security";
 import { AdminFilmsService } from "../services";
 
 @Controller("admin/films")

@@ -17,7 +17,7 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import { FiltersResponseDto, GetFiltersQueryDto } from "../dto";
 import { FiltersService } from "../services";
 

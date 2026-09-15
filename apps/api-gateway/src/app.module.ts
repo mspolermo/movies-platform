@@ -13,11 +13,11 @@ import { FilmsModule } from "./films";
 import { FiltersModule } from "./filters";
 import { GenresModule } from "./genres";
 import { HealthModule } from "./health";
-import { JwtConfigModule } from "./jwt";
 import { PersonsModule } from "./persons";
 import { ProfessionsModule } from "./professions";
 import { RatingsModule } from "./ratings";
 import { SearchModule } from "./search";
+import { SecurityModule } from "./security";
 
 @Module({
   imports: [
@@ -34,7 +34,7 @@ import { SearchModule } from "./search";
       },
     ]),
     RmqModule,
-    JwtConfigModule,
+    SecurityModule,
     HealthModule,
     AuthModule,
     FilmsModule,

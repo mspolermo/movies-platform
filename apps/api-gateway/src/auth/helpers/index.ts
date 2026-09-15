@@ -15,4 +15,4 @@ export {
 export {
   extractRpcErrorMessage,
   rpcMessageIncludes,
-} from "../../shared/helpers";
+} from "../../shared";

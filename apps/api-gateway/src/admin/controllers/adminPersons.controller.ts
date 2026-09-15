@@ -23,7 +23,7 @@ import {
   UpdatePersonDto,
 } from "@common/dto";
 
-import { JwtAuthGuard, Roles, RolesGuard } from "../../shared";
+import { JwtAuthGuard, Roles, RolesGuard } from "../../security";
 import { AdminPersonsService } from "../services";
 
 @Controller("admin/persons")

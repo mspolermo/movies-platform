@@ -8,9 +8,9 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import { SearchResultResponseDto } from "../dto";
-import { SearchService } from "../services/search.service";
+import { SearchService } from "../services";
 
 @ApiTags("Search")
 @Controller("search")

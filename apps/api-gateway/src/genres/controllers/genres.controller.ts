@@ -3,7 +3,7 @@ import type { TGenresListResponse } from "@common/types";
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import { GenreItemResponseDto } from "../dto";
 import { GenresService } from "../services";
 

@@ -9,9 +9,9 @@ import {
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 
-import { UserRolesService } from "../../../userRoles";
+import { AuthenticatedRequest } from "../../../shared";
 import { ROLES_KEY } from "../../decorators";
-import { AuthenticatedRequest } from "../../interfaces";
+import { UserRolesService } from "../../services";
 
 interface ErrorWithMessage {
   message: string;

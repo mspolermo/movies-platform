@@ -12,7 +12,7 @@ import {
 } from "@nestjs/swagger";
 
 import { PaginatedPersonsResponseDto } from "../../persons/dto";
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import {
   ProfessionItemResponseDto,
   ProfessionPersonsParamDto,

@@ -24,7 +24,7 @@ import {
 
 import { PaginatedPersonsResponseDto } from "../../persons/dto";
 import { ProfessionItemResponseDto } from "../../professions/dto";
-import { JwtAuthGuard, Public } from "../../shared";
+import { JwtAuthGuard, Public } from "../../security";
 import {
   FilmDetailsResponseDto,
   FilmListItemResponseDto,

@@ -1,9 +1,8 @@
 import { Module } from "@nestjs/common";
 
-import { OriginGuard } from "../shared/guards";
-
 import { AuthClient } from "./clients";
 import { AuthController } from "./controllers";
+import { OriginGuard } from "./guards";
 import { AuthService } from "./services";
 
 @Module({

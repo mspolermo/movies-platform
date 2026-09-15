@@ -24,8 +24,8 @@ import {
 
 import { CommentDTO } from "@common/dto";
 
-import { JwtAuthGuard, Public } from "../../shared";
-import { AuthenticatedRequest } from "../../shared/interfaces";
+import { JwtAuthGuard, Public } from "../../security";
+import { AuthenticatedRequest } from "../../shared";
 import {
   CommentResponseDto,
   CommentsPaginatedResponseDto,
