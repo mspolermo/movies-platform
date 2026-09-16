@@ -90,9 +90,9 @@ export class ProfessionsAdminService {
   async deleteProfession(id: number): Promise<true> {
     const profession = await this.findProfessionOrFail(id);
 
-    // PersonProfession: колонка B — professionId (легаси-схема A/B, см. B7)
+    // PersonProfession: колонка professionId (легаси-схема A/B исправлена, см. B7)
     const personsCount = await this.personProfessionRepository.count({
-      where: { B: id },
+      where: { professionId: id },
     });
 
     if (personsCount > 0) {

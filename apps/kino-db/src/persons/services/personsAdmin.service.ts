@@ -155,9 +155,9 @@ export class PersonsAdminService {
     }
 
     await this.sequelize.transaction(async (transaction) => {
-      // PersonProfession: колонка A — personId (легаси-схема A/B, см. B7)
+      // PersonProfession: колонка personId (легаси-схема A/B исправлена, см. B7)
       await this.personProfessionRepository.destroy({
-        where: { A: id },
+        where: { personId: id },
         transaction,
       });
       await person.destroy({ transaction });
