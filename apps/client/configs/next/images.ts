@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 // next.config: relative → apps/common (alias `@common/*` здесь не резолвится)
 // eslint-disable-next-line import/no-internal-modules
-import { API_GATEWAY_URL } from '../../../common/constants/network';
+import { API_GATEWAY_URL } from '../../../common/constants';
 
 type TRemotePattern = NonNullable<NonNullable<NextConfig['images']>['remotePatterns']>[number];
 

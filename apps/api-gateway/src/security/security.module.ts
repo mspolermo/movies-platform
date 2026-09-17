@@ -21,6 +21,6 @@ import { UserRolesService } from "./services";
     }),
   ],
   providers: [JwtAuthGuard, RolesGuard, UserRolesService],
-  exports: [JwtModule, JwtAuthGuard, RolesGuard],
+  exports: [JwtModule, JwtAuthGuard, RolesGuard, UserRolesService],
 })
 export class SecurityModule {}

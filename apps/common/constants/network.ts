@@ -24,6 +24,7 @@ export const NETWORK = {
 
 //TODO: подумать что с клиентским origin делать
 
+export const API_GATEWAY_URL = `http://localhost:${NETWORK.gateway.publish}`;
 export const CLIENT_ORIGIN = "http://localhost:3000";
 
 /** CORS / OriginGuard fallback (DX client). Prod — явный ALLOWED_ORIGINS в env. */

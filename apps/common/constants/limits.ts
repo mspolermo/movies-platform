@@ -9,3 +9,6 @@ export const FILM_USER_GRADE_MIN = 1;
 
 /** Макс. оценка фильма пользователем. */
 export const FILM_USER_GRADE_MAX = 10;
+
+/** Верхняя граница «плохой» оценки (1..BAD_MAX плохо, выше — хорошо). */
+export const FILM_USER_GRADE_BAD_MAX = 6;
