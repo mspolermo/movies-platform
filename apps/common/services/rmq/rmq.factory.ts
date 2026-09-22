@@ -6,6 +6,7 @@ import {
 } from "@nestjs/microservices";
 
 import { NETWORK } from "@common/constants/network";
+
 import {
   FILMS_QUEUE,
   RABBITMQ_DX_PASS,

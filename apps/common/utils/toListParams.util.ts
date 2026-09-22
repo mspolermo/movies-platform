@@ -2,8 +2,10 @@ import type { TListPaginationParams } from "@common/types";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
 
+//TODO: надо переделать на TPaginationMeta
+
 /** Нормализованные page/perPage/offset для list-запросов. */
-export type TListParams = {
+type TListParams = {
   page: number;
   perPage: number;
   offset: number;

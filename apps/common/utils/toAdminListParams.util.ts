@@ -5,7 +5,9 @@ import {
   LIST_MAX_LIMIT,
 } from "@common/constants";
 
-export type TAdminListParams = {
+//TODO: надо переделать на TPaginationMeta
+
+type TAdminListParams = {
   page: number;
   perPage: number;
   offset: number;
