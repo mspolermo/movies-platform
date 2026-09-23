@@ -10,3 +10,11 @@ export type TPaginationMeta = {
 export type TPaginatedItemsResponse<T> = {
   items: T[];
 } & TPaginationMeta;
+
+/** Пагинированный Нормализованные список с опциональным поиском для list-запросов. */
+export type TListParams = {
+  page: number;
+  perPage: number;
+  offset: number;
+  q?: string;
+};

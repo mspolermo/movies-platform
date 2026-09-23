@@ -1,22 +1,13 @@
-import type { TAdminListRequest } from "@common/types";
+import type { TAdminListRequest, TListParams } from "@common/types";
 
 import {
   LIST_DEFAULT_LIMIT,
   LIST_MAX_LIMIT,
 } from "@common/constants";
 
-//TODO: надо переделать на TPaginationMeta
-
-type TAdminListParams = {
-  page: number;
-  perPage: number;
-  offset: number;
-  q?: string;
-};
-
 export function toAdminListParams(
   request: TAdminListRequest
-): TAdminListParams {
+): TListParams {
   const page = Math.max(1, Math.trunc(request.page ?? 1));
   const perPage = Math.min(
     LIST_MAX_LIMIT,
