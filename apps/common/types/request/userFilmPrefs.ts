@@ -1,8 +1,4 @@
-/** Параметры пагинации списков. */
-export type TListPaginationParams = {
-  page?: number;
-  perPage?: number;
-};
+import { TListPaginationParams } from "../shared";
 
 /** Query GET /favorites. */
 export type TGetMyFavoritesParams = TListPaginationParams;
