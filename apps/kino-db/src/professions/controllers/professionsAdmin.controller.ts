@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminProfessionsListResponse,
   TAdminUpdateProfessionRpcRequest,
   TCreateProfessionRequest,
@@ -21,7 +21,7 @@ export class ProfessionsAdminController {
 
   @MessagePattern(kinoDbRpc.admin.professions.list)
   listProfessions(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminProfessionsListResponse> {
     return this.professionsAdminService.listProfessions(request);
   }

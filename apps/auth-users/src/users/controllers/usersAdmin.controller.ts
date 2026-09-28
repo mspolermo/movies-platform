@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminSetUserRoleRpcRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
@@ -19,7 +19,7 @@ export class UsersAdminController {
 
   @MessagePattern(authUsersRpc.admin.users.list)
   listUsers(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminUsersListResponse> {
     return this.usersAdminService.listUsers(request);
   }

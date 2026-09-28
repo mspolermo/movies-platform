@@ -1,10 +1,10 @@
-import { TListPaginationParams } from "../shared";
+import { TListRequest } from "../shared";
 
 /** Query GET /favorites. */
-export type TGetMyFavoritesParams = TListPaginationParams;
+export type TGetMyFavoritesParams = TListRequest;
 
 /** Query GET /ratings. */
-export type TGetMyFilmRatingsParams = TListPaginationParams;
+export type TGetMyFilmRatingsParams = TListRequest;
 
 /** Body PUT /ratings/:filmId. */
 export type TUpsertFilmRatingRequest = {
@@ -26,7 +26,7 @@ export type TRemoveFavoriteRpcRequest = {
 /** RPC favorites.list. */
 export type TListFavoritesRpcRequest = {
   userId: number;
-} & TListPaginationParams;
+} & TListRequest;
 
 /** RPC favorites.ids. */
 export type TFavoriteIdsRpcRequest = {
@@ -49,7 +49,7 @@ export type TDeleteFilmRatingRpcRequest = {
 /** RPC ratings.list. */
 export type TListFilmRatingsRpcRequest = {
   userId: number;
-} & TListPaginationParams;
+} & TListRequest;
 
 /** RPC ratings.grades. */
 export type TFilmRatingGradesRpcRequest = {

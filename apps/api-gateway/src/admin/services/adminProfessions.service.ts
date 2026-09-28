@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminProfessionsListResponse,
   TCreateProfessionRequest,
   TAdminProfessionItemResponse,
@@ -17,7 +17,7 @@ export class AdminProfessionsService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
   listProfessions(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminProfessionsListResponse> {
     return fromRpc(this.client.listProfessions(request));
   }

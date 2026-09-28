@@ -1,6 +1,6 @@
 import type {
   TAdminGenresListResponse,
-  TAdminListRequest,
+  TListRequest,
   TCreateGenreRequest,
   TAdminGenreItemResponse,
   TUpdateGenreRequest,
@@ -16,7 +16,7 @@ import { AdminKinoDbClient } from "../clients";
 export class AdminGenresService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  listGenres(request: TAdminListRequest): Promise<TAdminGenresListResponse> {
+  listGenres(request: TListRequest): Promise<TAdminGenresListResponse> {
     return fromRpc(this.client.listGenres(request));
   }
 

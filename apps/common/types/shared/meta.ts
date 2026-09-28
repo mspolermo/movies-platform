@@ -22,7 +22,8 @@ export type TListParams = {
 };
 
 /** Параметры пагинации списков. */
-export type TListPaginationParams = {
+export type TListRequest = {
   page?: number;
   perPage?: number;
+  q?: string;
 };

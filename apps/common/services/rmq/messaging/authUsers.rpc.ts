@@ -1,7 +1,7 @@
 import type { AuthDto, CreateUserDto } from "@common/dto";
 import type {
   TAuthorizedUserResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminSetUserRoleRpcRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
@@ -90,7 +90,7 @@ export type TAuthUsersRpcContract = {
     response: true;
   };
   [authUsersRpc.admin.users.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminUsersListResponse;
   };
   [authUsersRpc.admin.users.setRole]: {

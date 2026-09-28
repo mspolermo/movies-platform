@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
   TUpdateUserRoleRequest,
@@ -10,7 +10,7 @@ import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
 
-import { toAdminListParams, toPaginatedItemsResponse } from "@common/utils";
+import { toListParams, toPaginatedItemsResponse } from "@common/utils";
 
 import { Role } from "../../roles/models";
 import { RolesService } from "../../roles/services";
@@ -29,9 +29,9 @@ export class UsersAdminService {
 
   /** Пагинированный список пользователей с ролями. */
   async listUsers(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminUsersListResponse> {
-    const { page, perPage, offset } = toAdminListParams(request);
+    const { page, perPage, offset } = toListParams(request);
 
     const { rows, count } = await this.userRepository.findAndCountAll({
       include: [{ model: Role, through: { attributes: [] } }],

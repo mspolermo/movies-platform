@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminProfessionsListResponse,
   TCreateProfessionRequest,
   TAdminProfessionItemResponse,
@@ -11,7 +11,7 @@ import { RpcException } from "@nestjs/microservices";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, col, fn, where } from "sequelize";
 
-import { toAdminListParams, toPaginatedItemsResponse, rethrowUniqueAsConflict } from "@common/utils";
+import { toListParams, toPaginatedItemsResponse, rethrowUniqueAsConflict } from "@common/utils";
 
 import { PersonProfession } from "../../persons/models";
 import { mapProfessionToAdminItem } from "../mappers";
@@ -29,9 +29,9 @@ export class ProfessionsAdminService {
 
   /** Пагинированный список профессий с id. */
   async listProfessions(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminProfessionsListResponse> {
-    const { page, perPage, offset } = toAdminListParams(request);
+    const { page, perPage, offset } = toListParams(request);
 
     const { rows, count } = await this.professionRepository.findAndCountAll({
       order: [["name", "ASC"]],

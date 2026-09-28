@@ -1,4 +1,4 @@
-import type { TAdminListRequest } from "@common/types";
+import type { TListRequest } from "@common/types";
 
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
@@ -7,7 +7,7 @@ import { IsInt, IsOptional, IsString, Max, MaxLength, Min } from "class-validato
 import { LIST_MAX_LIMIT } from "@common/constants";
 
 /** Query-параметры admin-списков: пагинация + поиск (`q` — films/persons/countries/genres). */
-export class AdminListQueryDto implements TAdminListRequest {
+export class AdminListQueryDto implements TListRequest {
   @ApiPropertyOptional({ description: "Номер страницы", example: 1 })
   @IsOptional()
   @Type(() => Number)

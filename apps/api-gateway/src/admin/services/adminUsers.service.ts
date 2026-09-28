@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
   TUpdateUserRoleRequest,
@@ -15,7 +15,7 @@ import { AdminUsersClient } from "../clients";
 export class AdminUsersService {
   constructor(private readonly client: AdminUsersClient) {}
 
-  listUsers(request: TAdminListRequest): Promise<TAdminUsersListResponse> {
+  listUsers(request: TListRequest): Promise<TAdminUsersListResponse> {
     return fromRpc(this.client.listUsers(request));
   }
 

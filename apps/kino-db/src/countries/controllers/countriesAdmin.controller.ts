@@ -1,6 +1,6 @@
 import type {
   TAdminCountriesListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminUpdateCountryRpcRequest,
   TAdminCountryItemResponse,
   TCreateCountryRequest,
@@ -19,7 +19,7 @@ export class CountriesAdminController {
 
   @MessagePattern(kinoDbRpc.admin.countries.list)
   listCountries(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminCountriesListResponse> {
     return this.countriesAdminService.listCountries(request);
   }

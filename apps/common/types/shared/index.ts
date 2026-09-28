@@ -1,1 +1,1 @@
-export type { TPaginationMeta, TPaginatedItemsResponse, TListParams, TListPaginationParams } from './meta';
+export type { TPaginationMeta, TPaginatedItemsResponse, TListParams, TListRequest } from './meta';

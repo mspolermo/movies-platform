@@ -3,7 +3,7 @@ import type {
   TDeleteFilmRatingResponse,
   TMyFilmRatingsResponse,
   TMyFilmRatingGradesResponse,
-  TListPaginationParams,
+  TListRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -36,7 +36,7 @@ export class RatingsClient {
 
   list(
     userId: number,
-    params: TListPaginationParams
+    params: TListRequest
   ): Promise<TMyFilmRatingsResponse> {
     return this.rmq.sendToUsers(authUsersRpc.ratings.list, {
       userId,

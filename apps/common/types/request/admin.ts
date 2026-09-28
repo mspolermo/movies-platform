@@ -4,16 +4,11 @@ import type { TGenreEntity } from "../entity";
 import type { TPersonEntity } from "../entity";
 import type { TProfessionEntity } from "../entity";
 
-import { TListPaginationParams } from "../shared";
-
 /** Роли приложения (ADR-005). */
 export type TAppRole = "ADMIN" | "USER" | "MANAGER";
 
 /** Частичное обновление, где `null` = «очистить поле» (PATCH админки, ADR-007). */
 export type TNullablePartial<T> = { [K in keyof T]?: T[K] | null };
-
-/** Параметры admin-списков: пагинация + поиск (`q` — films/persons/countries/genres). */
-export type TAdminListRequest = TListPaginationParams & { q?: string };
 
 /** Скаляры фильма для админского CRUD; даты в JSON — строка ISO. */
 export type TAdminFilmFields = Omit<TFilmEntity, "id" | "premiereWorldDate"> & {

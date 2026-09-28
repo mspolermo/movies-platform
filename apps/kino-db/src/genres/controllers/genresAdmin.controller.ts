@@ -1,6 +1,6 @@
 import type {
   TAdminGenresListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminUpdateGenreRpcRequest,
   TCreateGenreRequest,
   TAdminGenreItemResponse,
@@ -19,7 +19,7 @@ export class GenresAdminController {
 
   @MessagePattern(kinoDbRpc.admin.genres.list)
   listGenres(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminGenresListResponse> {
     return this.genresAdminService.listGenres(request);
   }

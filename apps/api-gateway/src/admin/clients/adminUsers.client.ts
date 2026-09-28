@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminUserItemResponse,
   TAdminUsersListResponse,
   TUpdateUserRoleRequest,
@@ -13,7 +13,7 @@ import { authUsersRpc, RmqService } from "@common/services";
 export class AdminUsersClient {
   constructor(private readonly rmq: RmqService) {}
 
-  listUsers(request: TAdminListRequest): Promise<TAdminUsersListResponse> {
+  listUsers(request: TListRequest): Promise<TAdminUsersListResponse> {
     return this.rmq.sendToUsers(authUsersRpc.admin.users.list, request);
   }
 

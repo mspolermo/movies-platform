@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminPersonsListResponse,
   TAdminUpdatePersonRpcRequest,
   TCreatePersonRequest,
@@ -19,7 +19,7 @@ export class PersonsAdminController {
 
   @MessagePattern(kinoDbRpc.admin.persons.list)
   listPersons(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminPersonsListResponse> {
     return this.personsAdminService.listPersons(request);
   }

@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminPersonsListResponse,
   TCreatePersonRequest,
   TAdminPersonItemResponse,
@@ -16,7 +16,7 @@ import { AdminKinoDbClient } from "../clients";
 export class AdminPersonsService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
-  listPersons(request: TAdminListRequest): Promise<TAdminPersonsListResponse> {
+  listPersons(request: TListRequest): Promise<TAdminPersonsListResponse> {
     return fromRpc(this.client.listPersons(request));
   }
 

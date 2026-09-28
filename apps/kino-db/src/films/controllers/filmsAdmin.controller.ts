@@ -1,7 +1,7 @@
 import type {
   TAdminFilmItemResponse,
   TAdminFilmsListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminUpdateFilmRpcRequest,
   TCreateFilmRequest,
 } from "@common/types";
@@ -19,7 +19,7 @@ export class FilmsAdminController {
 
   @MessagePattern(kinoDbRpc.admin.films.list)
   listFilms(
-    @Payload() request: TAdminListRequest
+    @Payload() request: TListRequest
   ): Promise<TAdminFilmsListResponse> {
     return this.filmsAdminService.listFilms(request);
   }

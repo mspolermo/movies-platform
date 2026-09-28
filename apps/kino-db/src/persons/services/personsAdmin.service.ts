@@ -1,5 +1,5 @@
 import type {
-  TAdminListRequest,
+  TListRequest,
   TAdminPersonsListResponse,
   TCreatePersonRequest,
   TAdminPersonItemResponse,
@@ -13,7 +13,7 @@ import { Op, Transaction } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 
 import {
-  toAdminListParams,
+  toListParams,
   toILikeContains,
   toPaginatedItemsResponse,
 } from "@common/utils";
@@ -39,9 +39,9 @@ export class PersonsAdminService {
 
   /** Пагинированный список персон с серверным поиском по имени (61k строк — см. ADR-007). */
   async listPersons(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminPersonsListResponse> {
-    const { page, perPage, offset, q } = toAdminListParams(request);
+    const { page, perPage, offset, q } = toListParams(request);
 
     const like = q ? toILikeContains(q) : undefined;
     if (q && !like) {

@@ -1,7 +1,7 @@
 import type {
   TAdminFilmItemResponse,
   TAdminFilmsListResponse,
-  TAdminListRequest,
+  TListRequest,
   TCreateFilmRequest,
   TUpdateFilmRequest,
 } from "@common/types";
@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 
 import {
-  toAdminListParams,
+  toListParams,
   toILikeContains,
   toPaginatedItemsResponse,
 } from "@common/utils";
@@ -57,9 +57,9 @@ export class FilmsAdminService {
   ) {}
 
   async listFilms(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminFilmsListResponse> {
-    const { page, perPage, offset, q } = toAdminListParams(request);
+    const { page, perPage, offset, q } = toListParams(request);
     const like = q ? toILikeContains(q) : undefined;
 
     if (q && !like) {

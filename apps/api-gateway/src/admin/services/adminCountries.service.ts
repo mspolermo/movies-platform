@@ -1,6 +1,6 @@
 import type {
   TAdminCountriesListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminCountryItemResponse,
   TCreateCountryRequest,
   TUpdateCountryRequest,
@@ -17,7 +17,7 @@ export class AdminCountriesService {
   constructor(private readonly client: AdminKinoDbClient) {}
 
   listCountries(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminCountriesListResponse> {
     return fromRpc(this.client.listCountries(request));
   }

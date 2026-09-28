@@ -3,7 +3,7 @@ import type {
   TDeleteFilmRatingResponse,
   TMyFilmRatingsResponse,
   TMyFilmRatingGradesResponse,
-  TListPaginationParams,
+  TListRequest,
 } from "@common/types";
 
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -56,7 +56,7 @@ export class RatingsService {
 
   list(
     userId: number,
-    params: TListPaginationParams
+    params: TListRequest
   ): Promise<TMyFilmRatingsResponse> {
     return fromRpc(this.ratingsClient.list(userId, params));
   }

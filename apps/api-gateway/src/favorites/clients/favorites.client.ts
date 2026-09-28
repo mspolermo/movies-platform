@@ -2,7 +2,7 @@ import type {
   TToggleFavoriteResponse,
   TMyFavoritesResponse,
   TMyFavoriteIdsResponse,
-  TListPaginationParams,
+  TListRequest,
 } from "@common/types";
 
 import { Injectable } from "@nestjs/common";
@@ -31,7 +31,7 @@ export class FavoritesClient {
 
   list(
     userId: number,
-    params: TListPaginationParams
+    params: TListRequest
   ): Promise<TMyFavoritesResponse> {
     return this.rmq.sendToUsers(authUsersRpc.favorites.list, {
       userId,

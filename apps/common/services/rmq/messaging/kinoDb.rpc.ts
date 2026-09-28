@@ -23,7 +23,7 @@ import type {
   TProfessionItemResponse,
   TSearchFilmsParams,
   TGenresListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminFilmItemResponse,
   TAdminFilmsListResponse,
   TAdminUpdateFilmRpcRequest,
@@ -199,7 +199,7 @@ export type TKinoDbRpcContract = {
     response: TProfessionItemResponse[];
   };
   [kinoDbRpc.admin.films.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminFilmsListResponse;
   };
   [kinoDbRpc.admin.films.getById]: {
@@ -219,7 +219,7 @@ export type TKinoDbRpcContract = {
     response: true;
   };
   [kinoDbRpc.admin.genres.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminGenresListResponse;
   };
   [kinoDbRpc.admin.genres.create]: {
@@ -235,7 +235,7 @@ export type TKinoDbRpcContract = {
     response: true;
   };
   [kinoDbRpc.admin.countries.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminCountriesListResponse;
   };
   [kinoDbRpc.admin.countries.create]: {
@@ -251,7 +251,7 @@ export type TKinoDbRpcContract = {
     response: true;
   };
   [kinoDbRpc.admin.professions.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminProfessionsListResponse;
   };
   [kinoDbRpc.admin.professions.create]: {
@@ -267,7 +267,7 @@ export type TKinoDbRpcContract = {
     response: true;
   };
   [kinoDbRpc.admin.persons.list]: {
-    request: TAdminListRequest;
+    request: TListRequest;
     response: TAdminPersonsListResponse;
   };
   [kinoDbRpc.admin.persons.getById]: {

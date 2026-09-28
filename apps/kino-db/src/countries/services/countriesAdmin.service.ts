@@ -1,6 +1,6 @@
 import type {
   TAdminCountriesListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminCountryItemResponse,
   TCreateCountryRequest,
   TUpdateCountryRequest,
@@ -12,7 +12,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Op, col, fn, where } from "sequelize";
 
 import {
-  toAdminListParams,
+  toListParams,
   toILikeContains,
   toPaginatedItemsResponse,
   rethrowUniqueAsConflict
@@ -33,9 +33,9 @@ export class CountriesAdminService {
 
   /** Пагинированный список стран с опциональным поиском по названиям. */
   async listCountries(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminCountriesListResponse> {
-    const { page, perPage, offset, q } = toAdminListParams(request);
+    const { page, perPage, offset, q } = toListParams(request);
 
     const like = q ? toILikeContains(q) : undefined;
     if (q && !like) {

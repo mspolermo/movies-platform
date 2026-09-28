@@ -2,7 +2,7 @@ import type {
   TToggleFavoriteResponse,
   TMyFavoritesResponse,
   TMyFavoriteIdsResponse,
-  TListPaginationParams,
+  TListRequest,
 } from "@common/types";
 
 import { Injectable, NotFoundException } from "@nestjs/common";
@@ -41,7 +41,7 @@ export class FavoritesService {
 
   list(
     userId: number,
-    params: TListPaginationParams
+    params: TListRequest
   ): Promise<TMyFavoritesResponse> {
     return fromRpc(this.favoritesClient.list(userId, params));
   }

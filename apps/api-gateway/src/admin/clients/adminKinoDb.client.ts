@@ -3,7 +3,7 @@ import type {
   TAdminFilmItemResponse,
   TAdminFilmsListResponse,
   TAdminGenresListResponse,
-  TAdminListRequest,
+  TListRequest,
   TAdminPersonsListResponse,
   TAdminProfessionsListResponse,
   TAdminCountryItemResponse,
@@ -30,7 +30,7 @@ import { kinoDbRpc, RmqService } from "@common/services";
 export class AdminKinoDbClient {
   constructor(private readonly rmq: RmqService) {}
 
-  listFilms(request: TAdminListRequest): Promise<TAdminFilmsListResponse> {
+  listFilms(request: TListRequest): Promise<TAdminFilmsListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.films.list, request);
   }
 
@@ -53,7 +53,7 @@ export class AdminKinoDbClient {
     return this.rmq.sendToFilms(kinoDbRpc.admin.films.delete, id);
   }
 
-  listGenres(request: TAdminListRequest): Promise<TAdminGenresListResponse> {
+  listGenres(request: TListRequest): Promise<TAdminGenresListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.genres.list, request);
   }
 
@@ -73,7 +73,7 @@ export class AdminKinoDbClient {
   }
 
   listCountries(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminCountriesListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.countries.list, request);
   }
@@ -94,7 +94,7 @@ export class AdminKinoDbClient {
   }
 
   listProfessions(
-    request: TAdminListRequest
+    request: TListRequest
   ): Promise<TAdminProfessionsListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.professions.list, request);
   }
@@ -119,7 +119,7 @@ export class AdminKinoDbClient {
     return this.rmq.sendToFilms(kinoDbRpc.admin.professions.delete, id);
   }
 
-  listPersons(request: TAdminListRequest): Promise<TAdminPersonsListResponse> {
+  listPersons(request: TListRequest): Promise<TAdminPersonsListResponse> {
     return this.rmq.sendToFilms(kinoDbRpc.admin.persons.list, request);
   }
 

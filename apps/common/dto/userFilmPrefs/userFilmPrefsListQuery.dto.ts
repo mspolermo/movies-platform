@@ -1,4 +1,4 @@
-import type { TListPaginationParams } from "@common/types";
+import type { TListRequest } from "@common/types";
 
 import { ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
@@ -7,7 +7,7 @@ import { IsInt, IsOptional, Max, Min } from "class-validator";
 import { LIST_MAX_LIMIT } from "@common/constants";
 
 /** Query GET /favorites и GET /ratings. */
-export class UserFilmPrefsListQueryDto implements TListPaginationParams {
+export class UserFilmPrefsListQueryDto implements TListRequest {
   @ApiPropertyOptional({ description: "Номер страницы", example: 1 })
   @IsOptional()
   @Type(() => Number)
