@@ -23,7 +23,6 @@ export type {
   TToggleCommentLikeRequest,
 } from "./comment";
 export type {
-  TListPaginationParams,
   TGetMyFavoritesParams,
   TGetMyFilmRatingsParams,
   TUpsertFilmRatingRequest,
@@ -39,7 +38,6 @@ export type {
 export type {
   TAppRole,
   TNullablePartial,
-  TAdminListRequest,
   TAdminFilmFields,
   TCreateFilmRequest,
   TUpdateFilmRequest,

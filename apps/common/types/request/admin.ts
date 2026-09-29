@@ -61,38 +61,26 @@ export type TUpdateUserRoleRequest = {
   role: TAppRole;
 };
 
-/** RPC: обновление фильма по id (админка). */
-export type TAdminUpdateFilmRpcRequest = {
+/** RPC: обновление данных по id (админка). */
+type TAdminUpdateRpcRequest<T> = {
   id: number;
-  data: TUpdateFilmRequest;
+  data: T;
 };
+
+/** RPC: обновление фильма по id (админка). */
+export type TAdminUpdateFilmRpcRequest = TAdminUpdateRpcRequest<TUpdateFilmRequest>;
 
 /** RPC: обновление жанра по id (админка). */
-export type TAdminUpdateGenreRpcRequest = {
-  id: number;
-  data: TUpdateGenreRequest;
-};
+export type TAdminUpdateGenreRpcRequest = TAdminUpdateRpcRequest<TUpdateGenreRequest>;
 
 /** RPC: обновление страны по id (админка). */
-export type TAdminUpdateCountryRpcRequest = {
-  id: number;
-  data: TUpdateCountryRequest;
-};
+export type TAdminUpdateCountryRpcRequest = TAdminUpdateRpcRequest<TUpdateCountryRequest>;
 
 /** RPC: обновление профессии по id (админка). */
-export type TAdminUpdateProfessionRpcRequest = {
-  id: number;
-  data: TUpdateProfessionRequest;
-};
+export type TAdminUpdateProfessionRpcRequest = TAdminUpdateRpcRequest<TUpdateProfessionRequest>;
 
 /** RPC: обновление персоны по id (админка). */
-export type TAdminUpdatePersonRpcRequest = {
-  id: number;
-  data: TUpdatePersonRequest;
-};
+export type TAdminUpdatePersonRpcRequest = TAdminUpdateRpcRequest<TUpdatePersonRequest>
 
 /** RPC: смена роли пользователя по id (админка). */
-export type TAdminSetUserRoleRpcRequest = {
-  id: number;
-  data: TUpdateUserRoleRequest;
-};
+export type TAdminSetUserRoleRpcRequest = TAdminUpdateRpcRequest<TUpdateUserRoleRequest>;
