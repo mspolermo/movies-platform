@@ -37,7 +37,6 @@ export type {
 } from "./userFilmPrefs";
 export type {
   TAppRole,
-  TNullablePartial,
   TAdminFilmFields,
   TCreateFilmRequest,
   TUpdateFilmRequest,
