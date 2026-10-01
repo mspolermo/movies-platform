@@ -6,7 +6,7 @@ import type {
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsArray, IsInt, IsNotEmpty, IsString } from "class-validator";
 
-import { OptionalNullable, OptionalStrict } from "./decorators";
+import { OptionalNullable, OptionalStrict } from "../../utils";
 
 export class CreatePersonDto implements TCreatePersonRequest {
   @ApiProperty({ description: "Имя на русском" })

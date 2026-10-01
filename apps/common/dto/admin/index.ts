@@ -1,4 +1,4 @@
-export { OptionalNullable, OptionalStrict } from "./decorators";
+export { OptionalNullable, OptionalStrict } from "../../utils/validators";
 export { AdminListQueryDto } from "./adminListQuery.dto";
 export { CreateFilmDto, UpdateFilmDto } from "./film.dto";
 export { CreateGenreDto, UpdateGenreDto } from "./genre.dto";

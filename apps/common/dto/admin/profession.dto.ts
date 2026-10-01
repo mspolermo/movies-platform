@@ -6,7 +6,7 @@ import type {
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
-import { OptionalStrict } from "./decorators";
+import { OptionalStrict } from "../../utils";
 
 export class CreateProfessionDto implements TCreateProfessionRequest {
   @ApiProperty({ description: "Название профессии" })

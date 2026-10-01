@@ -3,7 +3,7 @@ import type { TCreateGenreRequest, TUpdateGenreRequest } from "@common/types";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { IsNotEmpty, IsString } from "class-validator";
 
-import { OptionalStrict } from "./decorators";
+import { OptionalStrict } from "../../utils";
 
 export class CreateGenreDto implements TCreateGenreRequest {
   @ApiProperty({ description: "Название на русском" })

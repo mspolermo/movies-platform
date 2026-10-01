@@ -9,7 +9,7 @@ import {
   IsString,
 } from "class-validator";
 
-import { OptionalNullable, OptionalStrict } from "./decorators";
+import { OptionalNullable, OptionalStrict } from "../../utils";
 
 export class CreateFilmDto implements TCreateFilmRequest {
   @ApiProperty({ description: "Название на русском" })
