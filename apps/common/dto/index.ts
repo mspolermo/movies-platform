@@ -3,3 +3,5 @@ export * from './comment';
 export * from './auth';
 export * from './admin';
 export * from './userFilmPrefs';
+
+export { FilmFiltersDto } from './filmFilters'

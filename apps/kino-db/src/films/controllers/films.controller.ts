@@ -6,9 +6,9 @@ import type {
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
+import { FilmFiltersDto } from "@common/dto";
 import { kinoDbRpc } from "@common/services";
 
-import { FilmFiltersDto } from "../dto";
 import { FilmsService } from "../services";
 
 @Controller("films")

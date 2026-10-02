@@ -10,8 +10,7 @@ import type {
 import { Injectable } from "@nestjs/common";
 
 import { LIST_DEFAULT_LIMIT } from "@common/constants";
-
-import { FilmFiltersDto } from "../dto";
+import { FilmFiltersDto } from "@common/dto";
 
 import { FilmCastService } from "./filmCast.service";
 import { FilmCatalogService } from "./filmCatalog.service";

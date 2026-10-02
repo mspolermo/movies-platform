@@ -4,6 +4,6 @@
     "types": ["jest", "node"],
     "noEmit": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../common/dto/comment/getFilmComments.dto.ts", "../common/dto/filmFilters/filmFilters.dto.ts"],
   "exclude": ["node_modules", "dist"]
 }

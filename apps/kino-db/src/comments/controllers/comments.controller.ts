@@ -11,9 +11,9 @@ import {
 } from "@nestjs/microservices";
 
 import { CommentDTO } from "@common/dto";
+import { GetFilmCommentsDto } from "@common/dto";
 import { kinoDbRpc } from "@common/services";
 
-import { GetFilmCommentsDto } from "../dto";
 import { CommentsService } from "../services";
 
 @Controller("comments")

@@ -4,11 +4,11 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize } from "sequelize";
 
+import { FilmFiltersDto } from "@common/dto";
 import { toPaginatedItemsResponse } from "@common/utils";
 
 import { FILM_CARD_ATTRIBUTES } from "../constants";
-import { FilmFiltersDto } from "../dto";
-import { mapFilmToCardResponse } from "../mappers/film.mapping";
+import { mapFilmToCardResponse } from "../mappers";
 import { Film } from "../models";
 import { buildFilmFiltersQuery } from "../queries";
 

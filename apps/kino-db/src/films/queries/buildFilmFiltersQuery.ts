@@ -2,11 +2,12 @@ import type { Includeable, OrderItem, WhereOptions } from "sequelize";
 
 import { Op } from "sequelize";
 
+import { FilmFiltersDto } from "@common/dto";
+
 import { Country } from "../../countries";
 import { Genre } from "../../genres/models/genres.model";
 import { Person } from "../../persons";
 import { FILM_CARD_ATTRIBUTES, FILM_SORT_ORDER } from "../constants";
-import { FilmFiltersDto } from "../dto";
 
 export type TFilmFiltersFindOptions = {
   attributes: string[];

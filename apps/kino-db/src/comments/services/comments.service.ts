@@ -9,9 +9,8 @@ import { InjectConnection, InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize, Transaction } from "sequelize";
 
 import { LIST_DEFAULT_LIMIT, LIST_MAX_LIMIT } from "@common/constants";
-import { CommentDTO } from "@common/dto";
+import { CommentDTO, GetFilmCommentsDto } from "@common/dto";
 
-import { GetFilmCommentsDto } from "../dto";
 import {
   mapCommentToResponse,
   mapCommentsToResponseList,
