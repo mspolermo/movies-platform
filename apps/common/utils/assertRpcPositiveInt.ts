@@ -1,3 +1,4 @@
+import { HttpStatus } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 
 /**
@@ -7,7 +8,7 @@ import { RpcException } from "@nestjs/microservices";
 export function assertRpcPositiveInt(value: number, field: string): void {
   if (!Number.isInteger(value) || value < 1) {
     throw new RpcException({
-      statusCode: 400,
+      statusCode: HttpStatus.BAD_REQUEST,
       message: `Некорректный ${field}`,
     });
   }

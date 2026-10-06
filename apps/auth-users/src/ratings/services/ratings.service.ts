@@ -9,7 +9,7 @@ import type {
   TMyFilmRatingGradesResponse,
 } from "@common/types";
 
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
 import { RpcException } from "@nestjs/microservices";
 import { InjectConnection, InjectModel } from "@nestjs/sequelize";
 import { QueryTypes, Sequelize, UniqueConstraintError } from "sequelize";
@@ -53,7 +53,7 @@ export class RatingsService {
       grade > FILM_USER_GRADE_MAX
     ) {
       throw new RpcException({
-        statusCode: 400,
+        statusCode: HttpStatus.BAD_REQUEST,
         message: `Оценка должна быть целым числом от ${FILM_USER_GRADE_MIN} до ${FILM_USER_GRADE_MAX}`,
       });
     }

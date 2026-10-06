@@ -1,6 +1,7 @@
 import {
   Controller,
   Get,
+  HttpStatus,
   ServiceUnavailableException,
 } from "@nestjs/common";
 import { MessagePattern, RpcException } from "@nestjs/microservices";
@@ -22,7 +23,7 @@ export class HealthController {
       await this.assertDb();
     } catch {
       throw new RpcException({
-        statusCode: 503,
+        statusCode: HttpStatus.SERVICE_UNAVAILABLE,
         message: "database disconnected",
       });
     }
