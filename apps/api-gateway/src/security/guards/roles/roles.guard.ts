@@ -8,6 +8,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
+import { RpcException } from "@nestjs/microservices";
 
 import { AuthenticatedRequest } from "../../../shared";
 import { ROLES_KEY } from "../../decorators";
@@ -60,7 +61,10 @@ export class RolesGuard implements CanActivate {
         this.logger.debug(
           `User ${req.user.id} has no roles; required: ${requiredRoles.join(", ")}`
         );
-        throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
+        throw new RpcException({
+          statusCode: HttpStatus.FORBIDDEN,
+          message: "Нет доступа",
+        });
       }
 
       const hasRequiredRole = userWithRoles.roles.some((role) =>
@@ -71,7 +75,10 @@ export class RolesGuard implements CanActivate {
         this.logger.debug(
           `User ${userWithRoles.id} missing required roles: ${requiredRoles.join(", ")}`
         );
-        throw new HttpException("Нет доступа", HttpStatus.FORBIDDEN);
+        throw new RpcException({
+          statusCode: HttpStatus.FORBIDDEN,
+          message: "Нет доступа",
+        });
       }
 
       // Обновляем пользователя в request с полной информацией
@@ -100,13 +107,11 @@ export class RolesGuard implements CanActivate {
         `Roles check failed: ${errorWithMessage?.message || String(e)}`
       );
       // Не маскируем infra/неожиданные ошибки под 403 (B41).
-      throw new HttpException(
-        {
-          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-          message: "Ошибка проверки доступа",
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      throw new RpcException({
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        message: "Ошибка проверки доступа",
+      });
+      
     }
   }
 }

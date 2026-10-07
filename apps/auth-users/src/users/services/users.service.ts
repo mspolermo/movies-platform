@@ -1,7 +1,6 @@
 import type { TAuthorizedUserResponse } from "@common/types";
 
 import {
-  HttpException,
   HttpStatus,
   Injectable,
   UnauthorizedException,
@@ -37,10 +36,10 @@ export class UsersService {
       include: { all: true },
     });
     if (candidate) {
-      throw new HttpException(
-        "Пользователь с таким email уже зарегистрирован",
-        HttpStatus.BAD_REQUEST
-      );
+      throw new RpcException({
+        statusCode: HttpStatus.BAD_REQUEST,
+        message: "Пользователь с таким email уже зарегистрирован",
+      });
     }
     return this.createUserWithRole(dto, "USER");
   }
