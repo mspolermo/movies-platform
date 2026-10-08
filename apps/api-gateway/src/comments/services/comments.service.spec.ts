@@ -5,6 +5,8 @@ import { CommentsClient } from "../clients";
 
 import { CommentsService } from "./comments.service";
 
+//TODO: HttpException не используем, вместо него теперь везде RpcException. Переделать
+
 describe("CommentsService (api-gateway)", () => {
   let service: CommentsService;
 

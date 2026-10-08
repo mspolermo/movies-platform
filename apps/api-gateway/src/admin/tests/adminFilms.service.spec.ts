@@ -4,6 +4,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { AdminKinoDbClient } from "../clients";
 import { AdminFilmsService } from "../services";
 
+//TODO: HttpException не используем, вместо него теперь везде RpcException. Переделать
+
 describe("AdminFilmsService", () => {
   let service: AdminFilmsService;
 

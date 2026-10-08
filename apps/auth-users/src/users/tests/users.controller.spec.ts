@@ -5,6 +5,8 @@ import { TokensService } from "../../tokens/services";
 import { UsersController } from "../controllers";
 import { UsersService } from "../services";
 
+//TODO: HttpException не используем, вместо него теперь везде RpcException. Переделать
+
 
 jest.mock(
   "@common/dto",

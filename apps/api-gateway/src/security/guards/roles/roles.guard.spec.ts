@@ -9,6 +9,8 @@ import { Test, TestingModule } from "@nestjs/testing";
 
 import { UserRolesService } from "../../services";
 
+//TODO: HttpException не используем, вместо него теперь везде RpcException. Переделать
+
 import { RolesGuard } from "./roles.guard";
 
 describe("RolesGuard", () => {

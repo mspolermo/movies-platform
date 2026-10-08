@@ -1,7 +1,7 @@
 import {
-  ExceptionFilter,
-  Catch,
   ArgumentsHost,
+  Catch,
+  ExceptionFilter,
   HttpException,
   HttpStatus,
   Logger,
@@ -12,56 +12,54 @@ import { Request, Response } from "express";
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
-  catch(exception: unknown, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    // Логируем все ошибки для отладки
+    const path = request.url;
+    const method = request.method;
+
     this.logger.error(
       `Exception occurred: ${this.formatException(exception)}`,
-      exception instanceof Error ? exception.stack : undefined
+      exception instanceof Error ? exception.stack : undefined,
     );
 
-    // Если это HttpException (известная ошибка), возвращаем как есть
     if (exception instanceof HttpException) {
       const status = exception.getStatus();
       const message = exception.message;
 
       this.logger.warn(
-        `HTTP Exception: ${status} - ${message} for ${request.method} ${request.url}`
+        `HTTP Exception: ${status} - ${message} for ${method} ${path}`,
       );
 
-      return response.status(status).json({
+      response.status(status).json({
         statusCode: status,
-        message: message,
+        message,
         timestamp: new Date().toISOString(),
-        path: request.url,
+        path,
       });
+
+      return;
     }
 
-    // Для неизвестных ошибок возвращаем общую ошибку
     const status = HttpStatus.INTERNAL_SERVER_ERROR;
     const message = "Внутренняя ошибка сервера";
 
     this.logger.error(
-      `Internal Server Error: ${message} for ${request.method} ${request.url}`,
-      exception instanceof Error ? exception.stack : undefined
+      `Internal Server Error for ${method} ${path}`,
+      exception instanceof Error ? exception.stack : undefined,
     );
 
-    // В production не раскрываем детали ошибок
     const isProduction = process.env.NODE_ENV === "production";
+    const details = this.formatException(exception);
 
-    return response.status(status).json({
+    response.status(status).json({
       statusCode: status,
-      message: isProduction ? message : this.formatException(exception),
+      message: isProduction ? message : details,
       timestamp: new Date().toISOString(),
-      path: request.url,
-      ...(isProduction
-        ? {}
-        : {
-            details: this.formatException(exception),
-          }),
+      path,
+      ...(isProduction ? {} : { details }),
     });
   }
 
@@ -74,19 +72,15 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       return exception;
     }
 
-    if (typeof exception === "object" && exception !== null) {
-      // Обрабатываем объекты с сообщениями об ошибках
-      if ("message" in exception && typeof exception.message === "string") {
-        return exception.message;
+    if (exception && typeof exception === "object") {
+      const record = exception as Record<string, unknown>;
+
+      if (typeof record.message === "string") {
+        return record.message;
       }
 
-      if ("status" in exception && "message" in exception) {
-        return `${exception.status}: ${exception.message}`;
-      }
-
-      // Для других объектов возвращаем JSON строку
       try {
-        return JSON.stringify(exception, null, 2);
+        return JSON.stringify(record);
       } catch {
         return String(exception);
       }

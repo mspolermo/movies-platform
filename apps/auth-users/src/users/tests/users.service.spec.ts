@@ -13,6 +13,8 @@ import { TokensService } from "../../tokens/services";
 import { User } from "../models";
 import { UsersService } from "../services";
 
+//TODO: HttpException не используем, вместо него теперь везде RpcException. Переделать
+
 jest.mock("bcryptjs");
 
 describe("UsersService", () => {
