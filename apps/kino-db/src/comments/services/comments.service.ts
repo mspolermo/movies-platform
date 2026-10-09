@@ -4,7 +4,8 @@ import type {
   TToggleCommentLikeResponse,
 } from "@common/types";
 
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { HttpStatus, Injectable } from "@nestjs/common";
+import { RpcException } from "@nestjs/microservices";
 import { InjectConnection, InjectModel } from "@nestjs/sequelize";
 import { Op, Sequelize, Transaction } from "sequelize";
 
@@ -93,7 +94,10 @@ export class CommentsService {
       });
 
       if (!comment) {
-        throw new NotFoundException("Комментарий не найден");
+        throw new RpcException({
+          statusCode: HttpStatus.NOT_FOUND,
+          message: "Комментарий не найден",
+        });
       }
 
       const existing = await this.commentLikeRepository.findOne({

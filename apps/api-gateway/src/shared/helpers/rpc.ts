@@ -78,7 +78,6 @@ const extractRpcErrorStatus = (error: unknown): number | undefined => {
 
 /** Перебрасывает RPC-ошибку микросервиса как HttpException; fallback — 500. */
 function throwHttpFromRpcError(error: unknown): never {
-  //TODO: а нужен ли?
   const statusCode = extractRpcErrorStatus(error) ?? 500;
   const message = extractRpcErrorMessage(error) || "Внутренняя ошибка сервиса";
 
