@@ -2,8 +2,8 @@ import type { TFilmDetailsResponse } from "@common/types";
 
 import { ApiProperty } from "@nestjs/swagger";
 
-import { CountryItemResponseDto } from "../../countries/dto";
-import { GenreItemResponseDto } from "../../genres/dto";
+import { CountryItemResponseDto } from "@common/dto";
+import { GenreItemResponseDto } from "@common/dto";
 
 import { FilmFactResponseDto } from "./filmFactResponse.dto";
 
