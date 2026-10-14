@@ -5,5 +5,6 @@ export * from './admin';
 export * from './userFilmPrefs';
 export * from "./countries"
 export * from "./genres"
+export * from "./films"
 
 export { FilmFiltersDto } from './filmFilters'

@@ -1,0 +1,1 @@
+export { FilmDetailsResponseDto } from "./filmDetailsResponse.dto";
