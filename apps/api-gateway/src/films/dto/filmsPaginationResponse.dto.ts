@@ -2,7 +2,7 @@ import type { TFilmsResponse } from "@common/types";
 
 import { ApiProperty } from "@nestjs/swagger";
 
-import { FilmListItemResponseDto } from "./filmListItemResponse.dto";
+import { FilmListItemResponseDto } from "@common/dto";
 
 /** Swagger-схема `GET /films` (= `TFilmsResponse`). */
 export class FilmsPaginationResponseDto implements TFilmsResponse {

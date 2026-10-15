@@ -22,13 +22,12 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { FilmDetailsResponseDto } from "@common/dto";
+import { FilmDetailsResponseDto, FilmListItemResponseDto } from "@common/dto";
 
 import { PaginatedPersonsResponseDto } from "../../persons/dto";
 import { ProfessionItemResponseDto } from "../../professions/dto";
 import { JwtAuthGuard, Public } from "../../security";
 import {
-  FilmListItemResponseDto,
   FilmsPaginationResponseDto,
   GetFilmPersonsByProfessionDto,
   GetSimilarFilmsDto,
