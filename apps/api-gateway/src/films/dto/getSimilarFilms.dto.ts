@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsOptional, Max, Min } from "class-validator";
 
-import { ToInt } from "../../shared";
+import { ToInt } from "@common/utils";
 
 export class GetSimilarFilmsDto {
   @ApiProperty({

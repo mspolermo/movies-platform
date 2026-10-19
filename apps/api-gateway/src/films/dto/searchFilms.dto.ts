@@ -11,7 +11,7 @@ import {
   Min,
 } from "class-validator";
 
-import { ToFloat, ToInt, ToNumberArray, ToStringArray } from "../../shared";
+import { ToFloat, ToInt, ToNumberArray, ToStringArray } from "@common/utils";
 
 const FILM_SORT_BY_VALUES: readonly TFilmSortBy[] = [
   "rating",

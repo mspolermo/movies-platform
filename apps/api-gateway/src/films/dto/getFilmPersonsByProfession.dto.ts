@@ -7,7 +7,7 @@ import {
   Min,
 } from "class-validator";
 
-import { ToInt} from "../../shared";
+import { ToInt} from "@common/utils";
 
 export class GetFilmPersonsByProfessionDto {
   @ApiProperty({

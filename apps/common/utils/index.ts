@@ -6,3 +6,4 @@ export { rethrowUniqueAsConflict } from "./rethrowUniqueAsConflict";
 export { resolveJwtSecret } from "./resolveJwtSecret";
 
 export { OptionalNullable, OptionalStrict } from './validators'
+export { ToFloat, ToInt, ToNumberArray, ToStringArray } from './transforms'
