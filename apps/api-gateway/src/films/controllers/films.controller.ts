@@ -22,16 +22,18 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { FilmDetailsResponseDto, FilmListItemResponseDto, FilmsPaginationResponseDto } from "@common/dto";
+import { 
+  FilmDetailsResponseDto,
+  FilmListItemResponseDto,
+  FilmsPaginationResponseDto,
+  GetFilmPersonsByProfessionDto,
+  GetSimilarFilmsDto,
+  SearchFilmsDto
+} from "@common/dto";
 
 import { PaginatedPersonsResponseDto } from "../../persons/dto";
 import { ProfessionItemResponseDto } from "../../professions/dto";
 import { JwtAuthGuard, Public } from "../../security";
-import {
-  GetFilmPersonsByProfessionDto,
-  GetSimilarFilmsDto,
-  SearchFilmsDto,
-} from "../dto";
 import { FilmsService } from "../services";
 
 @ApiTags("Films")
