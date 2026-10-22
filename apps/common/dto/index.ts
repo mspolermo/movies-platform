@@ -7,6 +7,7 @@ export * from "./countries"
 export * from "./genres"
 export * from "./films"
 export * from "./filters"
+export * from "./persons"
 
 export { FilmFiltersDto } from './filmFilters'
 

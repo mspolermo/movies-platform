@@ -1,0 +1,1 @@
+export { PersonProfessionResponseDto } from "./personProfessionResponse.dto";

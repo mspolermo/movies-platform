@@ -2,8 +2,9 @@ import type { TPersonProfileResponse } from "@common/types";
 
 import { ApiProperty } from "@nestjs/swagger";
 
+import { PersonProfessionResponseDto } from "@common/dto";
+
 import { PersonListItemResponseDto } from "./personListItemResponse.dto";
-import { PersonProfessionResponseDto } from "./personProfessionResponse.dto";
 
 /** Swagger-схема `GET /persons/:id` (= `TPersonProfileResponse`). */
 export class PersonProfileResponseDto
