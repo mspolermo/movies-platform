@@ -8,7 +8,6 @@ import type {
 import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiOperation, ApiTags } from "@nestjs/swagger";
 
-import { JwtAuthGuard, Public } from "../../security";
 import {
   FilmographyQueryDto,
   FindPersonsQueryDto,
@@ -18,7 +17,9 @@ import {
   PersonIdParamDto,
   PersonListItemResponseDto,
   PersonProfileResponseDto,
-} from "../dto";
+} from "@common/dto";
+
+import { JwtAuthGuard, Public } from "../../security";
 import { PersonsService } from "../services";
 
 @ApiTags("Persons")

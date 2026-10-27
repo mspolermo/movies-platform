@@ -11,7 +11,8 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { PaginatedPersonsResponseDto } from "../../persons/dto";
+import { PaginatedPersonsResponseDto } from "@common/dto";
+
 import { JwtAuthGuard, Public } from "../../security";
 import {
   ProfessionItemResponseDto,

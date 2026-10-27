@@ -2,10 +2,10 @@ import type { TSearchResultResponse } from "@common/types";
 
 import { ApiProperty } from "@nestjs/swagger";
 
-
-import { FilmListItemResponseDto } from "@common/dto";
-
-import { PersonListItemResponseDto } from "../../persons/dto";
+import {
+  FilmListItemResponseDto,
+  PersonListItemResponseDto,
+} from "@common/dto";
 
 /** Swagger-схема `GET /search` (= `TSearchResultResponse`). */
 export class SearchResultResponseDto implements TSearchResultResponse {

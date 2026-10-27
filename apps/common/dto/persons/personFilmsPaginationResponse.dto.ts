@@ -2,7 +2,7 @@ import type { TPersonFilmsPaginationResponse } from "@common/types";
 
 import { ApiProperty } from "@nestjs/swagger";
 
-import { PersonFilmResponseDto } from "@common/dto"
+import { PersonFilmResponseDto } from "./personFilmResponse.dto";
 
 /** Swagger-схема пагинированной фильмографии (= `TPersonFilmsPaginationResponse`). */
 export class PersonFilmsPaginationResponseDto

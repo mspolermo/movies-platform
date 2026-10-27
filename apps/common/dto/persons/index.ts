@@ -1,2 +1,10 @@
-export { PersonProfessionResponseDto } from "./personProfessionResponse.dto";
+export { FilmographyQueryDto } from "./filmographyQuery.dto";
+export { FindPersonsQueryDto } from "./findPersonsQuery.dto";
+export { GetPersonsQueryDto } from "./getPersonsQuery.dto";
+export { PaginatedPersonsResponseDto } from "./paginatedPersonsResponse.dto";
 export { PersonFilmResponseDto } from "./personFilmResponse.dto";
+export { PersonFilmsPaginationResponseDto } from "./personFilmsPaginationResponse.dto";
+export { PersonIdParamDto } from "./personIdParam.dto";
+export { PersonListItemResponseDto } from "./personListItemResponse.dto";
+export { PersonProfessionResponseDto } from "./personProfessionResponse.dto";
+export { PersonProfileResponseDto } from "./personProfileResponse.dto";
