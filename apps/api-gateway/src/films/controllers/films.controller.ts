@@ -30,9 +30,9 @@ import {
   GetSimilarFilmsDto,
   PaginatedPersonsResponseDto,
   SearchFilmsDto,
+  ProfessionItemResponseDto
 } from "@common/dto";
 
-import { ProfessionItemResponseDto } from "../../professions/dto";
 import { JwtAuthGuard, Public } from "../../security";
 import { FilmsService } from "../services";
 

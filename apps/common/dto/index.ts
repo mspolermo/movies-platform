@@ -8,6 +8,7 @@ export * from "./genres"
 export * from "./films"
 export * from "./filters"
 export * from "./persons"
+export * from './professions'
 
 export { FilmFiltersDto } from './filmFilters'
 
