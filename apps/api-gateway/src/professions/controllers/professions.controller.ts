@@ -11,11 +11,10 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
-import { PaginatedPersonsResponseDto, ProfessionItemResponseDto } from "@common/dto";
+import { PaginatedPersonsResponseDto, ProfessionItemResponseDto, ProfessionPersonsParamDto } from "@common/dto";
 
 import { JwtAuthGuard, Public } from "../../security";
 import {
-  ProfessionPersonsParamDto,
   ProfessionPersonsQueryDto,
 } from "../dto";
 import { ProfessionsService } from "../services";
