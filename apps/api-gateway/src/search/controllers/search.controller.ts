@@ -8,8 +8,9 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 
+import { SearchResultResponseDto } from "@common/dto";
+
 import { JwtAuthGuard, Public } from "../../security";
-import { SearchResultResponseDto } from "../dto";
 import { SearchService } from "../services";
 
 @ApiTags("Search")
