@@ -2,9 +2,10 @@
 import { Controller } from "@nestjs/common";
 import { MessagePattern, Payload } from "@nestjs/microservices";
 
+import { SearchPersonDto } from "@common/dto/search";
 import { kinoDbRpc } from "@common/services";
 
-import { GetPersonByIdDto, GetPersonFilmographyDto, GetPersonsByProfessionDto, GetPersonsDto, SearchPersonDto } from "../dto";
+import { GetPersonByIdDto, GetPersonFilmographyDto, GetPersonsByProfessionDto, GetPersonsDto } from "../dto";
 import { PersonsService } from "../services/persons.service";
 
 @Controller("persons")
