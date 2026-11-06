@@ -4,3 +4,4 @@ export { FilmsPaginationResponseDto } from "./filmsPaginationResponse.dto";
 export { GetFilmPersonsByProfessionDto } from "./getFilmPersonsByProfession.dto";
 export { GetSimilarFilmsDto } from "./getSimilarFilms.dto";
 export { SearchFilmsDto } from "./searchFilms.dto";
+export { GetPersonFilmographyDto } from "./getPersonFilmography.dto";

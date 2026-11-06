@@ -9,7 +9,7 @@ export * from "./films"
 export * from "./filters"
 export * from "./persons"
 export * from './professions'
-export { SearchResultResponseDto } from './search'
+export { SearchResultResponseDto, SearchPersonDto } from './search'
 
 export { FilmFiltersDto } from './filmFilters'
 
