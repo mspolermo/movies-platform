@@ -9,3 +9,4 @@ export { PersonListItemResponseDto } from "./personListItemResponse.dto";
 export { PersonProfessionResponseDto } from "./personProfessionResponse.dto";
 export { PersonProfileResponseDto } from "./personProfileResponse.dto";
 export { GetPersonByIdDto } from "./getPersonById.dto";
+export { GetPersonsDto } from "./getPersons.dto";
