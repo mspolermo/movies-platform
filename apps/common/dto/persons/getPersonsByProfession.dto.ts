@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsInt, Min } from "class-validator";
 
-import { GetPersonsDto } from "@common/dto";
+import { GetPersonsDto } from "./getPersons.dto";
 
 export class GetPersonsByProfessionDto extends GetPersonsDto {
   @Type(() => Number)
