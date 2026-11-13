@@ -54,7 +54,7 @@ apps/
   api-gateway/   # HTTP BFF
   auth-users/    # auth
   kino-db/       # контент
-  common/        # shared types, constants, RMQ
+  common/        # shared types, dto, constants, RMQ
   client/        # Next.js FSD
 devops/          # network.env, seed, README
 .cursor/         # KB Cursor: rules, context, adr, skills, temp
