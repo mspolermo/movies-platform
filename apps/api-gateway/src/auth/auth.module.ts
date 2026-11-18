@@ -10,4 +10,5 @@ import { AuthService } from "./services";
   providers: [AuthService, AuthClient, OriginGuard],
   exports: [AuthService],
 })
+
 export class AuthModule {}

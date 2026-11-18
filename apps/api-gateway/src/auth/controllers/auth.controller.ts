@@ -23,11 +23,10 @@ import {
 import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
 import { Request, Response } from "express";
 
-import { AuthDto, CreateUserDto } from "@common/dto";
+import { AuthDto, CreateUserDto, AuthResponseDto, CurrentUserResponseDto } from "@common/dto";
 
 import { JwtAuthGuard, Public } from "../../security";
 import { AuthenticatedRequest } from "../../shared";
-import { AuthResponseDto, CurrentUserResponseDto } from "../dto";
 import { OriginGuard } from "../guards";
 import {
   clearAuthCookies,

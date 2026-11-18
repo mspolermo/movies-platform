@@ -38,4 +38,5 @@ import {
     AdminUsersService,
   ],
 })
+
 export class AdminModule {}
